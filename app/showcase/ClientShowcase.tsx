@@ -3,13 +3,17 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import axios from "axios";
+import { api } from "@/setup/axios";
 import { Contact } from "@/types/contact";
 import { Message } from "@/types/message";
 import { ResponsePagination } from "@/types/utils.pagination";
+import { useSocket } from "@/hooks/useSocket";
 
 export default function ClientShowcase({ initialServerContacts, responsePagination_ }: { initialServerContacts: Contact[], responsePagination_?: ResponsePagination | null }) {
   const workspaceOptions = ["workspace1", "workspace2", "workspace3"];
+
+  // socket
+  const socket = useSocket();
 
   // listaremos los contactos en la seccion de la izquierda
   const [responsePagination, setResponsePagination] = useState<ResponsePagination | null>(responsePagination_ || null);
@@ -76,6 +80,8 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
     setSelectedContactId(contactId);
     setShowSearchModal(false);
 
+    socket.emit("join_room", contactId);
+
     // resetear formulario de busqueda
     resetSearchForm();
   };
@@ -96,7 +102,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
         workspaceId: createWorkspace,
       };
 
-      const req = await axios.post("http://localhost:3030/api/contacts", {
+      const req = await api.post("/api/contacts", {
         fullname: newContact.fullname,
         workspaceId: newContact.workspaceId,
       });
@@ -135,7 +141,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
       resetMessages();
 
       // llamar mensajes del contacto seleccionado
-      const req = await axios.get(`http://localhost:3030/api/messages/${selectedContactId}`);
+      const req = await api.get(`/api/messages/${selectedContactId}`);
       const data = req.data;
 
       if (data.status) {
@@ -154,7 +160,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const SendMessage = async () => {
     try {
-      const req = await axios.post(`http://localhost:3030/api/messages`, {
+      const req = await api.post("/api/messages", {
         contactId: selectedContactId,
         content: draftMessage,
         messageType: 1, // mensaje enviado por "me"
@@ -180,7 +186,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const DeleteContact = async (contactId: string) => {
     try {
-      const req = await axios.delete(`http://localhost:3030/api/contacts/${contactId}`);
+      const req = await api.delete(`/api/contacts/${contactId}`);
       const data = req.data;
 
       if (data.status) {
@@ -206,7 +212,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const FinderContacts = async (query: string) => {
     try {
-      const req = await axios.get(`http://localhost:3030/api/contacts?query=${encodeURIComponent(query)}&workspace=workspace1`);
+      const req = await api.get(`/api/contacts?query=${encodeURIComponent(query)}&workspace=workspace1`);
       const data = req.data;
 
       if (data.status) {
@@ -233,7 +239,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
         setPage(page);
       }
 
-      const req = await axios.get(`http://localhost:3030/api/contacts?workspace=workspace1&page=${page}&limit=20`);
+      const req = await api.get(`/api/contacts?workspace=workspace1&page=${page}&limit=20`);
       const data = req.data;
 
       if (data.status){
@@ -269,27 +275,27 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   return (
     <>
-      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="border-b border-slate-300 bg-white p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-3xl font-semibold">Showcase de Conversación</h1>
             <p className="mt-2 text-slate-600">Crea contactos, selecciona uno y chatea con ellos en tiempo real.</p>
 
-            <button onClick={() => setShowCreateModal(true)} className="mt-4 rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <button onClick={() => setShowCreateModal(true)} className="mt-4 border border-slate-900 bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900">
               Crear
             </button>
 
-            <button onClick={() => setShowSearchModal(true)} className="mt-4 rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <button onClick={() => setShowSearchModal(true)} className="mt-4 border border-slate-900 bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900">
               Buscar
             </button>
           </div>
         </div>
       </section>
       <section className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="border-r border-slate-300 bg-white p-6">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-xl font-semibold">Contactos</h2>
-            <button onClick={() => ListContact(1)} className="mt-2 rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <button onClick={() => ListContact(1)} className="mt-2 border border-slate-900 bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-900">
               Refrescar
             </button>
           </div>
@@ -299,19 +305,19 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
               contacts.map((contact, index) => (
                 <div
                   key={index}
-                  // type="button"
                   onClick={() => handleSelectContact(contact.id || '')}
-                  className={`w-full rounded-2xl border p-4 text-left transition hover:border-slate-400 ${selectedContactId === contact.id ? "border-slate-900 bg-slate-100" : "border-slate-200 bg-white"
-                    }`}
+                  className={`w-full border-b p-4 text-left transition cursor-pointer ${
+                    selectedContactId === contact.id ? "border-slate-900 bg-slate-50" : "border-slate-300 bg-white hover:bg-slate-50"
+                  }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <div>
+                    <div className="flex-1">
                       <p className="font-semibold">{contact.fullname}</p>
-                      <p className="mt-1 text-sm text-slate-500">{contact.workspaceId}</p>
+                      <p className="mt-1 text-xs text-slate-500">{contact.workspaceId}</p>
                     </div>
                     <div>
-                      <button onClick={() => DeleteContact(contact.id || '')}>
-                        Eliminar
+                      <button onClick={(e) => { e.stopPropagation(); DeleteContact(contact.id || ''); }} className="text-xs text-slate-500 hover:text-red-600 transition">
+                        ✕
                       </button>
                     </div>
                   </div>
@@ -324,30 +330,30 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
           <div>
             {/* paginacion */}
             {responsePagination && (
-              <div className="mt-4 flex items-center justify-center gap-3">
+              <div className="mt-4 flex items-center justify-center gap-3 text-sm">
                 <button
                   onClick={() => ListContact(page - 1)}
                   disabled={!responsePagination.hasPreviousPage}
-                  className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:bg-slate-200"
+                  className="border border-slate-300 px-3 py-2 text-xs font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Anterior
+                  ←
                 </button> 
-                <span className="text-sm text-slate-500">
-                  Página {responsePagination.page} de {responsePagination.totalPages}
+                <span className="text-xs text-slate-500 px-2">
+                  {responsePagination.page} / {responsePagination.totalPages}
                 </span>
                 <button
                   onClick={() => ListContact(page + 1)}
                   disabled={!responsePagination.hasNextPage}
-                  className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:bg-slate-200"
+                  className="border border-slate-300 px-3 py-2 text-xs font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Siguiente
+                  →
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="border-l border-slate-300 bg-white p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold">Conversación</h2>
@@ -356,11 +362,11 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
               </p>
             </div>
             {selectedContact && (
-              <div className="rounded-2xl bg-slate-100 px-3 py-2 text-sm text-slate-700">{selectedContact.workspaceId}</div>
+              <div className="bg-slate-100 px-3 py-2 text-sm text-slate-700 border border-slate-300">{selectedContact.workspaceId}</div>
             )}
           </div>
 
-          <div className="mt-6 min-h-65 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+          <div className="mt-6 min-h-65 border border-slate-300 bg-slate-50 p-4">
             {!selectedContact ? (
               <div className="flex h-full items-center justify-center text-center text-slate-500">
                 <p>Aquí se mostrará el listado de mensajes con el contacto seleccionado.</p>
@@ -370,15 +376,20 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                 <p>No hay mensajes aún. Envía el primero desde la caja de texto.</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`rounded-3xl p-4 shadow-sm ${message.messageType === 1 ? "bg-slate-900 text-white self-end" : "bg-white text-slate-900"
-                      }`}
+                    className={`flex ${
+                      message.messageType === 1 ? "justify-end" : "justify-start"
+                    }`}
                   >
-                    <p className="whitespace-pre-line">{message.content}</p>
-                    <p className="mt-2 text-xs text-slate-400">{message.contactId === "me" ? "Tú" : selectedContact.fullname}</p>
+                    <div className={`max-w-1/2 p-3 border ${
+                      message.messageType === 1 ? "bg-black text-white border-black" : "bg-white text-slate-900 border-slate-300"
+                    }`}>
+                      <p className="whitespace-pre-line text-sm">{message.content}</p>
+                      <p className="mt-2 text-xs opacity-60">{message.contactId === "me" ? "Tú" : selectedContact.fullname}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -397,7 +408,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                 onChange={(event) => setDraftMessage(event.target.value)}
                 disabled={!selectedContact}
                 placeholder={selectedContact ? "Escribe tu mensaje aquí..." : "Selecciona un contacto primero..."}
-                className="min-h-13 flex-1 rounded-3xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-900 disabled:cursor-not-allowed disabled:bg-slate-100"
+                className="min-h-13 flex-1 border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-900 disabled:cursor-not-allowed disabled:bg-slate-100"
               />
               <button
                 type="button"
@@ -405,7 +416,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   SendMessage();
                 }}
                 disabled={!selectedContact || !draftMessage.trim()}
-                className="min-h-13 rounded-3xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+                className="min-h-13 bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Enviar
               </button>
@@ -416,14 +427,14 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-          <div className="w-full max-w-lg rounded-[28px] bg-white p-6 shadow-2xl">
+          <div className="w-full max-w-lg bg-white p-6 border border-slate-300">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h3 className="text-2xl font-semibold">Crear contacto</h3>
                 <p className="mt-2 text-sm text-slate-600">Define el nombre y selectable el workspace para el contacto.</p>
               </div>
-              <button type="button" onClick={() => setShowCreateModal(false)} className="rounded-full bg-slate-100 px-3 py-2 text-slate-700 transition hover:bg-slate-200">
-                Cerrar
+              <button type="button" onClick={() => setShowCreateModal(false)} className="bg-slate-100 px-3 py-2 text-slate-700 transition hover:bg-slate-200 border border-slate-300">
+                ✕
               </button>
             </div>
 
@@ -434,7 +445,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   type="text"
                   value={createFullname}
                   onChange={(event) => setCreateFullname(event.target.value)}
-                  className="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
+                  className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
                   placeholder="Ej. Juan Pérez"
                 />
               </label>
@@ -444,7 +455,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                 <select
                   value={createWorkspace}
                   onChange={(event) => setCreateWorkspace(event.target.value)}
-                  className="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
+                  className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
                 >
                   {workspaceOptions.map((workspace) => (
                     <option key={workspace} value={workspace}>
@@ -456,10 +467,10 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
-              <button type="button" onClick={() => setShowCreateModal(false)} className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+              <button type="button" onClick={() => setShowCreateModal(false)} className="border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
                 Cancelar
               </button>
-              <button type="button" onClick={CreateContact} className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+              <button type="button" onClick={CreateContact} className="bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-900">
                 Guardar contacto
               </button>
             </div>
@@ -469,14 +480,14 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
       {showSearchModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-          <div className="w-full max-w-lg rounded-[28px] bg-white p-6 shadow-2xl">
+          <div className="w-full max-w-lg bg-white p-6 border border-slate-300">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h3 className="text-2xl font-semibold">Buscar contacto</h3>
                 <p className="mt-2 text-sm text-slate-600">Busca por nombre o id y selecciona el contacto para iniciar conversación.</p>
               </div>
-              <button type="button" onClick={() => setShowSearchModal(false)} className="rounded-full bg-slate-100 px-3 py-2 text-slate-700 transition hover:bg-slate-200">
-                Cerrar
+              <button type="button" onClick={() => setShowSearchModal(false)} className="bg-slate-100 px-3 py-2 text-slate-700 transition hover:bg-slate-200 border border-slate-300">
+                ✕
               </button>
             </div>
 
@@ -495,24 +506,24 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                       FinderContacts(query);
                     }, 600)
                   }}
-                  className="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
+                  className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
                   placeholder="Busca por nombre o id"
                 />
               </label>
 
-              <div className="max-h-72 overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 p-3">
+              <div className="max-h-72 overflow-y-auto border border-slate-300 bg-slate-50 p-3">
                 {filteredContacts.length === 0 ? (
                   <p className="text-sm text-slate-500">No se encontraron contactos.</p>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {filteredContacts.map((contact) => (
-                      <button key={contact.id} type="button" onClick={() => handleSelectContact(contact.id)} className="w-full rounded-3xl bg-white p-4 text-left shadow-sm transition hover:border-slate-300 hover:bg-slate-100">
+                      <button key={contact.id} type="button" onClick={() => handleSelectContact(contact.id)} className="w-full bg-white p-4 text-left transition border border-slate-300 hover:bg-slate-100">
                         <div className="flex items-center justify-between gap-3">
                           <div>
                             <p className="font-semibold">{contact.fullname}</p>
                             <p className="mt-1 text-sm text-slate-500">{contact.workspaceId}</p>
                           </div>
-                          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs uppercase tracking-wide text-slate-700">{contact.id.replace("contact-", "#")}</span>
+                          <span className="bg-slate-100 px-3 py-1 text-xs uppercase tracking-wide text-slate-700 border border-slate-300">{contact.id.replace("contact-", "#")}</span>
                         </div>
                       </button>
                     ))}
@@ -522,7 +533,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
-              <button type="button" onClick={() => setShowSearchModal(false)} className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Cancelar</button>
+              <button type="button" onClick={() => setShowSearchModal(false)} className="border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Cancelar</button>
             </div>
           </div>
         </div>
