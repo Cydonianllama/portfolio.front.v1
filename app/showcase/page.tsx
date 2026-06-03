@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 import { Contact } from "@/types/contact";
 import ClientShowcase from "./ClientShowcase";
-import axios from "axios";
+import { api } from "@/setup/axios";
 import { ResponsePagination } from "@/types/utils.pagination";
 
 export default async function Page() {
@@ -10,13 +11,17 @@ export default async function Page() {
   let responsePagination: ResponsePagination | null = null;
   try {
     console.log('listContacts')
-    const req = await axios.get("http://localhost:3030/api/contacts?workspace=workspace1");
+    const req = await api.get("/api/contacts?workspace=workspace1");
     const data = req.data;
-    if (data.success) {
+    if (data.status) {
+      console.log('contacts fetched', data.data.length)
       listContacts = data.data ?? [];
       responsePagination = data.pagination ?? null;
+    } else {
+      console.log('error fetching contacts', req.status, req.data)
     }
-  } catch (e) {
+  } catch (e: any) {
+    console.log(e.message)
     // ignore fetch errors on server render
     listContacts = [];
   }

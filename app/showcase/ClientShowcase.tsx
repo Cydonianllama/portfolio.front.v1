@@ -80,7 +80,14 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
     setSelectedContactId(contactId);
     setShowSearchModal(false);
 
-    socket.emit("join_room", contactId);
+    // emitimos conexion con la room
+    if (socket){
+      console.log('joining socket room for contact', contactId)
+      socket.emit("join_room", contactId);
+    } else {
+      console.log('socket not available to join room', contactId)
+    }
+    
 
     // resetear formulario de busqueda
     resetSearchForm();
@@ -169,9 +176,6 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
       if (data.status) {
         console.log('message sent', req.data)
-        const createdMessage = data.data;
-        // actualizar UI con nuevo mensaje
-        setMessages((prev) => [...prev, createdMessage]);
       } else {
         console.log('error sending message', req.status, req.data)
       }
@@ -242,7 +246,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
       const req = await api.get(`/api/contacts?workspace=workspace1&page=${page}&limit=20`);
       const data = req.data;
 
-      if (data.status){
+      if (data.status) {
         const contacts = data.data ?? [];
         console.log('contacts listed', contacts)
 
@@ -272,6 +276,32 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
     if (!selectedContactId) return;
     ListMessages();
   }, [selectedContactId]);
+
+  // eventos de socket
+  useEffect(() => {
+    console.log("setting up socket listeners")
+
+    if (socket) {
+      socket.on("newMessage", (data) => {
+        console.log("[socket] Nuevo mensaje:", data.contactId, data.message);
+
+        // validamos que el mensaje recibido por socket corresponde al contacto actualmente seleccionado
+        if (data.contactId === selectedContactId) {
+          // si es así, lo agregamos al listado de mensajes para mostrarlo en la UI
+          if (data.message) setMessages((prev) => [...prev, data.message]);
+          else console.log("[socket] El mensaje recibido no tiene formato esperado:", data)
+        } else {
+          //console.log("[socket] El mensaje recibido no corresponde al contacto seleccionado, no se actualizará la UI")
+        }
+
+      });
+    }
+
+    return () => {
+      console.log("cleaning up socket listeners")
+      socket.off("newMessage");
+    };
+  }, [socket, selectedContactId]);
 
   return (
     <>
@@ -306,9 +336,8 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                 <div
                   key={index}
                   onClick={() => handleSelectContact(contact.id || '')}
-                  className={`w-full border-b p-4 text-left transition cursor-pointer ${
-                    selectedContactId === contact.id ? "border-slate-900 bg-slate-50" : "border-slate-300 bg-white hover:bg-slate-50"
-                  }`}
+                  className={`w-full border-b p-4 text-left transition cursor-pointer ${selectedContactId === contact.id ? "border-slate-900 bg-slate-50" : "border-slate-300 bg-white hover:bg-slate-50"
+                    }`}
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex-1">
@@ -337,7 +366,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   className="border border-slate-300 px-3 py-2 text-xs font-semibold transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   ←
-                </button> 
+                </button>
                 <span className="text-xs text-slate-500 px-2">
                   {responsePagination.page} / {responsePagination.totalPages}
                 </span>
@@ -366,7 +395,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
             )}
           </div>
 
-          <div className="mt-6 min-h-65 border border-slate-300 bg-slate-50 p-4">
+          <div className="mt-6 min-h-65 border border-slate-300 bg-slate-50 p-4 max-h-96 overflow-y-auto">
             {!selectedContact ? (
               <div className="flex h-full items-center justify-center text-center text-slate-500">
                 <p>Aquí se mostrará el listado de mensajes con el contacto seleccionado.</p>
@@ -380,13 +409,11 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${
-                      message.messageType === 1 ? "justify-end" : "justify-start"
-                    }`}
+                    className={`flex ${message.messageType === 1 ? "justify-end" : "justify-start"
+                      }`}
                   >
-                    <div className={`max-w-1/2 p-3 border ${
-                      message.messageType === 1 ? "bg-black text-white border-black" : "bg-white text-slate-900 border-slate-300"
-                    }`}>
+                    <div className={`max-w-1/2 p-3 border ${message.messageType === 1 ? "bg-black text-white border-black" : "bg-white text-slate-900 border-slate-300"
+                      }`}>
                       <p className="whitespace-pre-line text-sm">{message.content}</p>
                       <p className="mt-2 text-xs opacity-60">{message.contactId === "me" ? "Tú" : selectedContact.fullname}</p>
                     </div>
