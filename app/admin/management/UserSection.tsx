@@ -1,11 +1,14 @@
-﻿/* eslint-disable react-hooks/set-state-in-effect */
+﻿/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { api } from '@/setup/axios';
 import { User } from '@/types/user';
+import { ResponsePagination } from '@/types/utils.pagination';
 import { Workspace } from '@/types/workspace';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useDashboardStore } from "./store";
 
 type UserForm = {
   username: string;
@@ -28,32 +31,53 @@ export default function UserSection() {
     password: '',
   });
 
-  // paginacion
+  // buscador de workspaces
+  const [textWorkspaceSearch, setTextWorkpsaceSaerch] = useState('')
+  const idTextWorkspaceSearch = useRef<any>(null)
+  const [pageSearchWorkspace, setPageSearchWorkspace] = useState(1)
+  const [paginationSearchworkspace, setPaginationSearchWorkspace] = useState<ResponsePagination | null>(null)
+
+  // buscador de usuarios
+  const [textUserSearch, setTextUserSearch] = useState('')
+  const idTextUserSearch = useRef<any>(null)
   const [page, setPage] = useState(1)
+  const [paginationUser, setPaginationUser] = useState<ResponsePagination | null>(null)
 
   // workspaces asociados al usuario
   const [workspacesAsociated, setWorkspacesAsociated] = useState<Array<Workspace>>([]);
+
+  // dialog confirm deletion
+  const openDialogConfirmDeletion = useDashboardStore((state) => state.isDialogConfirmDeletionActive);
+  const setOpenDialogConfirmDeletion = useDashboardStore((state) => state.setisDialogConfirmDeletionActive);
+  const userToDelete = useDashboardStore((state) => state.userToDelete);
+  const setUserToDelete = useDashboardStore((state) => state.setUserToDelete);
+
+  // change pass states
+  const [newPass, setNewPass] = useState<string | null>(null)
+  const changePassData = useDashboardStore((state) => state.changePass);
+  const setChangePassData = useDashboardStore((state) => state.setChangePass);
 
   const selectedUser = useMemo(
     () => users.find((user) => user.id === selectedUserId) ?? null,
     [selectedUserId, users]
   );
 
-  const loadUsers = async (page: number) => {
+  const loadUsers = async (query: string, page: number) => {
     try {
 
-      if (page == 1){
+      if (page == 1) {
         // refresh all
         setUsers([])
       }
 
       setPage(page)
 
-      const req = await api.get(`/api/users?page=${page}`);
+      const req = await api.get(`/api/users?page=${page}${query ? `&query=${query}` : ''}`);
       const data: any = req.data;
 
       if (data.status) {
         setUsers(data.data || []);
+        setPaginationUser(data.pagination)
       } else {
         console.error(data.message);
       }
@@ -63,16 +87,26 @@ export default function UserSection() {
   };
 
   useEffect(() => {
-    loadUsers(1)
+    loadUsers('', 1)
   }, []);
 
-  const loadWorkspaces = async () => {
+  const loadWorkspaces = async (query: string, page: number) => {
     try {
-      const req = await api.get(`/api/workspaces`);
+
+      // query ya viene con valor 
+      // page se seteara
+      if (page == 1) {
+        // clear
+      }
+
+      setPageSearchWorkspace(page)
+
+      const req = await api.get(`/api/workspaces?page=${page}${query ? `&query=${query}` : ''}`);
       const data: any = req.data;
 
       if (data.status) {
         setWorkspaces(data.data || []);
+        setPaginationSearchWorkspace(data.pagination)
       } else {
         console.error(data.message);
       }
@@ -101,7 +135,7 @@ export default function UserSection() {
   const openWorkspaceModal = async (userId?: string) => {
     setSelectedUserId(userId ?? null);
     setWorkspaceModalOpen(true);
-    await loadWorkspaces();
+    await loadWorkspaces('', 1);
     await ListWorkspacesAsociated(userId || '')
   };
 
@@ -109,6 +143,30 @@ export default function UserSection() {
     setWorkspaceModalOpen(false);
     setSelectedUserId(null);
   };
+
+  const UpdateUser = async () => {
+    try {
+      if (!editUserId) {
+        console.log('not user selected founded - return')
+        return;
+      }
+      const req = await api.put(`/api/users/${editUserId}`, {
+        username: userForm.username,
+        fullname: userForm.fullname,
+        email: userForm.email
+      })
+      const data = req.data;
+      if (data.status) {
+        // 
+        const userUpdated = data.data;
+        return userUpdated
+      } else {
+
+      }
+    } catch (ex: any) {
+
+    }
+  }
 
   const createUser = async (): Promise<User | null> => {
     try {
@@ -131,13 +189,17 @@ export default function UserSection() {
     }
   };
 
+  // guardar o crear usuario
   const handleUserSubmit = async () => {
-    if (!userForm.username.trim() || !userForm.fullname.trim() || !userForm.email.trim() || !userForm.password.trim()) {
+    if (!userForm.username.trim() || !userForm.fullname.trim() || !userForm.email.trim()) {
       return;
     }
 
     try {
       if (editUserId) {
+
+        await UpdateUser();
+
         setUsers((prev) =>
           prev.map((user) =>
             user.id === editUserId ? { ...user, ...userForm } : user
@@ -170,8 +232,30 @@ export default function UserSection() {
     }
   };
 
-  const handleDeleteUser = (id: string) => {
-    setUsers((prev) => prev.filter((user) => user.id !== id));
+  // cuando el usuario presione el boton eliminar del listado
+  const handleDeleteUser = async (id: string) => {
+    setUserToDelete(id)
+    setOpenDialogConfirmDeletion(true)
+  };
+
+  // cuando el usuario presione el boton confirmar eliminacion
+  const DeleteUser = async (id: string) => {
+    try {
+      const req = await api.delete(`/api/users/${id}`)
+      const data = req.data;
+      if (data.status) {
+        // eliminacion por front
+        setUsers((prev) => prev.filter((user) => user.id !== id));
+      } else {
+
+      }
+    } catch (ex: any) {
+
+    } finally {
+      // limpiar estados
+      setOpenDialogConfirmDeletion(false)
+      setUserToDelete(null)
+    }
   };
 
   const handleAssociateWorkspace = async (workspaceId: string) => {
@@ -198,36 +282,97 @@ export default function UserSection() {
     }
   };
 
+  const handleToRemoveWorkspaceAsociation = async (workspaceId: string, userId: string) => {
+    try {
+      const req = await api.delete(`/api/users/${userId}/workspaces/${workspaceId}`)
+      const data = req.data;
+
+      if (req.status) {
+        console.log('exito')
+        // remover en front
+        const workspacesAsociated_ = workspacesAsociated
+        setWorkspacesAsociated(workspacesAsociated_.filter(el => el.id == workspaceId))
+      } else {
+
+      }
+    } catch (ex: any) {
+
+    }
+  }
+
   const ListWorkspacesAsociated = async (userId: string) => {
     try {
       const req = await api.get(`/api/workspaces?userId=${userId}`)
       const data = req.data;
 
-      if (data.status){
+      if (data.status) {
         // llenar seccion de workspaces asociados
         setWorkspacesAsociated(data.data || [])
       } else {
 
       }
     } catch (error: any) {
-      
+
+    }
+  }
+
+  // Cambiar contraseña
+  const UpdatePassword = async () => {
+    try {
+
+      if (!changePassData) return;
+
+      if (!changePassData.userToChange) return;
+
+      const req = await api.put(`/api/users/${changePassData.userToChange}/pass`, { newPassword: newPass })
+      const data = req.data;
+
+      if (data.status) {
+        console.log(data.data)
+      } else {
+
+      }
+
+    } catch (ex) {
+
+    } finally {
+      // clear states
+      setChangePassData({
+        isOpen: false,
+        userToChange: null
+      })
+      setNewPass('')
     }
   }
 
   return (
     <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
       <div className="mx-auto max-w-7xl rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
             <h1 className="text-2xl font-semibold">Administración de usuarios</h1>
             <p className="mt-2 text-sm text-slate-600">
               Lista de usuarios registrados y acciones disponibles.
             </p>
+            <input
+              type="text"
+              className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+              value={textUserSearch}
+              placeholder='Buscar'
+              onChange={(test) => {
+                clearTimeout(idTextUserSearch.current || '')
+                setTextUserSearch(test.target.value)
+                idTextUserSearch.current = setTimeout(() => {
+                  // search
+                  loadUsers(test.target.value, 1)
+                }, 600)
+              }}
+            />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
-              onClick={() => loadUsers(1)}
+              onClick={() => loadUsers('', 1)}
               className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50"
             >
               Refrescar
@@ -248,7 +393,6 @@ export default function UserSection() {
               <tr>
                 <th className="px-4 py-3 font-medium">Fullname</th>
                 <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Password</th>
                 <th className="px-4 py-3 font-medium">Qty Workspaces</th>
                 <th className="px-4 py-3 font-medium">Creation Date</th>
                 <th className="px-4 py-3 font-medium">Actions</th>
@@ -259,7 +403,6 @@ export default function UserSection() {
                 <tr key={user.id} className="hover:bg-slate-50">
                   <td className="px-4 py-4">{user.fullname}</td>
                   <td className="px-4 py-4">{user.email}</td>
-                  <td className="px-4 py-4">{user.password}</td>
                   <td className="px-4 py-4">{user.qtyWorkspaces}</td>
                   <td className="px-4 py-4">{user.creationDate}</td>
                   <td className="px-4 py-4">
@@ -271,6 +414,16 @@ export default function UserSection() {
                       >
                         Editar
                       </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setChangePassData({ isOpen: true, userToChange: user.id })}
+                        className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+                      >
+                        Cambiar contraseña
+                      </button>
+
+
                       <button
                         type="button"
                         onClick={() => openWorkspaceModal(user.id)}
@@ -292,6 +445,26 @@ export default function UserSection() {
             </tbody>
           </table>
         </div>
+        <div className='flex gap-1 items-center'>
+
+          <button
+            disabled={paginationUser?.hasPreviousPage ? false : true}
+            onClick={() => {
+              loadUsers(textUserSearch, page - 1)
+            }}
+          >
+            Prev
+          </button>
+          {paginationUser?.total}
+          <button
+            disabled={paginationUser?.hasNextPage ? false : true}
+            onClick={() => {
+              loadUsers(textUserSearch, page + 1)
+            }}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {isWorkspaceModalOpen ? (
@@ -301,12 +474,43 @@ export default function UserSection() {
               {selectedUser ? `Asociar workspace a ${selectedUser.fullname}` : 'Agregar workspace'}
             </h2>
             <div>
-              <p>Asociados</p>
+              <p className="mt-2 text-sm text-slate-600">Workspaces asociados</p>
               {workspacesAsociated.length == 0 && (<>
                 No tienes workspaces asociados
               </>)}
+              <div className='space-y-2'>
+                {workspacesAsociated.map((el, index) => <div
+                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-left text-sm text-slate-900 transition hover:border-slate-400 hover:bg-slate-100" key={index}
+                >
+                  <div>{el.name}</div>
+                  <div>
+                    <button
+                      className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      onClick={() => {
+                        handleToRemoveWorkspaceAsociation(el.id, el.mainUserId)
+                      }}
+                    >
+                      Eliminar asociacion
+                    </button>
+                  </div>
+                </div>)}
+              </div>
+              <hr className='my-4' />
               <div>
-                {workspacesAsociated.map((el, index) => <div className='p-2 border rounded' key={index}>{el.name}</div>)}
+                <input
+                  type="text"
+                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  value={textWorkspaceSearch}
+                  placeholder='Buscar'
+                  onChange={(test) => {
+                    clearTimeout(idTextWorkspaceSearch.current || '')
+                    setTextWorkpsaceSaerch(test.target.value)
+                    idTextWorkspaceSearch.current = setTimeout(() => {
+                      // search
+                      loadWorkspaces(test.target.value, 1)
+                    }, 600)
+                  }}
+                />
               </div>
               <p className="mt-2 text-sm text-slate-600">Selecciona el workspace que deseas asociar.</p>
               <div className="mt-4 space-y-2">
@@ -324,6 +528,25 @@ export default function UserSection() {
                     </button>
                   ))
                 )}
+              </div>
+              <div className='flex gap-2 items-center'>
+                <button
+                  onClick={() => {
+                    loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace - 1)
+                  }}
+                  disabled={paginationSearchworkspace?.hasPreviousPage ? true : false}
+                >
+                  Prev
+                </button>
+                {paginationSearchworkspace?.total}
+                <button
+                  onClick={() => {
+                    loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace + 1)
+                  }}
+                  disabled={paginationSearchworkspace?.hasNextPage ? false : true}
+                >
+                  Next
+                </button>
               </div>
               <div className="mt-6 flex justify-end gap-3">
                 <button
@@ -370,7 +593,7 @@ export default function UserSection() {
                   type="email"
                 />
               </label>
-              <label className="block text-sm font-medium text-slate-700 sm:col-span-2">
+              {/* <label className="block text-sm font-medium text-slate-700 sm:col-span-2">
                 Password
                 <input
                   value={userForm.password}
@@ -378,7 +601,7 @@ export default function UserSection() {
                   className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                   type="password"
                 />
-              </label>
+              </label> */}
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button
@@ -399,6 +622,82 @@ export default function UserSection() {
           </div>
         </div>
       ) : null}
+
+
+      {(openDialogConfirmDeletion && userToDelete) && (<>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
+            <h2 className="text-xl font-semibold">Eliminar usuario</h2>
+            <p className="mt-2 text-sm text-slate-600">Estas seguro de eliminar el usuario?</p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setOpenDialogConfirmDeletion(false)
+                  setUserToDelete(null)
+                }}
+                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  DeleteUser(userToDelete || '')
+                }}
+                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </>)}
+
+      {(changePassData?.isOpen) && (<>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
+            <h2 className="text-xl font-semibold">Cambiar contraseña</h2>
+            <p className="mt-2 text-sm text-slate-600">Actualiza la contraseña del usuario</p>
+            <div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 sm:col-span-2"> Contraseña </label>
+                <input
+                  placeholder='Nueva contraseña'
+                  value={newPass || ''}
+                  onChange={(w) => setNewPass(w.target.value)}
+                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  type="email"
+                />
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setChangePassData({
+                    isOpen: false,
+                    userToChange: null
+                  })
+                }}
+                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  UpdatePassword()
+                }}
+                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+              >
+                Cambiar contraseña
+              </button>
+            </div>
+          </div>
+        </div>
+      </>)}
+
     </div>
   );
 }
