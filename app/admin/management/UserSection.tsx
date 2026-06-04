@@ -9,6 +9,9 @@ import { ResponsePagination } from '@/types/utils.pagination';
 import { Workspace } from '@/types/workspace';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDashboardStore } from "./store";
+import Loader from '@/components/Loader';
+import EmptyState from '@/components/EmptyState';
+import Pagination from '@/components/Pagination';
 
 type UserForm = {
   username: string;
@@ -24,6 +27,8 @@ export default function UserSection() {
   const [isWorkspaceModalOpen, setWorkspaceModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [editUserId, setEditUserId] = useState<string | null>(null);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isLoadingWorkspaces, setIsLoadingWorkspaces] = useState(false);
   const [userForm, setUserForm] = useState<UserForm>({
     username: '',
     fullname: '',
@@ -64,7 +69,7 @@ export default function UserSection() {
 
   const loadUsers = async (query: string, page: number) => {
     try {
-
+      setIsLoadingUsers(true);
       if (page == 1) {
         // refresh all
         setUsers([])
@@ -83,6 +88,8 @@ export default function UserSection() {
       }
     } catch (ex: any) {
       console.error(ex);
+    } finally {
+      setIsLoadingUsers(false);
     }
   };
 
@@ -92,7 +99,7 @@ export default function UserSection() {
 
   const loadWorkspaces = async (query: string, page: number) => {
     try {
-
+      setIsLoadingWorkspaces(true);
       // query ya viene con valor 
       // page se seteara
       if (page == 1) {
@@ -112,6 +119,8 @@ export default function UserSection() {
       }
     } catch (ex: any) {
       console.error(ex);
+    } finally {
+      setIsLoadingWorkspaces(false);
     }
   };
 
@@ -346,242 +355,268 @@ export default function UserSection() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
-      <div className="mx-auto max-w-7xl rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold">Administración de usuarios</h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Lista de usuarios registrados y acciones disponibles.
-            </p>
-            <input
-              type="text"
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-              value={textUserSearch}
-              placeholder='Buscar'
-              onChange={(test) => {
-                clearTimeout(idTextUserSearch.current || '')
-                setTextUserSearch(test.target.value)
-                idTextUserSearch.current = setTimeout(() => {
-                  // search
-                  loadUsers(test.target.value, 1)
-                }, 600)
-              }}
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 p-4 md:p-8 text-slate-900">
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">Usuarios</h1>
+          <p className="mt-2 text-slate-600">Gestiona todos los usuarios y sus espacios de trabajo</p>
+        </div>
+
+        {/* Main Card */}
+        <div className="rounded-xl bg-white shadow-sm border border-slate-200">
+          {/* Search & Actions Bar */}
+          <div className="flex flex-col gap-4 border-b border-slate-200 p-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex-1">
+              <input
+                type="text"
+                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-500 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                value={textUserSearch}
+                placeholder='Buscar usuarios...'
+                onChange={(test) => {
+                  clearTimeout(idTextUserSearch.current || '')
+                  setTextUserSearch(test.target.value)
+                  idTextUserSearch.current = setTimeout(() => {
+                    loadUsers(test.target.value, 1)
+                  }, 600)
+                }}
+              />
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => loadUsers('', 1)}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-400"
+              >
+                ↻ Refrescar
+              </button>
+              <button
+                type="button"
+                onClick={() => openUserModal()}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+              >
+                + Nuevo usuario
+              </button>
+            </div>
+          </div>
+
+          {/* Table or Loader or Empty State */}
+          {isLoadingUsers ? (
+            <div className="p-12">
+              <Loader message="Cargando usuarios..." />
+            </div>
+          ) : users.length === 0 ? (
+            <div className="p-12">
+              <EmptyState
+                title="No hay usuarios"
+                description="Crea el primer usuario para comenzar"
+                action={{
+                  label: "+ Crear usuario",
+                  onClick: () => openUserModal()
+                }}
+              />
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50/50">
+                    <th className="px-6 py-3 text-left font-semibold text-slate-700">Nombre</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-700">Email</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-700">Workspaces</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-700">Registrado</th>
+                    <th className="px-6 py-3 text-left font-semibold text-slate-700">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user, idx) => (
+                    <tr key={user.id} className={`border-b border-slate-200 transition ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'} hover:bg-slate-50`}>
+                      <td className="px-6 py-4 font-medium text-slate-900">{user.fullname}</td>
+                      <td className="px-6 py-4 text-slate-600">{user.email}</td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+                          {user.qtyWorkspaces ?? 0}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-slate-600 text-xs">{user.creationDate}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openUserModal(user)}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+                          >
+                            ✎ Editar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openWorkspaceModal(user.id)}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+                          >
+                            🔗 Asociar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setChangePassData({ isOpen: true, userToChange: user.id })}
+                            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+                          >
+                            🔐 Pass
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteUser(user.id)}
+                            className="rounded-lg border border-rose-300 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:bg-rose-100"
+                          >
+                            🗑 Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {users.length > 0 && (
+            <Pagination
+              pagination={paginationUser}
+              currentPage={page}
+              onPreviousPage={() => loadUsers(textUserSearch, page - 1)}
+              onNextPage={() => loadUsers(textUserSearch, page + 1)}
             />
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => loadUsers('', 1)}
-              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50"
-            >
-              Refrescar
-            </button>
-            <button
-              type="button"
-              onClick={() => openUserModal()}
-              className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50"
-            >
-              Agregar usuario
-            </button>
-          </div>
-        </div>
-
-        <div className="mt-8 overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-            <thead className="bg-slate-50 text-slate-700">
-              <tr>
-                <th className="px-4 py-3 font-medium">Fullname</th>
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Qty Workspaces</th>
-                <th className="px-4 py-3 font-medium">Creation Date</th>
-                <th className="px-4 py-3 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-4">{user.fullname}</td>
-                  <td className="px-4 py-4">{user.email}</td>
-                  <td className="px-4 py-4">{user.qtyWorkspaces}</td>
-                  <td className="px-4 py-4">{user.creationDate}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => openUserModal(user)}
-                        className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
-                      >
-                        Editar
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setChangePassData({ isOpen: true, userToChange: user.id })}
-                        className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
-                      >
-                        Cambiar contraseña
-                      </button>
-
-
-                      <button
-                        type="button"
-                        onClick={() => openWorkspaceModal(user.id)}
-                        className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
-                      >
-                        Asociar workspace
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteUser(user.id)}
-                        className="rounded-full border border-rose-300 bg-rose-50 px-3 py-1 text-xs font-medium text-rose-700 transition hover:bg-rose-100"
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className='flex gap-1 items-center'>
-
-          <button
-            disabled={paginationUser?.hasPreviousPage ? false : true}
-            onClick={() => {
-              loadUsers(textUserSearch, page - 1)
-            }}
-          >
-            Prev
-          </button>
-          {paginationUser?.total}
-          <button
-            disabled={paginationUser?.hasNextPage ? false : true}
-            onClick={() => {
-              loadUsers(textUserSearch, page + 1)
-            }}
-          >
-            Next
-          </button>
+          )}
         </div>
       </div>
 
       {isWorkspaceModalOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200">
+            <h2 className="text-xl font-semibold text-slate-900">
               {selectedUser ? `Asociar workspace a ${selectedUser.fullname}` : 'Agregar workspace'}
             </h2>
-            <div>
-              <p className="mt-2 text-sm text-slate-600">Workspaces asociados</p>
-              {workspacesAsociated.length == 0 && (<>
-                No tienes workspaces asociados
-              </>)}
-              <div className='space-y-2'>
-                {workspacesAsociated.map((el, index) => <div
-                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-left text-sm text-slate-900 transition hover:border-slate-400 hover:bg-slate-100" key={index}
-                >
-                  <div>{el.name}</div>
-                  <div>
-                    <button
-                      className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-                      onClick={() => {
-                        handleToRemoveWorkspaceAsociation(el.id, el.mainUserId)
-                      }}
-                    >
-                      Eliminar asociacion
-                    </button>
-                  </div>
-                </div>)}
-              </div>
-              <hr className='my-4' />
-              <div>
-                <input
-                  type="text"
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-                  value={textWorkspaceSearch}
-                  placeholder='Buscar'
-                  onChange={(test) => {
-                    clearTimeout(idTextWorkspaceSearch.current || '')
-                    setTextWorkpsaceSaerch(test.target.value)
-                    idTextWorkspaceSearch.current = setTimeout(() => {
-                      // search
-                      loadWorkspaces(test.target.value, 1)
-                    }, 600)
-                  }}
+            <p className="mt-1 text-sm text-slate-600">Selecciona un workspace para asociar al usuario</p>
+
+            {/* Associated Workspaces */}
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-slate-900 mb-3">Workspaces asociados</h3>
+              {workspacesAsociated.length === 0 ? (
+                <EmptyState
+                  title="Sin asociaciones"
+                  description="No hay workspaces asociados aún"
                 />
-              </div>
-              <p className="mt-2 text-sm text-slate-600">Selecciona el workspace que deseas asociar.</p>
-              <div className="mt-4 space-y-2">
-                {workspaces.length === 0 ? (
-                  <p className="text-sm text-slate-500">No hay workspaces disponibles.</p>
-                ) : (
-                  workspaces.map((workspace) => (
+              ) : (
+                <div className='space-y-2 max-h-40 overflow-y-auto'>
+                  {workspacesAsociated.map((el) => (
+                    <div
+                      className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 transition hover:bg-slate-100"
+                      key={el.id}
+                    >
+                      <span className="text-sm font-medium text-slate-900">{el.name}</span>
+                      <button
+                        className="rounded-lg border border-rose-300 bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700 transition hover:bg-rose-100"
+                        onClick={() => {
+                          handleToRemoveWorkspaceAsociation(el.id, el.mainUserId)
+                        }}
+                      >
+                        Desasociar
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <hr className='my-4' />
+
+            {/* Search & Select Workspaces */}
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 mb-3">Buscar workspaces</h3>
+              <input
+                type="text"
+                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-500 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                value={textWorkspaceSearch}
+                placeholder='Buscar workspace...'
+                onChange={(test) => {
+                  clearTimeout(idTextWorkspaceSearch.current || '')
+                  setTextWorkpsaceSaerch(test.target.value)
+                  idTextWorkspaceSearch.current = setTimeout(() => {
+                    loadWorkspaces(test.target.value, 1)
+                  }, 600)
+                }}
+              />
+
+              {isLoadingWorkspaces ? (
+                <div className="mt-4">
+                  <Loader message="Cargando workspaces..." />
+                </div>
+              ) : workspaces.length === 0 ? (
+                <div className="mt-4">
+                  <EmptyState title="No hay workspaces disponibles" />
+                </div>
+              ) : (
+                <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
+                  {workspaces.map((workspace) => (
                     <button
                       key={workspace.id}
                       type="button"
                       onClick={() => handleAssociateWorkspace(workspace.id)}
-                      className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-left text-sm text-slate-900 transition hover:border-slate-400 hover:bg-slate-100"
+                      className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-900 transition hover:bg-slate-100 hover:border-slate-300"
                     >
                       {workspace.name}
                     </button>
-                  ))
-                )}
-              </div>
-              <div className='flex gap-2 items-center'>
-                <button
-                  onClick={() => {
-                    loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace - 1)
-                  }}
-                  disabled={paginationSearchworkspace?.hasPreviousPage ? true : false}
-                >
-                  Prev
-                </button>
-                {paginationSearchworkspace?.total}
-                <button
-                  onClick={() => {
-                    loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace + 1)
-                  }}
-                  disabled={paginationSearchworkspace?.hasNextPage ? false : true}
-                >
-                  Next
-                </button>
-              </div>
-              <div className="mt-6 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={closeWorkspaceModal}
-                  className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-                >
-                  Cancelar
-                </button>
-              </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pagination */}
+              {workspaces.length > 0 && (
+                <Pagination
+                  pagination={paginationSearchworkspace}
+                  currentPage={pageSearchWorkspace}
+                  onPreviousPage={() => loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace - 1)}
+                  onNextPage={() => loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace + 1)}
+                  compact
+                />
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={closeWorkspaceModal}
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
         </div>
       ) : null}
 
       {isUserModalOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold">{editUserId ? 'Editar usuario' : 'Agregar usuario'}</h2>
-            <p className="mt-2 text-sm text-slate-600">Completa los datos del usuario para guardarlo.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl border border-slate-200">
+            <h2 className="text-xl font-semibold text-slate-900">{editUserId ? '✎ Editar usuario' : '+ Nuevo usuario'}</h2>
+            <p className="mt-1 text-sm text-slate-600">Completa los datos para guardar</p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <label className="block text-sm font-medium text-slate-700">
                 Username
                 <input
                   value={userForm.username}
                   onChange={(event) => setUserForm({ ...userForm, username: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  placeholder="juan_doe"
                 />
               </label>
               <label className="block text-sm font-medium text-slate-700">
-                Fullname
+                Nombre completo
                 <input
                   value={userForm.fullname}
                   onChange={(event) => setUserForm({ ...userForm, fullname: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  placeholder="Juan Doe"
                 />
               </label>
               <label className="block text-sm font-medium text-slate-700 sm:col-span-2">
@@ -589,32 +624,24 @@ export default function UserSection() {
                 <input
                   value={userForm.email}
                   onChange={(event) => setUserForm({ ...userForm, email: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
                   type="email"
+                  placeholder="juan@example.com"
                 />
               </label>
-              {/* <label className="block text-sm font-medium text-slate-700 sm:col-span-2">
-                Password
-                <input
-                  value={userForm.password}
-                  onChange={(event) => setUserForm({ ...userForm, password: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-                  type="password"
-                />
-              </label> */}
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={closeUserModal}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 Cancelar
               </button>
               <button
                 type="button"
                 onClick={handleUserSubmit}
-                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
               >
                 {editUserId ? 'Guardar cambios' : 'Crear usuario'}
               </button>
@@ -624,11 +651,16 @@ export default function UserSection() {
       ) : null}
 
 
-      {(openDialogConfirmDeletion && userToDelete) && (<>
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold">Eliminar usuario</h2>
-            <p className="mt-2 text-sm text-slate-600">Estas seguro de eliminar el usuario?</p>
+      {(openDialogConfirmDeletion && userToDelete) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-100">
+                <span className="text-lg">⚠️</span>
+              </div>
+              <h2 className="text-lg font-semibold text-slate-900">Eliminar usuario</h2>
+            </div>
+            <p className="mt-4 text-sm text-slate-600">Esta acción no se puede deshacer. ¿Estás seguro?</p>
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
@@ -636,7 +668,7 @@ export default function UserSection() {
                   setOpenDialogConfirmDeletion(false)
                   setUserToDelete(null)
                 }}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 Cancelar
               </button>
@@ -645,31 +677,31 @@ export default function UserSection() {
                 onClick={() => {
                   DeleteUser(userToDelete || '')
                 }}
-                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                className="rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-700"
               >
-                Eliminar
+                🗑 Eliminar
               </button>
             </div>
           </div>
         </div>
-      </>)}
+      )}
 
-      {(changePassData?.isOpen) && (<>
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
-            <h2 className="text-xl font-semibold">Cambiar contraseña</h2>
-            <p className="mt-2 text-sm text-slate-600">Actualiza la contraseña del usuario</p>
-            <div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 sm:col-span-2"> Contraseña </label>
-                <input
-                  placeholder='Nueva contraseña'
-                  value={newPass || ''}
-                  onChange={(w) => setNewPass(w.target.value)}
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-                  type="email"
-                />
-              </div>
+      {(changePassData?.isOpen) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200">
+            <h2 className="text-xl font-semibold text-slate-900">🔐 Cambiar contraseña</h2>
+            <p className="mt-1 text-sm text-slate-600">Ingresa la nueva contraseña del usuario</p>
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Nueva contraseña
+              </label>
+              <input
+                placeholder='Ingresa la nueva contraseña'
+                value={newPass || ''}
+                onChange={(w) => setNewPass(w.target.value)}
+                className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                type="password"
+              />
             </div>
             <div className="mt-6 flex justify-end gap-3">
               <button
@@ -679,8 +711,9 @@ export default function UserSection() {
                     isOpen: false,
                     userToChange: null
                   })
+                  setNewPass('')
                 }}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 Cancelar
               </button>
@@ -689,14 +722,14 @@ export default function UserSection() {
                 onClick={() => {
                   UpdatePassword()
                 }}
-                className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
               >
-                Cambiar contraseña
+                Actualizar contraseña
               </button>
             </div>
           </div>
         </div>
-      </>)}
+      )}
 
     </div>
   );
