@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 
-interface DashboarManagementStore {
-  test: any;
-  settest: (user: any) => void;
+type AdminTab = "users" | "workspace";
+
+interface DashboardManagementStore {
+  activeTab: AdminTab;
+  setActiveTab: (tab: AdminTab) => void;
 }
 
-export const useUserStore = create<DashboarManagementStore>((set) => ({
-  test: null,
-
-  settest: () =>
-    set({
-      test: null
-    })
+export const useDashboardStore = create<DashboardManagementStore>((set) => ({
+  activeTab: "users",
+  setActiveTab: (tab: AdminTab) => set({ activeTab: tab }),
 }));
