@@ -77,7 +77,7 @@ export default function UserSection() {
 
       setPage(page)
 
-      const req = await api.get(`/api/users?page=${page}${query ? `&query=${query}` : ''}`);
+      const req = await api.get(`/api/admin/users?page=${page}${query ? `&query=${query}` : ''}`);
       const data: any = req.data;
 
       if (data.status) {

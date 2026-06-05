@@ -8,10 +8,9 @@ import { Contact } from "@/types/contact";
 import { Message } from "@/types/message";
 import { ResponsePagination } from "@/types/utils.pagination";
 import { useSocket } from "@/hooks/useSocket";
+import { Workspace } from "@/types/workspace";
 
 export default function ClientShowcase({ initialServerContacts, responsePagination_ }: { initialServerContacts: Contact[], responsePagination_?: ResponsePagination | null }) {
-  const workspaceOptions = ["workspace1", "workspace2", "workspace3"];
-
   // socket
   const socket = useSocket();
 
@@ -28,7 +27,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   // para formularios de creacion
   const [createFullname, setCreateFullname] = useState("");
-  const [createWorkspace, setCreateWorkspace] = useState(workspaceOptions[0]);
+  const [createWorkspace, setCreateWorkspace] = useState('');
 
   // para formulario de busqueda
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,10 +47,13 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
   // para almacenar mensajes del contacto seleccionado
   const [messages, setMessages] = useState<Message[]>([]);
 
+  // estado para workspaces
+  const [workspacesAvailabled, setWorkspacesAvailables] = useState<Array<Workspace>>([])
+
   // resetear el formulario de creación al cerrar el modal
   const resetCreateForm = () => {
     setCreateFullname("");
-    setCreateWorkspace(workspaceOptions[0]);
+    setCreateWorkspace('');
   }
 
   // resetear formulario de busqueda
@@ -270,6 +272,32 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
     }
   }
 
+  // listado de workspaces
+  const ListWorkspaces = async ({ query } : { query: string}) => {
+    try {
+      const req = await api.get(`/api/workspaces?${query ? `query=${query}` : ``}`)
+      const data = req.data;
+      
+      if (data.status){
+        setWorkspacesAvailables(data.data)
+      } else {
+
+      }
+
+    } catch (ex) {
+
+    }
+  }
+
+  // al abrir create modal, logica init
+  useEffect(() => {
+    if (showCreateModal){
+      ListWorkspaces({
+        query: ''
+      })
+    }
+  }, [showCreateModal])
+
 
   // al seleccionar un contacto, traemos los mensajes de ese contacto
   useEffect(() => {
@@ -484,9 +512,9 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   onChange={(event) => setCreateWorkspace(event.target.value)}
                   className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
                 >
-                  {workspaceOptions.map((workspace) => (
-                    <option key={workspace} value={workspace}>
-                      {workspace}
+                  {workspacesAvailabled.map((workspace) => (
+                    <option key={workspace.id} value={workspace.id}>
+                      {workspace.name}
                     </option>
                   ))}
                 </select>

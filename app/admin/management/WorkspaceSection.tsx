@@ -3,11 +3,12 @@
 "use client";
 
 import { api } from '@/setup/axios';
+import { WorkspaceAdminDTO } from '@/types/admin/workspace.dto';
 import { Workspace } from '@/types/workspace';
 import { useEffect, useState } from 'react';
 
 export default function WorkspaceSection() {
-  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [workspaces, setWorkspaces] = useState<WorkspaceAdminDTO[]>([]);
   const [workspaceName, setWorkspaceName] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -24,7 +25,7 @@ export default function WorkspaceSection() {
 
       setPage(page)
 
-      const req = await api.get(`/api/workspaces?page=${page}`);
+      const req = await api.get(`/api/admin/workspaces?page=${page}`);
       const data: any = req.data;
 
       if (data.status) {
@@ -41,7 +42,7 @@ export default function WorkspaceSection() {
     loadWorkspaces(1);
   }, []);
 
-  const createWorkspace = async (): Promise<Workspace | null> => {
+  const createWorkspace = async (): Promise<WorkspaceAdminDTO | null> => {
     try {
       const req = await api.post(`/api/workspaces`, {
         name: workspaceName,
@@ -118,7 +119,7 @@ export default function WorkspaceSection() {
               {workspaces.map((workspace) => (
                 <tr key={workspace.id} className="hover:bg-slate-50">
                   <td className="px-4 py-4">{workspace.name}</td>
-                  <td className="px-4 py-4">{workspace.mainUserId || '-'}</td>
+                  <td className="px-4 py-4">{workspace.userFromWorkspaceName || '-'}</td>
                   <td className="px-4 py-4">{formatDate(workspace.creationDate)}</td>
                 </tr>
               ))}
