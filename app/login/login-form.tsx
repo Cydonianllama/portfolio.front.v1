@@ -1,3 +1,15 @@
+"use client";
+
+// formulario
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  loginSchema,
+  LoginSchema
+} from "@/app/login/login-form.schema";
+
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,10 +26,52 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Login } from "@/services/auth.service"
+import { toast } from "sonner";
+
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema)
+  });
+
+  const HandleToSubmitLogin = async (data: LoginSchema) => {
+    const req = await Login(data.emailOrUsername, data.password)
+    if (req?.status) {
+
+      if (!req.data){
+        toast.error('Error desconocido (1)')
+        return;
+      }
+
+      if (!req.data.token){
+        toast.error('Error desconocido (2)')
+        return;
+      }
+
+      toast.success('Login exitoso! ingresando a la app')
+
+      localStorage.setItem('token', req.data.token)
+      Cookies.set("token", req.data.token);
+
+      router.replace("home");
+
+      console.log('by the way')
+
+    } else {
+      toast.error(req?.message || 'Error desconocido (3)')
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -28,11 +82,12 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(HandleToSubmitLogin)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  {...register("emailOrUsername")}
                   id="email"
                   type="email"
                   placeholder="m@example.com"
@@ -49,13 +104,17 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  {...register("password")}
+                  id="password"
+                  type="password" required
+                />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
+                {/* <Button variant="outline" type="button">
                   Login with Google
-                </Button>
+                </Button> */}
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="#">Sign up</a>
                 </FieldDescription>

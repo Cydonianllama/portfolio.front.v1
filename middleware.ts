@@ -1,21 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server'
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";  -> esta weada no es válida para edge
+import { jwtVerify } from "jose";
 
-export function middleware(request: NextRequest) {
+const secret = new TextEncoder().encode(
+  process.env.JWT_SECRET
+);
+
+export async function middleware(request: NextRequest) {
+
   const token = request.cookies.get("token")?.value;
+
+  console.log('[middleware] validation :', token)
 
   const pathname = request.nextUrl.pathname;
 
   const publicRoutes = [
     "/login",
     "/register",
-    "/home"
   ];
 
   const isPublic = publicRoutes.includes(pathname);
 
   if (!token && !isPublic) {
+    console.log('[middleware] return to login')
     return NextResponse.redirect(
       new URL("/login", request.url)
     );
@@ -23,11 +32,13 @@ export function middleware(request: NextRequest) {
 
   // validamos la session
   try {
-    jwt.verify(
+    await jwtVerify(
       token || '',
-      process.env.JWT_SECRET || ''
+      secret
     );
-  } catch {
+  } catch (ex: any) {
+    console.log(ex.message)
+    console.log('[middleware] return to login - jwt not valid')
     return NextResponse.redirect(
       new URL("/login", request.url)
     );

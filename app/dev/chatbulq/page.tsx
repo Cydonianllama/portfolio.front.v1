@@ -1,6 +1,7 @@
 'use server'
 
 import { notFound } from "next/navigation";
+import { MainSection } from "./main";
 
 export default async function Page() {
   
@@ -9,6 +10,6 @@ export default async function Page() {
   }
 
   return <>
-    Time goes by so slowly {process.env.NODE_ENV}
+    <MainSection />
   </>
 }

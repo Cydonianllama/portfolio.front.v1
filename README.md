@@ -34,3 +34,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+----------
+UI:
+  shadcn/ui
+
+Forms:
+  react-hook-form
+  zod
+
+State:
+  zustand
+
+Server State:
+  @tanstack/react-query
+
+Tables:
+  @tanstack/react-table
+
+Async Select:
+  react-select
+----------
+
+
+
+----------------------------------------
+para manejar formularios : 
+-------------------
+npm install react-hook-form
+npm install zod
+npm install @hookform/resolvers
+--------------------
+
+
+----------------------------
+para el toast -> npm install sonner
