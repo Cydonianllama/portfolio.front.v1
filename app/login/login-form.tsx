@@ -44,17 +44,24 @@ export function LoginForm({
     resolver: zodResolver(loginSchema)
   });
 
+  const clearSession = () => {
+    localStorage.removeItem('token')
+    Cookies.set("token", '');
+  }
+
   const HandleToSubmitLogin = async (data: LoginSchema) => {
     const req = await Login(data.emailOrUsername, data.password)
     if (req?.status) {
 
-      if (!req.data){
+      if (!req.data) {
         toast.error('Error desconocido (1)')
+        clearSession()
         return;
       }
 
-      if (!req.data.token){
+      if (!req.data.token) {
         toast.error('Error desconocido (2)')
+        clearSession()
         return;
       }
 
@@ -69,6 +76,8 @@ export function LoginForm({
 
     } else {
       toast.error(req?.message || 'Error desconocido (3)')
+
+      clearSession()
     }
   }
 

@@ -70,3 +70,7 @@ npm install @hookform/resolvers
 
 ----------------------------
 para el toast -> npm install sonner
+
+
+----------------------------------
+para los jobs en segundo plano _> npm install express bullmq ioredis

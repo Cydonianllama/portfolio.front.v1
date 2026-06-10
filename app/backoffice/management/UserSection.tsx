@@ -4,7 +4,7 @@
 "use client";
 
 import { api } from '@/setup/axios';
-import { User } from '@/types/user';
+import { User } from '@/types/user.backoffice.dto';
 import { ResponsePagination } from '@/types/utils.pagination';
 import { Workspace } from '@/types/workspace';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -77,7 +77,7 @@ export default function UserSection() {
 
       setPage(page)
 
-      const req = await api.get(`/api/admin/users?page=${page}${query ? `&query=${query}` : ''}`);
+      const req = await api.get(`/api/backoffice/users?page=${page}${query ? `&query=${query}` : ''}`);
       const data: any = req.data;
 
       if (data.status) {

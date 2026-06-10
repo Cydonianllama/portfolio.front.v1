@@ -25,7 +25,7 @@ export default function WorkspaceSection() {
 
       setPage(page)
 
-      const req = await api.get(`/api/admin/workspaces?page=${page}`);
+      const req = await api.get(`/api/backoffice/workspaces?page=${page}`);
       const data: any = req.data;
 
       if (data.status) {

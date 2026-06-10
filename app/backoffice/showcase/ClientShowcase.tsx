@@ -150,7 +150,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
       resetMessages();
 
       // llamar mensajes del contacto seleccionado
-      const req = await api.get(`/api/messages/${selectedContactId}`);
+      const req = await api.get(`/api/chat/open/${selectedContactId}`);
       const data = req.data;
 
       if (data.status) {
@@ -169,7 +169,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const SendMessage = async () => {
     try {
-      const req = await api.post("/api/messages", {
+      const req = await api.post("/api/chat/send-message", {
         contactId: selectedContactId,
         content: draftMessage,
         messageType: 1, // mensaje enviado por "me"

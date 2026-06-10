@@ -13,9 +13,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+
 export const MainSection = () => {
-  return (
-    <SidebarProvider
+
+  const HandleToOpenContact = () => {
+    
+  }
+
+  return (<>
+    {/* <SidebarProvider
       style={
         {
           "--sidebar-width": "350px",
@@ -51,6 +57,11 @@ export const MainSection = () => {
           ))}
         </div>
       </SidebarInset>
-    </SidebarProvider>
-  )
+    </SidebarProvider> */}
+
+      <button className="p-2 rounded bg-blue-600 hover:bg-blue-400 cursor-pointer text-white w-fit">
+        Press
+      </button>
+
+  </>)
 }
