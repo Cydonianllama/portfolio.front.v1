@@ -1,6 +1,6 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { GetItems } from "@/services/examples/example.managerv1";
+import { GetItems } from "@/modules/example1/services/example.managerv1";
 
 export const useListManagerV1 = (
   page: number,

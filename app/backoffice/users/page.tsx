@@ -1,6 +1,6 @@
 "use server";
 
-import { UserTableScreen } from "@/components/backoffice/userTableScreen";
+import { UserTableScreen } from "@/modules/backoffice/componets/userTableScreen";
 
 export default async function Page() {
   return (<>

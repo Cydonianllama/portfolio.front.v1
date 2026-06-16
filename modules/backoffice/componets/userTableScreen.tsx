@@ -4,7 +4,7 @@
 import { useState } from "react";
 
 // listado principal
-import { useUsers } from "@/hooks/bakoffice/useUsers";
+import { useUsers } from "@/modules/backoffice/hooks/useUsers";
 import {
   useReactTable,
   getCoreRowModel,

@@ -19,7 +19,7 @@ export interface ManagerV1DialogUpdateConfig {
   setOpen: (open: boolean) => void
 }
 
-export const ManagerV1DialogCreate = (config: ManagerV1DialogUpdateConfig) => {
+export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
   
   const HandleToUpdate = () => {
     config.onUpdate()

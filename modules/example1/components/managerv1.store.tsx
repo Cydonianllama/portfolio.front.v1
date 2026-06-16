@@ -5,7 +5,7 @@ interface Managerv1Store {
   isOpenCreateItem: boolean;
   setOpenCreateItem: (isOpen: boolean) => void;
   // dialog edit
-  isOpenUpdateeItem: boolean;
+  isOpenUpdateItem: boolean;
   setOpenUpdateItem: (isOpen: boolean) => void;
   // dialog confirm elimination
   isOpenDeleteItem: boolean;
@@ -17,7 +17,7 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
   isOpenCreateItem: false,
   setOpenCreateItem: (isOpen: boolean) => set({ isOpenCreateItem: isOpen }),
   // dialog edit
-  isOpenUpdateeItem: false,
+  isOpenUpdateItem: false,
   setOpenUpdateItem: (isOpen: boolean) => set({ isOpenCreateItem: isOpen }),
   // dialog confirm elimination
   isOpenDeleteItem: false,

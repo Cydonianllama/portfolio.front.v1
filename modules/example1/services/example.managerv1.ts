@@ -3,7 +3,7 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/types/examples/manager.v1';
+import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
 
 export interface GetItemsConfig {
   query: string;

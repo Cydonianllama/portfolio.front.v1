@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
+// PASOS
+// 1. configurar "columnsUsersTable"
+//
+
 // utils
 import { useState } from "react";
 
 // listado principal
-import { useListManagerV1 } from "@/hooks/expamples/useListManagerV1";
+import { useListManagerV1 } from "@/modules/example1/hooks/useListManagerV1";
 import {
   useReactTable,
   getCoreRowModel,
@@ -25,12 +29,15 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { InputSearchTable } from '@/components/InputSearchTable'
 
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
-import { ManagerV1Item } from "@/types/examples/manager.v1";
+import { ManagerV1Item } from "@/modules/example1/types/manager.v1";
 import { useManagerv1Store } from "./managerv1.store";
 import { ManagerV1DialogCreate } from "./managerv1.dialog.create";
+import { ManagerV1DialogEdit } from "./managerv1.dialog.edit";
+import { ManagerV1DialogConfirmDelete } from "./managerv1.dialog.confirmdelete";
 
 export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
   {
@@ -104,6 +111,9 @@ export const Managerv1Screen = () => {
     moduleState.setOpenCreateItem(true)
   }
 
+  const OnSearch = async (text: string) => {
+
+  }
 
   //
   // HEADER FILTER
@@ -113,7 +123,15 @@ export const Managerv1Screen = () => {
   //
   // DIALOG
   //
-  const OnCreateItem = () => {
+  const OnCreateItem = async () => {
+
+  }
+
+  const OnUpdateItem = async () => {
+
+  }
+
+  const OnDeleteItem = async () => {
 
   }
 
@@ -136,7 +154,11 @@ export const Managerv1Screen = () => {
       <div className="flex justify-between items-center pb-5">
         <div></div>
         <div>
-          <Input placeholder={'Buscar'} />
+          <InputSearchTable
+            onSearch={OnSearch}
+            placeholder="Buscar"
+            timeout={600}
+          />
         </div>
       </div>
       {/* end::header filter  */}
@@ -179,10 +201,23 @@ export const Managerv1Screen = () => {
 
 
       {/* start::Dialogs */}
+
       <ManagerV1DialogCreate
         open={moduleState.isOpenCreateItem}
         setOpen={(open) => moduleState.setOpenCreateItem(open)}
         onCreate={OnCreateItem}
+      />
+
+      <ManagerV1DialogEdit
+        open={moduleState.isOpenUpdateItem}
+        setOpen={(open) => moduleState.setOpenUpdateItem(open)}
+        onUpdate={OnUpdateItem}
+      />
+
+      <ManagerV1DialogConfirmDelete
+        open={moduleState.isOpenDeleteItem}
+        setOpen={(open) => moduleState.setOpenDeleteItem(open)}
+        onDelete={OnDeleteItem}
       />
       {/* end::Dialogs */}
 
