@@ -12,6 +12,7 @@ import { useDashboardStore } from "./store";
 import Loader from '@/components/Loader';
 import EmptyState from '@/components/EmptyState';
 import Pagination from '@/components/Pagination';
+import { UseEntitiesList } from '@/hooks/use-listEntities';
 
 type UserForm = {
   username: string;
@@ -39,8 +40,6 @@ export default function UserSection() {
   // buscador de workspaces
   const [textWorkspaceSearch, setTextWorkpsaceSaerch] = useState('')
   const idTextWorkspaceSearch = useRef<any>(null)
-  const [pageSearchWorkspace, setPageSearchWorkspace] = useState(1)
-  const [paginationSearchworkspace, setPaginationSearchWorkspace] = useState<ResponsePagination | null>(null)
 
   // buscador de usuarios
   const [textUserSearch, setTextUserSearch] = useState('')
@@ -61,6 +60,24 @@ export default function UserSection() {
   const [newPass, setNewPass] = useState<string | null>(null)
   const changePassData = useDashboardStore((state) => state.changePass);
   const setChangePassData = useDashboardStore((state) => state.setChangePass);
+
+  // buscador de workspaces por hook
+  const [listWorkspaceInfo, setListWorkspaceInfo] = useState({
+    pageWorkspace: 1,
+    queryWorkspace: ''
+  })
+  
+  const { 
+    error, 
+    errorMessage, 
+    list: listWorkspaces, 
+    pagination: paginationWorkspace, 
+    loading: loadingWorkspaces 
+  } = UseEntitiesList<Workspace>({ 
+    entity: 'workspace', 
+    page: listWorkspaceInfo.pageWorkspace, 
+    query: listWorkspaceInfo.queryWorkspace 
+  })
 
   const selectedUser = useMemo(
     () => users.find((user) => user.id === selectedUserId) ?? null,
@@ -97,33 +114,6 @@ export default function UserSection() {
     loadUsers('', 1)
   }, []);
 
-  const loadWorkspaces = async (query: string, page: number) => {
-    try {
-      setIsLoadingWorkspaces(true);
-      // query ya viene con valor 
-      // page se seteara
-      if (page == 1) {
-        // clear
-      }
-
-      setPageSearchWorkspace(page)
-
-      const req = await api.get(`/api/workspaces?page=${page}${query ? `&query=${query}` : ''}`);
-      const data: any = req.data;
-
-      if (data.status) {
-        setWorkspaces(data.data || []);
-        setPaginationSearchWorkspace(data.pagination)
-      } else {
-        console.error(data.message);
-      }
-    } catch (ex: any) {
-      console.error(ex);
-    } finally {
-      setIsLoadingWorkspaces(false);
-    }
-  };
-
   const openUserModal = (user?: User) => {
     setEditUserId(user?.id ?? null);
     setUserForm({
@@ -144,7 +134,6 @@ export default function UserSection() {
   const openWorkspaceModal = async (userId?: string) => {
     setSelectedUserId(userId ?? null);
     setWorkspaceModalOpen(true);
-    await loadWorkspaces('', 1);
     await ListWorkspacesAsociated(userId || '')
   };
 
@@ -542,22 +531,25 @@ export default function UserSection() {
                   clearTimeout(idTextWorkspaceSearch.current || '')
                   setTextWorkpsaceSaerch(test.target.value)
                   idTextWorkspaceSearch.current = setTimeout(() => {
-                    loadWorkspaces(test.target.value, 1)
+                    setListWorkspaceInfo({
+                      pageWorkspace: (paginationWorkspace?.page || 0),
+                      queryWorkspace: test.target.value
+                    })
                   }, 600)
                 }}
               />
 
-              {isLoadingWorkspaces ? (
+              {loadingWorkspaces ? (
                 <div className="mt-4">
                   <Loader message="Cargando workspaces..." />
                 </div>
-              ) : workspaces.length === 0 ? (
+              ) : listWorkspaces.length === 0 ? (
                 <div className="mt-4">
                   <EmptyState title="No hay workspaces disponibles" />
                 </div>
               ) : (
                 <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
-                  {workspaces.map((workspace) => (
+                  {listWorkspaces.map((workspace) => (
                     <button
                       key={workspace.id}
                       type="button"
@@ -571,12 +563,22 @@ export default function UserSection() {
               )}
 
               {/* Pagination */}
-              {workspaces.length > 0 && (
+              {listWorkspaces.length > 0 && (
                 <Pagination
-                  pagination={paginationSearchworkspace}
-                  currentPage={pageSearchWorkspace}
-                  onPreviousPage={() => loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace - 1)}
-                  onNextPage={() => loadWorkspaces(textWorkspaceSearch, pageSearchWorkspace + 1)}
+                  pagination={paginationWorkspace}
+                  currentPage={paginationWorkspace?.page || 1}
+                  onPreviousPage={() => {
+                    setListWorkspaceInfo({
+                      pageWorkspace: (paginationWorkspace?.page || 0) - 1,
+                      queryWorkspace: textWorkspaceSearch
+                    })
+                  }}
+                  onNextPage={() => {
+                    setListWorkspaceInfo({
+                      pageWorkspace: (paginationWorkspace?.page || 0) + 1,
+                      queryWorkspace: textWorkspaceSearch
+                    })
+                  }}
                   compact
                 />
               )}
