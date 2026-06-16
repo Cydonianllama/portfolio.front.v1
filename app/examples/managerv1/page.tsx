@@ -1,10 +1,10 @@
 "use server";
 
-import { Managerv1Screen } from "@/components/examples/managerv1.screen";
+import { Managerv1Screen } from "@/modules/example1/components/screen";
 
 export default async function Page() {
   return (<>
-    <div className="">
+    <div className="h-[100vh]">
       <Managerv1Screen/>
     </div>
   </>);

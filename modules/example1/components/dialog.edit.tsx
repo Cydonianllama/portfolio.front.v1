@@ -25,6 +25,10 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
     config.onUpdate()
   }
 
+  const HandleToCancel = () => {
+    config.setOpen(false)
+  }
+
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       {/* 
@@ -50,9 +54,7 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
           </Field>
         </FieldGroup>
         <DialogFooter>
-          <DialogClose>
-            <Button variant="outline">Cancelar</Button>
-          </DialogClose>
+          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
           <Button onClick={HandleToUpdate} type="button">Actualizar item</Button>
         </DialogFooter>
       </DialogContent>

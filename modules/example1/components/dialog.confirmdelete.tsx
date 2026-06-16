@@ -25,6 +25,10 @@ export const ManagerV1DialogConfirmDelete = (config: ManagerV1DialogConfirmDelet
     config.onDelete()
   }
 
+  const HandleToCancel = () => {
+    config.setOpen(false)
+  }
+
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       {/* 
@@ -50,9 +54,7 @@ export const ManagerV1DialogConfirmDelete = (config: ManagerV1DialogConfirmDelet
           </Field>
         </FieldGroup>
         <DialogFooter>
-          <DialogClose>
-            <Button variant="outline">Cancelar</Button>
-          </DialogClose>
+          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
           <Button onClick={HandleToDelete} type="button">Confirmar eliminación</Button>
         </DialogFooter>
       </DialogContent>

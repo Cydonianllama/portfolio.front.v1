@@ -16,10 +16,24 @@ export const GetItems = async (config: GetItemsConfig) : Promise<ResponseApi<Arr
       data: [
         {
           id: '1',
-          description: '',
+          description: 'Descripcion del producto',
           isPublish: true,
           name: 'nombre producto',
           qtyItem: 120
+        },
+        {
+          id: '2',
+          description: 'Descripcion del producto',
+          isPublish: true,
+          name: 'nombre producto 2',
+          qtyItem: 10
+        },
+        {
+          id: '3',
+          description: 'Descripcion del producto',
+          isPublish: true,
+          name: 'nombre producto 3',
+          qtyItem: 2
         }
       ],
       status: true,
