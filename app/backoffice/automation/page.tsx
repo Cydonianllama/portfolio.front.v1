@@ -2,6 +2,8 @@
 
 export default async function Page() {
   return (<>
-    Will you bond
+    <div className="bg-red-500 mx-12">
+      Will you bond
+    </div>
   </>);
 }
