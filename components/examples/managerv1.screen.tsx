@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 // utils
@@ -28,6 +29,8 @@ import { Input } from '@/components/ui/input'
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
 import { ManagerV1Item } from "@/types/examples/manager.v1";
+import { useManagerv1Store } from "./managerv1.store";
+import { ManagerV1DialogCreate } from "./managerv1.dialog.create";
 
 export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
   {
@@ -46,22 +49,27 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
     accessorKey: 'qtyItem',
     header: 'Qty'
   },
-  
+
   {
     id: "actions",
     header: "Acciones",
     cell: ({ row }) => {
       const user = row.original;
+      const moduleState = useManagerv1Store();
       return (
         <div className="flex gap-2">
           <Button
-            onClick={() => console.log("Editar", user.id)}
+            onClick={() => {
+              console.log("Editar", user.id)
+            }}
           >
             Editar
           </Button>
 
           <Button
-            onClick={() => console.log("Eliminar", user.id)}
+            onClick={() => {
+              console.log("Eliminar", user.id)
+            }}
           >
             Eliminar
           </Button>
@@ -72,6 +80,9 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
 ];
 
 export const Managerv1Screen = () => {
+
+  const moduleState = useManagerv1Store();
+
   const [page, setPage] = useState(1)
   const [query, setQuery] = useState('')
 
@@ -86,9 +97,29 @@ export const Managerv1Screen = () => {
     getCoreRowModel: getCoreRowModel()
   });
 
+  //
+  // HEADER
+  //
+  const HandleToOpenAddItem = () => {
+    moduleState.setOpenCreateItem(true)
+  }
+
+
+  //
+  // HEADER FILTER
+  //
+
+
+  //
+  // DIALOG
+  //
+  const OnCreateItem = () => {
+
+  }
+
   return (<>
     <div className="relative h-full  px-12">
-      
+
       {/* start::header */}
       <div className="flex justify-between items-center py-5">
         <div>
@@ -96,7 +127,7 @@ export const Managerv1Screen = () => {
           <p className="text-md text-gray-400">Pantalla de administración de usuarios</p>
         </div>
         <div>
-          <Button>Agregar usuario</Button>
+          <Button onClick={HandleToOpenAddItem}>Agregar usuario</Button>
         </div>
       </div>
       {/* end::header */}
@@ -110,7 +141,7 @@ export const Managerv1Screen = () => {
       </div>
       {/* end::header filter  */}
 
-
+      {/* start::table */}
       <div className="border rounded">
         <Table>
           {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
@@ -144,6 +175,19 @@ export const Managerv1Screen = () => {
           </TableBody>
         </Table>
       </div>
+      {/* end::table */}
+
+
+      {/* start::Dialogs */}
+      <ManagerV1DialogCreate
+        open={moduleState.isOpenCreateItem}
+        setOpen={(open) => moduleState.setOpenCreateItem(open)}
+        onCreate={OnCreateItem}
+      />
+      {/* end::Dialogs */}
+
+
+
     </div>
   </>)
 }
