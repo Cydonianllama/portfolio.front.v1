@@ -7,12 +7,8 @@
 // 1. configurar "columnsUsersTable"
 //
 
-
-
-// utils
-import { useState } from "react";
-
 // components
+import { useState } from "react";
 import { ManagerV1DialogCreate } from "./dialog.create";
 import { ManagerV1DialogEdit } from "./dialog.edit";
 import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
@@ -20,6 +16,9 @@ import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
 import { SectionHeaderFilter } from "./section.headerFilter";
+
+// utils
+import { toast } from "sonner";
 
 // listado principal
 import { useListManagerV1 } from "@/modules/example1/hooks/useListManagerV1";
@@ -29,6 +28,7 @@ import { useManagerv1Store } from "../store/store";
 
 // schemas
 import { CreationSchema } from "../schemas/item.creation";
+import { UpdateSchema } from "../schemas/item.update";
 
 // services
 import { CreateItem, DeleteItem, UpdateItem } from "../services/example.managerv1";
@@ -61,6 +61,8 @@ export const Managerv1Screen = () => {
   }
 
   const HandleToRefresh = async () => {
+    setPage(1)
+    setQuery("")
     await refetch()
   }
 
@@ -78,14 +80,14 @@ export const Managerv1Screen = () => {
   //
 
   const HandleToNextPage = () => {
-    if (!data?.pagination){
+    if (!data?.pagination) {
       console.log('error pagination information not founded')
     }
     setPage((data?.pagination?.page || 0) + 1)
   }
 
   const HandleToPrevPage = () => {
-    if (!data?.pagination){
+    if (!data?.pagination) {
       console.log('error pagination information not founded')
     }
     setPage((data?.pagination?.page || 0) - 1)
@@ -95,9 +97,9 @@ export const Managerv1Screen = () => {
   // DIALOG
   //
   const OnCreateItem = async (data: CreationSchema) => {
-    try {
-      console.log('OnCreateItem')
+    let hasError = false;
 
+    try {
       // reseteamos estados y comenzamos estado de carga
       moduleState.setInformationCreationItem({
         hasError: false,
@@ -105,9 +107,33 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      // console.log(data)
+      const req = await CreateItem({
+        description: data.description,
+        name: data.name,
+        qty: data.units
+      })
 
-      await CreateItem()
+      if (!req) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError && !req?.status) {
+        hasError = true;
+        toast.success('Error, consulta fallida')
+      }
+
+      if (!hasError && !req?.data) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError) {
+        toast.success('Item creado')
+        // TODO: add new item to new row
+
+        //req?.data
+      }
 
     } catch (ex) {
       // error en proceso
@@ -126,8 +152,15 @@ export const Managerv1Screen = () => {
     }
   }
 
-  const OnUpdateItem = async () => {
+  const OnUpdateItem = async (data: UpdateSchema) => {
+    let hasError = false;
     try {
+      if (!moduleState.informationIpdateItem?.itemId) {
+        console.log('Error itemId not founded')
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
       // reseteamos estados y comenzamos estado de carga
       moduleState.setInformationUpdateItem({
         hasError: false,
@@ -135,7 +168,34 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      await UpdateItem()
+      const req = await UpdateItem({
+        description: data.description,
+        id: moduleState.informationIpdateItem.itemId,
+        name: data.name,
+        qty: data.units
+      })
+
+      if (!req) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError && !req?.status) {
+        hasError = true;
+        toast.success('Error, consulta fallida')
+      }
+
+      if (!hasError && !req?.data) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError) {
+        toast.success('Item actualizado')
+        // update item from row
+
+        //req?.data
+      }
 
     } catch (error) {
       // error en proceso
@@ -154,7 +214,13 @@ export const Managerv1Screen = () => {
   }
 
   const OnDeleteItem = async () => {
+    let hasError = false;
     try {
+      if (!moduleState.informationDeleteItem?.itemId) {
+        console.log('error itemId not founded')
+        return;
+      }
+
       // reseteamos estados y comenzamos estado de carga
       moduleState.setInformationDeleteItem({
         hasError: false,
@@ -162,7 +228,29 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      await DeleteItem()
+      const req = await DeleteItem({
+        id: moduleState.informationDeleteItem?.itemId
+      })
+
+      if (!req) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError && !req?.status) {
+        hasError = true;
+        toast.success('Error, consulta fallida')
+      }
+
+      if (!hasError && !req?.data) {
+        hasError = true;
+        toast.success('Error "req" no encontrado')
+      }
+
+      if (!hasError) {
+        toast.success('Item eliminado')
+        // remove item from table
+      }
 
     } catch (error) {
       // error en proceso

@@ -1,4 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+
+// utils
+import { format } from 'date-fns';
+
 // components
 import {
   Table,
@@ -13,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
 
 // react-table
 import {
@@ -58,7 +63,6 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-
   {
     accessorKey: "id",
     header: "Id"
@@ -69,13 +73,28 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
   },
   {
     accessorKey: "description",
-    header: "Descripcion"
+    header: "Descripción"
+  },
+  {
+    accessorKey: "id",
+    header: "Estatus",
+    cell: ({ row }) => (<>
+      <Badge variant="secondary">{row.original.statusName}</Badge>
+    </>),
   },
   {
     accessorKey: 'qtyItem',
     header: 'Qty'
   },
-
+  {
+    id: 'date',
+    header: 'Fecha de creación',
+    cell: (data) => {
+      return (<>
+        {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}  
+      </>)
+    }
+  },
   {
     id: "actions",
     header: "Acciones",
@@ -96,7 +115,7 @@ const ActionsRow = ({ data }: { data: CellContext<ManagerV1Item, unknown> }) => 
         size={'icon'}
         onClick={() => {
           console.log("Editar", user.id)
-          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user })
+          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
         }}
       >
         <MdOutlineEdit />

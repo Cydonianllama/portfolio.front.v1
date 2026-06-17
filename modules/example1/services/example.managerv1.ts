@@ -4,21 +4,15 @@
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
+import { CreateItemRequestDTO, DeleteItemRequestDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
 
 // util
 const sleep = (ms: number) =>
   new Promise(resolve => setTimeout(resolve, ms));
 
-export interface GetItemsConfig {
-  query: string;
-  page: number;
-}
-
-export const GetItems = async (
-  config: GetItemsConfig
-): Promise<ResponseApi<Array<ManagerV1Item>> | null> => {
+export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<Array<ManagerV1Item>> | null> => {
   try {
-    await sleep(2000);
+    await sleep(1000);
 
     const page = config.page ?? 1;
     const limit = 16;
@@ -31,6 +25,9 @@ export const GetItems = async (
         description: `Descripción producto ${index + 1}`,
         isPublish: index % 2 === 0,
         qtyItem: Math.floor(Math.random() * 500),
+        statusCode: 1,
+        statusName: 'Accepted',
+        creationDate: new Date(Date.now())
       })
     );
 
@@ -60,27 +57,55 @@ export const GetItems = async (
   }
 };
 
-export const CreateItem = async () => {
+export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
   try {
     await sleep(2000)
+    return {
+      status: true,
+      data: {
+        creationDate: new Date(),
+        description: config.description,
+        id: `item-${Math.ceil(Math.random()*100000)}`,
+        isPublish: false,
+        name: config.name,
+        qtyItem: config.qty,
+        statusCode: 1,
+        statusName: 'Active'
+      }
+    };
   } catch (ex) {
-
+    return null;
   }
 }
 
-export const UpdateItem = async () => {
+export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
   try {
     await sleep(2000)
+    return {
+      status: true,
+      data: {
+        creationDate: new Date(),
+        description: config.description,
+        id: config.id,
+        isPublish: false,
+        name: config.name,
+        qtyItem: config.qty,
+        statusCode: 1,
+        statusName: 'Active'
+      }
+    };
   } catch (ex) {
-
+    return null;
   }
 }
 
-export const DeleteItem = async () => {
+export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<null> | null>  => {
   try {
     await sleep(2000)
-  } catch (ex) {
 
+    return null;
+  } catch (ex) {
+    return null;
   }
 }
 

@@ -4,4 +4,7 @@ export interface ManagerV1Item {
   description: string;
   qtyItem: number;
   isPublish: boolean;
+  statusCode: number;
+  statusName: string;
+  creationDate: Date;
 }
