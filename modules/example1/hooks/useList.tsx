@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useQuery } from "@tanstack/react-query";
-import { GetItems } from "@/modules/example1/services/example.managerv1";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CreateItem, DeleteItem, GetItems, UpdateItem } from "@/modules/example1/services/example.managerv1";
 
 export const useListManagerV1 = (
   page: number,
@@ -54,7 +55,7 @@ const queryClient = useQueryClient();
 
 queryClient.invalidateQueries({
   queryKey: ["listmanagerv1"]
-});
+}); // es decir pide al server la data
 
 Esto marca como "stale" todas las queries:
 

@@ -4,7 +4,7 @@
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
-import { CreateItemRequestDTO, DeleteItemRequestDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
+import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
 
 // util
 const sleep = (ms: number) =>
@@ -74,6 +74,7 @@ export const CreateItem = async (config: CreateItemRequestDTO): Promise<Response
       }
     };
   } catch (ex) {
+    // console.log(ex.message)
     return null;
   }
 }
@@ -99,11 +100,15 @@ export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<Response
   }
 }
 
-export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<null> | null>  => {
+export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<DeleteItemResponseDTO> | null>  => {
   try {
     await sleep(2000)
-
-    return null;
+    return {
+      status: true,
+      data: {
+        id: config.id
+      }
+    };
   } catch (ex) {
     return null;
   }

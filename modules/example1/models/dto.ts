@@ -32,5 +32,6 @@ export interface DeleteItemRequestDTO {
 // export interface UpdateItemRequestDTO {
 // }
 
-// export interface DeleteItemRequestDTO {
-// }
+export interface DeleteItemResponseDTO {
+  id: string
+}

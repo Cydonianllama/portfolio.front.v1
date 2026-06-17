@@ -21,7 +21,7 @@ import { SectionHeaderFilter } from "./section.headerFilter";
 import { toast } from "sonner";
 
 // listado principal
-import { useListManagerV1 } from "@/modules/example1/hooks/useListManagerV1";
+import { useListManagerV1 } from "@/modules/example1/hooks/useList";
 
 // store
 import { useManagerv1Store } from "../store/store";
@@ -32,6 +32,9 @@ import { UpdateSchema } from "../schemas/item.update";
 
 // services
 import { CreateItem, DeleteItem, UpdateItem } from "../services/example.managerv1";
+import { useCreateManagerV1 } from "../hooks/useCreate";
+import { useUpdateManagerV1 } from "../hooks/useUpdate";
+import { useDeleteManagerV1 } from "../hooks/useDelete";
 
 export const Managerv1Screen = () => {
 
@@ -49,6 +52,10 @@ export const Managerv1Screen = () => {
     isError,
     refetch
   } = useListManagerV1(page, query);
+
+  const createItem = useCreateManagerV1(page, query)
+  const updateItem = useUpdateManagerV1(page, query)
+  const deleteItem = useDeleteManagerV1(page, query)
 
   //
   // section header
@@ -72,6 +79,7 @@ export const Managerv1Screen = () => {
 
   const OnSearch = async (text: string) => {
     console.log(`OnSearch ${text}`)
+    setPage(1)
     setQuery(text)
   }
 
@@ -97,8 +105,6 @@ export const Managerv1Screen = () => {
   // DIALOG
   //
   const OnCreateItem = async (data: CreationSchema) => {
-    let hasError = false;
-
     try {
       // reseteamos estados y comenzamos estado de carga
       moduleState.setInformationCreationItem({
@@ -107,33 +113,13 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await CreateItem({
+      const req = await createItem.mutateAsync({
         description: data.description,
         name: data.name,
         qty: data.units
       })
 
-      if (!req) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
-
-      if (!hasError && !req?.status) {
-        hasError = true;
-        toast.success('Error, consulta fallida')
-      }
-
-      if (!hasError && !req?.data) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
-
-      if (!hasError) {
-        toast.success('Item creado')
-        // TODO: add new item to new row
-
-        //req?.data
-      }
+      console.log(req)
 
     } catch (ex) {
       // error en proceso
@@ -153,7 +139,6 @@ export const Managerv1Screen = () => {
   }
 
   const OnUpdateItem = async (data: UpdateSchema) => {
-    let hasError = false;
     try {
       if (!moduleState.informationIpdateItem?.itemId) {
         console.log('Error itemId not founded')
@@ -168,34 +153,14 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await UpdateItem({
+      const req = await updateItem.mutateAsync({
         description: data.description,
         id: moduleState.informationIpdateItem.itemId,
         name: data.name,
         qty: data.units
       })
 
-      if (!req) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
-
-      if (!hasError && !req?.status) {
-        hasError = true;
-        toast.success('Error, consulta fallida')
-      }
-
-      if (!hasError && !req?.data) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
-
-      if (!hasError) {
-        toast.success('Item actualizado')
-        // update item from row
-
-        //req?.data
-      }
+      console.log(req)
 
     } catch (error) {
       // error en proceso
@@ -214,7 +179,6 @@ export const Managerv1Screen = () => {
   }
 
   const OnDeleteItem = async () => {
-    let hasError = false;
     try {
       if (!moduleState.informationDeleteItem?.itemId) {
         console.log('error itemId not founded')
@@ -228,29 +192,12 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await DeleteItem({
+      const req = await deleteItem.mutateAsync({
         id: moduleState.informationDeleteItem?.itemId
       })
 
-      if (!req) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
+      console.log(req)
 
-      if (!hasError && !req?.status) {
-        hasError = true;
-        toast.success('Error, consulta fallida')
-      }
-
-      if (!hasError && !req?.data) {
-        hasError = true;
-        toast.success('Error "req" no encontrado')
-      }
-
-      if (!hasError) {
-        toast.success('Item eliminado')
-        // remove item from table
-      }
 
     } catch (error) {
       // error en proceso
