@@ -1,18 +1,18 @@
 import { InputSearchTable } from "@/components/InputSearchTable"
 
-export const SectionHeaderFilter = () => {
+export type SectionHeaderFilterProps = {
+  OnSearch: (text: string) => void
+}
 
-  const OnSearch = async (text: string) => {
+export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
 
-  }
-
-
+  
   return (<>
     <div className="flex justify-between items-center pb-5">
       <div></div>
       <div>
         <InputSearchTable
-          onSearch={OnSearch}
+          onSearch={data.OnSearch}
           placeholder="Buscar"
           timeout={600}
         />

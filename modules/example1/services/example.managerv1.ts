@@ -5,6 +5,10 @@
 import { ResponseApi } from '@/types/api/response';
 import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
 
+// util
+const sleep = (ms: number) =>
+  new Promise(resolve => setTimeout(resolve, ms));
+
 export interface GetItemsConfig {
   query: string;
   page: number;
@@ -51,3 +55,28 @@ export const GetItems = async (config: GetItemsConfig) : Promise<ResponseApi<Arr
     return null;
   }
 }
+
+export const CreateItem = async () => {
+  try {
+    await sleep(2000)
+  } catch (ex) {
+
+  }
+}
+
+export const UpdateItem = async () => {
+  try {
+    await sleep(2000)
+  } catch (ex) {
+
+  }
+}
+
+export const DeleteItem = async () => {
+  try {
+    await sleep(2000)
+  } catch (ex) {
+
+  }
+}
+

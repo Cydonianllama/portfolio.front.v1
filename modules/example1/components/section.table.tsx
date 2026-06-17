@@ -11,12 +11,14 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
+import { Checkbox } from "@/components/ui/checkbox";
 
 // react-table
 import {
   useReactTable,
   getCoreRowModel,
-  flexRender
+  flexRender,
+  CellContext
 } from "@tanstack/react-table";
 
 // configuracion de columna
@@ -24,7 +26,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ManagerV1Item } from "@/modules/example1/types/manager.v1";
 
 // state
-import { useManagerv1Store } from './store';
+import { useManagerv1Store } from '../store/store';
 
 // icons
 import { MdOutlineEdit } from 'react-icons/md';
@@ -32,6 +34,30 @@ import { FiTrash2 } from 'react-icons/fi';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Seleccionar todos"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) =>
+          row.toggleSelected(!!value)
+        }
+        aria-label="Seleccionar fila"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+
   {
     accessorKey: "id",
     header: "Id"
@@ -52,44 +78,51 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
   {
     id: "actions",
     header: "Acciones",
-    cell: ({ row }) => {
-      const user = row.original;
-      const moduleState = useManagerv1Store();
-      return (
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size={'icon'}
-            onClick={() => {
-              console.log("Editar", user.id)
-              moduleState.setOpenUpdateItem(true)
-            }}
-          >
-            <MdOutlineEdit />
-          </Button>
-
-          <Button
-            variant="outline"
-            size={'icon'}
-            onClick={() => {
-              console.log("Eliminar", user.id)
-              moduleState.setOpenDeleteItem(true)
-            }}
-          >
-            <FiTrash2 />
-          </Button>
-        </div>
-      )
+    cell: (data) => {
+      return (<ActionsRow data={data} />)
     }
   }
 ];
 
-export const SectionTable = () => {
-
+// ActionsRow
+const ActionsRow = ({ data }: { data: CellContext<ManagerV1Item, unknown> }) => {
+  const user = data.row.original;
   const moduleState = useManagerv1Store();
+  return (
+    <div className="flex gap-2">
+      <Button
+        variant="outline"
+        size={'icon'}
+        onClick={() => {
+          console.log("Editar", user.id)
+          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user })
+        }}
+      >
+        <MdOutlineEdit />
+      </Button>
+
+      <Button
+        variant="outline"
+        size={'icon'}
+        onClick={() => {
+          console.log("Eliminar", user.id)
+          moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
+        }}
+      >
+        <FiTrash2 />
+      </Button>
+    </div>
+  )
+}
+
+export type SectionTableProps = {
+  list: Array<ManagerV1Item>
+}
+
+export const SectionTable = (data: SectionTableProps) => {
 
   const table = useReactTable({
-    data: [],
+    data: data.list || [],
     columns: columnsUsersTable,
     getCoreRowModel: getCoreRowModel()
   });
@@ -102,7 +135,7 @@ export const SectionTable = () => {
           {table.getHeaderGroups().map((group, headerIdx) => (
             <TableRow key={headerIdx}>
               {group.headers.map((header, index) => (
-                <TableHead key={index}>
+                <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''}  key={index}>
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -116,7 +149,7 @@ export const SectionTable = () => {
           {table.getRowModel().rows.map((row, index) => (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell, cellIdx) => (
-                <TableCell key={cellIdx}>
+                <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
                   {flexRender(
                     cell.column.columnDef.cell,
                     cell.getContext()

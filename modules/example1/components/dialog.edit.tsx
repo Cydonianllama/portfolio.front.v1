@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// components
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,17 +15,63 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Spinner } from "@/components/ui/spinner"
+
+// formulario
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  UpdateSchema,
+  updateSchema
+} from "@/modules/example1/schemas/item.update";
+import { ManagerV1Item } from "../types/manager.v1"
 
 export interface ManagerV1DialogUpdateConfig {
-  onUpdate: () => void
+  onUpdate: (data: UpdateSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
+  data?: ManagerV1Item | null;
+  updating: boolean
 }
 
 export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
-  
-  const HandleToUpdate = () => {
-    config.onUpdate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    watch
+  } = useForm<UpdateSchema>({
+    resolver: zodResolver(updateSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      units: 0,
+    }
+  });
+
+  useEffect(() => {
+    if (!config.open) {
+      reset({
+        description: '',
+        name: '',
+        units: 1
+      });
+    }
+
+    if (config.data) {
+      reset({
+        description: config.data.description,
+        name: config.data.name,
+        units: config.data.qtyItem || 0
+      })
+    }
+  }, [config.open, reset, config.data]);
+
+  const HandleToUpdate = (data: UpdateSchema) => {
+    config.onUpdate(data)
   }
 
   const HandleToCancel = () => {
@@ -45,17 +94,53 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label htmlFor="name-1">Name</Label>
-            <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
+            <Label>Nombre</Label>
+            <Input
+              placeholder="Nombre"
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            )}
           </Field>
+
           <Field>
-            <Label htmlFor="username-1">Username</Label>
-            <Input id="username-1" name="username" defaultValue="@peduarte" />
+            <Label>Descripción</Label>
+            <Textarea
+              placeholder="Descripción"
+              {...register("description")}
+            />
+            {errors.description && (
+              <p className="text-sm text-red-500">
+                {errors.description.message}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <Label>Unidades</Label>
+            <Input
+              type="number"
+              placeholder="Unidades"
+              {...register("units", {
+                valueAsNumber: true
+              })}
+            />
+            {errors.units && (
+              <p className="text-sm text-red-500">
+                {errors.units.message}
+              </p>
+            )}
           </Field>
         </FieldGroup>
         <DialogFooter>
           <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
-          <Button onClick={HandleToUpdate} type="button">Actualizar item</Button>
+          <Button disabled={config.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
+            {config.updating && <Spinner data-icon="inline-start" />}
+            Actualizar item
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

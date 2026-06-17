@@ -1,3 +1,4 @@
+// components
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,18 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
 
 export interface ManagerV1DialogConfirmDeleteConfig {
   onDelete: () => void
   open: boolean
   setOpen: (open: boolean) => void
+  deleting: boolean
 }
 
 export const ManagerV1DialogConfirmDelete = (config: ManagerV1DialogConfirmDeleteConfig) => {
-  
+
   const HandleToDelete = () => {
     config.onDelete()
   }
@@ -31,31 +31,19 @@ export const ManagerV1DialogConfirmDelete = (config: ManagerV1DialogConfirmDelet
 
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
-      {/* 
-        <DialogTrigger>
-          <Button variant="outline">Open Dialog</Button>
-        </DialogTrigger> 
-      */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear Item</DialogTitle>
+          <DialogTitle>Confirmar eliminación</DialogTitle>
           <DialogDescription>
-            Creación de item.s
+            Se realizará la eliminación de <strong>forma definitiva</strong>, deséa continuar ?
           </DialogDescription>
         </DialogHeader>
-        <FieldGroup>
-          <Field>
-            <Label htmlFor="name-1">Name</Label>
-            <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-          </Field>
-          <Field>
-            <Label htmlFor="username-1">Username</Label>
-            <Input id="username-1" name="username" defaultValue="@peduarte" />
-          </Field>
-        </FieldGroup>
         <DialogFooter>
           <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
-          <Button onClick={HandleToDelete} type="button">Confirmar eliminación</Button>
+          <Button disabled={config.deleting ? true : false} onClick={HandleToDelete} variant={'destructive'} type="button">
+            {config.deleting && <Spinner data-icon="inline-start" />}
+            Continuar eliminación
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
