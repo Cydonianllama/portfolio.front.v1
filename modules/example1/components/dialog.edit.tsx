@@ -87,9 +87,9 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear Item</DialogTitle>
+          <DialogTitle>Editar Item</DialogTitle>
           <DialogDescription>
-            Creación de item.s
+            Edición de item.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>

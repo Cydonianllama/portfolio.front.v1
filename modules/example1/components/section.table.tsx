@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 import { Checkbox } from "@/components/ui/checkbox";
+import { Spinner } from "@/components/ui/spinner"
 
 // react-table
 import {
@@ -117,6 +118,7 @@ const ActionsRow = ({ data }: { data: CellContext<ManagerV1Item, unknown> }) => 
 
 export type SectionTableProps = {
   list: Array<ManagerV1Item>
+  loading: boolean;
 }
 
 export const SectionTable = (data: SectionTableProps) => {
@@ -127,39 +129,60 @@ export const SectionTable = (data: SectionTableProps) => {
     getCoreRowModel: getCoreRowModel()
   });
 
+  //TODO:Empty state
+
   return (<>
-    <div className="border rounded flex-1">
-      <Table>
-        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-        <TableHeader>
-          {table.getHeaderGroups().map((group, headerIdx) => (
-            <TableRow key={headerIdx}>
-              {group.headers.map((header, index) => (
-                <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''}  key={index}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </TableHead>
+
+    {/* cargando data */}
+    {data.loading && (<div className="border rounded flex-1 flex justify-center items-center">
+      <Spinner data-icon="inline-start" />
+    </div>)}
+
+    {!data.loading && (<>
+
+      {/* No hay data */}
+      {data.list.length == 0 && (<>
+        <div className="border rounded flex-1 flex justify-center items-center">
+          No hay data
+        </div>
+      </>)}
+
+      {/* Hay data */}
+      {data.list.length > 0 && (<>
+        <div className="border rounded flex-1">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((group, headerIdx) => (
+                <TableRow key={headerIdx}>
+                  {group.headers.map((header, index) => (
+                    <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </TableHead>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row, index) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell, cellIdx) => (
-                <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
-                  {flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext()
-                  )}
-                </TableCell>
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row, index) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell, cellIdx) => (
+                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+            </TableBody>
+          </Table>
+        </div>
+      </>)}
+
+    </>)}
   </>)
 }

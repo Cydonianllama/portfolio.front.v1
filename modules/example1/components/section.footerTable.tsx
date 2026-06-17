@@ -9,25 +9,28 @@ export type SectionFooterTableProps = {
   HandleToNextPage: () => void;
   HandleToPrevPage: () => void;
   pagination: ResponsePagination | null;
+
 }
 
-export const SectionFooterTable = (data: SectionFooterTableProps) => {
+export const SectionFooterTable = ({ HandleToNextPage, HandleToPrevPage, pagination }: SectionFooterTableProps) => {
   return (<>
     <div className='flex justify-between items-center py-4'>
-      <div>1-20 de 250</div>
+      <div>{((pagination?.page || 0) - 1) * (pagination?.limit || 0)}-{((pagination?.page || 0) - 1) * (pagination?.limit || 0) + (pagination?.limit || 0)} de <strong>{pagination?.total || 0}</strong></div>
       <div className='flex gap-2 items-center'>
         <Button
           size={'icon'}
           variant="outline"
-          onClick={data.HandleToNextPage}
+          onClick={HandleToPrevPage}
+          disabled={pagination?.hasPreviousPage ? false : true}
         >
           <FaChevronLeft />
         </Button>
-        <span>1/9</span>
+        <span>{pagination?.page}/{pagination?.totalPages}</span>
         <Button
-          onClick={data.HandleToPrevPage}
+          onClick={HandleToNextPage}
           size={'icon'}
           variant="outline"
+          disabled={pagination?.hasNextPage ? false : true}
         >
           <FaChevronRight />
         </Button>

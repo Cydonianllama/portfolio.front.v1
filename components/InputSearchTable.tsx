@@ -2,6 +2,14 @@
 import { Input } from '@/components/ui/input'
 import { useEffect, useState } from 'react';
 
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+
+import { Search } from "lucide-react"
+
 export type InputSearchTableType = {
   placeholder: string
   onSearch: (query: string) => void;
@@ -28,17 +36,19 @@ export const InputSearchTable = (config: InputSearchTableType) => {
 
   useEffect(() => {
     return () => {
-      if (id){
+      if (id) {
         clearTimeout(id)
       }
     };
   }, [])
 
   return (<>
-    <Input 
-      value={inputText}
-      onChange={(e) => OnChangeInput(e.target.value)}
-      placeholder={config.placeholder}
-    />
+    <InputGroup className="max-w-xs">
+      <InputGroupInput value={inputText} onChange={(e) => OnChangeInput(e.target.value)} placeholder={config.placeholder} />
+      <InputGroupAddon>
+        <Search />
+      </InputGroupAddon>
+      {/* <InputGroupAddon align="inline-end">12 results</InputGroupAddon> */}
+    </InputGroup>
   </>)
 }

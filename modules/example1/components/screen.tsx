@@ -41,10 +41,14 @@ export const Managerv1Screen = () => {
   const [query, setQuery] = useState('')
 
   // hace el listado de elementos
-  const { data, isLoading, error } = useListManagerV1(
-    page,
-    query
-  );
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    isError,
+    refetch
+  } = useListManagerV1(page, query);
 
   //
   // section header
@@ -56,12 +60,17 @@ export const Managerv1Screen = () => {
     })
   }
 
+  const HandleToRefresh = async () => {
+    await refetch()
+  }
+
   //
   // section header filter 
   //
 
   const OnSearch = async (text: string) => {
-
+    console.log(`OnSearch ${text}`)
+    setQuery(text)
   }
 
   //
@@ -69,11 +78,17 @@ export const Managerv1Screen = () => {
   //
 
   const HandleToNextPage = () => {
-
+    if (!data?.pagination){
+      console.log('error pagination information not founded')
+    }
+    setPage((data?.pagination?.page || 0) + 1)
   }
 
   const HandleToPrevPage = () => {
-
+    if (!data?.pagination){
+      console.log('error pagination information not founded')
+    }
+    setPage((data?.pagination?.page || 0) - 1)
   }
 
   //
@@ -173,6 +188,7 @@ export const Managerv1Screen = () => {
         title={'Administracion de usuarios'}
         description={'Pantalla de administración de usuarios'}
         HandleToOpenAddItem={HandleToOpenAddItem}
+        HandleToRefresh={HandleToRefresh}
       />
       {/* end::header */}
 
@@ -185,6 +201,7 @@ export const Managerv1Screen = () => {
       {/* start::table */}
       <SectionTable
         list={data?.data || []}
+        loading={isFetching}
       />
       {/* end::table */}
 

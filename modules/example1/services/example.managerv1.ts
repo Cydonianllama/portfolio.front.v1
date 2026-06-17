@@ -14,47 +14,51 @@ export interface GetItemsConfig {
   page: number;
 }
 
-export const GetItems = async (config: GetItemsConfig) : Promise<ResponseApi<Array<ManagerV1Item>> | null>  =>  {
+export const GetItems = async (
+  config: GetItemsConfig
+): Promise<ResponseApi<Array<ManagerV1Item>> | null> => {
   try {
+    await sleep(2000);
+
+    const page = config.page ?? 1;
+    const limit = 16;
+
+    const allItems: ManagerV1Item[] = Array.from(
+      { length: 600 },
+      (_, index) => ({
+        id: `item-${index + 1}`,
+        name: `Producto ${index + 1}`,
+        description: `Descripción producto ${index + 1}`,
+        isPublish: index % 2 === 0,
+        qtyItem: Math.floor(Math.random() * 500),
+      })
+    );
+
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    const items = allItems.slice(start, end);
+
+    const total = allItems.length;
+    const totalPages = Math.ceil(total / limit);
+
     return {
-      data: [
-        {
-          id: '1',
-          description: 'Descripcion del producto',
-          isPublish: true,
-          name: 'nombre producto',
-          qtyItem: 120
-        },
-        {
-          id: '2',
-          description: 'Descripcion del producto',
-          isPublish: true,
-          name: 'nombre producto 2',
-          qtyItem: 10
-        },
-        {
-          id: '3',
-          description: 'Descripcion del producto',
-          isPublish: true,
-          name: 'nombre producto 3',
-          qtyItem: 2
-        }
-      ],
       status: true,
-      message: '',
+      message: "",
+      data: items,
       pagination: {
-        hasNextPage: false,
-        hasPreviousPage: false,
-        limit: 20,
-        page: 1,
-        total: 20,
-        totalPages: 1
-      }
-    }
-  } catch (error) {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
+  } catch {
     return null;
   }
-}
+};
 
 export const CreateItem = async () => {
   try {
