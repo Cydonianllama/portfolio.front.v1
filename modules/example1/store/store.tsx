@@ -42,6 +42,9 @@ interface Managerv1Store {
   // information delete
   informationDeleteItem: informationDeleteItemType
   setInformationDeleteItem: (data: Partial<informationDeleteItemType>) => void;
+  // selection
+  itemsSelected: Array<string>,
+  setItemsSelected: (data: Array<string>) => void;
 }
 
 export const useManagerv1Store = create<Managerv1Store>((set) => ({
@@ -98,4 +101,12 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
       }
     }
   }),
+  // selection
+  itemsSelected: [],
+  setItemsSelected: (data: Array<string>) => set((state) => {
+    return {
+      ...state,
+      itemsSelected: data
+    }
+  })
 }));

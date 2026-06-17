@@ -4,7 +4,7 @@
 import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateItem, DeleteItem, GetItems, UpdateItem } from "@/modules/example1/services/example.managerv1";
+import { CreateItem } from "../services";
 
 export const useCreateManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();

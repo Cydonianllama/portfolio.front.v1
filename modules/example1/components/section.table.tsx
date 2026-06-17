@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect, useState } from 'react';
 
 // utils
 import { format } from 'date-fns';
@@ -91,7 +93,7 @@ export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
     header: 'Fecha de creación',
     cell: (data) => {
       return (<>
-        {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}  
+        {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
       </>)
     }
   },
@@ -138,19 +140,41 @@ const ActionsRow = ({ data }: { data: CellContext<ManagerV1Item, unknown> }) => 
 export type SectionTableProps = {
   list: Array<ManagerV1Item>
   loading: boolean;
+  hasError?: boolean;
+  onChangeSelection?: (state: any) => void
 }
 
 export const SectionTable = (data: SectionTableProps) => {
+  
+  const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    if (data.onChangeSelection){
+      data.onChangeSelection(rowSelection)
+    }
+  }, [rowSelection])
 
   const table = useReactTable({
     data: data.list || [],
     columns: columnsUsersTable,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+
+    state: {
+      rowSelection,
+    },
+    onRowSelectionChange: setRowSelection,
+    getRowId: (row) => row.id, // recomendado
   });
+
 
   //TODO:Empty state
 
   return (<>
+
+    {/* Estado de error  */}
+    {data.hasError && (<div className="border rounded flex-1 flex justify-center items-center">
+      Error inesperado
+    </div>)}
 
     {/* cargando data */}
     {data.loading && (<div className="border rounded flex-1 flex justify-center items-center">

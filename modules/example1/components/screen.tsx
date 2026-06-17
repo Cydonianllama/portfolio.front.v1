@@ -31,7 +31,6 @@ import { CreationSchema } from "../schemas/item.creation";
 import { UpdateSchema } from "../schemas/item.update";
 
 // services
-import { CreateItem, DeleteItem, UpdateItem } from "../services/example.managerv1";
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
@@ -75,7 +74,7 @@ export const Managerv1Screen = () => {
 
   //
   // section header filter 
-  //
+  //  
 
   const OnSearch = async (text: string) => {
     console.log(`OnSearch ${text}`)
@@ -215,6 +214,25 @@ export const Managerv1Screen = () => {
     }
   }
 
+  //
+  // Table
+  //
+
+  const OnChangeSelection = (data: any) => {
+
+    const elements: Array<string> = []
+
+    for (const el in data){
+      if (data[el]){
+        elements.push(el)
+      }
+    }
+
+    // console.log(elements)
+
+    moduleState.setItemsSelected(elements)
+  }
+
   return (<>
     <div className="relative h-full px-12 flex flex-col">
 
@@ -230,6 +248,7 @@ export const Managerv1Screen = () => {
       {/* start::header filter  */}
       <SectionHeaderFilter
         OnSearch={OnSearch}
+        itemsSelected={moduleState.itemsSelected || []}
       />
       {/* end::header filter  */}
 
@@ -237,6 +256,8 @@ export const Managerv1Screen = () => {
       <SectionTable
         list={data?.data || []}
         loading={isFetching}
+        hasError={(!data?.status || isError) ? true : false}
+        onChangeSelection={OnChangeSelection}
       />
       {/* end::table */}
 

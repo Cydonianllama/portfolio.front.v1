@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateItem, DeleteItem, GetItems, UpdateItem } from "@/modules/example1/services/example.managerv1";
+import { GetItems } from "../services";
 
 export const useListManagerV1 = (
   page: number,

@@ -5,10 +5,8 @@
 import { ResponseApi } from '@/types/api/response';
 import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
 import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
+import { sleep } from '../utils/sleep';
 
-// util
-const sleep = (ms: number) =>
-  new Promise(resolve => setTimeout(resolve, ms));
 
 export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<Array<ManagerV1Item>> | null> => {
   try {
@@ -56,61 +54,3 @@ export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<
     return null;
   }
 };
-
-export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
-  try {
-    await sleep(2000)
-    return {
-      status: true,
-      data: {
-        creationDate: new Date(),
-        description: config.description,
-        id: `item-${Math.ceil(Math.random()*100000)}`,
-        isPublish: false,
-        name: config.name,
-        qtyItem: config.qty,
-        statusCode: 1,
-        statusName: 'Active'
-      }
-    };
-  } catch (ex) {
-    // console.log(ex.message)
-    return null;
-  }
-}
-
-export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
-  try {
-    await sleep(2000)
-    return {
-      status: true,
-      data: {
-        creationDate: new Date(),
-        description: config.description,
-        id: config.id,
-        isPublish: false,
-        name: config.name,
-        qtyItem: config.qty,
-        statusCode: 1,
-        statusName: 'Active'
-      }
-    };
-  } catch (ex) {
-    return null;
-  }
-}
-
-export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<DeleteItemResponseDTO> | null>  => {
-  try {
-    await sleep(2000)
-    return {
-      status: true,
-      data: {
-        id: config.id
-      }
-    };
-  } catch (ex) {
-    return null;
-  }
-}
-
