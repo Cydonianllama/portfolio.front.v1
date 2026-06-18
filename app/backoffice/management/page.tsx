@@ -1,6 +1,6 @@
 "use server";
 
-import Dashboard from "./Dashoard";
+import Dashboard from "@/modules/backoffice/management/Dashoard";
 
 export default async function Page() {
   return (<>
