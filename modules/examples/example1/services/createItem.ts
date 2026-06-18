@@ -3,12 +3,12 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/modules/example1/types/manager.v1';
+import { ManagerV1Item } from '@/modules/examples/example1/types/manager.v1';
 import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
 
 
-export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
+export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
   try {
     await sleep(2000)
     return {
@@ -16,7 +16,7 @@ export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<Response
       data: {
         creationDate: new Date(),
         description: config.description,
-        id: config.id,
+        id: `item-${Math.ceil(Math.random()*100000)}`,
         isPublish: false,
         name: config.name,
         qtyItem: config.qty,
@@ -25,9 +25,7 @@ export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<Response
       }
     };
   } catch (ex) {
+    // console.log(ex.message)
     return null;
   }
 }
-
-
-

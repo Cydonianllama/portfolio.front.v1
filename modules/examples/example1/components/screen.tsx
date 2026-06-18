@@ -21,7 +21,7 @@ import { SectionHeaderFilter } from "./section.headerFilter";
 import { toast } from "sonner";
 
 // listado principal
-import { useListManagerV1 } from "@/modules/example1/hooks/useList";
+import { useListManagerV1 } from "@/modules/examples/example1/hooks/useList";
 
 // store
 import { useManagerv1Store } from "../store/store";

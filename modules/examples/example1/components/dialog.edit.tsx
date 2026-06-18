@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   UpdateSchema,
   updateSchema
-} from "@/modules/example1/schemas/item.update";
+} from "@/modules/examples/example1/schemas/item.update";
 import { ManagerV1Item } from "../types/manager.v1"
 
 export interface ManagerV1DialogUpdateConfig {

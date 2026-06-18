@@ -31,7 +31,7 @@ import {
 
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
-import { ManagerV1Item } from "@/modules/example1/types/manager.v1";
+import { ManagerV1Item } from "@/modules/examples/example1/types/manager.v1";
 
 // state
 import { useManagerv1Store } from '../store/store';

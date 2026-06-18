@@ -16,7 +16,7 @@ export const SectionFooterTable = ({ HandleToNextPage, HandleToPrevPage, paginat
   return (<>
     <div className='flex justify-between items-center py-4'>
       <div>{((pagination?.page || 0) - 1) * (pagination?.limit || 0)}-{((pagination?.page || 0) - 1) * (pagination?.limit || 0) + (pagination?.limit || 0)} de <strong>{pagination?.total || 0}</strong></div>
-      <div className='flex gap-2 items-center'>
+      <div className='flex gap-5 items-center'>
         <Button
           size={'icon'}
           variant="outline"

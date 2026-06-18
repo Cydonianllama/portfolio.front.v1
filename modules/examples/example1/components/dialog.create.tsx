@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   creationSchema,
   CreationSchema
-} from "@/modules/example1/schemas/item.creation";
+} from "@/modules/examples/example1/schemas/item.creation";
 export interface ManagerV1DialogCreateConfig {
   onCreate: (data: CreationSchema) => void
   open: boolean
