@@ -33,16 +33,24 @@ export interface ManagerV1DialogCreateConfig {
 }
 
 export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
     watch
   } = useForm<CreationSchema>({
     resolver: zodResolver(creationSchema),
   });
+  /**
+  onSelect={(workspace) => {
+    setValue('workspaceId', workspace.id, {
+      shouldValidate: true
+    });
+  }}
+   */
 
   // para ver como los valores cambian
   // console.log('FORM', watch())

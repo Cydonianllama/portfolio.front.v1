@@ -12,7 +12,7 @@ import { useDashboardStore } from "./store";
 import Loader from '@/components/Loader';
 import EmptyState from '@/components/EmptyState';
 import Pagination from '@/components/Pagination';
-import { UseEntitiesList } from '@/hooks/use-listEntities';
+import { UseEntitiesList } from '@/modules/backoffice/hooks/use-listEntities';
 
 type UserForm = {
   username: string;
