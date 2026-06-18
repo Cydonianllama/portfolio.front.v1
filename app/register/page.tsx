@@ -1,6 +1,6 @@
 'use server'
 
-import { SignupForm } from "./register-form"
+import { SignupForm } from "@/modules/auth/components/register-form"
 
 export default async function Page() {
   return <>

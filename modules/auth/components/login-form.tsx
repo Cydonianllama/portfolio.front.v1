@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   loginSchema,
   LoginSchema
-} from "@/app/login/login-form.schema";
+} from "@/modules/auth/components/login-form.schema";
 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Login } from "@/services/auth.service"
+import { Login } from "@/modules/auth/services/auth.service"
 import { toast } from "sonner";
 
 export function LoginForm({
