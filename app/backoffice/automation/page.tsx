@@ -1,9 +1,9 @@
 "use server";
 
+import { AutomationBackofficeScreen } from '@/modules/backoffice/automation/components/screen'
+
 export default async function Page() {
   return (<>
-    <div className="bg-red-500 mx-12">
-      Will you bond
-    </div>
+    <AutomationBackofficeScreen/>
   </>);
 }
