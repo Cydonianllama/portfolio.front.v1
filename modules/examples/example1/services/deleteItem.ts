@@ -3,12 +3,16 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/modules/examples/example1/types/manager.v1';
-import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
+import { ManagerV1Item } from '../models/dto';
+import { DeleteItemRequestDTO, DeleteItemResponseDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
+import { api } from '@/setup/axios'
 
 export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<DeleteItemResponseDTO> | null>  => {
   try {
+    // const req = await api.delete(`${configurationModule.mainAPIroute}`)
+    // return req.data;
+    
     await sleep(2000)
     return {
       status: true,

@@ -21,7 +21,7 @@ import { SectionHeaderFilter } from "./section.headerFilter";
 import { toast } from "sonner";
 
 // listado principal
-import { useListManagerV1 } from "@/modules/examples/example1/hooks/useList";
+import { useListManagerV1 } from "../hooks/useList";
 
 // store
 import { useManagerv1Store } from "../store/store";
@@ -227,9 +227,7 @@ export const Managerv1Screen = () => {
         elements.push(el)
       }
     }
-
-    // console.log(elements)
-
+    
     moduleState.setItemsSelected(elements)
   }
 
@@ -254,7 +252,7 @@ export const Managerv1Screen = () => {
 
       {/* start::table */}
       <SectionTable
-        list={data?.data || []}
+        list={data?.data.list || []}
         loading={isFetching}
         hasError={(!data?.status || isError) ? true : false}
         onChangeSelection={OnChangeSelection}

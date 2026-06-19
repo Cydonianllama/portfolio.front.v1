@@ -3,25 +3,31 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/modules/examples/example1/types/manager.v1';
-import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
+import { ManagerV1Item } from '../models/dto';
+import { UpdateItemRequestDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
+import { api } from '@/setup/axios'
+import { configurationModule } from '../config';
 
-
-export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<ManagerV1Item> | null>  => {
+export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<{ item: ManagerV1Item }> | null> => {
   try {
+    // const req = await api.put(`${configurationModule.mainAPIroute}`, {})
+    // return req.data;
+
     await sleep(2000)
     return {
       status: true,
       data: {
-        creationDate: new Date(),
-        description: config.description,
-        id: config.id,
-        isPublish: false,
-        name: config.name,
-        qtyItem: config.qty,
-        statusCode: 1,
-        statusName: 'Active'
+        item: {
+          creationDate: new Date(),
+          description: config.description,
+          id: config.id,
+          isPublish: false,
+          name: config.name,
+          qtyItem: config.qty,
+          statusCode: 1,
+          statusName: 'Active'
+        }
       }
     };
   } catch (ex) {

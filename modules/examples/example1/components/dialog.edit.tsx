@@ -25,7 +25,7 @@ import {
   UpdateSchema,
   updateSchema
 } from "@/modules/examples/example1/schemas/item.update";
-import { ManagerV1Item } from "../types/manager.v1"
+import { ManagerV1Item } from "../models/dto"
 
 export interface ManagerV1DialogUpdateConfig {
   onUpdate: (data: UpdateSchema) => void

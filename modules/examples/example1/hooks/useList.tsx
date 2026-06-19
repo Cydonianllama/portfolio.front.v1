@@ -2,13 +2,14 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetItems } from "../services";
+import { configurationModule } from "../config";
 
 export const useListManagerV1 = (
   page: number,
   query?: string
 ) => {
   return useQuery({
-    queryKey: ["listmanagerv1", page, query],
+    queryKey: [configurationModule.codetable, page, query],
     queryFn: () => {
       return GetItems({
         page,

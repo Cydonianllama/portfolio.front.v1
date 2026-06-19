@@ -3,13 +3,17 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/modules/examples/example1/types/manager.v1';
-import { CreateItemRequestDTO, DeleteItemRequestDTO, DeleteItemResponseDTO, GetItemsRequestDTO, UpdateItemRequestDTO } from '../models/dto';
+import { ManagerV1Item } from '../models/dto';
+import { GetItemsRequestDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
+import { api } from '@/setup/axios'
+import { configurationModule } from '../config';
 
-
-export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<Array<ManagerV1Item>> | null> => {
+export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<{ list: Array<ManagerV1Item> }> | null> => {
   try {
+    // const req = await api.get(`${configurationModule.mainAPIroute}`)
+    // return req.data;
+    
     await sleep(1000);
 
     const page = config.page ?? 1;
@@ -40,7 +44,7 @@ export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<
     return {
       status: true,
       message: "",
-      data: items,
+      data: { list: items },
       pagination: {
         page,
         limit,

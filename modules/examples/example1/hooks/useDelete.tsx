@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DeleteItem } from "../services";
+import { configurationModule } from "../config";
 
 export const useDeleteManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();
@@ -32,14 +33,16 @@ export const useDeleteManagerV1 = (page: number, query?: string) => {
       const deletedId = response.data.id;
 
       queryClient.setQueryData(
-        ["listmanagerv1", page, query],
+        [configurationModule.codetable, page, query],
         (oldData: any) => {
           if (!oldData) return oldData;
           return {
             ...oldData,
-            data: oldData.data.filter(
-              (item: any) => item.id !== deletedId
-            )
+            data: {
+              list: oldData.data.list.filter(
+                (item: any) => item.id !== deletedId
+              )
+            }
           };
         }
       );

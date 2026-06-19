@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CreateItem } from "../services";
+import { configurationModule } from "../config";
 
 export const useCreateManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();
@@ -26,21 +27,23 @@ export const useCreateManagerV1 = (page: number, query?: string) => {
         return;
       }
 
-      const newItem = response.data;
+      const newItem = response.data.item;
 
       toast.success('Item creado')
 
       queryClient.setQueryData(
-        ["listmanagerv1", page, query],
+        [configurationModule.codetable, page, query],
         (oldData: any) => {
           console.log(oldData)
           if (!oldData) return oldData;
           return {
             ...oldData,
-            data: [
-              newItem,
-              ...oldData.data
-            ]
+            data: {
+              list: [
+                newItem,
+                ...oldData.data.list
+              ]
+            }
           };
         }
       );

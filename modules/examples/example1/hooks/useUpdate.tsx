@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UpdateItem } from "../services";
+import { configurationModule } from "../config";
 
 export const useUpdateManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();
@@ -28,18 +29,20 @@ export const useUpdateManagerV1 = (page: number, query?: string) => {
 
       toast.success('Item actualizado')
 
-      const updatedItem = response.data;
+      const updatedItem = response.data.item;
       queryClient.setQueryData(
-        ["listmanagerv1", page, query],
+        [configurationModule.codetable, page, query],
         (oldData: any) => {
           if (!oldData) return oldData;
           return {
             ...oldData,
-            data: oldData.data.map((item: any) =>
-              item.id === updatedItem.id
-                ? updatedItem
-                : item
-            )
+            data: {
+              list: oldData.data.list.map((item: any) =>
+                item.id === updatedItem.id
+                  ? updatedItem
+                  : item
+              )
+            }
           };
         }
       );
