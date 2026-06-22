@@ -18,3 +18,13 @@ CreationSchema
 
 updateSchema
 UpdateSchema
+
+
+ManagerV1DialogConfirmDelete
+ManagerV1DialogConfirmDeleteConfig
+
+ManagerV1DialogCreate
+ManagerV1DialogCreateConfig
+
+ManagerV1DialogEdit
+ManagerV1DialogUpdateConfig
