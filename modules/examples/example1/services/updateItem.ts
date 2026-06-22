@@ -9,7 +9,7 @@ import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
 import { configurationModule } from '../config';
 
-export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<UpdateItemRepsonseDTO> | null> => {
+export const UpdateItemService = async (config: UpdateItemRequestDTO): Promise<ResponseApi<UpdateItemRepsonseDTO> | null> => {
   try {
     // const req = await api.put(`${configurationModule.mainAPIroute}`, {})
     // return req.data;

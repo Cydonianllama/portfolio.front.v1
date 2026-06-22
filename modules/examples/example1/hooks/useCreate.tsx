@@ -4,13 +4,13 @@
 import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CreateItem } from "../services";
+import { CreateItemService } from "../services";
 import { configurationModule } from "../config";
 
 export const useCreateManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: CreateItem,
+    mutationFn: CreateItemService,
     onSuccess: (response) => {
       if (!response) {
         toast.error('Error "req" no encontrado')

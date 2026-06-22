@@ -52,9 +52,9 @@ export const Managerv1Screen = () => {
     refetch
   } = useListManagerV1(page, query);
 
-  const createItem = useCreateManagerV1(page, query)
-  const updateItem = useUpdateManagerV1(page, query)
-  const deleteItem = useDeleteManagerV1(page, query)
+  const createItemAction = useCreateManagerV1(page, query)
+  const updateItemAction = useUpdateManagerV1(page, query)
+  const deleteItemAction = useDeleteManagerV1(page, query)
 
   //
   // section header
@@ -112,7 +112,7 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await createItem.mutateAsync({
+      const req = await createItemAction.mutateAsync({
         description: data.description,
         name: data.name,
         qty: data.units
@@ -152,7 +152,7 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await updateItem.mutateAsync({
+      const req = await updateItemAction.mutateAsync({
         description: data.description,
         id: moduleState.informationIpdateItem.itemId,
         name: data.name,
@@ -191,7 +191,7 @@ export const Managerv1Screen = () => {
         loading: true,
       })
 
-      const req = await deleteItem.mutateAsync({
+      const req = await deleteItemAction.mutateAsync({
         id: moduleState.informationDeleteItem?.itemId
       })
 

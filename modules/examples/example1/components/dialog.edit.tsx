@@ -27,7 +27,7 @@ import {
 } from "@/modules/examples/example1/schemas/item.update";
 import { ManagerV1Item } from "../models/dto"
 
-export interface ManagerV1DialogUpdateConfig {
+export interface ManagerV1DialogEditConfig {
   onUpdate: (data: UpdateSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
@@ -35,7 +35,7 @@ export interface ManagerV1DialogUpdateConfig {
   updating: boolean
 }
 
-export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
+export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
 
   const {
     register,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GetItems } from "../services";
+import { GetItemsService } from "../services";
 import { configurationModule } from "../config";
 
 export const useListManagerV1 = (
@@ -11,7 +11,7 @@ export const useListManagerV1 = (
   return useQuery({
     queryKey: [configurationModule.codetable, page, query],
     queryFn: () => {
-      return GetItems({
+      return GetItemsService({
         page,
         query: query || ''
       })

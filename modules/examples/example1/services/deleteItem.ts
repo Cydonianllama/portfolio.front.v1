@@ -8,7 +8,7 @@ import { DeleteItemRequestDTO, DeleteItemResponseDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
 
-export const DeleteItem = async (config: DeleteItemRequestDTO): Promise<ResponseApi<DeleteItemResponseDTO> | null>  => {
+export const DeleteItemService = async (config: DeleteItemRequestDTO): Promise<ResponseApi<DeleteItemResponseDTO> | null>  => {
   try {
     // const req = await api.delete(`${configurationModule.mainAPIroute}`)
     // return req.data;

@@ -4,14 +4,14 @@
 import { toast } from "sonner";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { DeleteItem } from "../services";
+import { DeleteItemService } from "../services";
 import { configurationModule } from "../config";
 
 export const useDeleteManagerV1 = (page: number, query?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: DeleteItem,
+    mutationFn: DeleteItemService,
     onSuccess: (response) => {
       if (!response) {
         toast.error('Error "req" no encontrado')

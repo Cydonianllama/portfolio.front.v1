@@ -10,7 +10,7 @@ import { api } from '@/setup/axios'
 import { configurationModule } from '../config';
 
 
-export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<CreateItemResponseDTO> | null> => {
+export const CreateItemService = async (config: CreateItemRequestDTO): Promise<ResponseApi<CreateItemResponseDTO> | null> => {
   try {
     // const req = await api.post(`${configurationModule.mainAPIroute}`, {})
     // return req.data;
