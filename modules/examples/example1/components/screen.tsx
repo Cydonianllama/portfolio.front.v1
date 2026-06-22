@@ -222,13 +222,23 @@ export const Managerv1Screen = () => {
 
     const elements: Array<string> = []
 
-    for (const el in data){
-      if (data[el]){
+    for (const el in data) {
+      if (data[el]) {
         elements.push(el)
       }
     }
-    
+
     moduleState.setItemsSelected(elements)
+  }
+
+  const OnClickEmptyCreate = () => {
+    moduleState.setInformationCreationItem({
+      isOpen: true
+    })
+  }
+
+  const OnClickRetry = () => {
+    HandleToRefresh()
   }
 
   return (<>
@@ -256,6 +266,8 @@ export const Managerv1Screen = () => {
         loading={isFetching}
         hasError={(!data?.status || isError) ? true : false}
         onChangeSelection={OnChangeSelection}
+        OnClickEmptyCreate={OnClickEmptyCreate}
+        OnClickRetry={OnClickRetry}
       />
       {/* end::table */}
 

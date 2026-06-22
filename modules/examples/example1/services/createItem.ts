@@ -4,13 +4,13 @@
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ManagerV1Item } from '../models/dto';
-import { CreateItemRequestDTO } from '../models/dto';
+import { CreateItemRequestDTO, CreateItemResponseDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
 import { configurationModule } from '../config';
 
 
-export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<{ item: ManagerV1Item }> | null> => {
+export const CreateItem = async (config: CreateItemRequestDTO): Promise<ResponseApi<CreateItemResponseDTO> | null> => {
   try {
     // const req = await api.post(`${configurationModule.mainAPIroute}`, {})
     // return req.data;
@@ -19,7 +19,7 @@ export const CreateItem = async (config: CreateItemRequestDTO): Promise<Response
     return {
       status: true,
       data: {
-        item: {
+        item_to_replace: {
           creationDate: new Date(),
           description: config.description,
           id: `item-${Math.ceil(Math.random() * 100000)}`,

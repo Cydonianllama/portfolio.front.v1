@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { ManagerV1Item } from "../types/manager.v1";
+import { ManagerV1Item } from "../models/dto";
 
 type informationCreationItemType = {
   // states of operation

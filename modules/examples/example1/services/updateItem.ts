@@ -3,13 +3,13 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '../models/dto';
+import { ManagerV1Item, UpdateItemRepsonseDTO } from '../models/dto';
 import { UpdateItemRequestDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
 import { configurationModule } from '../config';
 
-export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<{ item: ManagerV1Item }> | null> => {
+export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<UpdateItemRepsonseDTO> | null> => {
   try {
     // const req = await api.put(`${configurationModule.mainAPIroute}`, {})
     // return req.data;
@@ -18,7 +18,7 @@ export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<Response
     return {
       status: true,
       data: {
-        item: {
+        item_to_replace: {
           creationDate: new Date(),
           description: config.description,
           id: config.id,

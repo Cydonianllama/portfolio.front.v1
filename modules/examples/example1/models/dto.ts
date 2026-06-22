@@ -38,12 +38,21 @@ export interface DeleteItemRequestDTO {
 
 
 // response
+export interface CreateItemResponseDTO {
+  item_to_replace: ManagerV1Item | null
+}
 
-// export interface CreateItemResponseDTO {
-// }
+export interface UpdateItemRepsonseDTO {
+  item_to_replace: ManagerV1Item | null
+}
 
-// export interface UpdateItemRequestDTO {
-// }
+export interface GetItemResponseDTO {
+  item_to_replace: ManagerV1Item | null
+}
+
+export interface GetItemsResponseDTO {
+  list: Array<ManagerV1Item>
+}
 
 export interface DeleteItemResponseDTO {
   id: string

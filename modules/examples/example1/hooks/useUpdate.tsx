@@ -29,7 +29,7 @@ export const useUpdateManagerV1 = (page: number, query?: string) => {
 
       toast.success('Item actualizado')
 
-      const updatedItem = response.data.item;
+      const updatedItem = response.data.item_to_replace;
       queryClient.setQueryData(
         [configurationModule.codetable, page, query],
         (oldData: any) => {
@@ -38,7 +38,7 @@ export const useUpdateManagerV1 = (page: number, query?: string) => {
             ...oldData,
             data: {
               list: oldData.data.list.map((item: any) =>
-                item.id === updatedItem.id
+                item.id === updatedItem?.id
                   ? updatedItem
                   : item
               )

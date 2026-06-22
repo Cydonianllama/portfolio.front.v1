@@ -3,24 +3,26 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '../models/dto';
+import { GetItemsResponseDTO, ManagerV1Item } from '../models/dto';
 import { GetItemsRequestDTO } from '../models/dto';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
 import { configurationModule } from '../config';
 
-export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<{ list: Array<ManagerV1Item> }> | null> => {
+export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<GetItemsResponseDTO> | null> => {
   try {
     // const req = await api.get(`${configurationModule.mainAPIroute}`)
     // return req.data;
-    
+
     await sleep(1000);
+
+    // throw 'GA';
 
     const page = config.page ?? 1;
     const limit = 16;
 
     const allItems: ManagerV1Item[] = Array.from(
-      { length: 600 },
+      { length: 0 },
       (_, index) => ({
         id: `item-${index + 1}`,
         name: `Producto ${index + 1}`,

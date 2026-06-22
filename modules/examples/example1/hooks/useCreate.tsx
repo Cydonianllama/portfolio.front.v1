@@ -27,7 +27,7 @@ export const useCreateManagerV1 = (page: number, query?: string) => {
         return;
       }
 
-      const newItem = response.data.item;
+      const newItem = response.data.item_to_replace;
 
       toast.success('Item creado')
 
