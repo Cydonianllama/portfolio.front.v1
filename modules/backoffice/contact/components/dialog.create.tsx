@@ -25,15 +25,15 @@ import {
   creationSchema,
   CreationSchema
 } from "../schemas/item.creation";
-export interface ManagerV1DialogCreateConfig {
+export interface DialogCreateConfig {
   onCreate: (data: CreationSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
   creating?: boolean;
 }
 
-export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
-  
+export const DialogCreate = (config: DialogCreateConfig) => {
+
   const {
     register,
     handleSubmit,
@@ -42,11 +42,6 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
     watch
   } = useForm<CreationSchema>({
     resolver: zodResolver(creationSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      units: 0,
-    }
   });
 
   // para ver como los valores cambian
@@ -55,9 +50,8 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
   useEffect(() => {
     if (!config.open) {
       reset({
-        description: '',
-        name: '',
-        units: 1
+        workspaceId: '',
+        fullname: '',
       });
     }
   }, [config.open, reset]);
@@ -87,43 +81,27 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombre</Label>
+            <Label>fullname</Label>
             <Input
-              placeholder="Nombre"
-              {...register("name")}
+              placeholder="fullname"
+              {...register("fullname")}
             />
-            {errors.name && (
+            {errors.fullname && (
               <p className="text-sm text-red-500">
-                {errors.name.message}
+                {errors.fullname.message}
               </p>
             )}
           </Field>
 
           <Field>
-            <Label>Descripción</Label>
+            <Label>workspaceId</Label>
             <Textarea
               placeholder="Descripción"
-              {...register("description")}
+              {...register("workspaceId")}
             />
-            {errors.description && (
+            {errors.workspaceId && (
               <p className="text-sm text-red-500">
-                {errors.description.message}
-              </p>
-            )}
-          </Field>
-
-          <Field>
-            <Label>Unidades</Label>
-            <Input
-              type="number"
-              placeholder="Unidades"
-              {...register("units", {
-                valueAsNumber: true
-              })}
-            />
-            {errors.units && (
-              <p className="text-sm text-red-500">
-                {errors.units.message}
+                {errors.workspaceId.message}
               </p>
             )}
           </Field>

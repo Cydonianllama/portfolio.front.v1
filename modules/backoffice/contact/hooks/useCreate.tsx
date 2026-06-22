@@ -1,0 +1,56 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// utils
+import { toast } from "sonner";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CreateContactService } from "../services";
+import { configurationModule } from "../config";
+
+export const useCreateManagerV1 = (page: number, query?: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: CreateContactService,
+    onSuccess: (response) => {
+      if (!response) {
+        toast.error('Error "req" no encontrado')
+        return;
+      }
+
+      if (!response?.status) {
+        toast.error('Error, consulta fallida')
+        return;
+      }
+
+      if (!response?.data) {
+        toast.error('Error "req" no encontrado')
+        return;
+      }
+
+      const newItem = response.data.contact;
+
+      toast.success('Item creado')
+
+      queryClient.setQueryData(
+        [configurationModule.codetable, page, query],
+        (oldData: any) => {
+          console.log(oldData)
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            data: {
+              list: [
+                newItem,
+                ...oldData.data.list
+              ]
+            }
+          };
+        }
+      );
+    },
+    onError: (error) => {
+      console.log(error.message)
+      toast.error('Error inesperado, intentalo más tarde.')
+    },
+  });
+};

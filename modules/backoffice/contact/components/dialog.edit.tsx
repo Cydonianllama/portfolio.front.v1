@@ -25,17 +25,17 @@ import {
   UpdateSchema,
   updateSchema
 } from "../schemas/item.update";
-import { ManagerV1Item } from "../models/dto"
+import { ContactDTO } from "../models/dto"
 
-export interface ManagerV1DialogEditConfig {
+export interface DialogEditConfig {
   onUpdate: (data: UpdateSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
-  data?: ManagerV1Item | null;
+  data?: ContactDTO | null;
   updating: boolean
 }
 
-export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
+export const DialogEdit = (config: DialogEditConfig) => {
 
   const {
     register,
@@ -45,27 +45,20 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
     watch
   } = useForm<UpdateSchema>({
     resolver: zodResolver(updateSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      units: 0,
-    }
   });
 
   useEffect(() => {
     if (!config.open) {
       reset({
-        description: '',
-        name: '',
-        units: 1
+        workspaceId: '',
+        fullname: '',
       });
     }
 
     if (config.data) {
       reset({
-        description: config.data.description,
-        name: config.data.name,
-        units: config.data.qtyItem || 0
+        fullname: config.data.name,
+        workspaceId: config.data.workspaceId
       })
     }
   }, [config.open, reset, config.data]);
@@ -94,46 +87,31 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombre</Label>
+            <Label>fullname</Label>
             <Input
-              placeholder="Nombre"
-              {...register("name")}
+              placeholder="fullname"
+              {...register("fullname")}
             />
-            {errors.name && (
+            {errors.fullname && (
               <p className="text-sm text-red-500">
-                {errors.name.message}
+                {errors.fullname.message}
               </p>
             )}
           </Field>
 
           <Field>
-            <Label>Descripción</Label>
+            <Label>workspaceId</Label>
             <Textarea
-              placeholder="Descripción"
-              {...register("description")}
+              placeholder="workspaceId"
+              {...register("workspaceId")}
             />
-            {errors.description && (
+            {errors.workspaceId && (
               <p className="text-sm text-red-500">
-                {errors.description.message}
+                {errors.workspaceId.message}
               </p>
             )}
           </Field>
 
-          <Field>
-            <Label>Unidades</Label>
-            <Input
-              type="number"
-              placeholder="Unidades"
-              {...register("units", {
-                valueAsNumber: true
-              })}
-            />
-            {errors.units && (
-              <p className="text-sm text-red-500">
-                {errors.units.message}
-              </p>
-            )}
-          </Field>
         </FieldGroup>
         <DialogFooter>
           <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
