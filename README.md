@@ -74,3 +74,7 @@ para el toast -> npm install sonner
 
 ----------------------------------
 para los jobs en segundo plano _> npm install express bullmq ioredis
+
+
+-------------------------
+para el reordenamiento ->   npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
