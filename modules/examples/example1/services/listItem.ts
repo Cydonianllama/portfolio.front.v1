@@ -22,7 +22,7 @@ export const GetItemsService = async (config: GetItemsRequestDTO): Promise<Respo
     const limit = 16;
 
     const allItems: ManagerV1Item[] = Array.from(
-      { length: 0 },
+      { length: 100 },
       (_, index) => ({
         id: `item-${index + 1}`,
         name: `Producto ${index + 1}`,

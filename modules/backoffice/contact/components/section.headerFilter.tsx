@@ -33,12 +33,12 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
           placeholder="Buscar"
           timeout={600}
         />
-        <Filter
+        {/* <Filter
           options={filterOptions.map(el => ({ id: el.code, label: el.title, values: [{ id: 'test2', label:'test2'}, { id: 'test3', label:'test3'}] }))}
         />
         <Sort
           options={sortOptions.map(el => ({id: el.code, label: el.title}))}
-        />
+        /> */}
       </div>
       <div className="flex gap-2 items-center">
         {((data?.itemsSelected?.length || 0) > 0) && (<>
