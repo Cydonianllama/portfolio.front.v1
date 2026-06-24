@@ -37,6 +37,7 @@ import {
 
 import React from "react"
 import { ItemDTO } from "../dto"
+import { ColorsSelector } from "../_config"
 
 export interface ManagerV1DialogEditConfig {
   onUpdate: (data: UpdateSchema) => void
@@ -50,7 +51,7 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
 
   // temp
 
-  const [position, setPosition] = React.useState("bottom")
+  const [color, setColor] = React.useState("")
 
   //
 
@@ -59,7 +60,8 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue,
   } = useForm<UpdateSchema>({
     resolver: zodResolver(updateSchema),
   });
@@ -119,14 +121,24 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogEditConfig) => {
           <Field>
             <Label>Unidades</Label>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="outline">Open</Button>} />
+              <DropdownMenuTrigger render={<Button variant="outline">
+                {color && (<>
+                  <div className={`${ColorsSelector.find(el => el.code == color)?.classname} h-2 w-2 rounded-full`}></div>
+                  {ColorsSelector.find(el => el.code == color)?.name}
+                </>)}
+                {!color && (<>Seleccionar color</>)}
+              </Button>} />
               <DropdownMenuContent className="w-32">
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-                  <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                    <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+                  <DropdownMenuLabel>Seleccionar color</DropdownMenuLabel>
+                  <DropdownMenuRadioGroup value={color} onValueChange={(value) => {
+                    setValue("color", value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
+                    setColor(value)
+                  }}>
+                    {ColorsSelector.map((el, index) => <DropdownMenuRadioItem key={index} value={el.code}> <div className={`${el.classname} h-2 w-2 rounded-full`}></div> {el.name}</DropdownMenuRadioItem>)}
                   </DropdownMenuRadioGroup>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
 import { useEffect } from "react"
@@ -35,6 +36,7 @@ import {
   CreationSchema
 } from "../schemas/item.creation";
 import React from "react"
+import { ColorsSelector } from "../_config"
 
 export interface ManagerV1DialogCreateConfig {
   onCreate: (data: CreationSchema) => void
@@ -47,7 +49,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
 
   // temp
 
-  const [position, setPosition] = React.useState("bottom")
+  const [color, setColor] = React.useState("")
 
   //
 
@@ -56,7 +58,8 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue,
   } = useForm<CreationSchema>({
     resolver: zodResolver(creationSchema),
   });
@@ -66,6 +69,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
 
   useEffect(() => {
     if (!config.open) {
+      setColor('')
       reset({
         color: '',
         name: ''
@@ -97,7 +101,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
-          
+
           <Field>
             <Label>Nombre</Label>
             <Input
@@ -114,14 +118,24 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
           <Field>
             <Label>Color</Label>
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="outline">Open</Button>} />
+              <DropdownMenuTrigger render={<Button variant="outline">
+                {color && (<>
+                  <div className={`${ColorsSelector.find(el => el.code == color)?.classname} h-2 w-2 rounded-full`}></div>
+                  {ColorsSelector.find(el => el.code == color)?.name}
+                </>)}
+                {!color && (<>Seleccionar color</>)}
+              </Button>} />
               <DropdownMenuContent className="w-32">
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-                  <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                    <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+                  <DropdownMenuLabel>Seleccionar color</DropdownMenuLabel>
+                  <DropdownMenuRadioGroup value={color} onValueChange={(value) => {
+                    setValue("color", value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
+                    setColor(value)
+                  }}>
+                    {ColorsSelector.map((el, index) => <DropdownMenuRadioItem key={index} value={el.code}> <div className={`${el.classname} h-2 w-2 rounded-full`}></div> {el.name}</DropdownMenuRadioItem>)}
                   </DropdownMenuRadioGroup>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

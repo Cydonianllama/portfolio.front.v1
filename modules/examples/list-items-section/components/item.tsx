@@ -47,6 +47,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { ItemDTO } from "../dto";
+import { ColorsSelector } from "../_config";
 
 //
 // ITEM
@@ -111,7 +112,7 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: Props) =>
 
         <div className="flex items-center gap-1.5">
           <ItemTitle className="font-semibold">
-            <div className="h-2 w-2 rounded-full bg-green-700"></div>
+            <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div>
             {data.name}
           </ItemTitle>
           <LuDot />
