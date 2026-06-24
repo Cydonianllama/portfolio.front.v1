@@ -244,13 +244,13 @@ export const ListItemScreen = () => {
 
       // remover
       let list_ = [...state.informationListItem.list]
-      list_ = list_.filter(el => el.id == state.informationDeleteItem.itemId)
+      list_ = list_.filter(el => el.id != state.informationDeleteItem.itemId)
       state.setinformationListItem({ list: list_ })
 
     } catch (error) {
       state.setinformationDeleteItem({ hasError: true })
     } finally {
-      state.setinformationDeleteItem({ isOpen: false, itemData: null, itemId: null })
+      state.setinformationDeleteItem({ isOpen: false, itemData: null, itemId: null, loading: false })
     }
   }
 

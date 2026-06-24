@@ -15,7 +15,7 @@ export const GetItem = async (config: GetItemsRequestDTO): Promise<ResponseApi<G
     const limit = 16;
 
     const allItems: ItemDTO[] = Array.from(
-      { length: 100 },
+      { length: 5 },
       (_, index) => ({
         id: `item-${index + 1}`,
         name: `Producto ${index + 1}`,
