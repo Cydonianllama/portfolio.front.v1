@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 // icons
+import { LuDot } from "react-icons/lu";
 import { Search } from "lucide-react"
 import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react"
 import { PiDotsSixVerticalBold } from "react-icons/pi";
@@ -45,6 +46,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { ItemDTO } from "../dto";
 
 //
 // ITEM
@@ -52,9 +54,12 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   id: string;
+  data: ItemDTO
+  onClickEdit?: (id: string, item: ItemDTO) => void
+  onClickDelete?: (id: string, item: ItemDTO) => void
 }
 
-export const SortableItem = ({ id }: Props) => {
+export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: Props) => {
   const {
     attributes,
     listeners,
@@ -74,6 +79,18 @@ export const SortableItem = ({ id }: Props) => {
     cursor: "grab",
   };
 
+  //
+  //
+  //
+
+  const HandleClickEdit = (id: string, item: ItemDTO) => {
+    if (onClickEdit) onClickEdit(id, item)
+  }
+
+  const HandleClickDelete = (id: string, item: ItemDTO) => {
+    if (onClickDelete) onClickDelete(id, item)
+  }
+
   return (
     <Item
       size={'xs'}
@@ -92,7 +109,14 @@ export const SortableItem = ({ id }: Props) => {
       </ItemMedia>
       <ItemContent>
 
-        <ItemTitle>{id}</ItemTitle>
+        <div className="flex items-center gap-1.5">
+          <ItemTitle className="font-semibold">
+            <div className="h-2 w-2 rounded-full bg-green-700"></div>
+            {data.name}
+          </ItemTitle>
+          <LuDot />
+          <span className="text-gray-500">{data.qtyAsociations} registros</span>
+        </div>
         {/* <ItemDescription>
           A simple item with title and description.
         </ItemDescription> */}
@@ -102,18 +126,22 @@ export const SortableItem = ({ id }: Props) => {
           <DropdownMenuTrigger render={<Button variant="ghost" size={'icon'}><BiDotsHorizontalRounded /></Button>} />
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                HandleClickEdit(id, data)
+              }}>
                 <PencilIcon />
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <ShareIcon />
                 Share
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem variant="destructive">
+              <DropdownMenuItem variant="destructive" onClick={() => {
+                HandleClickDelete(id, data)
+              }}>
                 <TrashIcon />
                 Delete
               </DropdownMenuItem>
