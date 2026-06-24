@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator"
 import { Header } from "./section.header";
 import { SectionList } from "./section.list";
-import { GetItem } from "../services";
+import { CreateItem, DeleteItem, GetItem, UpdateItem } from "../services";
 import { useManagerv1Store } from "../store";
 import { ManagerV1DialogEdit } from "./dialog.edit";
 import { ManagerV1DialogCreate } from "./dialog.create";
@@ -21,6 +21,9 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { ItemDTO } from "../dto";
+import { CreationSchema } from "../schemas/item.creation";
+import { UpdateSchema } from "../schemas/item.update";
+import { toast } from "sonner";
 
 //
 // Screen
@@ -115,20 +118,94 @@ export const ListItemScreen = () => {
     state.setinformationCreationItem({ isOpen: open })
   }
 
-  const HandleCreate = () => {
+  const HandleCreate = async (data: CreationSchema) => {
+    try {
 
+      state.setinformationCreationItem({ loading: true, hasError: false })
+
+      const req = await CreateItem({
+        color: data.color || '',
+        name: data.name || ''
+      })
+
+      if (!req) {
+        toast.error('Error 1')
+        return;
+      }
+
+      if (!req.status) {
+        toast.error('Error 2')
+        return;
+      }
+
+      if (!req.data) {
+        toast.error('Error 3')
+        return;
+      }
+
+      toast.success('Exito')
+
+      const list_ = [...state.informationListItem.list]
+      if (req.data.item_to_update) list_.unshift(req.data.item_to_update)
+      state.setinformationListItem({ list: list_ })
+
+    } catch (error) {
+      state.setinformationCreationItem({ hasError: true })
+    } finally {
+      state.setinformationCreationItem({ isOpen: false, loading: false })
+    }
   }
 
   //
   // UPDATE
   //
-  
+
   const HandleOpenEdit = (open: boolean) => {
     state.setinformationUpdateItem({ isOpen: open })
   }
 
-  const HandleUpdate = () => {
+  const HandleUpdate = async (data: UpdateSchema) => {
+    try {
 
+      state.setinformationUpdateItem({ loading: true, hasError: false })
+
+      const req = await UpdateItem({
+        color: data.color || '',
+        id: state.informationUpdateItem.itemId || '',
+        name: data.name || ''
+      })
+
+      if (!req) {
+        toast.error('Error 1')
+        return;
+      }
+
+      if (!req.status) {
+        toast.error('Error 2')
+        return;
+      }
+
+      if (!req.data) {
+        toast.error('Error 3')
+        return;
+      }
+
+      toast.success('Exito')
+
+      // update
+      let list_ = [...state.informationListItem.list]
+      list_ = list_.map(el => {
+        if (el.id == state.informationUpdateItem.itemId){
+          return req.data.item_to_update || el
+        } else return el
+      })
+      state.setinformationListItem({ list: list_ })
+
+    } catch (error) {
+      state.setinformationUpdateItem({ hasError: true })
+    } finally {
+      state.setinformationUpdateItem({ isOpen: false, itemId: null, itemData: null, loading: false })
+    }
   }
 
 
@@ -141,7 +218,40 @@ export const ListItemScreen = () => {
   }
 
   const HandleDelete = async () => {
+    try {
+      // state.setinformationDeleteItem({})
+      state.setinformationDeleteItem({ loading: true, hasError: false })
+      const req = await DeleteItem({
+        id: state.informationDeleteItem.itemId || ''
+      })
 
+      if (!req) {
+        toast.error('Error 1')
+        return;
+      }
+
+      if (!req.status) {
+        toast.error('Error 2')
+        return;
+      }
+
+      if (!req.data) {
+        toast.error('Error 3')
+        return;
+      }
+
+      toast.success('Exito')
+
+      // remover
+      let list_ = [...state.informationListItem.list]
+      list_ = list_.filter(el => el.id == state.informationDeleteItem.itemId)
+      state.setinformationListItem({ list: list_ })
+
+    } catch (error) {
+      state.setinformationDeleteItem({ hasError: true })
+    } finally {
+      state.setinformationDeleteItem({ isOpen: false, itemData: null, itemId: null })
+    }
   }
 
 
