@@ -29,10 +29,7 @@ import { Input } from "@/components/ui/input"
 import { Login } from "@/modules/auth/services/auth.service"
 import { toast } from "sonner";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function LoginForm({className, ...props }: React.ComponentProps<"div">) {
 
   const router = useRouter()
 
@@ -83,7 +80,7 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="shadow-xl/20" size="default">
         <CardHeader>
           <CardTitle className="text-lg">Login to your account</CardTitle>
           <CardDescription>
@@ -92,7 +89,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(HandleToSubmitLogin)}>
-            <FieldGroup>
+            <FieldGroup className="gap-6">
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input

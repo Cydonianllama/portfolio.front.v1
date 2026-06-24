@@ -33,10 +33,87 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
+  SidebarGroupLabel,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar"
+
+import { LuBlocks } from "react-icons/lu";
+
 import { Separator } from "@/components/ui/separator"
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ReactElement } from "react";
+
+type item_ = {
+  title: string
+  url: string
+  icon?: ReactElement
+  isActive?: boolean
+  items?: {
+    title: string
+    url: string
+  }[]
+}
+
+const items: item_[] = [
+  {
+    title: 'Ejemplos',
+    url: '-',
+    icon: <LuBlocks />,
+    isActive: true,
+    items: [
+      {
+        title: 'Home 1',
+        url: '/examples/home'
+      },
+      {
+        title: 'Tabla 1',
+        url: '/examples/managerv1'
+      },
+      {
+        title: 'Listado items 1',
+        url: '/examples/listitemssection'
+      }
+    ]
+  },
+  {
+    title: 'Pendientes',
+    url: '-',
+    icon: <LuBlocks />,
+    isActive: false,
+    items: [
+      {
+        title: 'Selector personalizado',
+        url: '/examples/selector1'
+      },
+      {
+        title: 'Login',
+        url: '/examples/login'
+      },
+      {
+        title: 'Register',
+        url: '/examples/register'
+      },
+      {
+        title: 'Onboarding',
+        url: '/examples/onboarding'
+      },
+      {
+        title: 'Ajustes',
+        url: '/examples/settings'
+      }
+    ]
+  }
+]
 
 function AppSidebar() {
   return (
@@ -73,18 +150,54 @@ function AppSidebar() {
 
       <SidebarContent>
 
-        <SidebarGroup title="Menu">
+        {/* <SidebarGroup title="Menu">
           <SidebarMenu >
             <SidebarMenuItem>
               <SidebarMenuButton render={<Link href={'/examples/managerv1'}>ejemplo 1</Link>}></SidebarMenuButton>
               <SidebarMenuButton render={<Link href={'/examples/managerv2'}>ejemplo 2</Link>}></SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
+        </SidebarGroup> */}
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarMenu>
+            {items.map((item) => (
+              <Collapsible
+                key={item.title}
+                render={<SidebarMenuItem>
+                  <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>}>
+
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {item.items?.map((subItem) => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton render={<a href={subItem.url}>
+                            <span>{subItem.title}</span>
+                          </a>}>
+
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>}
+                defaultOpen={item.isActive}
+                className="group/collapsible"
+              >
+              </Collapsible>
+            ))}
+          </SidebarMenu>
         </SidebarGroup>
 
       </SidebarContent>
       <SidebarFooter>
-        
+
       </SidebarFooter>
     </Sidebar>
   )

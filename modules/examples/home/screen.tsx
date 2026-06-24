@@ -148,12 +148,11 @@ export const HomeScreenTest = () => {
           <Item variant="outline">
             <ItemContent>
               <ItemTitle>You are trying out the growth plan</ItemTitle>
-              <ItemDescription>
-                <Progress className={'py-2'} value={33} />
-                <div className="text-muted-foreground text-xs">
-                  21 days until the trial expires
-                </div>
-              </ItemDescription>
+              {/* <ItemDescription></ItemDescription> */}
+              <Progress className={'py-2'} value={33} />
+              <div className="text-muted-foreground text-xs">
+                21 days until the trial expires
+              </div>
             </ItemContent>
             <ItemActions>
               <Button variant="outline" size="sm">
@@ -164,7 +163,6 @@ export const HomeScreenTest = () => {
         </ItemGroup>
       </section>
       {/*  */}
-
 
       {/*  */}
       <section className="grid grid-flow-col grid-rows-2 grid-cols-3 gap-4 mx-auto">
