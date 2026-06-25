@@ -32,6 +32,7 @@ type DropdownUserProps = {
   searching: boolean
   value?: UserSelectionDTO | null
   onSelect?: (user: UserSelectionDTO) => void
+  className?: string
 }
 
 export const DropdownUser = ({
@@ -40,8 +41,9 @@ export const DropdownUser = ({
   searching,
   value,
   onSelect,
+  ...props
 }: DropdownUserProps) => {
-  const getInitials = (name: string) => {
+  const getInitials = (name: string)  => {
     return name
       .trim()
       .split(/\s+/)
@@ -51,7 +53,7 @@ export const DropdownUser = ({
   }
 
   return (
-    <Field className="w-full">
+    <div {...props}>
       <Combobox
         items={items}
         value={value}
@@ -146,6 +148,6 @@ export const DropdownUser = ({
           )}
         </ComboboxContent>
       </Combobox>
-    </Field>
+    </div>
   )
 }

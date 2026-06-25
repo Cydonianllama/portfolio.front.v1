@@ -24,6 +24,10 @@ import {
   ItemDescription,
   ItemTitle,
 } from "@/components/ui/item"
+import { DropdownUser } from "./DropdownUser"
+import { DropdownWorkspace } from "./DropdownWorkspace"
+import { workspaces } from "./mockup.workspace"
+import { usersMockup } from "./mockup.user"
 
 const users = [
   {
@@ -114,7 +118,12 @@ const members = users.map((user, index) => ({
 export const Combobox1Screen = () => {
   return (<>
 
-    <div className="w-full flex items-center justify-center p-60">
+    <div className="w-full flex items-center justify-center p-60 flex-col gap-2.5">
+
+      <DropdownUser className='w-[400px]' items={usersMockup} onSearch={() => {}} searching={false}  onSelect={() => {}}  />
+
+      <DropdownWorkspace className='w-[400px]' items={workspaces} onSearch={() => {}} searching={false}  onSelect={() => {}}  />
+
       <Field className="max-w-sm">
         <Combobox
           items={members}
