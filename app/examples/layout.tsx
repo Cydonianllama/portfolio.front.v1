@@ -52,6 +52,7 @@ import { ChevronDown, ChevronRight, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ReactElement } from "react";
+import { WorkspaceDropdown } from "@/layouts/exampleLayout/workspacesDropdown";
 
 type item_ = {
   title: string
@@ -120,31 +121,7 @@ function AppSidebar() {
     <Sidebar side='left' variant="sidebar" collapsible={'icon'}>
       {/*  */}
       <SidebarHeader>
-
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger render={<SidebarMenuButton>
-                Select Workspace
-                <ChevronDown className="ml-auto" />
-              </SidebarMenuButton>}>
-
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Acme Inc</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-
+        <WorkspaceDropdown />
       </SidebarHeader>
       {/*  */}
 
