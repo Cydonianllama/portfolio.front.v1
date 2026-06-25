@@ -97,6 +97,10 @@ const items: item_[] = [
         url: '/examples/selector1'
       },
       {
+        title: 'Combobox1',
+        url: '/examples/combobox1'
+      },
+      {
         title: 'Login',
         url: '/examples/login'
       },

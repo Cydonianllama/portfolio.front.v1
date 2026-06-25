@@ -72,15 +72,15 @@ export function WorkspaceDropdown() {
 
         <DropdownMenu>
           <DropdownMenuTrigger
-          // render={<Button variant="outline" />}
-          >
-            <SidebarMenuButton>
+            render={<SidebarMenuButton variant={'outline'}>
               <div className="gap-1.5 flex items-center">
                 {activeWorkspace.logo}
               </div>
               <span className="text-sm font-medium">{activeWorkspace.name}</span>
               <ChevronsUpDownIcon className="ml-auto size-3.5 opacity-60" aria-hidden="true" />
-            </SidebarMenuButton>
+            </SidebarMenuButton>}
+          >
+            
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="start" sideOffset={8}>
             <DropdownMenuGroup>
