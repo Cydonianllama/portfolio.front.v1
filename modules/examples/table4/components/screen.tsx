@@ -8,6 +8,15 @@
 //
 
 // components
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { useState } from "react";
 import { ManagerV1DialogCreate } from "./dialog.create";
 import { ManagerV1DialogEdit } from "./dialog.edit";
@@ -15,7 +24,22 @@ import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
 import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
-import { SectionHeaderFilter } from "./section.headerFilter";
+import { Fragment } from "react"
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxInput,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "@/components/ui/combobox"
+import { Field } from "@/components/ui/field"
+import { InputGroupAddon } from "@/components/ui/input-group"
 
 // utils
 import { toast } from "sonner";
@@ -34,6 +58,7 @@ import { UpdateSchema } from "../schemas/item.update";
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
+import { Input } from "@/components/ui/input";
 
 export const Managerv4Screen = () => {
 
@@ -76,11 +101,9 @@ export const Managerv4Screen = () => {
   // section header filter 
   //  
 
-  const OnSearch = async (text: string) => {
-    console.log(`OnSearch ${text}`)
-    setPage(1)
-    setQuery(text)
-  }
+
+
+
 
   //
   // section footer table
@@ -241,43 +264,88 @@ export const Managerv4Screen = () => {
     HandleToRefresh()
   }
 
+
+  const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"]
+
   return (<>
-    <div className="relative h-full px-12 flex flex-col">
+    <div className="relative h-full px-12 flex flex-col pb-10">
 
       {/* start::header */}
       <SectionHeader
-        title={'Administracion de usuarios 4'}
-        description={'Pantalla de administración de usuarios'}
         HandleToOpenAddItem={HandleToOpenAddItem}
         HandleToRefresh={HandleToRefresh}
       />
       {/* end::header */}
 
-      {/* start::header filter  */}
-      <SectionHeaderFilter
-        OnSearch={OnSearch}
-        itemsSelected={moduleState.itemsSelected || []}
-      />
-      {/* end::header filter  */}
+      <Card size="sm" className="w-full gap-0 my-0 py-0">
+        <CardHeader className="border-b flex items-center justify-between pt-2.5">
+          <CardTitle>Administracion 4</CardTitle>
+          <div className="flex gap-2 items-center">
+            <Field className="w-50">
+              <Combobox multiple items={frameworks}>
+                <ComboboxInput placeholder="Seleccionar">
+                  <InputGroupAddon>
+                    Filtrar por
+                  </InputGroupAddon>
+                </ComboboxInput>
+                <ComboboxContent>
+                  <ComboboxEmpty>No items found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
+            <Field className="w-50">
+              <Combobox items={frameworks}>
+                <ComboboxInput placeholder="Select a framework">
+                  <InputGroupAddon>
+                    Ordernar por
+                  </InputGroupAddon>
+                </ComboboxInput>
+                <ComboboxContent>
+                  <ComboboxEmpty>No items found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
 
-      {/* start::table */}
-      <SectionTable
-        list={data?.data.list || []}
-        loading={isFetching}
-        hasError={(!data?.status || isError) ? true : false}
-        onChangeSelection={OnChangeSelection}
-        OnClickEmptyCreate={OnClickEmptyCreate}
-        OnClickRetry={OnClickRetry}
-      />
-      {/* end::table */}
+          </div>
 
-      {/* start::footer table */}
-      <SectionFooterTable
-        HandleToNextPage={HandleToNextPage}
-        HandleToPrevPage={HandleToPrevPage}
-        pagination={data?.pagination || null}
-      />
-      {/* end::footer table */}
+        </CardHeader>
+        <CardContent className="p-0 bg-white">
+          {/* start::table */}
+          <SectionTable
+            list={data?.data.list || []}
+            loading={isFetching}
+            hasError={(!data?.status || isError) ? true : false}
+            onChangeSelection={OnChangeSelection}
+            OnClickEmptyCreate={OnClickEmptyCreate}
+            OnClickRetry={OnClickRetry}
+          />
+          {/* end::table */}
+        </CardContent>
+        <CardFooter className="py-0 bg-white">
+          {/* start::footer table */}
+          <SectionFooterTable
+            HandleToNextPage={HandleToNextPage}
+            HandleToPrevPage={HandleToPrevPage}
+            pagination={data?.pagination || null}
+          />
+          {/* end::footer table */}
+        </CardFooter>
+      </Card>
+
 
       {/* start::Dialogs */}
       <ManagerV1DialogCreate

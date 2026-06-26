@@ -47,29 +47,6 @@ import { ErrorStateComponent } from '../shared/Error';
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ManagerV1Item>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Seleccionar todos"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) =>
-          row.toggleSelected(!!value)
-        }
-        aria-label="Seleccionar fila"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "id",
     header: "Id"
   },
@@ -215,7 +192,7 @@ export const SectionTable = (data: SectionTableProps) => {
 
       {/* Hay data */}
       {data.list.length > 0 && (<>
-        <div className="border rounded flex-1">
+        <div className="rounded flex-1">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
