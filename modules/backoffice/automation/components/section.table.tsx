@@ -39,6 +39,10 @@ import { useManagerv1Store } from '../store/store';
 import { MdOutlineEdit } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
 import { AutomationBackofficeDTO } from '../models/dto';
+import { LiaSitemapSolid } from 'react-icons/lia';
+import { EmptyStateComponent } from '@/components/Empty';
+import { ErrorStateComponent } from '@/components/Error';
+import { SpinnerListing } from '@/components/Listing';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<AutomationBackofficeDTO>[] = [
@@ -138,11 +142,11 @@ export type SectionTableProps = {
 }
 
 export const SectionTable = (data: SectionTableProps) => {
-  
+
   const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
-    if (data.onChangeSelection){
+    if (data.onChangeSelection) {
       data.onChangeSelection(rowSelection)
     }
   }, [rowSelection])
@@ -164,23 +168,32 @@ export const SectionTable = (data: SectionTableProps) => {
 
   return (<>
 
-    {/* Estado de error  */}
-    {data.hasError && (<div className="border rounded flex-1 flex justify-center items-center">
-      Error inesperado
-    </div>)}
 
     {/* cargando data */}
-    {data.loading && (<div className="border rounded flex-1 flex justify-center items-center">
-      <Spinner data-icon="inline-start" />
-    </div>)}
+    {(data.loading) && (<>
+      <SpinnerListing
+        title='Listando automatizaciones'
+        description='Espere unos momentos mientras obtenemos los registros'
+      />
+    </>)}
 
+    {/* Estado de error  */}
+    {(data.hasError && !data.loading) && (<>
+      <ErrorStateComponent onClickRetry={() => {}} />
+    </>)}
     {!data.loading && (<>
 
       {/* No hay data */}
       {data.list.length == 0 && (<>
-        <div className="border rounded flex-1 flex justify-center items-center">
-          No hay data
-        </div>
+        <EmptyStateComponent
+          title='Automatizaciones'
+          description='No tenemos automatizaciones registradas'
+          isActiveCreate={true}
+          onClickCreate={() => { } }
+          isActiveImport={false}
+          isActiveLearn={false}
+          mainIcon={<LiaSitemapSolid />}
+        />
       </>)}
 
       {/* Hay data */}

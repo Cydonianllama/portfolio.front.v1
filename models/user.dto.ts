@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
 import { UserStatus } from "./user";
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 export interface GetUsersRequestDTO {
   query: string;
   page: number;

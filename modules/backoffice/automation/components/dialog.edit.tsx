@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,6 +18,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
+import { DropdownWorkspace } from "./dropdown.workspace"
+import { WorkspaceSelectionDTO } from "../models/dto"
+import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
 
 // formulario
 import { useForm } from "react-hook-form";
@@ -38,12 +42,17 @@ export interface ManagerV1DialogUpdateConfig {
 
 export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
 
+  // status
+  const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
+
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue
   } = useForm<UpdateSchema>({
     resolver: zodResolver(updateSchema),
     // defaultValues: {
@@ -60,6 +69,7 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         userId: '',
         workspaceId: ''
       });
+      setWorkspaceSelected(null)
     }
 
     if (config.data) {
@@ -68,6 +78,15 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         userId: config.data.userCreationId,
         workspaceId: config.data.workspaceId
       })
+      if (config.data.workspaceId){
+        setWorkspaceSelected({
+          id: config.data.workspaceId,
+          logoURL: '',
+          name: config.data.workspaceName
+        })
+      } else {
+        setWorkspaceSelected(null)
+      }
     }
   }, [config.open, reset, config.data]);
 
@@ -78,6 +97,57 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
   const HandleToCancel = () => {
     config.setOpen(false)
   }
+
+  //
+  // Dropdown users
+  //
+  const [loadingWorkspaces, setloadingWorkspaces] = useState(false)
+  const [listWorkspaces, setListWorkspaces] = useState<Array<WorkspaceSelectionDTO>>([])
+
+  //
+  // Actions
+  //
+
+  const GetListAction = async (query: string) => {
+    try {
+      setloadingWorkspaces(true);
+
+      const req = await GetWorkspaces({ page: 1, query: query })
+
+      if (!req) {
+        return
+      }
+
+      if (!req.status) {
+        return
+      }
+
+      if (!req.data) {
+        return;
+      }
+
+      setListWorkspaces(req.data.list.map(el => ({
+        id: el.id,
+        logoURL: '',
+        name: el.name
+      })))
+
+    } catch (ex) {
+      setListWorkspaces([])
+    } finally {
+      setloadingWorkspaces(false)
+    }
+  }
+
+  //
+  // ON INIT 
+  // 1. listar users
+  //
+
+  useEffect(() => {
+    GetListAction('')
+  }, [])
+
 
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
@@ -108,16 +178,32 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
           </Field>
 
           <Field>
-            <Label>Descripción</Label>
-            <Textarea
-              placeholder="Workspace"
+            <Label>Workspace</Label>
+            <DropdownWorkspace
+              value={workspaceSelected}
+              items={listWorkspaces}
+              onSearch={(query) => {
+                GetListAction(query)
+              }}
+              searching={loadingWorkspaces}
+              onSelect={(workspace) => {
+                setWorkspaceSelected(workspace)
+                setValue('workspaceId', workspace.id, {
+                  shouldDirty: true,
+                  shouldValidate: true
+                })
+              }}
+            // value={}
+            />
+            {/* <Textarea
+              placeholder="WorkspaceId"
               {...register("workspaceId")}
             />
             {errors.workspaceId && (
               <p className="text-sm text-red-500">
                 {errors.workspaceId.message}
               </p>
-            )}
+            )} */}
           </Field>
 
           <Field>

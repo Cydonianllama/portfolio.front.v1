@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GetItems } from "../services";
+import { GetWorkspaces } from "../services";
 
 export const useListManagerV1 = (
   page: number,
@@ -10,7 +10,7 @@ export const useListManagerV1 = (
   return useQuery({
     queryKey: ["backoffice.workspace", page, query],
     queryFn: () => {
-      return GetItems({
+      return GetWorkspaces({
         page,
         query: query || ''
       })

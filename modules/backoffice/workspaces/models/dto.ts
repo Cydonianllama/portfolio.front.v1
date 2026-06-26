@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 // request
 
-export interface GetItemsRequestDTO {
+export interface GetWorkspacesRequestDTO {
   query: string;
   page: number;
 }

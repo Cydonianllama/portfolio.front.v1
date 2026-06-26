@@ -58,3 +58,13 @@ export interface GetAutomationResponseDTO {
 export interface DeleteAutomationResponseDTO {
   id: string
 }
+
+
+//
+// workspaces selecion
+//
+export interface WorkspaceSelectionDTO {
+  id: string
+  logoURL: string
+  name: string
+}
