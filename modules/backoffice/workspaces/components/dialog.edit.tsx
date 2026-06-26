@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,7 +26,9 @@ import {
   RequestUpdateWorkspace,
   UpdateWorkspaceSchema
 } from "@/modules/backoffice/workspaces/schemas/item.update";
-import { WorkspaceDTO } from "../models/dto"
+import { UserSelectionDTO, WorkspaceDTO } from "../models/dto"
+import { GetUsers } from "@/services/user.service"
+import { DropdownUser } from "./dropdownUsers"
 
 export interface ManagerV1DialogUpdateConfig {
   onUpdate: (data: RequestUpdateWorkspace) => void
@@ -37,12 +40,16 @@ export interface ManagerV1DialogUpdateConfig {
 
 export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
 
+  // states 
+  const [currentUserSelected, setCurrentUserSelected] = useState<UserSelectionDTO | null>(null) // guarda la configuracion en formato seleccion en caso tenga un usuario seleccionado
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue,
   } = useForm<RequestUpdateWorkspace>({
     resolver: zodResolver(UpdateWorkspaceSchema),
   });
@@ -56,6 +63,17 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
     }
 
     if (config.data) {
+      if (config.data.mainUser){
+        const user = config.data.mainUser;
+
+        setCurrentUserSelected({
+          email: user.email,
+          id: user.id,
+          name: user.name,
+          profileURL: '',
+          role: 'None'
+        })
+      }
       reset({
         mainUserId: config.data.mainUser?.id || '',
         name: config.data.name
@@ -70,6 +88,57 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
   const HandleToCancel = () => {
     config.setOpen(false)
   }
+
+  //
+  // Dropdown users
+  //
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [listUsers, setListUsers] = useState<Array<UserSelectionDTO>>([])
+
+  //
+  // Actions
+  //
+
+  const GetListAction = async (query: string) => {
+    try {
+      setLoadingUsers(true);
+
+      const req = await GetUsers({ page: 1, query: query })
+      if (!req) {
+        return
+      }
+
+      if (!req.status) {
+        return
+      }
+
+      if (!req.data) {
+        return;
+      }
+
+      setListUsers(req.data.list.map(el => ({
+        email: el.email,
+        id: el.id,
+        name: el.fullname,
+        profileURL: '',
+        role: 'None'
+      })))
+
+    } catch (ex) {
+      setListUsers([])
+    } finally {
+      setLoadingUsers(false)
+    }
+  }
+
+  //
+  // ON INIT 
+  // 1. listar users
+  //
+
+  useEffect(() => {
+    GetListAction('')
+  }, [])
 
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
@@ -87,7 +156,7 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombre</Label>
+            <Label>Nombres</Label>
             <Input
               placeholder="Nombre"
               {...register("name")}
@@ -100,10 +169,22 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
           </Field>
 
           <Field>
-            <Label>mainUserId</Label>
-            <Input
+            <Label>Usuario</Label>
+            {/* <Input
               placeholder="mainUserId"
               {...register("mainUserId")}
+            /> */}
+            <DropdownUser
+              items={listUsers}
+              onSearch={(query) => { GetListAction(query) }}
+              searching={loadingUsers}
+              onSelect={(user) => {
+                setValue("mainUserId", user.id, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }}
+              value={currentUserSelected}
             />
             {errors.mainUserId && (
               <p className="text-sm text-red-500">

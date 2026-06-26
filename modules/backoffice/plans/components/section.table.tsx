@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // utils
 import { format } from 'date-fns';
@@ -20,6 +20,27 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner"
 import { Badge } from "@/components/ui/badge"
+import { LiaSitemapSolid } from "react-icons/lia";
+import { EmptyStateComponent } from '../shared/Empty';
+import { SpinnerListing } from '../shared/Listing';
+import { ErrorStateComponent } from '../shared/Error';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // react-table
 import {
@@ -31,21 +52,61 @@ import {
 
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
+import { PlanDTO } from "../models/dto";
 
 // state
 import { useManagerv1Store } from '../store/store';
 
 // icons
+import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react"
+import { HiArrowsUpDown } from "react-icons/hi2";
+import { HiMiniArrowSmallDown } from "react-icons/hi2";
 import { MdOutlineEdit } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
-import { UserDTO } from '../models/dto';
-import { LiaSitemapSolid } from 'react-icons/lia';
-import { EmptyStateComponent } from '@/components/Empty';
-import { ErrorStateComponent } from '@/components/Error';
-import { SpinnerListing } from '@/components/Listing';
+import { HiDotsHorizontal, HiOutlineSortDescending } from "react-icons/hi";
+import { HiMiniArrowSmallUp } from "react-icons/hi2";
+
+// componente Columna personalizada
+type ColumnTableStates = 'none' | 'desc' | 'asc'
+type ColumnTable2Props = {
+  name: string
+  onChange: (status: ColumnTableStates) => void
+  hasStatus?: boolean
+}
+
+const ColumnTable2 = ({ name, onChange, hasStatus = true }: ColumnTable2Props) => {
+
+  const [status, setStatus] = useState<ColumnTableStates>('none')
+
+  const HandleClick = useCallback(
+    () => {
+      if (!hasStatus) return;
+      const statuses: Array<ColumnTableStates> = ['none', 'asc', 'desc']
+      let index = statuses.findIndex(a => a == status)
+      if (index == 2) index = 0
+      else index++;
+      setStatus(statuses[index])
+      onChange(statuses[index])
+    },
+    [hasStatus, onChange, status]
+  )
+
+  return (<div className='flex justify-between items-center w-full'>
+    <Button onClick={HandleClick} className={'text-gray-500 w-full flex justify-between'} size={'icon'} variant={'ghost'}>
+      <span>{name}</span>
+
+      {hasStatus && (<>
+        {status == 'none' && <HiArrowsUpDown />}
+        {status == 'desc' && <HiMiniArrowSmallDown />}
+        {status == 'asc' && <HiMiniArrowSmallUp />}
+      </>)}
+
+    </Button>
+  </div>)
+}
 
 // configuracion de columna
-export const columnsUsersTable: ColumnDef<UserDTO>[] = [
+export const columnsUsersTable: ColumnDef<PlanDTO>[] = [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -71,34 +132,36 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
   // },
   {
     accessorKey: "id",
-    header: "Id"
+    header: ({ table, column, header }) => (<>
+      <ColumnTable2 hasStatus={false} name={'Id'} onChange={() => { }} />
+    </>)
   },
   {
-    accessorKey: "username",
-    header: "Username"
+    accessorKey: "name",
+    header: () => (<>
+      <ColumnTable2 hasStatus={false} name={'Name'} onChange={() => { }} />
+    </>)
   },
+  // {
+  //   accessorKey: "status",
+  //   header: ({ table, column, header }) => (<>
+  //     <ColumnTable2 name={'Estatus'} onChange={() => { }} />
+  //   </>),
+  //   cell: ({ row }) => (<>
+  //     <Badge variant="secondary">{row.original.statusName}</Badge>
+  //   </>),
+  // },
   {
-    accessorKey: "email",
-    header: "Email"
-  },
-  {
-    accessorKey: "fullname",
-    header: "Nombres"
-  },
-  {
-    accessorKey: "statusName",
-    header: "Status",
-    cell: ({ row }) => (<>
-      <Badge variant="secondary">{row.original.statusName}</Badge>
-    </>),
-  },
-  {
-    accessorKey: "qtyWorkspaces",
-    header: "Q.Workspaces"
+    accessorKey: 'qty',
+    header: ({ table, column, header }) => (<>
+      <ColumnTable2 hasStatus={false}  name={'Qty'} onChange={() => { }} />
+    </>)
   },
   {
     id: 'date',
-    header: 'Fecha de creación',
+    header: ({ table, column, header }) => (<>
+      <ColumnTable2 hasStatus={false}  name={'Fecha de creación'} onChange={() => { }} />
+    </>),
     cell: (data) => {
       return (<>
         {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
@@ -115,41 +178,46 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
 ];
 
 // ActionsRow
-const ActionsRow = ({ data }: { data: CellContext<UserDTO, unknown> }) => {
+const ActionsRow = ({ data }: { data: CellContext<PlanDTO, unknown> }) => {
   const user = data.row.original;
   const moduleState = useManagerv1Store();
   return (
     <div className="flex gap-2">
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Editar", user.id)
-          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
-        }}
-      >
-        <MdOutlineEdit />
-      </Button>
-
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Eliminar", user.id)
-          moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
-        }}
-      >
-        <FiTrash2 />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button variant="ghost" size={'icon-xs'}><HiDotsHorizontal /></Button>} />
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Editar", user.id)
+              moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <PencilIcon />
+              Edit
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem variant="destructive" onClick={() => {
+              console.log("Eliminar", user.id)
+              moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
+            }}>
+              <TrashIcon />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }
 
 export type SectionTableProps = {
-  list: Array<UserDTO>
+  list: Array<PlanDTO>
   loading: boolean;
   hasError?: boolean;
   onChangeSelection?: (state: any) => void
+  OnClickEmptyCreate?: () => void;
+  OnClickRetry?: () => void;
 }
 
 export const SectionTable = (data: SectionTableProps) => {
@@ -175,7 +243,15 @@ export const SectionTable = (data: SectionTableProps) => {
   });
 
 
-  //TODO:Empty state
+  //Empty state
+  const OnClickEmptyCreate = () => {
+    if (data.OnClickEmptyCreate) data.OnClickEmptyCreate()
+  }
+
+  // Error state
+  const OnClickRetry = () => {
+    if (data.OnClickRetry) data.OnClickRetry()
+  }
 
   return (<>
 
@@ -189,10 +265,10 @@ export const SectionTable = (data: SectionTableProps) => {
 
     {/* Estado de error  */}
     {(data.hasError && !data.loading) && (<>
-      <ErrorStateComponent onClickRetry={() => { }} />
+      <ErrorStateComponent onClickRetry={OnClickRetry} />
     </>)}
 
-    {!data.loading && (<>
+    {(!data.loading && !data.hasError) && (<>
 
       {/* No hay data */}
       {data.list.length == 0 && (<>
@@ -200,7 +276,7 @@ export const SectionTable = (data: SectionTableProps) => {
           title='Items'
           description='No tenemos items registrados'
           isActiveCreate={true}
-          onClickCreate={() => { }}
+          onClickCreate={OnClickEmptyCreate}
           isActiveImport={false}
           isActiveLearn={false}
           mainIcon={<LiaSitemapSolid />}
@@ -246,3 +322,4 @@ export const SectionTable = (data: SectionTableProps) => {
     </>)}
   </>)
 }
+

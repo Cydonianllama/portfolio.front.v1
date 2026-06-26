@@ -244,8 +244,8 @@ export const ContactScreen = () => {
 
       {/* start::header */}
       <SectionHeader
-        title={'Administracion de usuarios'}
-        description={'Pantalla de administración de usuarios'}
+        title={'Administracion de contactos'}
+        description={'Pantalla de administración de contactos'}
         HandleToOpenAddItem={HandleToOpenAddItem}
         HandleToRefresh={HandleToRefresh}
       />

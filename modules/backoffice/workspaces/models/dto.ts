@@ -55,3 +55,14 @@ export interface GetWorkspacesResponseDTO {
 export interface UpateWorkspaceResponseDTO {
   workspace: WorkspaceDTO | null
 }
+
+//
+// user
+//
+export interface UserSelectionDTO {
+  id: string
+  name: string
+  email: string
+  role: string
+  profileURL: string
+}

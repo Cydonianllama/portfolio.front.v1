@@ -9,33 +9,50 @@
 
 // components
 import { useState } from "react";
-import { ManagerV1DialogCreate } from "./dialog.create";
-import { ManagerV1DialogEdit } from "./dialog.edit";
-import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
+import { DialogCreatePlan } from "./dialog.create";
+import { DialogEditPlan } from "./dialog.edit";
+import { DialogConfirmPlanDeletion } from "./dialog.confirmdelete";
 import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
 import { SectionHeaderFilter } from "./section.headerFilter";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+
+
 // utils
 import { toast } from "sonner";
 
 // listado principal
-import { useListManagerV1 } from "@/modules/backoffice/workspaces/hooks/useList";
+import { useListPlans } from "../hooks/useList";
 
 // store
 import { useManagerv1Store } from "../store/store";
 
 // schemas
-import { CreateWorkspaceSchema, RequestCreateWorkspace } from "../schemas/item.creation";
-import { RequestUpdateWorkspace, UpdateWorkspaceSchema } from "../schemas/item.update";
+import { CreationSchema } from "../schemas/item.creation";
+import { UpdateSchema } from "../schemas/item.update";
 
 // services
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
+import { configurationModule, mainTabListConfiguration, tabsAvailables } from "../config";
+import { MdSettings } from "react-icons/md";
 
-export const WorkspaceScreen = () => {
+export const PlanScreen = () => {
 
   const moduleState = useManagerv1Store();
 
@@ -50,12 +67,11 @@ export const WorkspaceScreen = () => {
     error,
     isError,
     refetch
-  } = useListManagerV1(page, query);
+  } = useListPlans(page, query);
 
-  const createItem = useCreateManagerV1(page, query)
-  const updateItem = useUpdateManagerV1(page, query)
-  const deleteItem = useDeleteManagerV1(page, query)
-
+  const createPlanAction = useCreateManagerV1(page, query)
+  const updatePlanAction = useUpdateManagerV1(page, query)
+  const deletePlanAction = useDeleteManagerV1(page, query)
 
   //
   // section header
@@ -104,7 +120,7 @@ export const WorkspaceScreen = () => {
   //
   // DIALOG
   //
-  const OnCreateItem = async (data: RequestCreateWorkspace) => {
+  const OnCreateItem = async (data: CreationSchema) => {
     try {
       // reseteamos estados y comenzamos estado de carga
       moduleState.setInformationCreationItem({
@@ -113,9 +129,8 @@ export const WorkspaceScreen = () => {
         loading: true,
       })
 
-      const req = await createItem.mutateAsync({
-        mainUserId: data.mainUserId,
-        name: data.name
+      const req = await createPlanAction.mutateAsync({
+        name: data.name,
       })
 
       console.log(req)
@@ -137,7 +152,7 @@ export const WorkspaceScreen = () => {
     }
   }
 
-  const OnUpdateItem = async (data: RequestUpdateWorkspace) => {
+  const OnUpdateItem = async (data: UpdateSchema) => {
     try {
       if (!moduleState.informationIpdateItem?.itemId) {
         console.log('Error itemId not founded')
@@ -152,10 +167,9 @@ export const WorkspaceScreen = () => {
         loading: true,
       })
 
-      const req = await updateItem.mutateAsync({
-        mainUserId: data.mainUserId || '',
-        name: data.name || '',
-        id: moduleState.informationIpdateItem.itemId
+      const req = await updatePlanAction.mutateAsync({
+        id: moduleState.informationIpdateItem.itemId,
+        name: data.name,
       })
 
       console.log(req)
@@ -190,7 +204,7 @@ export const WorkspaceScreen = () => {
         loading: true,
       })
 
-      const req = await deleteItem.mutateAsync({
+      const req = await deletePlanAction.mutateAsync({
         id: moduleState.informationDeleteItem?.itemId
       })
 
@@ -221,62 +235,108 @@ export const WorkspaceScreen = () => {
 
     const elements: Array<string> = []
 
-    for (const el in data){
-      if (data[el]){
+    for (const el in data) {
+      if (data[el]) {
         elements.push(el)
       }
     }
 
-    // console.log(elements)
-
     moduleState.setItemsSelected(elements)
   }
 
-  return (<>
-    <div className="relative h-full px-12 flex flex-col">
+  const OnClickEmptyCreate = () => {
+    moduleState.setInformationCreationItem({
+      isOpen: true
+    })
+  }
 
+  const OnClickRetry = () => {
+    HandleToRefresh()
+  }
+
+  //
+  // MAIN TABS
+  //
+
+  const HandleToChangeTab = (code: string) => {
+    console.log(`tab : ${code}`)
+  }
+
+  return (<>
+    {mainTabListConfiguration.isActive && (<>
+      <div className="">
+        <Tabs defaultValue={mainTabListConfiguration.list[0].code} className="pt-2 pb-10 px-12">
+          <TabsList className={'gap-1.5 py-5 bg-transparent'}>
+            {mainTabListConfiguration.list.map((item, index) => (<TabsTrigger onClick={() => HandleToChangeTab(item.code)} key={item.code} className={'px-4 py-4 '} value={item.code}>
+              <MdSettings />
+              {item.title}
+            </TabsTrigger>))}
+          </TabsList>
+        </Tabs>
+      </div>
+    </>)}
+
+
+    <div className="px-12 relative h-full  flex flex-col">
       {/* start::header */}
       <SectionHeader
-        title={'Administracion de workspaces'}
-        description={'Pantalla de administración de workspaces'}
-        HandleToOpenAddItem={HandleToOpenAddItem}
-        HandleToRefresh={HandleToRefresh}
+        title={'Administración de planes'}
+        tab={moduleState.tab}
+        onChangeTab={(code: string) => {
+          console.log(`tab : ${code}`)
+          moduleState.setTab(code as tabsAvailables)
+        }}
       />
       {/* end::header */}
 
-      {/* start::header filter  */}
-      <SectionHeaderFilter
-        OnSearch={OnSearch}
-        itemsSelected={moduleState.itemsSelected || []}
-      />
-      {/* end::header filter  */}
+      {moduleState.tab == 'List' && (<>
 
-      {/* start::table */}
-      <SectionTable
-        list={data?.data.list || []}
-        loading={isFetching}
-        hasError={(!data?.status || isError) ? true : false}
-        onChangeSelection={OnChangeSelection}
-      />
-      {/* end::table */}
 
-      {/* start::footer table */}
-      <SectionFooterTable
-        HandleToNextPage={HandleToNextPage}
-        HandleToPrevPage={HandleToPrevPage}
-        pagination={data?.pagination || null}
-      />
-      {/* end::footer table */}
+        {/* start::header filter  */}
+        <SectionHeaderFilter
+          OnSearch={OnSearch}
+          itemsSelected={moduleState.itemsSelected || []}
+          currentTab={moduleState.filterTab}
+          onChangeTabSelection={(tab) => moduleState.setFilterTab(tab)}
+          defaultTab={configurationModule.filterTabs[0]}
+
+          HandleToOpenAddItem={HandleToOpenAddItem}
+          HandleToRefresh={HandleToRefresh}
+        />
+        {/* end::header filter  */}
+
+        {/* start::table */}
+        <SectionTable
+          list={data?.data.list || []}
+          loading={isFetching}
+          hasError={(!data?.status || isError) ? true : false}
+          onChangeSelection={OnChangeSelection}
+          OnClickEmptyCreate={OnClickEmptyCreate}
+          OnClickRetry={OnClickRetry}
+        />
+        {/* end::table */}
+
+        {/* start::footer table */}
+        <SectionFooterTable
+          HandleToNextPage={HandleToNextPage}
+          HandleToPrevPage={HandleToPrevPage}
+          pagination={data?.pagination || null}
+        />
+        {/* end::footer table */}
+
+      </>)}
+      {moduleState.tab == 'Overview' && (<>Analitics</>)}
+
 
       {/* start::Dialogs */}
-      <ManagerV1DialogCreate
+      <DialogCreatePlan
         open={moduleState.informationCreationItem.isOpen}
         setOpen={(open) => moduleState.setInformationCreationItem({ isOpen: open })}
         onCreate={OnCreateItem}
         creating={moduleState.informationCreationItem.loading}
       />
 
-      <ManagerV1DialogEdit
+      <DialogEditPlan
         open={moduleState.informationIpdateItem.isOpen}
         setOpen={(open) => moduleState.setInformationUpdateItem({ isOpen: open })}
         onUpdate={OnUpdateItem}
@@ -284,7 +344,7 @@ export const WorkspaceScreen = () => {
         updating={moduleState.informationIpdateItem.loading}
       />
 
-      <ManagerV1DialogConfirmDelete
+      <DialogConfirmPlanDeletion
         open={moduleState.informationDeleteItem.isOpen}
         setOpen={(open) => moduleState.setInformationDeleteItem({ isOpen: open })}
         onDelete={OnDeleteItem}

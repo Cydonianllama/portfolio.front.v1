@@ -39,6 +39,10 @@ import { useManagerv1Store } from '../store/store';
 import { MdOutlineEdit } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
 import { WorkspaceDTO } from '../models/dto';
+import { LiaSitemapSolid } from 'react-icons/lia';
+import { EmptyStateComponent } from '@/components/Empty';
+import { ErrorStateComponent } from '@/components/Error';
+import { SpinnerListing } from '@/components/Listing';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<WorkspaceDTO>[] = [
@@ -144,11 +148,11 @@ export type SectionTableProps = {
 }
 
 export const SectionTable = (data: SectionTableProps) => {
-  
+
   const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
-    if (data.onChangeSelection){
+    if (data.onChangeSelection) {
       data.onChangeSelection(rowSelection)
     }
   }, [rowSelection])
@@ -169,61 +173,73 @@ export const SectionTable = (data: SectionTableProps) => {
   //TODO:Empty state
 
   return (<>
+    {/* cargando data */}
+    {(data.loading) && (<>
+      <SpinnerListing
+        title='Listando los items'
+        description='Espere unos momentos mientras obtenemos los items'
+      />
+    </>)}
 
     {/* Estado de error  */}
-    {data.hasError && (<div className="border rounded flex-1 flex justify-center items-center">
-      Error inesperado
-    </div>)}
-
-    {/* cargando data */}
-    {data.loading && (<div className="border rounded flex-1 flex justify-center items-center">
-      <Spinner data-icon="inline-start" />
-    </div>)}
-
+    {(data.hasError && !data.loading) && (<>
+      <ErrorStateComponent onClickRetry={() => {}} />
+    </>)}
     {!data.loading && (<>
 
       {/* No hay data */}
-      {data.list.length == 0 && (<>
-        <div className="border rounded flex-1 flex justify-center items-center">
-          No hay data
-        </div>
+      {(!data.loading && !data.hasError) && (<>
+
+        {data.list.length == 0 && (<>
+          <EmptyStateComponent
+            title='Items'
+            description='No tenemos items registrados'
+            isActiveCreate={true}
+            onClickCreate={() => {}}
+            isActiveImport={false}
+            isActiveLearn={false}
+            mainIcon={<LiaSitemapSolid />}
+          />
+        </>)}
+
+        {/* Hay data */}
+        {data.list.length > 0 && (<>
+          <div className="border rounded flex-1">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((group, headerIdx) => (
+                  <TableRow key={headerIdx}>
+                    {group.headers.map((header, index) => (
+                      <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((row, index) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell, cellIdx) => (
+                      <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </>)}
       </>)}
 
-      {/* Hay data */}
-      {data.list.length > 0 && (<>
-        <div className="border rounded flex-1">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((group, headerIdx) => (
-                <TableRow key={headerIdx}>
-                  {group.headers.map((header, index) => (
-                    <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row, index) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </>)}
+
 
     </>)}
   </>)

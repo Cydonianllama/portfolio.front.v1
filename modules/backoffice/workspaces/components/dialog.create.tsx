@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,6 +26,10 @@ import {
   CreateWorkspaceSchema,
   RequestCreateWorkspace
 } from "@/modules/backoffice/workspaces/schemas/item.creation";
+import { DropdownUser } from "./dropdownUsers"
+import { GetUsers } from "@/services/user.service"
+import { UserDTO } from "@/models/user.dto"
+import { UserSelectionDTO } from "../models/dto"
 
 export interface ManagerV1DialogCreateConfig {
   onCreate: (data: RequestCreateWorkspace) => void
@@ -34,13 +39,14 @@ export interface ManagerV1DialogCreateConfig {
 }
 
 export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue,
   } = useForm<RequestCreateWorkspace>({
     resolver: zodResolver(CreateWorkspaceSchema),
   });
@@ -66,6 +72,57 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
     config.setOpen(false)
   }
 
+  //
+  // Dropdown users
+  //
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [listUsers, setListUsers] = useState<Array<UserSelectionDTO>>([])
+
+  //
+  // Actions
+  //
+
+  const GetListAction = async (query: string) => {
+    try {
+      setLoadingUsers(true);
+
+      const req = await GetUsers({ page: 1, query: query })
+      if (!req) {
+        return
+      }
+
+      if (!req.status) {
+        return
+      }
+
+      if (!req.data) {
+        return;
+      }
+
+      setListUsers(req.data.list.map(el => ({
+        email: el.email,
+        id: el.id,
+        name: el.fullname,
+        profileURL: '',
+        role: 'None'
+      })))
+
+    } catch (ex) {
+      setListUsers([])
+    } finally {
+      setLoadingUsers(false)
+    }
+  }
+
+  //
+  // ON INIT 
+  // 1. listar users
+  //
+
+  useEffect(() => {
+    GetListAction('')
+  }, [])
+
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       {/* 
@@ -82,7 +139,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>name</Label>
+            <Label>Nombres</Label>
             <Input
               placeholder="name"
               {...register("name")}
@@ -94,11 +151,22 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
             )}
           </Field>
           <Field>
-            <Label>mainUserId</Label>
-            <Input
+            <Label>Usuario</Label>
+            <DropdownUser
+              items={listUsers}
+              onSearch={(query) => { GetListAction(query) }}
+              searching={loadingUsers}
+              onSelect={(user) => {
+                setValue("mainUserId", user.id, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }}
+            />
+            {/* <Input
               placeholder="mainUserId"
               {...register("mainUserId")}
-            />
+            /> */}
             {errors.mainUserId && (
               <p className="text-sm text-red-500">
                 {errors.mainUserId.message}
@@ -110,7 +178,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
           <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
           <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
             {config.creating && <Spinner data-icon="inline-start" />}
-            Crear item
+            Crear workspaces
           </Button>
         </DialogFooter>
       </DialogContent>
