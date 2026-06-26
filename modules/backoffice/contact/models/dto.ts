@@ -5,8 +5,9 @@ export interface ContactDTO {
   name: string
   creationDate: Date
   workspaceId: string
+  workspaceName: string
+  workspaceLogo: string
 }
-
 
 // request
 
@@ -50,4 +51,14 @@ export interface GetContactsResponseDTO {
 
 export interface DeleteContactResponseDTO {
   id: string
+}
+
+//
+// workspaces selecion
+//
+
+export interface WorkspaceSelectionDTO {
+  id: string
+  logoURL: string
+  name: string
 }

@@ -78,7 +78,7 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
     header: "Nombre"
   },
   {
-    accessorKey: "workspaceId",
+    accessorKey: "workspaceName",
     header: "Workspace"
   },
   {

@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,6 +26,7 @@ import {
   creationSchema,
   CreationSchema
 } from "../schemas/item.creation";
+import { WorkspaceSelectionDTO } from "../models/dto"
 export interface DialogCreateConfig {
   onCreate: (data: CreationSchema) => void
   open: boolean
@@ -32,14 +34,21 @@ export interface DialogCreateConfig {
   creating?: boolean;
 }
 
+import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
+import { DropdownWorkspace } from "./dropdown.workspace"
+
 export const DialogCreate = (config: DialogCreateConfig) => {
+
+  // status
+  const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch
+    watch,
+    setValue,
   } = useForm<CreationSchema>({
     resolver: zodResolver(creationSchema),
   });
@@ -64,6 +73,57 @@ export const DialogCreate = (config: DialogCreateConfig) => {
   const HandleToCancel = () => {
     config.setOpen(false)
   }
+
+  //
+  // Dropdown users
+  //
+  const [loadingWorkspaces, setloadingWorkspaces] = useState(false)
+  const [listWorkspaces, setListWorkspaces] = useState<Array<WorkspaceSelectionDTO>>([])
+
+  //
+  // Actions
+  //
+
+  const GetListAction = async (query: string) => {
+    try {
+      setloadingWorkspaces(true);
+
+      const req = await GetWorkspaces({ page: 1, query: query })
+
+      if (!req) {
+        return
+      }
+
+      if (!req.status) {
+        return
+      }
+
+      if (!req.data) {
+        return;
+      }
+
+      setListWorkspaces(req.data.list.map(el => ({
+        id: el.id,
+        logoURL: '',
+        name: el.name
+      })))
+
+    } catch (ex) {
+      setListWorkspaces([])
+    } finally {
+      setloadingWorkspaces(false)
+    }
+  }
+
+  //
+  // ON INIT 
+  // 1. listar users
+  //
+
+  useEffect(() => {
+    GetListAction('')
+  }, [])
+
 
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
@@ -94,17 +154,24 @@ export const DialogCreate = (config: DialogCreateConfig) => {
           </Field>
 
           <Field>
-            <Label>workspaceId</Label>
-            <Textarea
-              placeholder="Descripción"
-              {...register("workspaceId")}
+            <Label>Workspace</Label>
+            <DropdownWorkspace
+              value={workspaceSelected}
+              items={listWorkspaces}
+              onSearch={(query) => {
+                GetListAction(query)
+              }}
+              searching={loadingWorkspaces}
+              onSelect={(workspace) => {
+                setWorkspaceSelected(workspace)
+                setValue('workspaceId', workspace.id, {
+                  shouldDirty: true,
+                  shouldValidate: true
+                })
+              }}
             />
-            {errors.workspaceId && (
-              <p className="text-sm text-red-500">
-                {errors.workspaceId.message}
-              </p>
-            )}
           </Field>
+
         </FieldGroup>
         <DialogFooter>
           <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
