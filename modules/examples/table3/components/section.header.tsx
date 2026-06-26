@@ -1,30 +1,45 @@
 // components
 import { PropsWithChildren } from 'react'
 import { Button } from '@/components/ui/button'
-
-// icons
-import { IoMdRefresh } from "react-icons/io";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { tabListConfiguration, tabsAvailables } from '../config';
 
 export type SectionHeader = {
   title: string;
-  description: string;
-  HandleToOpenAddItem: () => void
-  HandleToRefresh: () => void
+  onChangeTab?: (code: string) => void
+  tab: tabsAvailables
 }
 
 export const SectionHeader = (data: PropsWithChildren<SectionHeader>) => {
+
+  const OnChangeTab = (code: tabsAvailables) => {
+    if (data.onChangeTab) data.onChangeTab(code)
+  }
+
   return (<>
-    <div className="flex justify-between items-center py-5">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-700">{data.title}</h1>
-        {/* <p className="text-md text-gray-400">{data.description}</p> */}
+    <div className="flex flex-col py-5 gap-2.5">
+      <div className='flex justify-between items-center'>
+        <div>
+          <h1 className="text-xl font-semibold text-gray-700">{data.title}</h1>
+        </div>
       </div>
-      <div className='flex items-center gap-2 '>
-        <Button variant={'outline'} onClick={data.HandleToRefresh} size={'icon'} >
-          <IoMdRefresh/>
-        </Button>
-        <Button onClick={data.HandleToOpenAddItem}>Agregar item</Button>
+      <div className='border-b'>
+        <Tabs value={data.tab || ''} onValueChange={(code) => OnChangeTab(code)} defaultValue={tabListConfiguration.default}>
+          <TabsList variant="line">
+            {tabListConfiguration.list.map((el, index) => (
+              <TabsTrigger
+                // onClick={() => OnChangeTab(el.code)}
+                key={index}
+                className={index == 0 ? 'pl-0' : ''}
+                value={el.title}
+              >
+                {el.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
     </div>
+
   </>)
 }

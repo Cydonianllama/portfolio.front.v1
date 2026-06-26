@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ManagerV1Item } from "../models/dto";
-import { tabsAvailables } from "../config";
+import { filtertabsAvailables, tabsAvailables } from "../config";
 
 type informationCreationItemType = {
   // states of operation
@@ -34,8 +34,11 @@ type informationDeleteItemType = {
 }
 
 interface Managerv1Store {
+  //
   tab: tabsAvailables,
   setTab: (data: tabsAvailables) => void;
+  filterTab: filtertabsAvailables,
+  setFilterTab: (data: filtertabsAvailables) => void;
   // information creation
   informationCreationItem: informationCreationItemType
   setInformationCreationItem: (data: Partial<informationCreationItemType>) => void;
@@ -51,9 +54,13 @@ interface Managerv1Store {
 }
 
 export const useManagerv1Store = create<Managerv1Store>((set) => ({
-  tab: 'Active',
+  tab: 'Overview',
   setTab: (data: tabsAvailables) => set({
     tab: data
+  }),
+  filterTab: 'Active',
+  setFilterTab: (data: filtertabsAvailables) => set({
+    filterTab: data
   }),
   // information creation
   informationCreationItem: {

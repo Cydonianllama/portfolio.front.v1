@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 
 import { HiDotsHorizontal } from "react-icons/hi";
 import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react"
+import { IoMdRefresh } from "react-icons/io";
+import { VscSettings } from "react-icons/vsc";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -29,16 +31,18 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { DatePicker } from "./date.picker"
-import { configurationModule, tabsAvailables } from "../config";
+import { configurationModule, filtertabsAvailables } from "../config";
 
 import { MdHelpOutline } from "react-icons/md";
 
 export type SectionHeaderFilterProps = {
   OnSearch: (text: string) => void
   itemsSelected?: Array<string>
-  onChangeTabSelection?: (code: tabsAvailables) => void;
-  currentTab?: tabsAvailables,
-  defaultTab?: tabsAvailables
+  onChangeTabSelection?: (code: filtertabsAvailables) => void;
+  currentTab?: filtertabsAvailables,
+  defaultTab?: filtertabsAvailables,
+  HandleToOpenAddItem: () => void
+  HandleToRefresh: () => void
 }
 
 export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
@@ -46,6 +50,7 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
 
     <div className="flex justify-between items-center pb-5">
       <div className="flex gap-2 items-center">
+        <DatePicker />
         <Tabs
           value={data.currentTab || ''}
           onValueChange={(val) => {
@@ -54,7 +59,7 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
           defaultValue={data.currentTab || ''}
         >
           <TabsList>
-            {configurationModule.tabs.map((code, index) => (
+            {configurationModule.filterTabs.map((code, index) => (
               <TabsTrigger key={index} value={code}>{code}</TabsTrigger>
             ))}
           </TabsList>
@@ -66,9 +71,8 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
           placeholder="Buscar"
           timeout={600}
         />
-        <DatePicker />
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" size={'icon'}><HiDotsHorizontal /></Button>} />
+          <DropdownMenuTrigger render={<Button variant="outline" size={'icon'}><VscSettings /></Button>} />
           <DropdownMenuContent className={'max-w-lg w-50'}>
             {/*  */}
             <DropdownMenuSub>
@@ -128,6 +132,10 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
         {((data?.itemsSelected?.length || 0) > 0) && (<>
           <span>{data?.itemsSelected?.length}</span> elementos seleccionados.
         </>)}
+        <Button variant={'outline'} onClick={data.HandleToRefresh} size={'icon'} >
+          <IoMdRefresh/>
+        </Button>
+        <Button onClick={data.HandleToOpenAddItem}>Agregar item</Button>
       </div>
     </div>
   </>)
