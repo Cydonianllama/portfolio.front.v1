@@ -17,21 +17,6 @@ import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
 import { SectionHeaderFilter } from "./section.headerFilter";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-
-
 // utils
 import { toast } from "sonner";
 
@@ -49,10 +34,8 @@ import { UpdateSchema } from "../schemas/item.update";
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
-import { configurationModule, mainTabListConfiguration, tabsAvailables } from "../config";
-import { MdSettings } from "react-icons/md";
 
-export const Managerv3Screen = () => {
+export const Managerv4Screen = () => {
 
   const moduleState = useManagerv1Store();
 
@@ -258,82 +241,43 @@ export const Managerv3Screen = () => {
     HandleToRefresh()
   }
 
-  //
-  // MAIN TABS
-  //
-
-  const HandleToChangeTab = (code: string) => {
-    console.log(`tab : ${code}`)
-  }
-
   return (<>
-    <div className="">
-      {mainTabListConfiguration.isActive && (<>
-        <Tabs defaultValue={mainTabListConfiguration.list[0].code} className="pt-2 pb-10 px-12">
-          <TabsList className={'gap-1.5 py-5 bg-transparent'}>
-            {mainTabListConfiguration.list.map((item, index) => (<TabsTrigger onClick={() => HandleToChangeTab(item.code)} key={item.code} className={'px-4 py-4 '} value={item.code}>
-              <MdSettings />
-              {item.title}
-            </TabsTrigger>))}
-          </TabsList>
-        </Tabs>
-      </>)}
-    </div>
+    <div className="relative h-full px-12 flex flex-col">
 
-
-    <div className="px-12 relative h-full  flex flex-col">
       {/* start::header */}
       <SectionHeader
-        title={'Administracion de tabla 3'}
-        tab={moduleState.tab}
-        onChangeTab={(code: string) => {
-          console.log(`tab : ${code}`)
-          moduleState.setTab(code as tabsAvailables)
-        }}
+        title={'Administracion de usuarios 4'}
+        description={'Pantalla de administración de usuarios'}
+        HandleToOpenAddItem={HandleToOpenAddItem}
+        HandleToRefresh={HandleToRefresh}
       />
       {/* end::header */}
 
+      {/* start::header filter  */}
+      <SectionHeaderFilter
+        OnSearch={OnSearch}
+        itemsSelected={moduleState.itemsSelected || []}
+      />
+      {/* end::header filter  */}
 
-      {moduleState.tab == 'Overview' && (<>
+      {/* start::table */}
+      <SectionTable
+        list={data?.data.list || []}
+        loading={isFetching}
+        hasError={(!data?.status || isError) ? true : false}
+        onChangeSelection={OnChangeSelection}
+        OnClickEmptyCreate={OnClickEmptyCreate}
+        OnClickRetry={OnClickRetry}
+      />
+      {/* end::table */}
 
-
-        {/* start::header filter  */}
-        <SectionHeaderFilter
-          OnSearch={OnSearch}
-          itemsSelected={moduleState.itemsSelected || []}
-          currentTab={moduleState.filterTab}
-          onChangeTabSelection={(tab) => moduleState.setFilterTab(tab)}
-          defaultTab={configurationModule.filterTabs[0]}
-
-          HandleToOpenAddItem={HandleToOpenAddItem}
-          HandleToRefresh={HandleToRefresh}
-        />
-        {/* end::header filter  */}
-
-        {/* start::table */}
-        <SectionTable
-          list={data?.data.list || []}
-          loading={isFetching}
-          hasError={(!data?.status || isError) ? true : false}
-          onChangeSelection={OnChangeSelection}
-          OnClickEmptyCreate={OnClickEmptyCreate}
-          OnClickRetry={OnClickRetry}
-        />
-        {/* end::table */}
-
-        {/* start::footer table */}
-        <SectionFooterTable
-          HandleToNextPage={HandleToNextPage}
-          HandleToPrevPage={HandleToPrevPage}
-          pagination={data?.pagination || null}
-        />
-        {/* end::footer table */}
-
-      </>)}
-      {moduleState.tab == 'Analitics' && (<>Analitics</>)}
-      {moduleState.tab == 'Preferences' && (<>Preferences</>)}
-      {moduleState.tab == 'Report' && (<>Report</>)}
-
+      {/* start::footer table */}
+      <SectionFooterTable
+        HandleToNextPage={HandleToNextPage}
+        HandleToPrevPage={HandleToPrevPage}
+        pagination={data?.pagination || null}
+      />
+      {/* end::footer table */}
 
       {/* start::Dialogs */}
       <ManagerV1DialogCreate

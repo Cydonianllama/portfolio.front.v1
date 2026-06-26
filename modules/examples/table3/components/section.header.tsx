@@ -17,7 +17,7 @@ export const SectionHeader = (data: PropsWithChildren<SectionHeader>) => {
   }
 
   return (<>
-    <div className="flex flex-col py-5 gap-2.5">
+    <div className="flex flex-col gap-2.5 pb-2">
       <div className='flex justify-between items-center'>
         <div>
           <h1 className="text-xl font-semibold text-gray-700">{data.title}</h1>

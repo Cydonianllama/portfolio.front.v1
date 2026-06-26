@@ -89,6 +89,10 @@ const items: item_[] = [
         url: '/examples/managerv3'
       },
       {
+        title: 'Tabla 4',
+        url: '/examples/managerv4'
+      },
+      {
         title: 'Listado items 1',
         url: '/examples/listitemssection'
       }
