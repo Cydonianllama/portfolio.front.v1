@@ -95,6 +95,10 @@ const items: item_[] = [
       {
         title: 'Listado items 1',
         url: '/examples/listitemssection'
+      },
+      {
+        title: 'Table simple 1',
+        url: '/examples/simpletable1'
       }
     ]
   },
