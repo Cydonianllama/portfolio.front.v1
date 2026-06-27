@@ -23,7 +23,7 @@ export const SectionHeader = (data: PropsWithChildren<SectionHeader>) => {
         <Button variant={'outline'} onClick={data.HandleToRefresh} size={'icon'} >
           <IoMdRefresh/>
         </Button>
-        <Button onClick={data.HandleToOpenAddItem}>Agregar item</Button>
+        <Button onClick={data.HandleToOpenAddItem}>Agregar usuario</Button>
       </div>
     </div>
   </>)

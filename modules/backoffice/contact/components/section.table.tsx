@@ -21,6 +21,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner"
 import { Badge } from "@/components/ui/badge"
 import { LiaSitemapSolid } from "react-icons/lia";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react"
 
 // react-table
 import {
@@ -43,6 +52,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { EmptyStateComponent } from '../shared/Empty';
 import { SpinnerListing } from '../shared/Listing';
 import { ErrorStateComponent } from '../shared/Error';
+import { HiDotsHorizontal } from "react-icons/hi";
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
@@ -105,27 +115,36 @@ const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
   const moduleState = useManagerv1Store();
   return (
     <div className="flex gap-2">
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Editar", user.id)
-          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
-        }}
-      >
-        <MdOutlineEdit />
-      </Button>
 
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Eliminar", user.id)
-          moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
-        }}
-      >
-        <FiTrash2 />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Editar", user.id)
+              moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <PencilIcon />
+              Editar
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem>
+              <ShareIcon />
+              Editar estado
+            </DropdownMenuItem> */}
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Eliminar", user.id)
+              moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
+            }} variant="destructive">
+              <TrashIcon />
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }
