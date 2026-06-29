@@ -5,7 +5,7 @@
 import { ResponseApi } from '@/types/api/response';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
-import { UpdateItemRequestDTO, UpdateUserResponseDTO } from '../models/dto';
+import { UpdateItemRequestDTO, UpdatePasswordRequestDTO, UpdateUserPasswordResponseDTO, UpdateUserResponseDTO } from '../models/dto';
 
 export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<ResponseApi<UpdateUserResponseDTO> | null>  => {
   try {
@@ -16,5 +16,15 @@ export const UpdateItem = async (config: UpdateItemRequestDTO): Promise<Response
   }
 }
 
+export const UpdatePassword = async (config: UpdatePasswordRequestDTO): Promise<ResponseApi<UpdateUserPasswordResponseDTO> | null>  => {
+  try {
+    const req = await api.put(`/api/backoffice/users/${config.id}/password`, {
+      password: config.password
+    })
+    return req.data;
+  } catch (ex) {
+    return null;
+  }
+}
 
 

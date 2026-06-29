@@ -28,7 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react"
+import { BriefcaseBusinessIcon, KeyRoundIcon, PencilIcon, ShieldUserIcon, ShareIcon, TrashIcon } from "lucide-react"
 
 
 // react-table
@@ -134,7 +134,7 @@ const ActionsRow = ({ data }: { data: CellContext<UserDTO, unknown> }) => {
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className={'w-40'}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => {
               console.log("Editar", user.id)
@@ -143,9 +143,29 @@ const ActionsRow = ({ data }: { data: CellContext<UserDTO, unknown> }) => {
               <PencilIcon />
               Editar general
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              moduleState.setInformationStatusItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
               <ShareIcon />
-              Editar estado
+              Cambiar status
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              moduleState.setInformationWorkspacesItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <BriefcaseBusinessIcon />
+              Ver workspaces asociados
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              moduleState.setInformationPasswordItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <KeyRoundIcon />
+              Cambiar contraseña
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              moduleState.setInformationInternalRolItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <ShieldUserIcon />
+              Cambiar rol interno
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

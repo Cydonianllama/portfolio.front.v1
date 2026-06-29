@@ -32,6 +32,16 @@ type informationDeleteItemType = {
   itemId: string;
 }
 
+type informationUserActionItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  itemId: string;
+  itemData?: UserDTO
+}
+
 interface Managerv1Store {
   // information creation
   informationCreationItem: informationCreationItemType
@@ -42,6 +52,14 @@ interface Managerv1Store {
   // information delete
   informationDeleteItem: informationDeleteItemType
   setInformationDeleteItem: (data: Partial<informationDeleteItemType>) => void;
+  informationStatusItem: informationUserActionItemType
+  setInformationStatusItem: (data: Partial<informationUserActionItemType>) => void;
+  informationWorkspacesItem: informationUserActionItemType
+  setInformationWorkspacesItem: (data: Partial<informationUserActionItemType>) => void;
+  informationPasswordItem: informationUserActionItemType
+  setInformationPasswordItem: (data: Partial<informationUserActionItemType>) => void;
+  informationInternalRolItem: informationUserActionItemType
+  setInformationInternalRolItem: (data: Partial<informationUserActionItemType>) => void;
   // selection
   itemsSelected: Array<string>,
   setItemsSelected: (data: Array<string>) => void;
@@ -97,6 +115,74 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
       ...state,
       informationDeleteItem: {
         ...state.informationDeleteItem,
+        ...data
+      }
+    }
+  }),
+  informationStatusItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationStatusItem: (data: Partial<informationUserActionItemType>) => set((state) => {
+    return {
+      ...state,
+      informationStatusItem: {
+        ...state.informationStatusItem,
+        ...data
+      }
+    }
+  }),
+  informationWorkspacesItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationWorkspacesItem: (data: Partial<informationUserActionItemType>) => set((state) => {
+    return {
+      ...state,
+      informationWorkspacesItem: {
+        ...state.informationWorkspacesItem,
+        ...data
+      }
+    }
+  }),
+  informationPasswordItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationPasswordItem: (data: Partial<informationUserActionItemType>) => set((state) => {
+    return {
+      ...state,
+      informationPasswordItem: {
+        ...state.informationPasswordItem,
+        ...data
+      }
+    }
+  }),
+  informationInternalRolItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationInternalRolItem: (data: Partial<informationUserActionItemType>) => set((state) => {
+    return {
+      ...state,
+      informationInternalRolItem: {
+        ...state.informationInternalRolItem,
         ...data
       }
     }

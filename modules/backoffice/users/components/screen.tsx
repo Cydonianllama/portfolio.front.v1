@@ -12,6 +12,10 @@ import { useState } from "react";
 import { ManagerV1DialogCreate } from "./dialog.create";
 import { ManagerV1DialogEdit } from "./dialog.edit";
 import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
+import { ManagerV1DialogInternalRol } from "./dialog.internalRol";
+import { ManagerV1DialogPassword } from "./dialog.password";
+import { ManagerV1DialogStatus } from "./dialog.status";
+import { ManagerV1DialogWorkspaces } from "./dialog.workspaces";
 import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
@@ -34,6 +38,7 @@ import { RequestUpdateUser, UpdateUserSchema } from "../schemas/item.update";
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
+import { useUpdatePasswordManagerV1 } from "../hooks/useUpdatePassword";
 
 export const UsersScreen = () => {
 
@@ -55,6 +60,7 @@ export const UsersScreen = () => {
   const createItem = useCreateManagerV1(page, query)
   const updateItem = useUpdateManagerV1(page, query)
   const deleteItem = useDeleteManagerV1(page, query)
+  const updatePassword = useUpdatePasswordManagerV1()
 
   //
   // section header
@@ -215,6 +221,99 @@ export const UsersScreen = () => {
     }
   }
 
+  const OnUpdateStatus = async (data: Pick<RequestUpdateUser, "status">) => {
+    try {
+      if (!moduleState.informationStatusItem?.itemId) {
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationStatusItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      await updateItem.mutateAsync({
+        id: moduleState.informationStatusItem.itemId,
+        status: data.status || undefined
+      })
+    } catch (error) {
+      moduleState.setInformationStatusItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationStatusItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  const OnUpdateInternalRol = async (data: Pick<RequestUpdateUser, "internalRol">) => {
+    try {
+      if (!moduleState.informationInternalRolItem?.itemId) {
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationInternalRolItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      await updateItem.mutateAsync({
+        id: moduleState.informationInternalRolItem.itemId,
+        internalRol: data.internalRol || undefined
+      })
+    } catch (error) {
+      moduleState.setInformationInternalRolItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationInternalRolItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  const OnUpdatePassword = async (data: { password: string }) => {
+    try {
+      if (!moduleState.informationPasswordItem?.itemId) {
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationPasswordItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      await updatePassword.mutateAsync({
+        id: moduleState.informationPasswordItem.itemId,
+        password: data.password
+      })
+    } catch (error) {
+      moduleState.setInformationPasswordItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationPasswordItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
   //
   // Table
   //
@@ -291,6 +390,35 @@ export const UsersScreen = () => {
         setOpen={(open) => moduleState.setInformationDeleteItem({ isOpen: open })}
         onDelete={OnDeleteItem}
         deleting={moduleState.informationDeleteItem.loading}
+      />
+
+      <ManagerV1DialogStatus
+        open={moduleState.informationStatusItem.isOpen}
+        setOpen={(open) => moduleState.setInformationStatusItem({ isOpen: open })}
+        onUpdate={OnUpdateStatus}
+        data={moduleState.informationStatusItem.itemData || null}
+        updating={moduleState.informationStatusItem.loading}
+      />
+
+      <ManagerV1DialogWorkspaces
+        open={moduleState.informationWorkspacesItem.isOpen}
+        setOpen={(open) => moduleState.setInformationWorkspacesItem({ isOpen: open })}
+        data={moduleState.informationWorkspacesItem.itemData || null}
+      />
+
+      <ManagerV1DialogPassword
+        open={moduleState.informationPasswordItem.isOpen}
+        setOpen={(open) => moduleState.setInformationPasswordItem({ isOpen: open })}
+        onUpdate={OnUpdatePassword}
+        updating={moduleState.informationPasswordItem.loading}
+      />
+
+      <ManagerV1DialogInternalRol
+        open={moduleState.informationInternalRolItem.isOpen}
+        setOpen={(open) => moduleState.setInformationInternalRolItem({ isOpen: open })}
+        onUpdate={OnUpdateInternalRol}
+        data={moduleState.informationInternalRolItem.itemData || null}
+        updating={moduleState.informationInternalRolItem.loading}
       />
       {/* end::Dialogs */}
     </div>
