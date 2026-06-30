@@ -1,3 +1,5 @@
+"use client";
+
 import ReactQueryProvider from "@/providers/reactQueryProvider";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
@@ -54,6 +56,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { WorkspaceDropdown } from "@/layouts/exampleLayout/workspacesDropdown";
+import { usePathname } from "next/navigation";
 
 type item_ = {
   title: string
@@ -166,6 +169,12 @@ export default function BackofficeLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  if (pathname === "/backoffice/login") {
+    return <>{children}</>;
+  }
+
   return (
     <ReactQueryProvider>
       <SidebarProvider>

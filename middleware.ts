@@ -19,14 +19,19 @@ export async function middleware(request: NextRequest) {
   const publicRoutes = [
     "/login",
     "/register",
+    "/backoffice/login",
   ];
 
   const isPublic = publicRoutes.includes(pathname);
 
+  if (isPublic) {
+    return NextResponse.next();
+  }
+
   if (!token && !isPublic) {
     console.log('[middleware] return to login')
     return NextResponse.redirect(
-      new URL("/login", request.url)
+      new URL(pathname.startsWith("/backoffice") ? "/backoffice/login" : "/login", request.url)
     );
   }
 
@@ -40,7 +45,7 @@ export async function middleware(request: NextRequest) {
     console.log(ex.message)
     console.log('[middleware] return to login - jwt not valid')
     return NextResponse.redirect(
-      new URL("/login", request.url)
+      new URL(pathname.startsWith("/backoffice") ? "/backoffice/login" : "/login", request.url)
     );
   }
 
@@ -50,6 +55,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/home",
+    "/backoffice/:path*",
     // "/settings/:path*"
   ]
 };
