@@ -5,10 +5,10 @@
 import { ResponseApi } from '@/types/api/response';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'
-import { GetItemsRequestDTO, GetUserWorkspacesRequestDTO, GetUserWorkspacesResponseDTO, GetUsersResponseDTO } from '../models/dto';
+import { GetUsersRequestDTO, GetUserWorkspacesRequestDTO, GetUserWorkspacesResponseDTO, GetUsersResponseDTO } from '../models/dto';
 
 
-export const GetItems = async (config: GetItemsRequestDTO): Promise<ResponseApi<GetUsersResponseDTO> | null> => {
+export const GetItems = async (config: GetUsersRequestDTO): Promise<ResponseApi<GetUsersResponseDTO> | null> => {
   try {
     const req = await api.get(`/api/backoffice/users?page=${config.page}&query=${config.query}`)
     return req.data;
@@ -24,4 +24,14 @@ export const GetUserWorkspaces = async (config: GetUserWorkspacesRequestDTO): Pr
   } catch {
     return null;
   }
-};
+}
+
+export const GetUsers = async (config: GetUsersRequestDTO) : Promise<ResponseApi<GetUsersResponseDTO> | null>  =>  {
+  try {
+    const req = await api.get(`/api/backoffice/users?page=${config.page}&query=${config.query}`);
+    const res = req.data;
+    return res
+  } catch (error) {
+    return null;
+  }
+}

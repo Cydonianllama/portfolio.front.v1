@@ -20,7 +20,14 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner"
 import { Badge } from "@/components/ui/badge"
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 // react-table
 import {
   useReactTable,
@@ -43,6 +50,8 @@ import { LiaSitemapSolid } from 'react-icons/lia';
 import { EmptyStateComponent } from '@/components/Empty';
 import { ErrorStateComponent } from '@/components/Error';
 import { SpinnerListing } from '@/components/Listing';
+import { PencilIcon, TrashIcon } from 'lucide-react';
+import { HiDotsHorizontal } from 'react-icons/hi';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<WorkspaceDTO>[] = [
@@ -115,27 +124,31 @@ const ActionsRow = ({ data }: { data: CellContext<WorkspaceDTO, unknown> }) => {
   const moduleState = useManagerv1Store();
   return (
     <div className="flex gap-2">
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Editar", user.id)
-          moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
-        }}
-      >
-        <MdOutlineEdit />
-      </Button>
-
-      <Button
-        variant="outline"
-        size={'icon'}
-        onClick={() => {
-          console.log("Eliminar", user.id)
-          moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
-        }}
-      >
-        <FiTrash2 />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className={'w-40'}>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Editar", user.id)
+              moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <PencilIcon />
+              Editar
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Eliminar", user.id)
+              moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
+            }} variant="destructive">
+              <TrashIcon />
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

@@ -97,6 +97,13 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
     header: "Nombres"
   },
   {
+    accessorKey: "internalRol",
+    header: "Rol interno",
+    cell: ({ row }) => (<>
+      <Badge variant="secondary">{row.original.internalRol}</Badge>
+    </>),
+  },
+  {
     accessorKey: "statusName",
     header: "Status",
     cell: ({ row }) => (<>

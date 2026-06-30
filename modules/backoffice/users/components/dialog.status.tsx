@@ -11,9 +11,9 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { UserStatus, UserStatusConfiguration } from "@/models/user"
 import { UserDTO } from "../models/dto"
 import { useForm } from "react-hook-form"
+import { UserStatus, UserStatusConfiguration } from "../models/user"
 
 type StatusForm = {
   status: UserStatus

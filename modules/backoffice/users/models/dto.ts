@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 // request
 
-import { UserInternalRol, UserStatus } from "@/models/user";
+import { UserInternalRol, UserStatus } from "./user";
+
 
 export interface CreateItemRequestDTO {
   fullname: string;
@@ -29,7 +30,7 @@ export interface GetUserWorkspacesRequestDTO {
   page: number;
 }
 
-export interface GetItemsRequestDTO {
+export interface GetUsersRequestDTO {
   query: string;
   page: number;
 }

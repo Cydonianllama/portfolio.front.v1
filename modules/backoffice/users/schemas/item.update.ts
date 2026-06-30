@@ -1,5 +1,5 @@
 import { z } from "zod/v3";
-import { UserInternalRol, UserStatus } from "@/models/user";
+import { UserInternalRol, UserStatus } from "../models/user";
 
 export const UpdateUserSchema = z.object({
   fullname: z

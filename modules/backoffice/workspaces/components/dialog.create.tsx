@@ -27,9 +27,8 @@ import {
   RequestCreateWorkspace
 } from "@/modules/backoffice/workspaces/schemas/item.creation";
 import { DropdownUser } from "./dropdownUsers"
-import { GetUsers } from "@/services/user.service"
-import { UserDTO } from "@/models/user.dto"
 import { UserSelectionDTO } from "../models/dto"
+import { GetUsers } from "../../users/services"
 
 export interface ManagerV1DialogCreateConfig {
   onCreate: (data: RequestCreateWorkspace) => void

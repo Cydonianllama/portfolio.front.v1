@@ -27,8 +27,8 @@ import {
   UpdateWorkspaceSchema
 } from "@/modules/backoffice/workspaces/schemas/item.update";
 import { UserSelectionDTO, WorkspaceDTO } from "../models/dto"
-import { GetUsers } from "@/services/user.service"
 import { DropdownUser } from "./dropdownUsers"
+import { GetUsers } from "../../users/services"
 
 export interface ManagerV1DialogUpdateConfig {
   onUpdate: (data: RequestUpdateWorkspace) => void
