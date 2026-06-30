@@ -1,6 +1,6 @@
 // components
 import { Button } from '@/components/ui/button'
-import { ResponsePagination } from '@/types/utils.pagination';
+import { ResponsePagination } from '@/types/api/utils.pagination';
 
 // icons
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';

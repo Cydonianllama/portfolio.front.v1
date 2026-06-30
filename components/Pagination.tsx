@@ -1,4 +1,4 @@
-import { ResponsePagination } from '@/types/utils.pagination';
+import { ResponsePagination } from '@/types/api/utils.pagination';
 
 interface PaginationProps {
   pagination: ResponsePagination | null;

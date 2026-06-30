@@ -1,4 +1,4 @@
-import { ResponsePagination } from "../utils.pagination";
+import { ResponsePagination } from "./utils.pagination";
 
 export interface ResponseApi<T> {
   status: boolean;
