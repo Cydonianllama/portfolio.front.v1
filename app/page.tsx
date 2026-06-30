@@ -1,9 +1,5 @@
-import Image from "next/image";
+import { LandingScreen } from "@/modules/landing/screen";
 
 export default function Home() {
-  return (
-    <div className="mx-12 bg-red-500">
-      wa
-    </div>
-  );
+  return <LandingScreen />;
 }

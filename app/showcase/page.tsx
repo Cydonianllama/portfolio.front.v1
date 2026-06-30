@@ -3,7 +3,7 @@
 import { Contact } from "@/modules/showcase/contact";
 import ClientShowcase from "../../modules/showcase/ClientShowcase";
 import { api } from "@/setup/axios";
-import { ResponsePagination } from "@/types/utils.pagination";
+import { ResponsePagination } from "@/types/api/utils.pagination";
 
 export default async function Page() {
   // fetch contacts on the server and pass to client component

@@ -3,7 +3,6 @@
 
 // import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { ManagerV1Item } from '@/modules/examples/example1/types/manager.v1';
 import { CreateAutomationResponseDTO, CreateItemRequestDTO} from '../models/dto';
 import { sleep } from '../utils/sleep';
 import { api } from '@/setup/axios'

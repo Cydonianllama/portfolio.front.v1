@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/setup/axios";
 import { Contact } from "@/modules/showcase/contact";
 import { Message } from "@/modules/showcase/message";
-import { ResponsePagination } from "@/types/utils.pagination";
+import { ResponsePagination } from "@/types/api/utils.pagination";
 import { useSocket } from "@/hooks/useSocket";
 import { Workspace } from "./workspace";
 

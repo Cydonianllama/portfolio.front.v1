@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { ResponsePagination } from "@/types/utils.pagination";
+import { ResponsePagination } from "@/types/api/utils.pagination";
 import { ItemDTO } from "./dto";
 
 

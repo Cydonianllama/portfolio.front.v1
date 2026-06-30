@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { api } from '@/setup/axios'
-import { ResponsePagination } from "@/types/utils.pagination"
+import { ResponsePagination } from "@/types/api/utils.pagination"
 
 type EntityHookList = 'workspace' | 'user' | 'automation';
 
