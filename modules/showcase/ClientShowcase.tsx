@@ -4,11 +4,12 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/setup/axios";
-import { Contact } from "@/types/contact";
-import { Message } from "@/types/message";
+import { Contact } from "@/modules/showcase/contact";
+import { Message } from "@/modules/showcase/message";
 import { ResponsePagination } from "@/types/utils.pagination";
 import { useSocket } from "@/hooks/useSocket";
-import { Workspace } from "@/types/workspace";
+import { Workspace } from "./workspace";
+
 
 export default function ClientShowcase({ initialServerContacts, responsePagination_ }: { initialServerContacts: Contact[], responsePagination_?: ResponsePagination | null }) {
   // socket

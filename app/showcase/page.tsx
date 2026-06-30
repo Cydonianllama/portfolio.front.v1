@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
-import { Contact } from "@/types/contact";
+import { Contact } from "@/modules/showcase/contact";
 import ClientShowcase from "../../modules/showcase/ClientShowcase";
 import { api } from "@/setup/axios";
 import { ResponsePagination } from "@/types/utils.pagination";

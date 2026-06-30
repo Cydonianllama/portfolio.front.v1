@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { loginResponseData } from '@/types/auth/login.response';
+import { loginResponseData } from '@/modules/auth/models/login.response';
 
 export const loginBackoffice = async (
   username: string,

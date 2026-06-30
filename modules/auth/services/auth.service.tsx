@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { loginResponseData } from '@/types/auth/login.response';
+import { loginResponseData } from '@/modules/auth/models/login.response';
 
 export const Login = async (username: string, password: string) : Promise<ResponseApi<loginResponseData> | null>  => {
   try {
