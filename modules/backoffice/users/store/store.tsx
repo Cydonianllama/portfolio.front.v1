@@ -60,6 +60,9 @@ interface Managerv1Store {
   setInformationPasswordItem: (data: Partial<informationUserActionItemType>) => void;
   informationInternalRolItem: informationUserActionItemType
   setInformationInternalRolItem: (data: Partial<informationUserActionItemType>) => void;
+  // information plan
+  informationPlanItem: informationUserActionItemType
+  setInformationPlanItem: (data: Partial<informationUserActionItemType>) => void;
   // selection
   itemsSelected: Array<string>,
   setItemsSelected: (data: Array<string>) => void;
@@ -183,6 +186,24 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
       ...state,
       informationInternalRolItem: {
         ...state.informationInternalRolItem,
+        ...data
+      }
+    }
+  }),
+  // information plan
+  informationPlanItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationPlanItem: (data: Partial<informationUserActionItemType>) => set((state) => {
+    return {
+      ...state,
+      informationPlanItem: {
+        ...state.informationPlanItem,
         ...data
       }
     }

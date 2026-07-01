@@ -42,6 +42,13 @@ export interface DeleteItemRequestDTO {
 
 // response
 
+export interface PlanInfoDTO {
+  id: string;
+  name: string;
+  subscriptionId: string;
+  creationDate: Date;
+}
+
 export interface UserDTO {
   id: string;
   username: string;
@@ -51,6 +58,7 @@ export interface UserDTO {
   statusName: string
   internalRol?: UserInternalRol | null
   qtyWorkspaces: number
+  plan?: PlanInfoDTO | null
   creationDate: Date
 }
 

@@ -28,8 +28,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { BriefcaseBusinessIcon, KeyRoundIcon, PencilIcon, ShieldUserIcon, ShareIcon, TrashIcon } from "lucide-react"
-
+import { BriefcaseBusinessIcon, KeyRoundIcon, PencilIcon, ShieldUserIcon, ShareIcon, TrashIcon, CreditCardIcon } from "lucide-react"
+import { RiAdminLine } from "react-icons/ri";
 
 // react-table
 import {
@@ -86,21 +86,13 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
   },
   {
     accessorKey: "username",
-    header: "Username"
-  },
-  {
-    accessorKey: "email",
-    header: "Email"
-  },
-  {
-    accessorKey: "fullname",
-    header: "Nombres"
-  },
-  {
-    accessorKey: "internalRol",
-    header: "Rol interno",
+    header: "Username",
     cell: ({ row }) => (<>
-      <Badge variant="secondary">{row.original.internalRol}</Badge>
+      <div className="flex flex-col gap-0.5">
+        {/* <span className="text-sm font-medium flex gap-2 items-center"><RiAdminLine/> {row.original.username}</span> */}
+        <span className="text-sm font-medium flex gap-2 items-center"> {row.original.internalRol && (<RiAdminLine />)} {row.original.fullname}</span>
+        <span className="text-xs text-muted-foreground">{row.original.email}</span>
+      </div>
     </>),
   },
   {
@@ -108,6 +100,20 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
     header: "Status",
     cell: ({ row }) => (<>
       <Badge variant="secondary">{row.original.statusName}</Badge>
+    </>),
+  },
+  {
+    accessorKey: "plan",
+    header: "Plan",
+    cell: ({ row }) => (<>
+      {row.original.plan ? (
+        <div className="flex flex-col gap-0.5">
+          <span className="text-sm font-medium">{row.original.plan.name}</span>
+          <span className="text-xs text-muted-foreground">{row.original.plan.subscriptionId}</span>
+        </div>
+      ) : (
+        <span className="text-sm text-muted-foreground">-</span>
+      )}
     </>),
   },
   {
@@ -141,7 +147,7 @@ const ActionsRow = ({ data }: { data: CellContext<UserDTO, unknown> }) => {
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={'w-40'}>
+        <DropdownMenuContent className={'w-45'}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => {
               console.log("Editar", user.id)
@@ -161,6 +167,12 @@ const ActionsRow = ({ data }: { data: CellContext<UserDTO, unknown> }) => {
             }}>
               <BriefcaseBusinessIcon />
               Ver workspaces asociados
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              moduleState.setInformationPlanItem({ isOpen: true, itemData: user, itemId: user.id })
+            }}>
+              <CreditCardIcon />
+              Plan de usuario
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               moduleState.setInformationPasswordItem({ isOpen: true, itemData: user, itemId: user.id })
@@ -255,8 +267,8 @@ export const SectionTable = (data: SectionTableProps) => {
 
       {/* Hay data */}
       {data.list.length > 0 && (<>
-        <div className="border rounded flex-1">
-          <Table>
+        <div className="border rounded flex-1 overflow-x-auto">
+          <Table className="min-w-max">
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
                 <TableRow key={headerIdx}>

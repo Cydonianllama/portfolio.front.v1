@@ -15,6 +15,7 @@ import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
 import { ManagerV1DialogInternalRol } from "./dialog.internalRol";
 import { ManagerV1DialogPassword } from "./dialog.password";
 import { ManagerV1DialogStatus } from "./dialog.status";
+import { ManagerV1DialogPlan } from "./dialog.plan";
 import { ManagerV1DialogWorkspaces } from "./dialog.workspaces";
 import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
@@ -39,6 +40,7 @@ import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useUpdatePasswordManagerV1 } from "../hooks/useUpdatePassword";
+import { useAssignPlanManagerV1, useUpdatePlanManagerV1, useRemovePlanManagerV1 } from "../hooks/usePlan";
 
 export const UsersScreen = () => {
 
@@ -61,6 +63,9 @@ export const UsersScreen = () => {
   const updateItem = useUpdateManagerV1(page, query)
   const deleteItem = useDeleteManagerV1(page, query)
   const updatePassword = useUpdatePasswordManagerV1()
+  const assignPlan = useAssignPlanManagerV1(page, query)
+  const updatePlan = useUpdatePlanManagerV1(page, query)
+  const removePlan = useRemovePlanManagerV1(page, query)
 
   //
   // section header
@@ -314,6 +319,76 @@ export const UsersScreen = () => {
     }
   }
 
+  const OnUpdatePlan = async (data: { planId: string }) => {
+    try {
+      if (!moduleState.informationPlanItem?.itemId) {
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationPlanItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      const hasPlan = !!moduleState.informationPlanItem.itemData?.plan;
+
+      if (hasPlan) {
+        await updatePlan.mutateAsync({
+          userId: moduleState.informationPlanItem.itemId,
+          planId: data.planId
+        })
+      } else {
+        await assignPlan.mutateAsync({
+          userId: moduleState.informationPlanItem.itemId,
+          planId: data.planId
+        })
+      }
+    } catch (error) {
+      moduleState.setInformationPlanItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationPlanItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  const OnRemovePlan = async () => {
+    try {
+      if (!moduleState.informationPlanItem?.itemId) {
+        toast.success('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationPlanItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      await removePlan.mutateAsync({
+        userId: moduleState.informationPlanItem.itemId
+      })
+    } catch (error) {
+      moduleState.setInformationPlanItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationPlanItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
   //
   // Table
   //
@@ -420,6 +495,16 @@ export const UsersScreen = () => {
         data={moduleState.informationInternalRolItem.itemData || null}
         updating={moduleState.informationInternalRolItem.loading}
       />
+      <ManagerV1DialogPlan
+        open={moduleState.informationPlanItem.isOpen}
+        setOpen={(open) => moduleState.setInformationPlanItem({ isOpen: open })}
+        onAssign={OnUpdatePlan}
+        onUpdate={OnUpdatePlan}
+        onRemove={OnRemovePlan}
+        data={moduleState.informationPlanItem.itemData || null}
+        loading={moduleState.informationPlanItem.loading}
+      />
+
       {/* end::Dialogs */}
     </div>
   </>)
