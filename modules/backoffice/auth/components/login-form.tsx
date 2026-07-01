@@ -28,12 +28,15 @@ import {
   BackofficeLoginSchema
 } from "@/modules/backoffice/auth/schemas/login.schema";
 import { loginBackoffice } from "@/modules/backoffice/auth/services/auth.service";
+import { useAuthStore } from "../store/store";
 
 export function BackofficeLoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
+
+  const authStore = useAuthStore()
 
   const {
     register,
@@ -60,8 +63,16 @@ export function BackofficeLoginForm({
     localStorage.setItem("token", req.data.token);
     Cookies.set("token", req.data.token);
 
+    authStore.setToken(req.data.token)
+
+    authStore.setBasicUserInformation({
+      email: req.data.user.email,
+      fullname: req.data.user.fullname,
+      id: req.data.user.id
+    })
+
     toast.success("Login backoffice exitoso");
-    router.replace("/backoffice/users");
+    router.replace("/backoffice/");
   }
 
   return (

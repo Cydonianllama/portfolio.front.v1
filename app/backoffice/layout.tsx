@@ -56,6 +56,7 @@ import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FaRegUser } from "react-icons/fa";
 import { logoutBackoffice } from "@/modules/backoffice/auth/services/auth.service";
+import { useAuthStore } from '@/modules/backoffice/auth/store/store';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -107,6 +108,8 @@ function getBreadcrumb(pathname: string) {
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
+
+  const authBackofficeStore = useAuthStore()
 
   const router = useRouter()
 
@@ -203,8 +206,8 @@ function AppSidebar({ pathname }: { pathname: string }) {
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">Test</span>
-                    <span className="truncate text-xs">test@test.com</span>
+                    <span className="truncate font-medium">{authBackofficeStore.basicUserInformation.fullname}</span>
+                    <span className="truncate text-xs">{authBackofficeStore.basicUserInformation.email}</span>
                   </div>
                 </div>}
               />}>
@@ -218,8 +221,8 @@ function AppSidebar({ pathname }: { pathname: string }) {
                       <AvatarFallback className="text-xs">AD</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start text-left overflow-hidden">
-                      <span className="text-sm font-medium truncate">Admin User</span>
-                      <span className="text-xs text-muted-foreground truncate">admin@example.com</span>
+                      <span className="text-sm font-medium truncate">{authBackofficeStore.basicUserInformation.fullname}</span>
+                      <span className="text-xs text-muted-foreground truncate">{authBackofficeStore.basicUserInformation.email}</span>
                     </div>
                   </div>
                   {/* <DropdownMenuSeparator /> */}
