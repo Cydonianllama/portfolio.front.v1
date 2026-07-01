@@ -166,7 +166,11 @@ const ActionsRow = ({ data, workspaceId }: { data: CellContext<MemberBackofficeD
 const columnsMembersTable = (workspaceId: string): ColumnDef<MemberBackofficeDTO>[] => [
   {
     accessorKey: "email",
-    header: "Email"
+    header: "Email",
+    cell: ({ row }) => (<>
+      {row.original.email}
+      {row.original.isOwner && (<Badge variant="secondary" className="mr-2">Owner</Badge>)}
+    </>)
   },
   {
     accessorKey: "rolId",

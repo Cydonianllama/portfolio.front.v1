@@ -87,6 +87,7 @@ export interface MemberBackofficeDTO {
   invitationAcceptedDate: Date | null;
   rolId: string;
   creationDate: Date;
+  isOwner: boolean;
 }
 
 export interface GetMembersRequestDTO {

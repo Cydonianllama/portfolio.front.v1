@@ -12,7 +12,6 @@ import { useState } from "react";
 import { DialogCreatePlan } from "./dialog.create";
 import { DialogEditPlan } from "./dialog.edit";
 import { DialogConfirmPlanDeletion } from "./dialog.confirmdelete";
-import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
 import { SectionHeaderFilter } from "./section.headerFilter";
@@ -258,41 +257,11 @@ export const PlanScreen = () => {
   // MAIN TABS
   //
 
-  const HandleToChangeTab = (code: string) => {
-    console.log(`tab : ${code}`)
-  }
 
   return (<>
-    {mainTabListConfiguration.isActive && (<>
-      <div className="">
-        <Tabs defaultValue={mainTabListConfiguration.list[0].code} className="pt-2 pb-10 px-12">
-          <TabsList className={'gap-1.5 py-5 bg-transparent'}>
-            {mainTabListConfiguration.list.map((item, index) => (<TabsTrigger onClick={() => HandleToChangeTab(item.code)} key={item.code} className={'px-4 py-4 '} value={item.code}>
-              <MdSettings />
-              {item.title}
-            </TabsTrigger>))}
-          </TabsList>
-        </Tabs>
-      </div>
-    </>)}
-
 
     <div className="px-12 relative h-full  flex flex-col">
-      {/* start::header */}
-      <SectionHeader
-        title={'Administración de planes'}
-        tab={moduleState.tab}
-        onChangeTab={(code: string) => {
-          console.log(`tab : ${code}`)
-          moduleState.setTab(code as tabsAvailables)
-        }}
-      />
-      {/* end::header */}
-
-      {moduleState.tab == 'List' && (<>
-
-
-        {/* start::header filter  */}
+      {/* start::header filter  */}
         <SectionHeaderFilter
           OnSearch={OnSearch}
           itemsSelected={moduleState.itemsSelected || []}
@@ -323,10 +292,6 @@ export const PlanScreen = () => {
           pagination={data?.pagination || null}
         />
         {/* end::footer table */}
-
-      </>)}
-      {moduleState.tab == 'Overview' && (<>Analitics</>)}
-
 
       {/* start::Dialogs */}
       <DialogCreatePlan

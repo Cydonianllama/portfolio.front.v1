@@ -49,19 +49,7 @@ export const SectionHeaderFilter = (data: SectionHeaderFilterProps) => {
 
     <div className="flex justify-between items-center pb-2">
       <div className="flex gap-2 items-center">
-        <Tabs
-          value={data.currentTab || ''}
-          onValueChange={(val) => {
-            if (data.onChangeTabSelection) data.onChangeTabSelection(val)
-          }}
-          defaultValue={data.currentTab || ''}
-        >
-          <TabsList>
-            {configurationModule.filterTabs.map((code, index) => (
-              <TabsTrigger key={index} value={code}>{code}</TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        <h1 className="text-xl font-semibold text-gray-700">Administración de planes</h1>
       </div>
       <div className="flex gap-2 items-center">
         <InputSearchTable
