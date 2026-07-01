@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation'
 
 import ReactQueryProvider from "@/providers/reactQueryProvider";
 
@@ -54,6 +55,7 @@ import { WorkspaceDropdown } from "@/layouts/exampleLayout/workspacesDropdown";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FaRegUser } from "react-icons/fa";
+import { logoutBackoffice } from "@/modules/backoffice/auth/services/auth.service";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -105,6 +107,9 @@ function getBreadcrumb(pathname: string) {
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
+
+  const router = useRouter()
+
   const isActive = (url: string) => {
     if (url === '/backoffice') return pathname === '/backoffice'
     return pathname.startsWith(url)
@@ -228,7 +233,10 @@ function AppSidebar({ pathname }: { pathname: string }) {
                       </DropdownMenuItem> */}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => {
+                  logoutBackoffice()
+                  router.refresh()
+                }}>
                   <LogOut data-icon="inline-start" />
                   Cerrar sesión
                 </DropdownMenuItem>
