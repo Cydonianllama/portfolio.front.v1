@@ -30,6 +30,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { BriefcaseBusinessIcon, KeyRoundIcon, PencilIcon, ShieldUserIcon, ShareIcon, TrashIcon, CreditCardIcon } from "lucide-react"
 import { RiAdminLine } from "react-icons/ri";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 // react-table
 import {
@@ -90,7 +95,12 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
     cell: ({ row }) => (<>
       <div className="flex flex-col gap-0.5">
         {/* <span className="text-sm font-medium flex gap-2 items-center"><RiAdminLine/> {row.original.username}</span> */}
-        <span className="text-sm font-medium flex gap-2 items-center"> {row.original.internalRol && (<RiAdminLine />)} {row.original.fullname}</span>
+        <span className="text-sm font-medium flex gap-2 items-center"> {row.original.internalRol && (<><Tooltip>
+          <TooltipTrigger render={<RiAdminLine />} />
+          <TooltipContent>
+            <p>Usuario es interno</p>
+          </TooltipContent>
+        </Tooltip></>)} {row.original.fullname}</span>
         <span className="text-xs text-muted-foreground">{row.original.email}</span>
       </div>
     </>),
