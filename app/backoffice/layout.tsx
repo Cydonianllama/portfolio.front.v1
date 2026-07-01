@@ -53,6 +53,7 @@ import { ReactElement } from "react";
 import { WorkspaceDropdown } from "@/layouts/exampleLayout/workspacesDropdown";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { FaRegUser } from "react-icons/fa";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -186,36 +187,38 @@ function AppSidebar({ pathname }: { pathname: string }) {
       {/* ─── Footer: Tarjeta de usuario ─────────────────────────────────────── */}
       <SidebarFooter>
 
-        <SidebarGroup>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <div className="px-(--sidebar-spacing) py-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="w-full outline-none">
-                    <div className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer">
-                      <Avatar size="default" className="h-8 w-8">
-                        <AvatarFallback className="text-xs">AD</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col items-start text-left overflow-hidden">
-                        <span className="text-sm font-medium truncate">Admin User</span>
-                        <span className="text-xs text-muted-foreground truncate">admin@example.com</span>
-                      </div>
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" side="right" className="w-56">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu >
+              <DropdownMenuTrigger render={<SidebarMenuButton
+                size='lg'
+                render={<div className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">Test</span>
+                    <span className="truncate text-xs">test@test.com</span>
+                  </div>
+                </div>}
+              />}>
+              </DropdownMenuTrigger>
 
-                    <DropdownMenuGroup>
-                      <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-                        <Avatar size="default" className="h-8 w-8">
-                          <AvatarFallback className="text-xs">AD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col items-start text-left overflow-hidden">
-                          <span className="text-sm font-medium truncate">Admin User</span>
-                          <span className="text-xs text-muted-foreground truncate">admin@example.com</span>
-                        </div>
-                      </div>
-                      {/* <DropdownMenuSeparator /> */}
-                      {/* <DropdownMenuItem>
+              <DropdownMenuContent align="start" side="right" className="w-56">
+
+                <DropdownMenuGroup>
+                  <div className="flex items-center gap-3 rounded-lg ">
+                    <Avatar size="default" className="h-8 w-8">
+                      <AvatarFallback className="text-xs">AD</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col items-start text-left overflow-hidden">
+                      <span className="text-sm font-medium truncate">Admin User</span>
+                      <span className="text-xs text-muted-foreground truncate">admin@example.com</span>
+                    </div>
+                  </div>
+                  {/* <DropdownMenuSeparator /> */}
+                  {/* <DropdownMenuItem>
                         <User data-icon="inline-start" />
                         Perfil
                       </DropdownMenuItem>
@@ -223,18 +226,16 @@ function AppSidebar({ pathname }: { pathname: string }) {
                         <Settings data-icon="inline-start" />
                         Preferenias
                       </DropdownMenuItem> */}
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <LogOut data-icon="inline-start" />
-                      Cerrar sesión
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut data-icon="inline-start" />
+                  Cerrar sesión
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
 
 
       </SidebarFooter>
