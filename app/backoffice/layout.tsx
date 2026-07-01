@@ -85,17 +85,17 @@ const items: item_[] = [
         url: '/backoffice/workspace'
       },
       {
-        title: 'Contact',
-        url: '/backoffice/contact'
-      },
-      {
         title: 'Automatizaciones',
         url: '/backoffice/automation'
       },
       {
         title: 'Planes',
         url: '/backoffice/plans'
-      }
+      },
+      {
+        title: 'Contact',
+        url: '/backoffice/contact'
+      },
     ]
   },
 ]
