@@ -12,6 +12,10 @@ import { useState } from "react";
 import { ManagerV1DialogCreate } from "./dialog.create";
 import { ManagerV1DialogEdit } from "./dialog.edit";
 import { ManagerV1DialogConfirmDelete } from "./dialog.confirmdelete";
+import { DialogMembers } from "./dialog.members";
+import { DialogMemberCreate } from "./dialog.member.create";
+import { DialogMemberStatus } from "./dialog.member.status";
+import { DialogMemberConfirmDelete } from "./dialog.member.confirmdelete";
 import { SectionHeader } from './section.header';
 import { SectionTable } from './section.table';
 import { SectionFooterTable } from "./section.footerTable";
@@ -29,11 +33,16 @@ import { useManagerv1Store } from "../store/store";
 // schemas
 import { CreateWorkspaceSchema, RequestCreateWorkspace } from "../schemas/item.creation";
 import { RequestUpdateWorkspace, UpdateWorkspaceSchema } from "../schemas/item.update";
+import { CreateMemberSchema, RequestCreateMember } from "../schemas/member.creation";
+import { UpdateMemberSchema, RequestUpdateMember } from "../schemas/member.update";
 
 // services
 import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
+import { useCreateMember } from "../hooks/useCreateMember";
+import { useUpdateMember } from "../hooks/useUpdateMember";
+import { useDeleteMember } from "../hooks/useDeleteMember";
 
 export const WorkspaceScreen = () => {
 
@@ -55,6 +64,11 @@ export const WorkspaceScreen = () => {
   const createItem = useCreateManagerV1(page, query)
   const updateItem = useUpdateManagerV1(page, query)
   const deleteItem = useDeleteManagerV1(page, query)
+
+  const memberPage = 1;
+  const createMember = useCreateMember(moduleState.memberManagement.workspaceId, memberPage)
+  const updateMember = useUpdateMember(moduleState.memberManagement.workspaceId, memberPage)
+  const deleteMember = useDeleteMember(moduleState.memberManagement.workspaceId, memberPage)
 
 
   //
@@ -214,6 +228,112 @@ export const WorkspaceScreen = () => {
   }
 
   //
+  // MEMBER DIALOGS
+  //
+  const OnCreateMember = async (data: RequestCreateMember) => {
+    try {
+      moduleState.setInformationMemberCreationItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      const req = await createMember.mutateAsync({
+        workspaceId: moduleState.memberManagement.workspaceId,
+        email: data.email,
+        rolId: data.rolId,
+      })
+
+      console.log(req)
+
+    } catch (ex) {
+      moduleState.setInformationMemberCreationItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationMemberCreationItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  const OnUpdateMember = async (data: RequestUpdateMember) => {
+    try {
+      if (!moduleState.informationMemberUpdateItem?.itemId) {
+        console.log('Error member itemId not founded')
+        toast.error('Error "itemId" no encontrado')
+        return;
+      }
+
+      moduleState.setInformationMemberUpdateItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      const req = await updateMember.mutateAsync({
+        workspaceId: moduleState.memberManagement.workspaceId,
+        memberId: moduleState.informationMemberUpdateItem.itemId,
+        email: data.email,
+        status: data.status,
+        rolId: data.rolId,
+        invitationAccepted: data.invitationAccepted,
+      })
+
+      console.log(req)
+
+    } catch (error) {
+      moduleState.setInformationMemberUpdateItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationMemberUpdateItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  const OnDeleteMember = async () => {
+    try {
+      if (!moduleState.informationMemberDeleteItem?.itemId) {
+        console.log('error member itemId not founded')
+        return;
+      }
+
+      moduleState.setInformationMemberDeleteItem({
+        hasError: false,
+        errorMessage: '',
+        loading: true,
+      })
+
+      const req = await deleteMember.mutateAsync({
+        workspaceId: moduleState.memberManagement.workspaceId,
+        memberId: moduleState.informationMemberDeleteItem?.itemId
+      })
+
+      console.log(req)
+
+    } catch (error) {
+      moduleState.setInformationMemberDeleteItem({
+        hasError: true,
+        errorMessage: 'Error inesperado',
+        loading: false,
+      })
+    } finally {
+      moduleState.setInformationMemberDeleteItem({
+        isOpen: false,
+        loading: false,
+      })
+    }
+  }
+
+  //
   // Table
   //
 
@@ -290,7 +410,37 @@ export const WorkspaceScreen = () => {
         onDelete={OnDeleteItem}
         deleting={moduleState.informationDeleteItem.loading}
       />
-      {/* end::Dialogs */}
+
+      {/* start::Member Dialogs */}
+      <DialogMembers
+        workspaceId={moduleState.memberManagement.workspaceId}
+        open={moduleState.memberManagement.isOpen}
+        setOpen={(open) => moduleState.setMemberManagement({ isOpen: open })}
+      />
+
+      <DialogMemberCreate
+        workspaceId={moduleState.memberManagement.workspaceId}
+        open={moduleState.informationMemberCreationItem.isOpen}
+        setOpen={(open) => moduleState.setInformationMemberCreationItem({ isOpen: open })}
+        onCreate={OnCreateMember}
+        creating={moduleState.informationMemberCreationItem.loading}
+      />
+
+      <DialogMemberStatus
+        member={moduleState.informationMemberUpdateItem.itemData || null}
+        open={moduleState.informationMemberUpdateItem.isOpen}
+        setOpen={(open) => moduleState.setInformationMemberUpdateItem({ isOpen: open })}
+        onUpdate={OnUpdateMember}
+        updating={moduleState.informationMemberUpdateItem.loading}
+      />
+
+      <DialogMemberConfirmDelete
+        open={moduleState.informationMemberDeleteItem.isOpen}
+        setOpen={(open) => moduleState.setInformationMemberDeleteItem({ isOpen: open })}
+        onDelete={OnDeleteMember}
+        deleting={moduleState.informationMemberDeleteItem.loading}
+      />
+      {/* end::Member Dialogs */}
     </div>
   </>)
 }

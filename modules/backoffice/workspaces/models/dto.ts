@@ -66,3 +66,76 @@ export interface UserSelectionDTO {
   role: string
   profileURL: string
 }
+
+//
+// members
+//
+
+export const DEFAULT_ROLES = {
+  ADMIN: "defaultRol::admin",
+  AGENTE: "defaultRol::agente",
+} as const;
+
+export interface MemberBackofficeDTO {
+  id: string;
+  email: string;
+  userId: string | null;
+  workspaceId: string;
+  status: number;
+  statusName: string;
+  invitationAccepted: boolean;
+  invitationAcceptedDate: Date | null;
+  rolId: string;
+  creationDate: Date;
+}
+
+export interface GetMembersRequestDTO {
+  workspaceId: string;
+  page: number;
+}
+
+export interface GetMemberRequestDTO {
+  workspaceId: string;
+  memberId: string;
+}
+
+export interface CreateMemberRequestDTO {
+  workspaceId: string;
+  email: string;
+  rolId?: string;
+}
+
+export interface UpdateMemberRequestDTO {
+  workspaceId: string;
+  memberId: string;
+  email?: string;
+  status?: number;
+  rolId?: string;
+  invitationAccepted?: boolean;
+  invitationAcceptedDate?: string;
+}
+
+export interface DeleteMemberRequestDTO {
+  workspaceId: string;
+  memberId: string;
+}
+
+export interface GetMembersResponseDTO {
+  list: Array<MemberBackofficeDTO>;
+}
+
+export interface GetMemberResponseDTO {
+  member: MemberBackofficeDTO | null;
+}
+
+export interface CreateMemberResponseDTO {
+  member: MemberBackofficeDTO | null;
+}
+
+export interface UpdateMemberResponseDTO {
+  member: MemberBackofficeDTO | null;
+}
+
+export interface DeleteMemberResponseDTO {
+  id: string;
+}

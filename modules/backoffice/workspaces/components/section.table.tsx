@@ -50,7 +50,7 @@ import { LiaSitemapSolid } from 'react-icons/lia';
 import { EmptyStateComponent } from '@/components/Empty';
 import { ErrorStateComponent } from '@/components/Error';
 import { SpinnerListing } from '@/components/Listing';
-import { PencilIcon, TrashIcon } from 'lucide-react';
+import { PencilIcon, TrashIcon, UsersIcon } from 'lucide-react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
 // configuracion de columna
@@ -128,6 +128,16 @@ const ActionsRow = ({ data }: { data: CellContext<WorkspaceDTO, unknown> }) => {
         <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
         </DropdownMenuTrigger>
         <DropdownMenuContent className={'w-40'}>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Administrar miembros", user.id)
+              moduleState.setMemberManagement({ isOpen: true, workspaceId: user.id })
+            }}>
+              <UsersIcon />
+              Administrar miembros
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => {
               console.log("Editar", user.id)

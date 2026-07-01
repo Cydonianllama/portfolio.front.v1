@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { ManagerV1Item } from "../types/manager.v1";
-import { WorkspaceDTO } from "../models/dto";
+import { WorkspaceDTO, MemberBackofficeDTO } from "../models/dto";
 
 type informationCreationItemType = {
   // states of operation
@@ -33,6 +32,38 @@ type informationDeleteItemType = {
   itemId: string;
 }
 
+type informationMemberCreationItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+}
+
+type informationMemberUpdateItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  itemId: string;
+  itemData?: MemberBackofficeDTO;
+}
+
+type informationMemberDeleteItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  itemId: string;
+}
+
+type memberManagementType = {
+  isOpen: boolean;
+  workspaceId: string;
+}
+
 interface Managerv1Store {
   // information creation
   informationCreationItem: informationCreationItemType
@@ -46,6 +77,22 @@ interface Managerv1Store {
   // selection
   itemsSelected: Array<string>,
   setItemsSelected: (data: Array<string>) => void;
+
+  // member management dialog
+  memberManagement: memberManagementType
+  setMemberManagement: (data: Partial<memberManagementType>) => void;
+
+  // member creation dialog
+  informationMemberCreationItem: informationMemberCreationItemType
+  setInformationMemberCreationItem: (data: Partial<informationMemberCreationItemType>) => void;
+
+  // member update dialog
+  informationMemberUpdateItem: informationMemberUpdateItemType
+  setInformationMemberUpdateItem: (data: Partial<informationMemberUpdateItemType>) => void;
+
+  // member delete dialog
+  informationMemberDeleteItem: informationMemberDeleteItemType
+  setInformationMemberDeleteItem: (data: Partial<informationMemberDeleteItemType>) => void;
 }
 
 export const useManagerv1Store = create<Managerv1Store>((set) => ({
@@ -109,5 +156,76 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
       ...state,
       itemsSelected: data
     }
-  })
+  }),
+
+  // member management
+  memberManagement: {
+    isOpen: false,
+    workspaceId: ''
+  },
+  setMemberManagement: (data: Partial<memberManagementType>) => set((state) => {
+    return {
+      ...state,
+      memberManagement: {
+        ...state.memberManagement,
+        ...data
+      }
+    }
+  }),
+
+  // member creation
+  informationMemberCreationItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false
+  },
+  setInformationMemberCreationItem: (data: Partial<informationMemberCreationItemType>) => set((state) => {
+    return {
+      ...state,
+      informationMemberCreationItem: {
+        ...state.informationMemberCreationItem,
+        ...data
+      }
+    }
+  }),
+
+  // member update
+  informationMemberUpdateItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationMemberUpdateItem: (data: Partial<informationMemberUpdateItemType>) => set((state) => {
+    return {
+      ...state,
+      informationMemberUpdateItem: {
+        ...state.informationMemberUpdateItem,
+        ...data
+      }
+    }
+  }),
+
+  // member delete
+  informationMemberDeleteItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationMemberDeleteItem: (data: Partial<informationMemberDeleteItemType>) => set((state) => {
+    return {
+      ...state,
+      informationMemberDeleteItem: {
+        ...state.informationMemberDeleteItem,
+        ...data
+      }
+    }
+  }),
 }));
