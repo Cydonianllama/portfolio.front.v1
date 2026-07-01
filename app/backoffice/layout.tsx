@@ -47,7 +47,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-
+import { GoHome } from "react-icons/go";
 import { LuBlocks } from "react-icons/lu";
 
 import { Separator } from "@/components/ui/separator"
@@ -85,16 +85,16 @@ const items: item_[] = [
         url: '/backoffice/workspace'
       },
       {
-        title: 'Automatizaciones',
-        url: '/backoffice/automation'
-      },
-      {
         title: 'Planes',
         url: '/backoffice/plans'
       },
       {
         title: 'Contact',
         url: '/backoffice/contact'
+      },
+      {
+        title: 'Automatizaciones',
+        url: '/backoffice/automation'
       },
     ]
   },
@@ -119,6 +119,31 @@ function AppSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup> */}
+
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem >
+              <SidebarMenuButton tooltip={'WEY'}>
+                <GoHome />
+                <span>Home</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {/* <SidebarMenuItem >
+              <SidebarMenuButton tooltip={'WEY'}>
+                <GoHome />
+                <span>Home 2</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem >
+              <SidebarMenuButton tooltip={'WEY'}>
+                <GoHome />
+                <span>Home 3</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem> */}
+          </SidebarMenu>
+        </SidebarGroup>
 
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
