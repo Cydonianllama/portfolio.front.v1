@@ -35,7 +35,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { VscFileSubmodule } from "react-icons/vsc";
-
+import { MdOutlineDashboard } from "react-icons/md";
 import {
   Collapsible,
   CollapsibleContent,
@@ -123,9 +123,11 @@ function AppSidebar() {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem >
-              <SidebarMenuButton tooltip={'WEY'}>
-                <GoHome />
-                <span>Home</span>
+              <SidebarMenuButton render={<Link href={'/backoffice'}>
+                <MdOutlineDashboard />
+                <span>Dahboard  </span>
+              </Link>} tooltip={'WEY'}>
+                
               </SidebarMenuButton>
             </SidebarMenuItem>
 
