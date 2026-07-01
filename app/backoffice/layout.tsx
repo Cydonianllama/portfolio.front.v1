@@ -193,7 +193,7 @@ function AppSidebar({ pathname }: { pathname: string }) {
                 <DropdownMenu>
                   <DropdownMenuTrigger className="w-full outline-none">
                     <div className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer">
-                      <Avatar size="sm">
+                      <Avatar size="default" className="h-8 w-8">
                         <AvatarFallback className="text-xs">AD</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col items-start text-left overflow-hidden">
@@ -205,16 +205,24 @@ function AppSidebar({ pathname }: { pathname: string }) {
                   <DropdownMenuContent align="start" side="right" className="w-56">
 
                     <DropdownMenuGroup>
-                      <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <div className="flex items-center gap-3 rounded-lg px-2 py-2">
+                        <Avatar size="default" className="h-8 w-8">
+                          <AvatarFallback className="text-xs">AD</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col items-start text-left overflow-hidden">
+                          <span className="text-sm font-medium truncate">Admin User</span>
+                          <span className="text-xs text-muted-foreground truncate">admin@example.com</span>
+                        </div>
+                      </div>
+                      {/* <DropdownMenuSeparator /> */}
+                      {/* <DropdownMenuItem>
                         <User data-icon="inline-start" />
                         Perfil
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Settings data-icon="inline-start" />
-                        Configuración
-                      </DropdownMenuItem>
+                        Preferenias
+                      </DropdownMenuItem> */}
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
