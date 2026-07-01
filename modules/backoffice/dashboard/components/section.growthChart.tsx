@@ -34,30 +34,60 @@ const chartConfig = {
 export const SectionGrowthChart = ({
   data,
   isLoading,
-  title = "Usuarios registrados",
-  description = "Crecimiento de usuarios en la última semana",
+  title = "Crecimiento de usuarios",
+  description = "Evolución de registros en el período seleccionado",
 }: SectionGrowthChartProps) => {
+  // Calculate total for context
+  const totalUsers = data?.reduce((sum, point) => sum + point.count, 0) ?? 0;
+
   return (
-    <Card className="col-span-full">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+    <Card>
+      <CardHeader className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+        <div>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </div>
+        {!isLoading && data && data.length > 0 && (
+          <div className="text-right">
+            <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
+            <div className="text-xs text-muted-foreground">total en período</div>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <Skeleton className="h-[300px] w-full" />
+          <Skeleton className="h-[320px] w-full rounded-lg" />
         ) : (
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
+          <ChartContainer config={chartConfig} className="h-[320px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data || []} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <AreaChart 
+                data={data || []} 
+                margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+              >
+                <defs>
+                  <linearGradient id="growthGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--color-count)" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="var(--color-count)" stopOpacity={0.01} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid 
+                  strokeDasharray="3 3" 
+                  vertical={false} 
+                  stroke="hsl(var(--border))"
+                />
                 <XAxis
                   dataKey="label"
                   tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
+                  tickMargin={10}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
                 />
-                <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                <YAxis 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tickMargin={8}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                />
                 <ChartTooltip
                   content={
                     <ChartTooltipContent
@@ -70,9 +100,10 @@ export const SectionGrowthChart = ({
                   type="monotone"
                   dataKey="count"
                   stroke="var(--color-count)"
-                  fill="var(--color-count)"
-                  fillOpacity={0.2}
-                  strokeWidth={2}
+                  fill="url(#growthGradient)"
+                  strokeWidth={2.5}
+                  dot={{ fill: "var(--color-count)", strokeWidth: 2, r: 4, stroke: "hsl(var(--card))" }}
+                  activeDot={{ r: 6, strokeWidth: 0 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
