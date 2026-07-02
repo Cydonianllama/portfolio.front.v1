@@ -109,10 +109,10 @@ También incluye una sección de `/examples` y `/showcase` que se usan como labo
 │   ├── reui/               # Componentes del registro @reui
 │   ├── examples/           # Ejemplos aislados
 │   └── *.tsx               # Componentes reutilizables globales
+├── backoffice/             # Módulos del panel administrativo
+├── examples/               # Ejemplos y prototipos
 ├── modules/
 │   ├── auth/               # Autenticación de la app pública
-│   ├── backoffice/         # Módulos del panel administrativo
-│   └── examples/           # Ejemplos y prototipos
 ├── hooks/                  # Custom hooks globales
 ├── layouts/                # Layouts compartidos
 ├── lib/
@@ -157,7 +157,7 @@ Lógica de autenticación de la aplicación pública:
 Cada submódulo representa una entidad administrable y sigue una estructura repetible:
 
 ```
-modules/backoffice/<entidad>/
+/backoffice/<entidad>/
 ├── components/
 │   ├── screen.tsx              # Pantalla principal del CRUD
 │   ├── section.header.tsx      # Cabecera (título, crear, refrescar)
