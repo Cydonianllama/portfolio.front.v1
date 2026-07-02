@@ -1,4 +1,4 @@
-import { WorkspaceScreen } from '@/modules/backoffice/workspaces/components'
+import { WorkspaceScreen } from '@/backoffice/workspaces/components'
 
 export default async function Page() {
   return (<>

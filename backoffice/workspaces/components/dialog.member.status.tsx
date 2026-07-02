@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   UpdateMemberSchema,
   RequestUpdateMember,
-} from "@/modules/backoffice/workspaces/schemas/member.update";
+} from "@/backoffice/workspaces/schemas/member.update";
 import { MemberBackofficeDTO } from "../models/dto"
 
 export interface DialogMemberStatusConfig {

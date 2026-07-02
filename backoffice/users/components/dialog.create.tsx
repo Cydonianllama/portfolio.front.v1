@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
 import { useEffect } from "react"
@@ -22,51 +23,46 @@ import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  RequestUpdateUser,
-  UpdateUserSchema
-} from "@/modules/backoffice/users/schemas/item.update";
-import { UserDTO } from "../models/dto"
+  CreateUserSchema,
+  RequestCreateUser
+} from "@/backoffice/users/schemas/item.creation";
 
-export interface ManagerV1DialogUpdateConfig {
-  onUpdate: (data: RequestUpdateUser) => void
+export interface ManagerV1DialogCreateConfig {
+  onCreate: (data: RequestCreateUser) => void
   open: boolean
   setOpen: (open: boolean) => void
-  data?: UserDTO | null;
-  updating: boolean
+  creating?: boolean;
 }
 
-export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
-
+export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
+  
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     watch
-  } = useForm<RequestUpdateUser>({
-    resolver: zodResolver(UpdateUserSchema),
+  } = useForm<RequestCreateUser>({
+    resolver: zodResolver(CreateUserSchema)
   });
+
+  // para ver como los valores cambian
+  // console.log('FORM', watch())
 
   useEffect(() => {
     if (!config.open) {
       reset({
         email: '',
         fullname: '',
+        password: '',
         username: ''
       });
     }
+  }, [config.open, reset]);
 
-    if (config.data) {
-      reset({
-        email: config.data.email,
-        fullname: config.data.fullname,
-        username: config.data.username
-      })
-    }
-  }, [config.open, reset, config.data]);
 
-  const HandleToUpdate = (data: RequestUpdateUser) => {
-    config.onUpdate(data)
+  const HandleToCreate = async (data: RequestCreateUser) => {
+    await config.onCreate(data)
   }
 
   const HandleToCancel = () => {
@@ -82,9 +78,9 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Editar Usuario</DialogTitle>
+          <DialogTitle>Crear Usuario</DialogTitle>
           <DialogDescription>
-            Edición de usuario.
+            Creación de usuarios.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -113,9 +109,21 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
             )}
           </Field>
           <Field>
+            <Label>Password</Label>
+            <Input
+              placeholder="password"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
+          </Field>
+          <Field>
             <Label>Username</Label>
             <Input
-              placeholder="Username"
+              placeholder="Eusernamemail"
               {...register("username")}
             />
             {errors.username && (
@@ -125,12 +133,13 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
             )}
           </Field>
 
+
         </FieldGroup>
         <DialogFooter>
-          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
-          <Button disabled={config.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
-            {config.updating && <Spinner data-icon="inline-start" />}
-            Actualizar usuario
+          <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
+          <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
+            {config.creating && <Spinner data-icon="inline-start" />}
+            Crear usuario
           </Button>
         </DialogFooter>
       </DialogContent>

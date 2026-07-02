@@ -1,6 +1,6 @@
 "use server";
 
-import { ContactScreen } from '@/modules/backoffice/contact/components'
+import { ContactScreen } from '@/backoffice/contact/components'
 
 export default async function Page() {
   return (<>

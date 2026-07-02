@@ -18,30 +18,33 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
+import { DropdownWorkspace } from "./dropdown.workspace"
+import { WorkspaceSelectionDTO } from "../models/dto"
+import { GetWorkspaces } from '@/backoffice/workspaces/services/listItem'
 
 // formulario
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  RequestUpdateWorkspace,
-  UpdateWorkspaceSchema
-} from "@/modules/backoffice/workspaces/schemas/item.update";
-import { UserSelectionDTO, WorkspaceDTO } from "../models/dto"
-import { DropdownUser } from "./dropdownUsers"
-import { GetUsers } from "../../users/services"
+  UpdateSchema,
+  updateSchema
+} from "@/backoffice/automation/schemas/item.update";
+import { ManagerV1Item } from "../types/manager.v1"
+import { AutomationBackofficeDTO } from "../models/dto"
 
 export interface ManagerV1DialogUpdateConfig {
-  onUpdate: (data: RequestUpdateWorkspace) => void
+  onUpdate: (data: UpdateSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
-  data?: WorkspaceDTO | null;
+  data?: AutomationBackofficeDTO | null;
   updating: boolean
 }
 
 export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
 
-  // states 
-  const [currentUserSelected, setCurrentUserSelected] = useState<UserSelectionDTO | null>(null) // guarda la configuracion en formato seleccion en caso tenga un usuario seleccionado
+  // status
+  const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
+
 
   const {
     register,
@@ -49,39 +52,45 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
     formState: { errors, isSubmitting },
     reset,
     watch,
-    setValue,
-  } = useForm<RequestUpdateWorkspace>({
-    resolver: zodResolver(UpdateWorkspaceSchema),
+    setValue
+  } = useForm<UpdateSchema>({
+    resolver: zodResolver(updateSchema),
+    // defaultValues: {
+    //   title: "",
+    //   userId: '',
+    //   workspaceId: ''
+    // }
   });
 
   useEffect(() => {
     if (!config.open) {
       reset({
-        mainUserId: '',
-        name: ''
+        title: '',
+        userId: '',
+        workspaceId: ''
       });
+      setWorkspaceSelected(null)
     }
 
     if (config.data) {
-      if (config.data.mainUser){
-        const user = config.data.mainUser;
-
-        setCurrentUserSelected({
-          email: user.email,
-          id: user.id,
-          name: user.name,
-          profileURL: '',
-          role: 'None'
-        })
-      }
       reset({
-        mainUserId: config.data.mainUser?.id || '',
-        name: config.data.name
+        title: config.data.title,
+        userId: config.data.userCreationId,
+        workspaceId: config.data.workspaceId
       })
+      if (config.data.workspaceId){
+        setWorkspaceSelected({
+          id: config.data.workspaceId,
+          logoURL: '',
+          name: config.data.workspaceName
+        })
+      } else {
+        setWorkspaceSelected(null)
+      }
     }
   }, [config.open, reset, config.data]);
 
-  const HandleToUpdate = (data: RequestUpdateWorkspace) => {
+  const HandleToUpdate = (data: UpdateSchema) => {
     config.onUpdate(data)
   }
 
@@ -92,8 +101,8 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
   //
   // Dropdown users
   //
-  const [loadingUsers, setLoadingUsers] = useState(false)
-  const [listUsers, setListUsers] = useState<Array<UserSelectionDTO>>([])
+  const [loadingWorkspaces, setloadingWorkspaces] = useState(false)
+  const [listWorkspaces, setListWorkspaces] = useState<Array<WorkspaceSelectionDTO>>([])
 
   //
   // Actions
@@ -101,9 +110,10 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
 
   const GetListAction = async (query: string) => {
     try {
-      setLoadingUsers(true);
+      setloadingWorkspaces(true);
 
-      const req = await GetUsers({ page: 1, query: query })
+      const req = await GetWorkspaces({ page: 1, query: query })
+
       if (!req) {
         return
       }
@@ -116,18 +126,16 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         return;
       }
 
-      setListUsers(req.data.list.map(el => ({
-        email: el.email,
+      setListWorkspaces(req.data.list.map(el => ({
         id: el.id,
-        name: el.fullname,
-        profileURL: '',
-        role: 'None'
+        logoURL: '',
+        name: el.name
       })))
 
     } catch (ex) {
-      setListUsers([])
+      setListWorkspaces([])
     } finally {
-      setLoadingUsers(false)
+      setloadingWorkspaces(false)
     }
   }
 
@@ -140,6 +148,7 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
     GetListAction('')
   }, [])
 
+
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       {/* 
@@ -149,46 +158,63 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Editar workspace</DialogTitle>
+          <DialogTitle>Editar Item</DialogTitle>
           <DialogDescription>
-            Edición de workspace.
+            Edición de item.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombres</Label>
+            <Label>Nombre</Label>
             <Input
               placeholder="Nombre"
-              {...register("name")}
+              {...register("title")}
             />
-            {errors.name && (
+            {errors.title && (
               <p className="text-sm text-red-500">
-                {errors.name.message}
+                {errors.title.message}
               </p>
             )}
           </Field>
 
           <Field>
-            <Label>Usuario</Label>
-            {/* <Input
-              placeholder="mainUserId"
-              {...register("mainUserId")}
-            /> */}
-            <DropdownUser
-              items={listUsers}
-              onSearch={(query) => { GetListAction(query) }}
-              searching={loadingUsers}
-              onSelect={(user) => {
-                setValue("mainUserId", user.id, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                });
+            <Label>Workspace</Label>
+            <DropdownWorkspace
+              value={workspaceSelected}
+              items={listWorkspaces}
+              onSearch={(query) => {
+                GetListAction(query)
               }}
-              value={currentUserSelected}
+              searching={loadingWorkspaces}
+              onSelect={(workspace) => {
+                setWorkspaceSelected(workspace)
+                setValue('workspaceId', workspace.id, {
+                  shouldDirty: true,
+                  shouldValidate: true
+                })
+              }}
+            // value={}
             />
-            {errors.mainUserId && (
+            {/* <Textarea
+              placeholder="WorkspaceId"
+              {...register("workspaceId")}
+            />
+            {errors.workspaceId && (
               <p className="text-sm text-red-500">
-                {errors.mainUserId.message}
+                {errors.workspaceId.message}
+              </p>
+            )} */}
+          </Field>
+
+          <Field>
+            <Label>UserId</Label>
+            <Textarea
+              placeholder="User"
+              {...register("userId")}
+            />
+            {errors.userId && (
+              <p className="text-sm text-red-500">
+                {errors.userId.message}
               </p>
             )}
           </Field>

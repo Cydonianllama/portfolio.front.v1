@@ -25,18 +25,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   creationSchema,
   CreationSchema
-} from "@/modules/backoffice/automation/schemas/item.creation";
-import { DropdownWorkspace } from "./dropdown.workspace"
+} from "../schemas/item.creation";
 import { WorkspaceSelectionDTO } from "../models/dto"
-import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
-export interface ManagerV1DialogCreateConfig {
+export interface DialogCreateConfig {
   onCreate: (data: CreationSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
   creating?: boolean;
 }
 
-export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
+import { GetWorkspaces } from '@/backoffice/workspaces/services/listItem'
+import { DropdownWorkspace } from "./dropdown.workspace"
+
+export const DialogCreate = (config: DialogCreateConfig) => {
 
   // status
   const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
@@ -46,18 +47,11 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    watch,
     setValue,
-    watch
   } = useForm<CreationSchema>({
     resolver: zodResolver(creationSchema),
   });
-  /**
-  onSelect={(workspace) => {
-    setValue('workspaceId', workspace.id, {
-      shouldValidate: true
-    });
-  }}
-   */
 
   // para ver como los valores cambian
   // console.log('FORM', watch())
@@ -65,11 +59,9 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
   useEffect(() => {
     if (!config.open) {
       reset({
-        title: '',
         workspaceId: '',
-        userCreationId: '',
+        fullname: '',
       });
-      setWorkspaceSelected(null)
     }
   }, [config.open, reset]);
 
@@ -149,14 +141,14 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombre</Label>
+            <Label>fullname</Label>
             <Input
-              placeholder="Título"
-              {...register("title")}
+              placeholder="fullname"
+              {...register("fullname")}
             />
-            {errors.title && (
+            {errors.fullname && (
               <p className="text-sm text-red-500">
-                {errors.title.message}
+                {errors.fullname.message}
               </p>
             )}
           </Field>
@@ -177,30 +169,7 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
                   shouldValidate: true
                 })
               }}
-            // value={}
             />
-            {/* <Textarea
-              placeholder="WorkspaceId"
-              {...register("workspaceId")}
-            />
-            {errors.workspaceId && (
-              <p className="text-sm text-red-500">
-                {errors.workspaceId.message}
-              </p>
-            )} */}
-          </Field>
-
-          <Field>
-            <Label>UserCreationId</Label>
-            <Textarea
-              placeholder="UserId"
-              {...register("userCreationId")}
-            />
-            {errors.userCreationId && (
-              <p className="text-sm text-red-500">
-                {errors.userCreationId.message}
-              </p>
-            )}
           </Field>
 
         </FieldGroup>

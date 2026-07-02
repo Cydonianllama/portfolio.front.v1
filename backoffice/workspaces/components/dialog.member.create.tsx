@@ -42,8 +42,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateMemberSchema,
   RequestCreateMember,
-} from "@/modules/backoffice/workspaces/schemas/member.creation";
-import { GetUsers } from "@/modules/backoffice/users/services"
+} from "@/backoffice/workspaces/schemas/member.creation";
+import { GetUsers } from "@/backoffice/users/services"
 import { UserSelectionDTO } from "../models/dto"
 
 export interface DialogMemberCreateConfig {

@@ -1,4 +1,4 @@
-import { BackofficeLoginForm } from "@/modules/backoffice/auth/components/login-form";
+import { BackofficeLoginForm } from "@/backoffice/auth/components/login-form";
 
 export default function Page() {
   return (

@@ -1,6 +1,6 @@
 "use server";
 
-import { UsersScreen } from '@/modules/backoffice/users/components'
+import { UsersScreen } from '@/backoffice/users/components'
 
 export default async function Page() {
   return (<>

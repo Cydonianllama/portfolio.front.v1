@@ -15,7 +15,7 @@ import { UserDTO } from "../models/dto"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod/v3"
-import { useListPlans } from "@/modules/backoffice/plans/hooks/useList"
+import { useListPlans } from "@/backoffice/plans/hooks/useList"
 
 export const AssignPlanSchema = z.object({
   planId: z.string().trim().min(1, "El planId es requerido")

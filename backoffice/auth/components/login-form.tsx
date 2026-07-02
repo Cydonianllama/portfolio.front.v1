@@ -26,8 +26,8 @@ import { cn } from "@/lib/utils";
 import {
   backofficeLoginSchema,
   BackofficeLoginSchema
-} from "@/modules/backoffice/auth/schemas/login.schema";
-import { loginBackoffice } from "@/modules/backoffice/auth/services/auth.service";
+} from "@/backoffice/auth/schemas/login.schema";
+import { loginBackoffice } from "@/backoffice/auth/services/auth.service";
 import { useAuthStore } from "../store/store";
 
 export function BackofficeLoginForm({

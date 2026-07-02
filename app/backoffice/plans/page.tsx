@@ -1,6 +1,6 @@
 "use server";
 
-import { PlanScreen } from "@/modules/backoffice/plans/components";
+import { PlanScreen } from "@/backoffice/plans/components";
 
 export default async function Page() {
   return (<>

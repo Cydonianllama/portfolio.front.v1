@@ -18,80 +18,64 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
-import { DropdownWorkspace } from "./dropdown.workspace"
-import { WorkspaceSelectionDTO } from "../models/dto"
-import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
 
 // formulario
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  UpdateSchema,
-  updateSchema
-} from "@/modules/backoffice/automation/schemas/item.update";
-import { ManagerV1Item } from "../types/manager.v1"
-import { AutomationBackofficeDTO } from "../models/dto"
-
-export interface ManagerV1DialogUpdateConfig {
-  onUpdate: (data: UpdateSchema) => void
+  creationSchema,
+  CreationSchema
+} from "@/backoffice/automation/schemas/item.creation";
+import { DropdownWorkspace } from "./dropdown.workspace"
+import { WorkspaceSelectionDTO } from "../models/dto"
+import { GetWorkspaces } from '@/backoffice/workspaces/services/listItem'
+export interface ManagerV1DialogCreateConfig {
+  onCreate: (data: CreationSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
-  data?: AutomationBackofficeDTO | null;
-  updating: boolean
+  creating?: boolean;
 }
 
-export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
+export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
 
   // status
   const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
-
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch,
-    setValue
-  } = useForm<UpdateSchema>({
-    resolver: zodResolver(updateSchema),
-    // defaultValues: {
-    //   title: "",
-    //   userId: '',
-    //   workspaceId: ''
-    // }
+    setValue,
+    watch
+  } = useForm<CreationSchema>({
+    resolver: zodResolver(creationSchema),
   });
+  /**
+  onSelect={(workspace) => {
+    setValue('workspaceId', workspace.id, {
+      shouldValidate: true
+    });
+  }}
+   */
+
+  // para ver como los valores cambian
+  // console.log('FORM', watch())
 
   useEffect(() => {
     if (!config.open) {
       reset({
         title: '',
-        userId: '',
-        workspaceId: ''
+        workspaceId: '',
+        userCreationId: '',
       });
       setWorkspaceSelected(null)
     }
+  }, [config.open, reset]);
 
-    if (config.data) {
-      reset({
-        title: config.data.title,
-        userId: config.data.userCreationId,
-        workspaceId: config.data.workspaceId
-      })
-      if (config.data.workspaceId){
-        setWorkspaceSelected({
-          id: config.data.workspaceId,
-          logoURL: '',
-          name: config.data.workspaceName
-        })
-      } else {
-        setWorkspaceSelected(null)
-      }
-    }
-  }, [config.open, reset, config.data]);
 
-  const HandleToUpdate = (data: UpdateSchema) => {
-    config.onUpdate(data)
+  const HandleToCreate = async (data: CreationSchema) => {
+    await config.onCreate(data)
   }
 
   const HandleToCancel = () => {
@@ -158,16 +142,16 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Editar Item</DialogTitle>
+          <DialogTitle>Crear Item</DialogTitle>
           <DialogDescription>
-            Edición de item.
+            Creación de items.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
             <Label>Nombre</Label>
             <Input
-              placeholder="Nombre"
+              placeholder="Título"
               {...register("title")}
             />
             {errors.title && (
@@ -207,24 +191,24 @@ export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
           </Field>
 
           <Field>
-            <Label>UserId</Label>
+            <Label>UserCreationId</Label>
             <Textarea
-              placeholder="User"
-              {...register("userId")}
+              placeholder="UserId"
+              {...register("userCreationId")}
             />
-            {errors.userId && (
+            {errors.userCreationId && (
               <p className="text-sm text-red-500">
-                {errors.userId.message}
+                {errors.userCreationId.message}
               </p>
             )}
           </Field>
 
         </FieldGroup>
         <DialogFooter>
-          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
-          <Button disabled={config.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
-            {config.updating && <Spinner data-icon="inline-start" />}
-            Actualizar item
+          <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
+          <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
+            {config.creating && <Spinner data-icon="inline-start" />}
+            Crear item
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -55,8 +55,8 @@ import { WorkspaceDropdown } from "@/layouts/exampleLayout/workspacesDropdown";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FaRegUser } from "react-icons/fa";
-import { logoutBackoffice } from "@/modules/backoffice/auth/services/auth.service";
-import { useAuthStore } from '@/modules/backoffice/auth/store/store';
+import { logoutBackoffice } from "@/backoffice/auth/services/auth.service";
+import { useAuthStore } from '@/backoffice/auth/store/store';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 

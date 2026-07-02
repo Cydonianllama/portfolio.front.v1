@@ -38,7 +38,7 @@ export interface DialogEditConfig {
 }
 
 
-import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
+import { GetWorkspaces } from '@/backoffice/workspaces/services/listItem'
 import { DropdownWorkspace } from "./dropdown.workspace"
 
 export const DialogEdit = (config: DialogEditConfig) => {

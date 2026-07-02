@@ -23,21 +23,25 @@ import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CreateWorkspaceSchema,
-  RequestCreateWorkspace
-} from "@/modules/backoffice/workspaces/schemas/item.creation";
+  RequestUpdateWorkspace,
+  UpdateWorkspaceSchema
+} from "@/backoffice/workspaces/schemas/item.update";
+import { UserSelectionDTO, WorkspaceDTO } from "../models/dto"
 import { DropdownUser } from "./dropdownUsers"
-import { UserSelectionDTO } from "../models/dto"
 import { GetUsers } from "../../users/services"
 
-export interface ManagerV1DialogCreateConfig {
-  onCreate: (data: RequestCreateWorkspace) => void
+export interface ManagerV1DialogUpdateConfig {
+  onUpdate: (data: RequestUpdateWorkspace) => void
   open: boolean
   setOpen: (open: boolean) => void
-  creating?: boolean;
+  data?: WorkspaceDTO | null;
+  updating: boolean
 }
 
-export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
+export const ManagerV1DialogEdit = (config: ManagerV1DialogUpdateConfig) => {
+
+  // states 
+  const [currentUserSelected, setCurrentUserSelected] = useState<UserSelectionDTO | null>(null) // guarda la configuracion en formato seleccion en caso tenga un usuario seleccionado
 
   const {
     register,
@@ -46,12 +50,9 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
     reset,
     watch,
     setValue,
-  } = useForm<RequestCreateWorkspace>({
-    resolver: zodResolver(CreateWorkspaceSchema),
+  } = useForm<RequestUpdateWorkspace>({
+    resolver: zodResolver(UpdateWorkspaceSchema),
   });
-
-  // para ver como los valores cambian
-  // console.log('FORM', watch())
 
   useEffect(() => {
     if (!config.open) {
@@ -60,11 +61,28 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
         name: ''
       });
     }
-  }, [config.open, reset]);
 
+    if (config.data) {
+      if (config.data.mainUser){
+        const user = config.data.mainUser;
 
-  const HandleToCreate = async (data: RequestCreateWorkspace) => {
-    await config.onCreate(data)
+        setCurrentUserSelected({
+          email: user.email,
+          id: user.id,
+          name: user.name,
+          profileURL: '',
+          role: 'None'
+        })
+      }
+      reset({
+        mainUserId: config.data.mainUser?.id || '',
+        name: config.data.name
+      })
+    }
+  }, [config.open, reset, config.data]);
+
+  const HandleToUpdate = (data: RequestUpdateWorkspace) => {
+    config.onUpdate(data)
   }
 
   const HandleToCancel = () => {
@@ -131,16 +149,16 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear Workspace</DialogTitle>
+          <DialogTitle>Editar workspace</DialogTitle>
           <DialogDescription>
-            Creación de workspaces.
+            Edición de workspace.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
             <Label>Nombres</Label>
             <Input
-              placeholder="name"
+              placeholder="Nombre"
               {...register("name")}
             />
             {errors.name && (
@@ -149,8 +167,13 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
               </p>
             )}
           </Field>
+
           <Field>
             <Label>Usuario</Label>
+            {/* <Input
+              placeholder="mainUserId"
+              {...register("mainUserId")}
+            /> */}
             <DropdownUser
               items={listUsers}
               onSearch={(query) => { GetListAction(query) }}
@@ -161,23 +184,21 @@ export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
                   shouldDirty: true,
                 });
               }}
+              value={currentUserSelected}
             />
-            {/* <Input
-              placeholder="mainUserId"
-              {...register("mainUserId")}
-            /> */}
             {errors.mainUserId && (
               <p className="text-sm text-red-500">
                 {errors.mainUserId.message}
               </p>
             )}
           </Field>
+
         </FieldGroup>
         <DialogFooter>
-          <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
-          <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
-            {config.creating && <Spinner data-icon="inline-start" />}
-            Crear workspaces
+          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
+          <Button disabled={config.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
+            {config.updating && <Spinner data-icon="inline-start" />}
+            Actualizar item
           </Button>
         </DialogFooter>
       </DialogContent>

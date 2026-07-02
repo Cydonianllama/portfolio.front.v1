@@ -23,24 +23,21 @@ import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  creationSchema,
-  CreationSchema
-} from "../schemas/item.creation";
-import { WorkspaceSelectionDTO } from "../models/dto"
-export interface DialogCreateConfig {
-  onCreate: (data: CreationSchema) => void
+  CreateWorkspaceSchema,
+  RequestCreateWorkspace
+} from "@/backoffice/workspaces/schemas/item.creation";
+import { DropdownUser } from "./dropdownUsers"
+import { UserSelectionDTO } from "../models/dto"
+import { GetUsers } from "../../users/services"
+
+export interface ManagerV1DialogCreateConfig {
+  onCreate: (data: RequestCreateWorkspace) => void
   open: boolean
   setOpen: (open: boolean) => void
   creating?: boolean;
 }
 
-import { GetWorkspaces } from '@/modules/backoffice/workspaces/services/listItem'
-import { DropdownWorkspace } from "./dropdown.workspace"
-
-export const DialogCreate = (config: DialogCreateConfig) => {
-
-  // status
-  const [workspaceSelected, setWorkspaceSelected] = useState<WorkspaceSelectionDTO | null>(null)
+export const ManagerV1DialogCreate = (config: ManagerV1DialogCreateConfig) => {
 
   const {
     register,
@@ -49,8 +46,8 @@ export const DialogCreate = (config: DialogCreateConfig) => {
     reset,
     watch,
     setValue,
-  } = useForm<CreationSchema>({
-    resolver: zodResolver(creationSchema),
+  } = useForm<RequestCreateWorkspace>({
+    resolver: zodResolver(CreateWorkspaceSchema),
   });
 
   // para ver como los valores cambian
@@ -59,14 +56,14 @@ export const DialogCreate = (config: DialogCreateConfig) => {
   useEffect(() => {
     if (!config.open) {
       reset({
-        workspaceId: '',
-        fullname: '',
+        mainUserId: '',
+        name: ''
       });
     }
   }, [config.open, reset]);
 
 
-  const HandleToCreate = async (data: CreationSchema) => {
+  const HandleToCreate = async (data: RequestCreateWorkspace) => {
     await config.onCreate(data)
   }
 
@@ -77,8 +74,8 @@ export const DialogCreate = (config: DialogCreateConfig) => {
   //
   // Dropdown users
   //
-  const [loadingWorkspaces, setloadingWorkspaces] = useState(false)
-  const [listWorkspaces, setListWorkspaces] = useState<Array<WorkspaceSelectionDTO>>([])
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [listUsers, setListUsers] = useState<Array<UserSelectionDTO>>([])
 
   //
   // Actions
@@ -86,10 +83,9 @@ export const DialogCreate = (config: DialogCreateConfig) => {
 
   const GetListAction = async (query: string) => {
     try {
-      setloadingWorkspaces(true);
+      setLoadingUsers(true);
 
-      const req = await GetWorkspaces({ page: 1, query: query })
-
+      const req = await GetUsers({ page: 1, query: query })
       if (!req) {
         return
       }
@@ -102,16 +98,18 @@ export const DialogCreate = (config: DialogCreateConfig) => {
         return;
       }
 
-      setListWorkspaces(req.data.list.map(el => ({
+      setListUsers(req.data.list.map(el => ({
+        email: el.email,
         id: el.id,
-        logoURL: '',
-        name: el.name
+        name: el.fullname,
+        profileURL: '',
+        role: 'None'
       })))
 
     } catch (ex) {
-      setListWorkspaces([])
+      setListUsers([])
     } finally {
-      setloadingWorkspaces(false)
+      setLoadingUsers(false)
     }
   }
 
@@ -124,7 +122,6 @@ export const DialogCreate = (config: DialogCreateConfig) => {
     GetListAction('')
   }, [])
 
-
   return (<>
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       {/* 
@@ -134,50 +131,53 @@ export const DialogCreate = (config: DialogCreateConfig) => {
         */}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear Item</DialogTitle>
+          <DialogTitle>Crear Workspace</DialogTitle>
           <DialogDescription>
-            Creación de items.
+            Creación de workspaces.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>fullname</Label>
+            <Label>Nombres</Label>
             <Input
-              placeholder="fullname"
-              {...register("fullname")}
+              placeholder="name"
+              {...register("name")}
             />
-            {errors.fullname && (
+            {errors.name && (
               <p className="text-sm text-red-500">
-                {errors.fullname.message}
+                {errors.name.message}
               </p>
             )}
           </Field>
-
           <Field>
-            <Label>Workspace</Label>
-            <DropdownWorkspace
-              value={workspaceSelected}
-              items={listWorkspaces}
-              onSearch={(query) => {
-                GetListAction(query)
-              }}
-              searching={loadingWorkspaces}
-              onSelect={(workspace) => {
-                setWorkspaceSelected(workspace)
-                setValue('workspaceId', workspace.id, {
+            <Label>Usuario</Label>
+            <DropdownUser
+              items={listUsers}
+              onSearch={(query) => { GetListAction(query) }}
+              searching={loadingUsers}
+              onSelect={(user) => {
+                setValue("mainUserId", user.id, {
+                  shouldValidate: true,
                   shouldDirty: true,
-                  shouldValidate: true
-                })
+                });
               }}
             />
+            {/* <Input
+              placeholder="mainUserId"
+              {...register("mainUserId")}
+            /> */}
+            {errors.mainUserId && (
+              <p className="text-sm text-red-500">
+                {errors.mainUserId.message}
+              </p>
+            )}
           </Field>
-
         </FieldGroup>
         <DialogFooter>
           <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
           <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
             {config.creating && <Spinner data-icon="inline-start" />}
-            Crear item
+            Crear workspaces
           </Button>
         </DialogFooter>
       </DialogContent>

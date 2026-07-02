@@ -25,7 +25,7 @@ import { SectionHeaderFilter } from "./section.headerFilter";
 import { toast } from "sonner";
 
 // listado principal
-import { useListManagerV1 } from "@/modules/backoffice/workspaces/hooks/useList";
+import { useListManagerV1 } from "@/backoffice/workspaces/hooks/useList";
 
 // store
 import { useManagerv1Store } from "../store/store";
