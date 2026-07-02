@@ -9,7 +9,7 @@ import { Message } from "@/modules/showcase/message";
 import { ResponsePagination } from "@/types/api/utils.pagination";
 import { useSocket } from "@/hooks/useSocket";
 import { Workspace } from "./workspace";
-
+import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 
 export default function ClientShowcase({ initialServerContacts, responsePagination_ }: { initialServerContacts: Contact[], responsePagination_?: ResponsePagination | null }) {
   // socket
@@ -48,8 +48,17 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
   // para almacenar mensajes del contacto seleccionado
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const workspaces = useWorkspaceSelectionStore((state) => state.workspaces);
+  const selectedWorkspaceId = useWorkspaceSelectionStore((state) => state.selectedWorkspaceId);
+  const setWorkspaces = useWorkspaceSelectionStore((state) => state.setWorkspaces);
+  const setSelectedWorkspaceId = useWorkspaceSelectionStore((state) => state.setSelectedWorkspaceId);
+
+  const selectedWorkspace = useMemo(
+    () => workspaces.find((workspace) => workspace.id === selectedWorkspaceId) ?? null,
+    [workspaces, selectedWorkspaceId]
+  );
+
   // estado para workspaces
-  const [workspacesAvailabled, setWorkspacesAvailables] = useState<Array<Workspace>>([])
 
   // resetear el formulario de creación al cerrar el modal
   const resetCreateForm = () => {
@@ -100,21 +109,20 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
     try {
       // validaciones previas al envio
       if (!createFullname.trim()) return;
+      const workspaceId = createWorkspace || selectedWorkspaceId;
+      if (!workspaceId) {
+        console.warn("No workspace seleccionado para crear el contacto.");
+        return;
+      }
 
       // reseteamos formulario
       resetCreateForm();
       // cerramos modal
       setShowCreateModal(false);
 
-      const newContact: Contact = {
-        id: `contact-${Date.now()}`,
-        fullname: createFullname.trim(),
-        workspaceId: createWorkspace,
-      };
-
       const req = await api.post("/api/contacts", {
-        fullname: newContact.fullname,
-        workspaceId: newContact.workspaceId,
+        fullname: createFullname.trim(),
+        workspaceId,
       });
 
       const data = req.data;
@@ -219,7 +227,10 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const FinderContacts = async (query: string) => {
     try {
-      const req = await api.get(`/api/contacts?query=${encodeURIComponent(query)}&workspace=workspace1`);
+      const workspaceId = selectedWorkspaceId;
+      const req = await api.get(
+        `/api/contacts?query=${encodeURIComponent(query)}${workspaceId ? `&workspaceId=${workspaceId}` : ""}`
+      );
       const data = req.data;
 
       if (data.status) {
@@ -239,6 +250,11 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
 
   const ListContact = async (page: number) => {
     try {
+      if (!selectedWorkspaceId) {
+        console.warn("No workspace seleccionado para listar contactos.");
+        return;
+      }
+
       if (page === 1) {
         // si es la primera página, reseteamos el listado para evitar duplicados
         resetContacts();
@@ -246,7 +262,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
         setPage(page);
       }
 
-      const req = await api.get(`/api/contacts?workspace=workspace1&page=${page}&limit=20`);
+      const req = await api.get(`/api/contacts?workspaceId=${selectedWorkspaceId}&page=${page}&limit=20`);
       const data = req.data;
 
       if (data.status) {
@@ -274,30 +290,42 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
   }
 
   // listado de workspaces
-  const ListWorkspaces = async ({ query } : { query: string}) => {
+  const ListWorkspaces = async () => {
     try {
-      const req = await api.get(`/api/workspaces?${query ? `query=${query}` : ``}`)
+      const req = await api.get(`/api/workspaces?limit=100`);
       const data = req.data;
-      
-      if (data.status){
-        setWorkspacesAvailables(data.data)
-      } else {
 
+      if (data.status) {
+        setWorkspaces(data.data ?? []);
       }
-
     } catch (ex) {
-
+      console.error("Error fetching workspaces", ex);
     }
-  }
+  };
 
-  // al abrir create modal, logica init
   useEffect(() => {
-    if (showCreateModal){
-      ListWorkspaces({
-        query: ''
-      })
+    if (showCreateModal && !createWorkspace && selectedWorkspaceId) {
+      setCreateWorkspace(selectedWorkspaceId);
     }
-  }, [showCreateModal])
+  }, [showCreateModal, selectedWorkspaceId, createWorkspace]);
+
+  useEffect(() => {
+    if (!workspaces.length) {
+      ListWorkspaces();
+    }
+  }, [workspaces.length]);
+
+  useEffect(() => {
+    if (workspaces.length && !selectedWorkspaceId) {
+      setSelectedWorkspaceId(workspaces[0].id);
+    }
+  }, [workspaces, selectedWorkspaceId, setSelectedWorkspaceId]);
+
+  useEffect(() => {
+    if (selectedWorkspaceId) {
+      ListContact(1);
+    }
+  }, [selectedWorkspaceId]);
 
 
   // al seleccionar un contacto, traemos los mensajes de ese contacto
@@ -513,7 +541,7 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   onChange={(event) => setCreateWorkspace(event.target.value)}
                   className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
                 >
-                  {workspacesAvailabled.map((workspace) => (
+                  {workspaces.map((workspace) => (
                     <option key={workspace.id} value={workspace.id}>
                       {workspace.name}
                     </option>
@@ -555,20 +583,12 @@ export default function ClientShowcase({ initialServerContacts, responsePaginati
                   type="text"
                   value={searchQuery}
                   onChange={(event) => {
-                    setSearchQuery(event.target.value)
-                    clearTimeout(idTimeoutFilterRef.current || 0)
-                    idTimeoutFilterRef.current = setTimeout(() => {
-                      const query = event.target.value.trim().toLowerCase();
-                      FinderContacts(query);
-                    }, 600)
-                  }}
-                  className="mt-2 w-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-slate-900"
-                  placeholder="Busca por nombre o id"
-                />
-              </label>
-
-              <div className="max-h-72 overflow-y-auto border border-slate-300 bg-slate-50 p-3">
-                {filteredContacts.length === 0 ? (
+                      setSearchQuery(event.target.value);
+                      clearTimeout(idTimeoutFilterRef.current || 0);
+                      idTimeoutFilterRef.current = setTimeout(() => {
+                        const query = event.target.value.trim().toLowerCase();
+                        FinderContacts(query);
+                      }, 600);
                   <p className="text-sm text-slate-500">No se encontraron contactos.</p>
                 ) : (
                   <div className="space-y-2">

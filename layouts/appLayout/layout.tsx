@@ -56,7 +56,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FaRegUser } from "react-icons/fa";
 import { logoutBackoffice } from "@/modules/backoffice/auth/services/auth.service";
 import { useAuthStore } from '@/modules/backoffice/auth/store/store';
-import { WorkspaceDropdown } from './workspacesDropdown';
+import { WorkspaceDropdown } from '../../modules/app/components/workspacesDropdown';
 import { FiHome } from 'react-icons/fi';
 import { TiFlowMerge } from "react-icons/ti";
 import { BsChatDots } from "react-icons/bs";

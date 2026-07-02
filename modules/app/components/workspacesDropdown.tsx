@@ -133,10 +133,10 @@ export function WorkspaceDropdown() {
                 <PlusIcon aria-hidden="true" />
                 Create Workspace
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <SettingsIcon aria-hidden="true" />
                 Manage Workspaces
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
