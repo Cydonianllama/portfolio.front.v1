@@ -2,24 +2,12 @@
 'use client'
 
 import { RxHamburgerMenu } from "react-icons/rx";
-import Image from "next/image"
 
 import {
-  Item,
-  ItemContent,
-  ItemDescription,
   ItemGroup,
-  ItemMedia,
-  ItemTitle,
 } from "@/components/ui/item"
 import { Button } from "@/components/ui/button";
 import { IoSearch } from "react-icons/io5";
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 
 import TextareaAutosize from "react-textarea-autosize"
 import {
@@ -30,6 +18,9 @@ import {
 import { RiWhatsappLine } from "react-icons/ri";
 import { ContactCard, ContactCardData } from "./contact.card";
 import { ChatMessage } from "./chat.message";
+import { useEffect } from "react";
+import { UseChatActions } from "../hooks/useChatActions";
+import { useChatStore } from "../store/store.chat";
 
 const contacts: ContactCardData[] = [
   {
@@ -42,6 +33,23 @@ const contacts: ContactCardData[] = [
 ]
 
 export const ChatScreen = () => {
+
+  const chatStore = useChatStore()
+  const chatActions = UseChatActions()
+
+  //
+  // INIT
+  //
+
+  useEffect(() => {
+    const page = 1;
+    chatActions.ListChatsAction(page)
+  }, [])
+
+  const HandleOpenChat = (roomId: string) => {
+    chatActions.OpenChatAction({ roomId: roomId })
+  }
+
   return (<>
     <div className="w-full border-t h-full max-h-full flex flex-col">
       <div className="h-full flex ">
@@ -89,8 +97,12 @@ export const ChatScreen = () => {
           {/*  */}
           <div className="flex w-full max-w-md flex-col gap-6 px-2 py-2">
             <ItemGroup className="gap-2">
-              {contacts.map((item, index) => (
-                <ContactCard data={item} key={index} />
+              {chatStore.listChats.map((item, index) => (
+                <ContactCard
+                  handleOpenChat={HandleOpenChat}
+                  data={{ id: item.id, lastMessage: item.lastMessage, name: item.name, thumb: '', time: '' }}
+                  key={index}
+                />
               ))}
             </ItemGroup>
           </div>
@@ -98,71 +110,79 @@ export const ChatScreen = () => {
         </div>
         {/* end:leftside-chat */}
 
-        {/* start:content wrapper */}
-        <div className="border-r border-l flex-1 h-full max-h-full flex flex-col ">
-          {/* start::Header content  */}
-          <div className="h-15 w-full border-b items-center justify-between flex px-2">
-            <div>
-              <h1 className="font-semibold">Nombre de contacto</h1>
-            </div>
-            <div>
-              actions
-            </div>
-          </div>
-          {/* end:Header content */}
-
-
-          {/* start:message content */}
-          <div className="flex-1 flex flex-col overflow-auto gap-2">
-
-            <ChatMessage type="me" />
-            <ChatMessage type="me" />
-            <ChatMessage type="me" />
-
-            <ChatMessage type="others" />
-
-            <ChatMessage type="me" />
-
-            <ChatMessage type="others" />
-            <ChatMessage type="others" />
-
-          </div>
-          {/* end:message content */}
-
-          {/* start:footer */}
-          <div className="h-40 flex-col px-2">
-            <InputGroup>
-              <TextareaAutosize
-                data-slot="input-group-control"
-                className="flex field-sizing-content min-h-25 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
-                placeholder="Escribe el mensaje..."
-              />
-              <InputGroupAddon align="block-end">
-                <InputGroupButton className="ml-auto" size="sm" variant="default">
-                  Submit
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-          </div>
-          {/* end:footer */}
-        </div>
-        {/* end:content wrapper */}
-
         {/*  */}
-        <div className="w-65 h-full flex-col">
+        {/*  */}
+        <div className="flex-1 flex">
+
+          {/* start:content wrapper */}
+          <div className="border-r border-l flex-1 h-full max-h-full flex flex-col ">
+            {/* start::Header content  */}
+            <div className="h-15 w-full border-b items-center justify-between flex px-2">
+              <div>
+                <h1 className="font-semibold">Nombre de contacto</h1>
+              </div>
+              <div>
+                actions
+              </div>
+            </div>
+            {/* end:Header content */}
+
+
+            {/* start:message content */}
+            <div className="flex-1 flex flex-col overflow-auto gap-2">
+
+              <ChatMessage type="me" />
+              <ChatMessage type="me" />
+              <ChatMessage type="me" />
+
+              <ChatMessage type="others" />
+
+              <ChatMessage type="me" />
+
+              <ChatMessage type="others" />
+              <ChatMessage type="others" />
+
+            </div>
+            {/* end:message content */}
+
+            {/* start:footer */}
+            <div className="h-40 flex-col px-2">
+              <InputGroup>
+                <TextareaAutosize
+                  data-slot="input-group-control"
+                  className="flex field-sizing-content min-h-25 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
+                  placeholder="Escribe el mensaje..."
+                />
+                <InputGroupAddon align="block-end">
+                  <InputGroupButton className="ml-auto" size="sm" variant="default">
+                    Submit
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
+            {/* end:footer */}
+          </div>
+          {/* end:content wrapper */}
+
           {/*  */}
-          <div className="px-2 pt-2 flex justify-center flex-col items-center gap-2">
-            <div className="h-15 w-15 rounded-full bg-red-500 flex justify-center items-center font-semibold text-white"> EG</div>
-            <div>
-              Erick Manuel Grandez Mendoza
+          <div className="w-65 h-full flex-col">
+            {/*  */}
+            <div className="px-2 pt-2 flex justify-center flex-col items-center gap-2">
+              <div className="h-15 w-15 rounded-full bg-red-500 flex justify-center items-center font-semibold text-white"> EG</div>
+              <div>
+                Erick Manuel Grandez Mendoza
+              </div>
+              <div>
+                <RiWhatsappLine />
+              </div>
             </div>
-            <div>
-              <RiWhatsappLine />
-            </div>
+            {/*  */}
           </div>
           {/*  */}
         </div>
         {/*  */}
+        {/*  */}
+
       </div>
     </div>
   </>)

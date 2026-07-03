@@ -19,31 +19,37 @@ export interface ContactCardData {
 
 export interface ContactCardProps {
   data: ContactCardData
+  handleOpenChat?: (roomId: string) => void;
 }
 
-
-export const ContactCard = ({ data }: PropsWithChildren<ContactCardProps>) => {
+export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactCardProps>) => {
   return <>
-    <Item key={data.name} variant="outline" role="listitem" render={<a href="#">
-      <ItemMedia variant="image">
-        <img
-          src={data.thumb}
-          alt={data.name}
-          width={32}
-          height={32}
-          className="object-cover grayscale"
-        />
-      </ItemMedia>
-      <ItemContent>
-        <ItemTitle className="line-clamp-1">
-          {data.name} -{" "}
-          <span className="text-muted-foreground">{data.name}</span>
-        </ItemTitle>
-        <ItemDescription>{data.lastMessage}</ItemDescription>
-      </ItemContent>
-      <ItemContent className="flex-none text-center">
-        <ItemDescription>{data.time}</ItemDescription>
-      </ItemContent>
-    </a>} />
+    <Item
+      onClick={() => {
+        if (handleOpenChat) handleOpenChat(data.id)
+      }}
+      variant="outline"
+      role="listitem"
+      render={<a href="#">
+        <ItemMedia variant="image">
+          <img
+            src={data.thumb}
+            alt={data.name}
+            width={32}
+            height={32}
+            className="object-cover grayscale"
+          />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle className="line-clamp-1">
+            {data.name} -{" "}
+            <span className="text-muted-foreground">{data.name}</span>
+          </ItemTitle>
+          <ItemDescription>{data.lastMessage}</ItemDescription>
+        </ItemContent>
+        <ItemContent className="flex-none text-center">
+          <ItemDescription>{data.time}</ItemDescription>
+        </ItemContent>
+      </a>} />
   </>
 }
