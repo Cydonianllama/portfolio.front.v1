@@ -28,6 +28,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useWorkspaceSelectionStore } from "../stores/workspaceStore"
 
 interface Workspace {
   id: string
@@ -66,6 +67,8 @@ export function WorkspaceDropdown() {
   const activeWorkspace =
     workspaces.find((w) => w.id === activeWorkspaceId) || workspaces[0]
 
+  const appWorkspacesStore = useWorkspaceSelectionStore();
+
   return (<>
     <SidebarMenu>
       <SidebarMenuItem>
@@ -80,34 +83,34 @@ export function WorkspaceDropdown() {
               <ChevronsUpDownIcon className="ml-auto size-3.5 opacity-60" aria-hidden="true" />
             </SidebarMenuButton>}
           >
-            
+
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="start" sideOffset={8}>
             <DropdownMenuGroup>
               <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-              {workspaces.map((workspace) => (
+              {appWorkspacesStore.workspaces.map((workspace) => (
                 <DropdownMenuItem
                   key={workspace.id}
                   className="gap-3"
                   onSelect={() => setActiveWorkspaceId(workspace.id)}
                 >
                   {/* Workspace logo (dark mode) */}
-                  {workspace.logoDark ? (
+                  {workspace.logoURL ? (
                     <>
                       <span aria-hidden className="dark:hidden">
-                        {workspace.logo}
+                        {workspace.logoURL}
                       </span>
                       <span aria-hidden className="hidden dark:block">
-                        {workspace.logoDark}
+                        {workspace.logoURL}
                       </span>
                     </>
                   ) : (
-                    workspace.logo && workspace.logo
+                    workspace.logoURL && workspace.logoURL
                   )}
 
-                  {workspace.avatar && (
+                  {workspace.logoURL && (
                     <Avatar className="size-4">
-                      <AvatarImage src={workspace.avatar} alt={workspace.name} />
+                      <AvatarImage src={workspace.logoURL} alt={workspace.name} />
                       <AvatarFallback>{workspace.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                   )}
@@ -115,9 +118,9 @@ export function WorkspaceDropdown() {
                   {/* Workspace name and plan */}
                   <div className="flex flex-1 flex-col">
                     <span className="text-sm font-medium">{workspace.name}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {workspace.plan}
-                    </span>
+                    {/* <span className="text-muted-foreground text-xs">
+                      {workspace.name}
+                    </span> */}
                   </div>
 
                   {/* Check icon */}

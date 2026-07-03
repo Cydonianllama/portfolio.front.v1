@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, PropsWithChildren } from "react";
@@ -20,6 +21,9 @@ export const AppCydoProvider = ({ children, userData }:PropsWithChildren<AppCydo
 
   const OnInitApplication = async () => {
 
+    console.log('OnInitApplication', userData)
+    if (!userData) return;
+
     try {
 
       // setear valores del auth
@@ -33,21 +37,23 @@ export const AppCydoProvider = ({ children, userData }:PropsWithChildren<AppCydo
 
       // listado de workspaces pretenecientes al usuario
       const reqWorkspaces = await ListWorkspacesUserService({ userId: userData?.id || '' });
+      console.log(reqWorkspaces)
       if (reqWorkspaces && reqWorkspaces.status) {
         if (reqWorkspaces.data.list) {
+          console.log(reqWorkspaces.data.list)
           workspaceStore.setWorkspaces(reqWorkspaces.data.list)
         }
       }
 
-    } catch (ex) {
-
+    } catch (ex: any) {
+      console.log(ex.message)
     }
 
   }
 
   useEffect(() => {
     OnInitApplication()
-  }, [])
+  }, [userData])
 
   return (<>
     {children}
