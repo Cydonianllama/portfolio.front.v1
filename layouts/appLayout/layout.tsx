@@ -147,12 +147,12 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
             <SidebarMenuItem>
               <SidebarMenuButton
-                render={<Link href="/automation">
-                  <TiFlowMerge />
-                  Automatizaciones
+                render={<Link href="/contacts">
+                  <LuUsersRound />
+                  Contactos
                 </Link>}
-                tooltip="Automatizaciones"
-                className={isActive('/automation') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+                tooltip="Home"
+                className={isActive('/contacts') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
               />
             </SidebarMenuItem>
 
@@ -169,12 +169,12 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
             <SidebarMenuItem>
               <SidebarMenuButton
-                render={<Link href="/contacts">
-                  <LuUsersRound />
-                  Contactos
+                render={<Link href="/automation">
+                  <TiFlowMerge />
+                  Automatizaciones
                 </Link>}
-                tooltip="Home"
-                className={isActive('/contacts') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+                tooltip="Automatizaciones"
+                className={isActive('/automation') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
               />
             </SidebarMenuItem>
 

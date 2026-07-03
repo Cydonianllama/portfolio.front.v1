@@ -77,25 +77,25 @@ export function WorkspaceDropdown() {
         name: data.name
       })
 
-      if (!reqWorkspace){
+      if (!reqWorkspace) {
         return;
       }
 
-      if (!reqWorkspace.status){
+      if (!reqWorkspace.status) {
         return;
       }
 
-      if (!reqWorkspace.data?.workspace){
+      if (!reqWorkspace.data?.workspace) {
         return;
       }
 
       const newWorkspace = reqWorkspace.data.workspace
-    
+
       appWorkspacesStore.setWorkspaces([{ id: newWorkspace.id, logoURL: newWorkspace.logoURL, name: newWorkspace.name }, ...appWorkspacesStore.workspaces])
 
       workspaceActions.OpenWorkspace(newWorkspace.id)
 
-    } catch (ex){ 
+    } catch (ex) {
 
     } finally {
       appWorkspacesStore.setworkspaceCreationState({
@@ -112,7 +112,12 @@ export function WorkspaceDropdown() {
           <DropdownMenuTrigger
             render={<SidebarMenuButton variant={'outline'}>
               <div className="gap-1.5 flex items-center">
-                {activeWorkspace.name}
+                {(activeWorkspace.name) && (
+                  <Avatar className="size-4">
+                    <AvatarImage src={activeWorkspace.name} alt={activeWorkspace.name} />
+                    <AvatarFallback>{activeWorkspace.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                )}
               </div>
               <span className="text-sm font-medium">{activeWorkspace.name}</span>
               <ChevronsUpDownIcon className="ml-auto size-3.5 opacity-60" aria-hidden="true" />
@@ -143,7 +148,7 @@ export function WorkspaceDropdown() {
                     workspace.logoURL && workspace.logoURL
                   )}
 
-                  {workspace.logoURL && (
+                  {(workspace.logoURL || workspace.name) && (
                     <Avatar className="size-4">
                       <AvatarImage src={workspace.logoURL} alt={workspace.name} />
                       <AvatarFallback>{workspace.name.charAt(0)}</AvatarFallback>
@@ -182,7 +187,7 @@ export function WorkspaceDropdown() {
       </SidebarMenuItem>
     </SidebarMenu>
 
-    <DialogCreateWorkpace 
+    <DialogCreateWorkpace
       onCreate={CreateWorkspace}
       open={appWorkspacesStore.workspaceCreationState.open}
       setOpen={(open) => { appWorkspacesStore.setworkspaceCreationState({ open }) }}
