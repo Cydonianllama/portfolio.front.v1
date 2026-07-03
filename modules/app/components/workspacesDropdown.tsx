@@ -32,6 +32,7 @@ import { useWorkspaceSelectionStore } from "../stores/workspaceStore"
 import { DialogCreateWorkpace } from "./DialogCreateWorkspace"
 import { CreateWorkspaceService } from "../services/create-workspace"
 import { RequestCreateWorkspace } from "../schemas/create-workspace-schema"
+import { UseWorkspacesAction } from "@/modules/hooks/useWorkspacesActions"
 
 interface Workspace {
   id: string
@@ -66,11 +67,9 @@ const workspaces: Workspace[] = [
 ]
 
 export function WorkspaceDropdown() {
-  const [activeWorkspaceId, setActiveWorkspaceId] = useState(workspaces[1].id)
-  const activeWorkspace =
-    workspaces.find((w) => w.id === activeWorkspaceId) || workspaces[0]
-
+  const workspaceActions = UseWorkspacesAction()
   const appWorkspacesStore = useWorkspaceSelectionStore();
+  const activeWorkspace = appWorkspacesStore.workspaces.find((w) => w.id === appWorkspacesStore.selectedWorkspaceId) || workspaces[0]
 
   const CreateWorkspace = async (data: RequestCreateWorkspace) => {
     try {
@@ -94,6 +93,8 @@ export function WorkspaceDropdown() {
     
       appWorkspacesStore.setWorkspaces([{ id: newWorkspace.id, logoURL: newWorkspace.logoURL, name: newWorkspace.name }, ...appWorkspacesStore.workspaces])
 
+      workspaceActions.OpenWorkspace(newWorkspace.id)
+
     } catch (ex){ 
 
     } finally {
@@ -111,7 +112,7 @@ export function WorkspaceDropdown() {
           <DropdownMenuTrigger
             render={<SidebarMenuButton variant={'outline'}>
               <div className="gap-1.5 flex items-center">
-                {activeWorkspace.logo}
+                {activeWorkspace.name}
               </div>
               <span className="text-sm font-medium">{activeWorkspace.name}</span>
               <ChevronsUpDownIcon className="ml-auto size-3.5 opacity-60" aria-hidden="true" />
@@ -126,7 +127,7 @@ export function WorkspaceDropdown() {
                 <DropdownMenuItem
                   key={workspace.id}
                   className="gap-3"
-                  onSelect={() => setActiveWorkspaceId(workspace.id)}
+                  onClick={() => workspaceActions.OpenWorkspace(workspace.id)}
                 >
                   {/* Workspace logo (dark mode) */}
                   {workspace.logoURL ? (
@@ -158,7 +159,7 @@ export function WorkspaceDropdown() {
                   </div>
 
                   {/* Check icon */}
-                  {activeWorkspaceId === workspace.id && (
+                  {appWorkspacesStore.selectedWorkspaceId === workspace.id && (
                     <CheckIcon className="text-primary size-4" aria-hidden="true" />
                   )}
                 </DropdownMenuItem>
