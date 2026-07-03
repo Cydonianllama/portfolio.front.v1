@@ -29,6 +29,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useWorkspaceSelectionStore } from "../stores/workspaceStore"
+import { DialogCreateWorkpace } from "./DialogCreateWorkspace"
+import { CreateWorkspaceService } from "../services/create-workspace"
+import { RequestCreateWorkspace } from "../schemas/create-workspace-schema"
 
 interface Workspace {
   id: string
@@ -68,6 +71,37 @@ export function WorkspaceDropdown() {
     workspaces.find((w) => w.id === activeWorkspaceId) || workspaces[0]
 
   const appWorkspacesStore = useWorkspaceSelectionStore();
+
+  const CreateWorkspace = async (data: RequestCreateWorkspace) => {
+    try {
+      const reqWorkspace = await CreateWorkspaceService({
+        name: data.name
+      })
+
+      if (!reqWorkspace){
+        return;
+      }
+
+      if (!reqWorkspace.status){
+        return;
+      }
+
+      if (!reqWorkspace.data?.workspace){
+        return;
+      }
+
+      const newWorkspace = reqWorkspace.data.workspace
+    
+      appWorkspacesStore.setWorkspaces([{ id: newWorkspace.id, logoURL: newWorkspace.logoURL, name: newWorkspace.name }, ...appWorkspacesStore.workspaces])
+
+    } catch (ex){ 
+
+    } finally {
+      appWorkspacesStore.setworkspaceCreationState({
+        open: false
+      })
+    }
+  }
 
   return (<>
     <SidebarMenu>
@@ -132,7 +166,7 @@ export function WorkspaceDropdown() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { appWorkspacesStore.setworkspaceCreationState({ open: true }) }}>
                 <PlusIcon aria-hidden="true" />
                 Create Workspace
               </DropdownMenuItem>
@@ -146,5 +180,12 @@ export function WorkspaceDropdown() {
 
       </SidebarMenuItem>
     </SidebarMenu>
+
+    <DialogCreateWorkpace 
+      onCreate={CreateWorkspace}
+      open={appWorkspacesStore.workspaceCreationState.open}
+      setOpen={(open) => { appWorkspacesStore.setworkspaceCreationState({ open }) }}
+      creating={appWorkspacesStore.workspaceCreationState.loading}
+    />
   </>)
 }
