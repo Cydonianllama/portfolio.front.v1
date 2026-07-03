@@ -33,3 +33,12 @@ export interface WorkspaceSelectionDTO {
   name: string
   logoURL: string
 }
+
+// userinformation DTO
+export interface UserInfoResponseDto {
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+}

@@ -143,6 +143,5 @@ export function WorkspaceDropdown() {
 
       </SidebarMenuItem>
     </SidebarMenu>
-
   </>)
 }

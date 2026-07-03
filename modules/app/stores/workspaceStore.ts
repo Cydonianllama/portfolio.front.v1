@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { Workspace } from "@/modules/showcase/workspace";
+import { WorkspaceSelectionDTO } from "../dto/dtos";
 
 interface WorkspaceSelectionState {
-  workspaces: Workspace[];
+  workspaces: WorkspaceSelectionDTO[];
   selectedWorkspaceId: string | null;
-  setWorkspaces: (workspaces: Workspace[]) => void;
+  setWorkspaces: (workspaces: WorkspaceSelectionDTO[]) => void;
   setSelectedWorkspaceId: (workspaceId: string | null) => void;
 }
 

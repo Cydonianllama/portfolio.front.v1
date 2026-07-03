@@ -5,7 +5,8 @@ import { ListWorkspacesUserDto, ListWorkspacesUserResponseDto } from '../dto/dto
 
 export const ListWorkspacesUserService = async (data: ListWorkspacesUserDto) : Promise<ResponseApi<ListWorkspacesUserResponseDto> | null> => {
   try{
-    return null;
+    const req = await api.get<ResponseApi<ListWorkspacesUserResponseDto>>(`/api/users/${data.userId}/workspaces`);
+    return req.data;
   } catch (err) {
     return null;
   }

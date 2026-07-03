@@ -62,6 +62,7 @@ import { TiFlowMerge } from "react-icons/ti";
 import { BsChatDots } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineManageAccounts } from "react-icons/md";
+import { useAuthCydoStore } from '@/modules/auth/store/store';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -114,7 +115,7 @@ function getBreadcrumb(pathname: string) {
 
 function AppSidebar({ pathname }: { pathname: string }) {
 
-  const authBackofficeStore = useAuthStore()
+  const userStore = useAuthCydoStore()
 
   const router = useRouter()
 
@@ -254,8 +255,8 @@ function AppSidebar({ pathname }: { pathname: string }) {
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{authBackofficeStore.basicUserInformation.fullname}</span>
-                    <span className="truncate text-xs">{authBackofficeStore.basicUserInformation.email}</span>
+                    <span className="truncate font-medium">{userStore.basicUserInformation.fullname}</span>
+                    <span className="truncate text-xs">{userStore.basicUserInformation.email}</span>
                   </div>
                 </div>}
               />}>
@@ -269,8 +270,8 @@ function AppSidebar({ pathname }: { pathname: string }) {
                       <AvatarFallback className="text-xs">AD</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start text-left overflow-hidden">
-                      <span className="text-sm font-medium truncate">{authBackofficeStore.basicUserInformation.fullname}</span>
-                      <span className="text-xs text-muted-foreground truncate">{authBackofficeStore.basicUserInformation.email}</span>
+                      <span className="text-sm font-medium truncate">{userStore.basicUserInformation.fullname}</span>
+                      <span className="text-xs text-muted-foreground truncate">{userStore.basicUserInformation.email}</span>
                     </div>
                   </div>
                   {/* <DropdownMenuSeparator /> */}

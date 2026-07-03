@@ -5,7 +5,8 @@ import { DeleteWorkspaceDto, DeleteWorkspaceResponseDto } from '../dto/dtos';
 
 export const DeleteWorkspaceService = async (data: DeleteWorkspaceDto) : Promise<ResponseApi<DeleteWorkspaceResponseDto> | null> => {
   try{
-    return null;
+    const req = await api.delete<ResponseApi<DeleteWorkspaceResponseDto>>(`/api/workspaces/${data.workspaceId}`);
+    return req.data;
   } catch (err) {
     return null;
   }
