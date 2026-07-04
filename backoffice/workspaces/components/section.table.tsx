@@ -35,6 +35,7 @@ import {
   flexRender,
   CellContext
 } from "@tanstack/react-table";
+import { SiXyflow } from "react-icons/si";
 
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
@@ -127,18 +128,22 @@ const ActionsRow = ({ data }: { data: CellContext<WorkspaceDTO, unknown> }) => {
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={'w-40'}>
+        <DropdownMenuContent className={'w-45'}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => {
               console.log("Administrar miembros", user.id)
               moduleState.setMemberManagement({ isOpen: true, workspaceId: user.id })
             }}>
-              <UsersIcon />
-              Administrar miembros
+              <SiXyflow />
+              Adm. integraciones
             </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => {
+              console.log("Administrar miembros", user.id)
+              moduleState.setMemberManagement({ isOpen: true, workspaceId: user.id })
+            }}>
+              <UsersIcon />
+              Adm. miembros
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               console.log("Editar", user.id)
               moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
