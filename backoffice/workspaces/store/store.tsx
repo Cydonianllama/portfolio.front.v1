@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { WorkspaceDTO, MemberBackofficeDTO } from "../models/dto";
+import { WorkspaceDTO, MemberBackofficeDTO, IntegrationDTO } from "../models/dto";
 
 type informationCreationItemType = {
   // states of operation
@@ -31,6 +31,8 @@ type informationDeleteItemType = {
   isOpen: boolean;
   itemId: string;
 }
+
+// member
 
 type informationMemberCreationItemType = {
   loading: boolean;
@@ -64,6 +66,43 @@ type memberManagementType = {
   workspaceId: string;
 }
 
+// integration
+
+type informationintegrationCreationItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+}
+
+type informationIntegrationUpdateItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  itemId: string;
+  itemData?: IntegrationDTO;
+}
+
+type informationInteagrationDeleteItemType = {
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  itemId: string;
+}
+
+type IntegrationManagementType = {
+  isOpen: boolean;
+  workspaceId: string;
+}
+
+
+//
+
 interface Managerv1Store {
   // information creation
   informationCreationItem: informationCreationItemType
@@ -77,6 +116,10 @@ interface Managerv1Store {
   // selection
   itemsSelected: Array<string>,
   setItemsSelected: (data: Array<string>) => void;
+
+  //
+  // member
+  //
 
   // member management dialog
   memberManagement: memberManagementType
@@ -93,6 +136,27 @@ interface Managerv1Store {
   // member delete dialog
   informationMemberDeleteItem: informationMemberDeleteItemType
   setInformationMemberDeleteItem: (data: Partial<informationMemberDeleteItemType>) => void;
+
+  //
+  // integration
+  //
+  
+  // create integration
+  informationintegrationCreationItem: informationintegrationCreationItemType,
+  setInformationintegrationCreationItem: (data: Partial<informationintegrationCreationItemType>) => void;
+
+  // update integration
+  informationIntegrationUpdateItem :informationIntegrationUpdateItemType
+  setInformationIntegrationUpdateItem: (data: Partial<informationIntegrationUpdateItemType>) => void;
+
+  // delete integration
+  informationInteagrationDeleteItem: informationInteagrationDeleteItemType
+  setInformationInteagrationDeleteItem: (data: Partial<informationInteagrationDeleteItemType>) => void;
+
+  // manage integrations
+  IntegrationManagement: IntegrationManagementType
+  setIntegrationManagement: (data: Partial<IntegrationManagementType>) => void;
+
 }
 
 export const useManagerv1Store = create<Managerv1Store>((set) => ({
@@ -228,4 +292,76 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
       }
     }
   }),
+
+  //
+  // integration
+  //
+
+  informationintegrationCreationItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false
+  },
+  setInformationintegrationCreationItem: (data: Partial<informationintegrationCreationItemType>) => set((state) => {
+    return {
+      ...state,
+      informationintegrationCreationItem: {
+        ...state.informationintegrationCreationItem,
+        ...data
+      }
+    }
+  }),
+
+  informationIntegrationUpdateItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationIntegrationUpdateItem: (data: Partial<informationIntegrationUpdateItemType>) => set((state) => {
+    return {
+      ...state,
+      informationIntegrationUpdateItem: {
+        ...state.informationIntegrationUpdateItem,
+        ...data
+      }
+    }
+  }),
+
+  informationInteagrationDeleteItem: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    itemId: ''
+  },
+  setInformationInteagrationDeleteItem: (data: Partial<informationInteagrationDeleteItemType>) => set((state) => {
+    return {
+      ...state,
+      informationInteagrationDeleteItem: {
+        ...state.informationInteagrationDeleteItem,
+        ...data
+      }
+    }
+  }),
+
+  IntegrationManagement: {
+    isOpen: false,
+    workspaceId: ''
+  },
+  setIntegrationManagement: (data: Partial<IntegrationManagementType>)  => set((state) => {
+    return {
+      ...state,
+      IntegrationManagement: {
+        ...state.IntegrationManagement,
+        ...data
+      }
+    }
+  }),
+
 }));

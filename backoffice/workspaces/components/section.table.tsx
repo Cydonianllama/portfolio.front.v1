@@ -131,8 +131,8 @@ const ActionsRow = ({ data }: { data: CellContext<WorkspaceDTO, unknown> }) => {
         <DropdownMenuContent className={'w-45'}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => {
-              console.log("Administrar miembros", user.id)
-              moduleState.setMemberManagement({ isOpen: true, workspaceId: user.id })
+              console.log("Adm. integracione", user.id)
+              moduleState.setIntegrationManagement({ isOpen: true, workspaceId: user.id })
             }}>
               <SiXyflow />
               Adm. integraciones
@@ -140,6 +140,7 @@ const ActionsRow = ({ data }: { data: CellContext<WorkspaceDTO, unknown> }) => {
             <DropdownMenuItem onClick={() => {
               console.log("Administrar miembros", user.id)
               moduleState.setMemberManagement({ isOpen: true, workspaceId: user.id })
+
             }}>
               <UsersIcon />
               Adm. miembros
@@ -211,7 +212,7 @@ export const SectionTable = (data: SectionTableProps) => {
 
     {/* Estado de error  */}
     {(data.hasError && !data.loading) && (<>
-      <ErrorStateComponent onClickRetry={() => {}} />
+      <ErrorStateComponent onClickRetry={() => { }} />
     </>)}
     {!data.loading && (<>
 
@@ -223,7 +224,7 @@ export const SectionTable = (data: SectionTableProps) => {
             title='Items'
             description='No tenemos items registrados'
             isActiveCreate={true}
-            onClickCreate={() => {}}
+            onClickCreate={() => { }}
             isActiveImport={false}
             isActiveLearn={false}
             mainIcon={<LiaSitemapSolid />}

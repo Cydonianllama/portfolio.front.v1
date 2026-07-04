@@ -140,3 +140,67 @@ export interface UpdateMemberResponseDTO {
 export interface DeleteMemberResponseDTO {
   id: string;
 }
+
+//
+// Integrations
+//
+
+export interface IntegrationDTO {
+  id: string;
+  alias: string;
+  code: string;
+  creationDate: Date
+}
+
+// udpate
+
+export interface UpdateIntegrationRequestDTO {
+  id: string;
+  alias: string;
+}
+
+export interface UpdateIntegrationResponseDTO {
+  integration: IntegrationDTO | null
+}
+
+// getall
+
+export interface GetIntegrationsRequestDTO {
+  page: number
+  workspaceId: string
+}
+
+export interface GetIntegrationsResponseDTO {
+  list: Array<IntegrationDTO>
+}
+
+// getone
+
+export interface GetIntegrationResquestDTO {
+  integrationId: string
+}
+
+export interface GetIntegrationResponseDTO {
+  integration: IntegrationDTO | null
+}
+
+// delete
+
+export interface DeleteIntegrationRequestDTO {
+  id: string
+}
+
+export interface DeleteIntegrationResponseDTO {
+  id: string
+}
+
+// create
+
+export interface CreateIntegrationRequestDTO {
+  code: string
+  workspaceId: string
+}
+
+export interface CreateIntegrationResponseDTO {
+  integration: IntegrationDTO | null
+}

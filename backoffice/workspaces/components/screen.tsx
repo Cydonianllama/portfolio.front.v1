@@ -43,6 +43,15 @@ import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useCreateMember } from "../hooks/useCreateMember";
 import { useUpdateMember } from "../hooks/useUpdateMember";
 import { useDeleteMember } from "../hooks/useDeleteMember";
+import { DialogIntegrations } from "./dialog.integration.management";
+import { DialogCreateIntegration } from "./dialog.integration.create";
+import { DialogUpdateIntegration } from "./dialog.integration.update";
+import { DialogConfirmIntegrationDeletion } from "./dialog.integration.confirmdelete";
+import { useCreateIntegration } from "../hooks/useCreateIntegration";
+import { useUpdateIntegration } from "../hooks/userUpdateIntegration";
+import { useDeleteIntegration } from "../hooks/useDeleteIntegration";
+import { RequestCreateIntegration } from "../schemas/integration.creation";
+import { RequestUpdateIntegration } from "../schemas/integration.update";
 
 export const WorkspaceScreen = () => {
 
@@ -69,6 +78,11 @@ export const WorkspaceScreen = () => {
   const createMember = useCreateMember(moduleState.memberManagement.workspaceId, memberPage)
   const updateMember = useUpdateMember(moduleState.memberManagement.workspaceId, memberPage)
   const deleteMember = useDeleteMember(moduleState.memberManagement.workspaceId, memberPage)
+
+  const integrationPage = 1;
+  const createIntegration = useCreateIntegration(moduleState.IntegrationManagement.workspaceId, integrationPage)
+  const updateIntegration = useUpdateIntegration(moduleState.IntegrationManagement.workspaceId, integrationPage)
+  const deleteIntegration = useDeleteIntegration(moduleState.IntegrationManagement.workspaceId, integrationPage)
 
 
   //
@@ -334,6 +348,54 @@ export const WorkspaceScreen = () => {
   }
 
   //
+  // Integration actions
+  //
+
+  const HandleToCreateIntegration = async (data: RequestCreateIntegration) => {
+    try {
+
+      const req = await createIntegration.mutateAsync({
+        code: data.code,
+        workspaceId: moduleState.IntegrationManagement.workspaceId || ''
+      })
+
+    } catch (err) {
+
+    } finally {
+      moduleState.setInformationintegrationCreationItem({ isOpen: false })
+    }
+  }
+
+  const HandleToUpdateIntegration = async (data: RequestUpdateIntegration) => {
+    try {
+
+      const req = await updateIntegration.mutateAsync({
+        alias: data.alias,
+        id: data.id
+      })
+      
+    } catch (err) {
+
+    } finally {
+      moduleState.setInformationIntegrationUpdateItem({ isOpen: false })
+    }
+  }
+
+  const HandleToDeleteIntegration = async () => {
+    try {
+
+      const req = await deleteIntegration.mutateAsync({
+        id: moduleState.informationInteagrationDeleteItem.itemId || ''
+      })
+
+    } catch (err) {
+
+    } finally {
+      moduleState.setInformationInteagrationDeleteItem({ isOpen: false })
+    }
+  }
+
+  //
   // Table
   //
 
@@ -341,8 +403,8 @@ export const WorkspaceScreen = () => {
 
     const elements: Array<string> = []
 
-    for (const el in data){
-      if (data[el]){
+    for (const el in data) {
+      if (data[el]) {
         elements.push(el)
       }
     }
@@ -441,6 +503,39 @@ export const WorkspaceScreen = () => {
         deleting={moduleState.informationMemberDeleteItem.loading}
       />
       {/* end::Member Dialogs */}
+
+
+      {/* start::Integrations Dialogs */}
+
+      <DialogIntegrations
+        workspaceId={moduleState.IntegrationManagement.workspaceId}
+        open={moduleState.IntegrationManagement.isOpen}
+        setOpen={(open) => moduleState.setIntegrationManagement({ isOpen: open })}
+      />
+
+      <DialogCreateIntegration
+        workspaceId={moduleState.IntegrationManagement.workspaceId || ''}
+        open={moduleState.informationintegrationCreationItem.isOpen}
+        setOpen={(open) => moduleState.setInformationintegrationCreationItem({ isOpen: open })}
+        onCreate={HandleToCreateIntegration}
+        creating={moduleState.informationintegrationCreationItem.loading}
+      />
+
+      <DialogUpdateIntegration
+        data={moduleState.informationIntegrationUpdateItem.itemData || null}
+        open={moduleState.informationIntegrationUpdateItem.isOpen}
+        setOpen={(open) => moduleState.setInformationIntegrationUpdateItem({ isOpen: open })}
+        onUpdate={HandleToUpdateIntegration}
+        updating={moduleState.informationIntegrationUpdateItem.loading}
+      />
+
+      <DialogConfirmIntegrationDeletion
+        open={moduleState.informationInteagrationDeleteItem.isOpen}
+        setOpen={(open) => moduleState.setInformationInteagrationDeleteItem({ isOpen: open })}
+        onDelete={HandleToDeleteIntegration}
+        deleting={moduleState.informationInteagrationDeleteItem.loading}
+      />
+      {/* end::Integrations Dialogs */}
     </div>
   </>)
 }
