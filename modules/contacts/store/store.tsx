@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ContactDTO } from "../models/dto";
+import { IntegrationDTO } from "../models/integrations.dto";
 
 type informationCreationItemType = {
   // states of operation
@@ -32,6 +33,17 @@ type informationDeleteItemType = {
   itemId: string;
 }
 
+type infoCreationConvContactType = {
+  // states of operation
+  loading: boolean;
+  hasError: boolean;
+  errorMessage: string;
+  response: any;
+  isOpen: boolean;
+  contactId: string;
+  integrations: IntegrationDTO[] // listado de integraciones
+}
+
 interface Managerv1Store {
   // information creation
   informationCreationItem: informationCreationItemType
@@ -45,9 +57,31 @@ interface Managerv1Store {
   // selection
   itemsSelected: Array<string>,
   setItemsSelected: (data: Array<string>) => void;
+  // informacion creation conversation
+  infoCreationConvContact: infoCreationConvContactType,
+  setInfoCreationConvContact: (data: Partial<infoCreationConvContactType>) => void;
 }
 
 export const useManagerv1Store = create<Managerv1Store>((set) => ({
+  // creation contact conversation
+  infoCreationConvContact: {
+    errorMessage: '',
+    hasError: false,
+    loading: false,
+    response: {},
+    isOpen: false,
+    contactId: '',
+    integrations: []
+  },
+  setInfoCreationConvContact: (data: Partial<infoCreationConvContactType>) => set((state) => {
+    return {
+      ...state,
+      infoCreationConvContact: {
+        ...state.infoCreationConvContact,
+        ...data
+      }
+    }
+  }),
   // information creation
   informationCreationItem: {
     errorMessage: '',

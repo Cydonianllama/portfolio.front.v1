@@ -8,7 +8,7 @@
 //
 
 // components
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogCreateContact } from "./dialog.create";
 import { DialogEditContact } from "./dialog.edit";
 import { DialogConfirmDeleteContact } from "./dialog.confirmdelete";
@@ -47,6 +47,8 @@ import { useCreateManagerV1 } from "../hooks/useCreate";
 import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
+import { DialogCreateConversationContact } from "./dialog.contact.createconversation";
+import { ListIntegrations } from "../services/list.integrations";
 
 export const ConctatsScreen = () => {
 
@@ -231,6 +233,14 @@ export const ConctatsScreen = () => {
     }
   }
 
+  const OnCreateConversationContact = async () => {
+    try {
+
+    } catch (ex) {
+
+    }
+  }
+
   //
   // Table
   //
@@ -257,6 +267,42 @@ export const ConctatsScreen = () => {
   const OnClickRetry = () => {
     HandleToRefresh()
   }
+
+  //
+  // Integrations
+  //
+
+  const ListIntegrationsAction = async () => {
+    try {
+      const req = await ListIntegrations({
+        workspaceId: workspaceAppStore.selectedWorkspaceId || ''
+      })
+
+      if (!req){
+        return;
+      } 
+
+      if (!req.status){
+        return;
+      }
+
+      if (req.data.list){
+        moduleState.setInfoCreationConvContact({ integrations: req.data.list || [] })
+      }
+
+      
+    } catch (ex) {
+
+    } finally {
+
+    }
+  }
+
+  useEffect(() => {
+    if (moduleState.infoCreationConvContact.isOpen){
+      ListIntegrationsAction()
+    }
+  }, [moduleState.infoCreationConvContact.isOpen])
 
   return (<>
     <div className="relative h-full px-12 flex flex-col">
@@ -341,6 +387,14 @@ export const ConctatsScreen = () => {
         setOpen={(open) => moduleState.setInformationDeleteItem({ isOpen: open })}
         onDelete={OnDeleteItem}
         deleting={moduleState.informationDeleteItem.loading}
+      />
+
+      <DialogCreateConversationContact
+        open={moduleState.infoCreationConvContact.isOpen}
+        setOpen={(open) => moduleState.setInfoCreationConvContact({ isOpen: open })}
+        onCreate={OnCreateConversationContact}
+        creating={moduleState.infoCreationConvContact.loading}
+        integrations={moduleState.infoCreationConvContact.integrations}
       />
       {/* end::Dialogs */}
     </div>

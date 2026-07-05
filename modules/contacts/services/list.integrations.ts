@@ -1,0 +1,12 @@
+import { api } from '@/setup/axios'
+import { ResponseApi } from '@/types/api/response';
+import { GetIntegrationsRequest, GetIntegrationsResponse } from '../models/integrations.dto';
+
+export const ListIntegrations = async (data: GetIntegrationsRequest): Promise<ResponseApi<GetIntegrationsResponse> | null>  => {
+  try {
+    const req = await api.get(`/api/workspaces/${data.workspaceId}/integrations`)
+    return req.data;
+  } catch (ex){ 
+    return null;
+  }
+}
