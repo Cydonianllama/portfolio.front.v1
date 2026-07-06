@@ -8,7 +8,6 @@ export interface IntegrationDTO {
 
 // get integrations
 
-
 export interface GetIntegrationsResponse {
   list: IntegrationDTO[]
 }
@@ -16,3 +15,5 @@ export interface GetIntegrationsResponse {
 export interface GetIntegrationsRequest {
   workspaceId: string;
 }
+
+//

@@ -1,6 +1,6 @@
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { GetIntegrationsRequest, GetIntegrationsResponse } from '../models/integrations.dto';
+import { GetIntegrationsRequest, GetIntegrationsResponse } from './integration.dto';
 
 export const ListIntegrations = async (data: GetIntegrationsRequest): Promise<ResponseApi<GetIntegrationsResponse> | null>  => {
   try {

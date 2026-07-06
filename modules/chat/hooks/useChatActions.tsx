@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 import { useChatStore } from '../store/store.chat'
-import { ListChats } from '../services/list.chat'
-import { OpenChat } from '../services/open.chat'
-import { SendMessage } from '../services/send.messaage'
+import { CreateChat, ListChats, OpenChat, SendMessage } from '@/api/chat/chat.api'
+import { CreateChatRequestDTO } from '@/api/chat/chat.dto'
 
 export const UseChatActions = () => {
 
@@ -79,10 +78,29 @@ export const UseChatActions = () => {
     }
   }, [])
 
+  const CreateConversation = useCallback(async (data: CreateChatRequestDTO) => {
+    try {
+      console.log('CreateConversation - hook')
+      const req = await CreateChat(data)
+
+      if (!req) {
+        return;
+      }
+
+      if (!req.status) {
+        return;
+      }
+
+    } catch (error) {
+
+    }
+  }, [])
+
 
   return {
     ListChatsAction,
     OpenChatAction,
-    SendMessageAction
+    SendMessageAction,
+    CreateConversation
   }
 }

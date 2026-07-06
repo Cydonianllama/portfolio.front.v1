@@ -136,7 +136,7 @@ const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               console.log("Crear conversacion", user.id)
-              moduleState.setInfoCreationConvContact({ isOpen: true, contactId: user.id })
+              moduleState.setInfoCreationConvContact({ isOpen: true, contactId: user.id, contact: user })
             }}>
               <MdOutlineChat />
               Iniciar conversación

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ContactDTO } from "../models/dto";
-import { IntegrationDTO } from "../models/integrations.dto";
+import { IntegrationDTO } from "@/api/integration/integration.dto";
 
 type informationCreationItemType = {
   // states of operation
@@ -42,6 +42,7 @@ type infoCreationConvContactType = {
   isOpen: boolean;
   contactId: string;
   integrations: IntegrationDTO[] // listado de integraciones
+  contact: ContactDTO | null
 }
 
 interface Managerv1Store {
@@ -71,7 +72,8 @@ export const useManagerv1Store = create<Managerv1Store>((set) => ({
     response: {},
     isOpen: false,
     contactId: '',
-    integrations: []
+    integrations: [],
+    contact: null
   },
   setInfoCreationConvContact: (data: Partial<infoCreationConvContactType>) => set((state) => {
     return {

@@ -48,7 +48,9 @@ import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { DialogCreateConversationContact } from "./dialog.contact.createconversation";
-import { ListIntegrations } from "../services/list.integrations";
+import { UseChatActions } from "@/modules/chat/hooks/useChatActions";
+import { CreationConversationSchema } from "../schemas/creation.conversation";
+import { ListIntegrations } from "@/api/integration/integration.api";
 
 export const ConctatsScreen = () => {
 
@@ -72,6 +74,8 @@ export const ConctatsScreen = () => {
   const createContactAction = useCreateManagerV1(page, query, workspaceAppStore.selectedWorkspaceId || '')
   const updateContactAction = useUpdateManagerV1(page, query, workspaceAppStore.selectedWorkspaceId || '')
   const deleteContatAction = useDeleteManagerV1(page, query, workspaceAppStore.selectedWorkspaceId || '')
+
+  const chatActions = UseChatActions()
 
   //
   // section header
@@ -233,9 +237,14 @@ export const ConctatsScreen = () => {
     }
   }
 
-  const OnCreateConversationContact = async () => {
+  const OnCreateConversationContact = async (data: CreationConversationSchema) => {
     try {
-
+      console.log('OnCreateConversationContact')
+      await chatActions.CreateConversation({
+        participants: data.participants || [],
+        workspaceId: data.workspaceId || '',
+        integrationId: data.integrationId || ''
+      })
     } catch (ex) {
 
     }
@@ -278,19 +287,19 @@ export const ConctatsScreen = () => {
         workspaceId: workspaceAppStore.selectedWorkspaceId || ''
       })
 
-      if (!req){
-        return;
-      } 
-
-      if (!req.status){
+      if (!req) {
         return;
       }
 
-      if (req.data.list){
+      if (!req.status) {
+        return;
+      }
+
+      if (req.data.list) {
         moduleState.setInfoCreationConvContact({ integrations: req.data.list || [] })
       }
 
-      
+
     } catch (ex) {
 
     } finally {
@@ -299,7 +308,7 @@ export const ConctatsScreen = () => {
   }
 
   useEffect(() => {
-    if (moduleState.infoCreationConvContact.isOpen){
+    if (moduleState.infoCreationConvContact.isOpen) {
       ListIntegrationsAction()
     }
   }, [moduleState.infoCreationConvContact.isOpen])
@@ -395,6 +404,7 @@ export const ConctatsScreen = () => {
         onCreate={OnCreateConversationContact}
         creating={moduleState.infoCreationConvContact.loading}
         integrations={moduleState.infoCreationConvContact.integrations}
+        data={moduleState.infoCreationConvContact.contact}
       />
       {/* end::Dialogs */}
     </div>
