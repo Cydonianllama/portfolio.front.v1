@@ -353,19 +353,22 @@ export default function AppLayout({
     return <>{children}</>;
   }
 
-  return (
-    <ReactQueryProvider>
-      <SidebarProvider>
-        <AppSidebar pathname={pathname} />
-        <SidebarInset>
-          <div className="flex h-screen flex-col overflow-auto">
-            <BackofficeHeader pathname={pathname} />
-            <main className="flex-1">
-              {children}
-            </main>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </ReactQueryProvider>
-  );
+  return (<>
+    <div className="h-screen max-h-screen">
+      <ReactQueryProvider>
+        <SidebarProvider className='h-full'>
+          <AppSidebar pathname={pathname} />
+          <SidebarInset className='h-full'>
+            <div className='h-full flex flex-col'>
+              <BackofficeHeader pathname={pathname} />
+              <div className='flex-1 min-h-0'>
+                {children}
+              </div>
+            </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </ReactQueryProvider>
+    </div>
+
+  </>);
 }

@@ -63,7 +63,7 @@ interface Managerv1Store {
   setInfoCreationConvContact: (data: Partial<infoCreationConvContactType>) => void;
 }
 
-export const useManagerv1Store = create<Managerv1Store>((set) => ({
+export const useContactStore = create<Managerv1Store>((set) => ({
   // creation contact conversation
   infoCreationConvContact: {
     errorMessage: '',

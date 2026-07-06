@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
@@ -18,41 +19,127 @@ import {
 import { RiWhatsappLine } from "react-icons/ri";
 import { ContactCard, ContactCardData } from "./contact.card";
 import { ChatMessage } from "./chat.message";
-import { useEffect } from "react";
-import { UseChatActions } from "../hooks/useChatActions";
+import { createRef, useCallback, useEffect, useRef, useState } from "react";
+import { UseChatActions } from "../../../hooks/useChatActions";
 import { useChatStore } from "../store/store.chat";
-
-const contacts: ContactCardData[] = [
-  {
-    id: 'asd',
-    name: "Erick Manuel Grandez Mendoza",
-    thumb: "https://i.pinimg.com/280x280_RS/26/0d/4c/260d4ced291880ab0a6b44f7af481001.jpg",
-    lastMessage: "Mamahuebo",
-    time: "3:45",
-  },
-]
+import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
+import { HandleToSendMessageProp, TextAreaChat } from "./TextAreaChat";
+import { MessagesShowcase } from "./MessagesShowcase";
 
 export const ChatScreen = () => {
-
   const chatStore = useChatStore()
   const chatActions = UseChatActions()
+  const workspaceSelectionStore = useWorkspaceSelectionStore()
+
+  const [resetSignal, setResetSignal] = useState(0);
+
+  const handleReset = () => {
+    setResetSignal((prev) => prev + 1);
+  };
 
   //
   // INIT
   //
 
   useEffect(() => {
-    const page = 1;
-    chatActions.ListChatsAction(page)
-  }, [])
+    if (workspaceSelectionStore.selectedWorkspaceId) {
+      const page = 1;
+      chatActions.ListChatsAction({ page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
+    }
+  }, [workspaceSelectionStore.selectedWorkspaceId])
 
   const HandleOpenChat = (roomId: string) => {
     chatActions.OpenChatAction({ roomId: roomId })
   }
 
+  const HandleToSendMessage = (data: HandleToSendMessageProp) => {
+    chatActions.SendMessageAction({
+      message: data.message,
+      roomId: chatStore.roomIdOpened || ''
+    })
+  }
+
+  //
+  //
+  //
+
+  // si el envío del mensaje es exitoso
+  useEffect(() => {
+    if (!chatStore.sendingMessage && chatStore.successSendingMessage) {
+      handleReset()
+    }
+  }, [chatStore.sendingMessage, chatStore.successSendingMessage])
+
+  // si el usuario cambia de session abierta
+  useEffect(() => {
+    if (chatStore.roomIdOpened) {
+      handleReset()
+    }
+  }, [chatStore.roomIdOpened])
+
+
+  // Listar más mensajes
+  const handleLoadMore = useCallback(() => {
+    if (chatStore.listingMessages) {
+      console.log("[INTERSECTION OBSERVER] not running is listing messages");
+      return;
+    }
+
+    if (chatStore.openingChat) {
+      console.log("[INTERSECTION OBSERVER] not running is opening chat");
+      return;
+    }
+
+    let page = 1;
+
+    if (chatStore.paginationMessages){
+      if (chatStore.paginationMessages.hasNextPage){
+        page = (chatStore?.paginationMessages?.page || 0) + 1;
+      }else {
+        console.log('No hay más paginas que listar')
+        return;
+      }
+    }
+
+    console.log("Cargar más mensajes");
+    chatActions.ListMessagesAction({ page: page, roomId: chatStore.roomIdOpened || '' })
+
+  }, [chatStore.listingMessages, chatStore.openingChat, chatStore.paginationMessages, chatStore.roomIdOpened]);
+
+
+  // referencias de la seccion del listado de mensajes
+  const topRef = useRef<HTMLDivElement>(null);
+  const wrapperListMessagesRef = useRef<HTMLDivElement>(null)
+
+  const scrollToEndChat = () => {
+    requestAnimationFrame(() => {
+      if (wrapperListMessagesRef.current) {
+        wrapperListMessagesRef.current.scrollTo({
+          top: wrapperListMessagesRef.current.scrollHeight,
+          behavior: "instant",
+        });
+      }
+    });
+  }
+
+  // cuando termina de listar los mensajes ()
+  useEffect(() => {
+    if (chatStore.successListingMessages) {
+      // scrollToEndChat()
+    }
+  }, [chatStore.successListingMessages])
+
+  // cuando termina de abrir el chat (scrollear al final)
+  useEffect(() => {
+    if (chatStore.hasSuccessOpeningChat) {
+      console.log('terminó de abrir el chat - scrolear hacia abajo')
+      scrollToEndChat()
+    }
+  }, [chatStore.hasSuccessOpeningChat])
+
   return (<>
-    <div className="w-full border-t h-full max-h-full flex flex-col">
-      <div className="h-full flex ">
+    <div className="w-full border-t  h-full flex flex-col">
+      <div className="flex h-full">
         {/* start:aside */}
         <div className="w-65 h-full border-r">
 
@@ -100,7 +187,13 @@ export const ChatScreen = () => {
               {chatStore.listChats.map((item, index) => (
                 <ContactCard
                   handleOpenChat={HandleOpenChat}
-                  data={{ id: item.id, lastMessage: item.lastMessage, name: item.name, thumb: '', time: '' }}
+                  data={{
+                    id: item.id,
+                    lastMessage: item.lastMessage || 'No registramos mensajes',
+                    name: item.name,
+                    thumb: '',
+                    time: '-'
+                  }}
                   key={index}
                 />
               ))}
@@ -112,12 +205,12 @@ export const ChatScreen = () => {
 
         {/*  */}
         {/*  */}
-        <div className="flex-1 flex">
+        <div className="flex-1 flex h-full min-h-0 min-w-0 overflow-hidden">
 
           {/* start:content wrapper */}
-          <div className="border-r border-l flex-1 h-full max-h-full flex flex-col ">
+          <div className="border-r border-l flex-1 min-h-0 flex flex-col">
             {/* start::Header content  */}
-            <div className="h-15 w-full border-b items-center justify-between flex px-2">
+            <div className="h-15 w-full border-b min-h-0  items-center justify-between flex px-2">
               <div>
                 <h1 className="font-semibold">Nombre de contacto</h1>
               </div>
@@ -127,45 +220,26 @@ export const ChatScreen = () => {
             </div>
             {/* end:Header content */}
 
-
             {/* start:message content */}
-            <div className="flex-1 flex flex-col overflow-auto gap-2">
-
-              <ChatMessage type="me" />
-              <ChatMessage type="me" />
-              <ChatMessage type="me" />
-
-              <ChatMessage type="others" />
-
-              <ChatMessage type="me" />
-
-              <ChatMessage type="others" />
-              <ChatMessage type="others" />
-
-            </div>
+            <MessagesShowcase
+              handleLoadMore={handleLoadMore}
+              topRef={topRef}
+              wrapperListMessagesRef={wrapperListMessagesRef}
+              messages={chatStore.messages || []}
+              loading={false}
+            />
             {/* end:message content */}
 
             {/* start:footer */}
-            <div className="h-40 flex-col px-2">
-              <InputGroup>
-                <TextareaAutosize
-                  data-slot="input-group-control"
-                  className="flex field-sizing-content min-h-25 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
-                  placeholder="Escribe el mensaje..."
-                />
-                <InputGroupAddon align="block-end">
-                  <InputGroupButton className="ml-auto" size="sm" variant="default">
-                    Submit
-                  </InputGroupButton>
-                </InputGroupAddon>
-              </InputGroup>
+            <div className="h-40 flex-col min-h-0  px-2">
+              <TextAreaChat sending={chatStore.sendingMessage} resetSignal={resetSignal} HandleToSendMessage={HandleToSendMessage} />
             </div>
             {/* end:footer */}
           </div>
           {/* end:content wrapper */}
 
           {/*  */}
-          <div className="w-65 h-full flex-col">
+          <div className="w-65 flex-col min-h-0">
             {/*  */}
             <div className="px-2 pt-2 flex justify-center flex-col items-center gap-2">
               <div className="h-15 w-15 rounded-full bg-red-500 flex justify-center items-center font-semibold text-white"> EG</div>

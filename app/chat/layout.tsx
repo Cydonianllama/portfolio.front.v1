@@ -11,7 +11,7 @@ export default async function PageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
+
   // const pathname = usePathname();
   // if (pathname === "/backoffice/login") {
   //   return <>{children}</>;
@@ -23,11 +23,12 @@ export default async function PageLayout({
 
   const user = await GetUserInfoService(token || '')
 
-  return (
+  return (<>
+
     <AppCydoProvider userData={user?.data.user}>
       <AppLayout>
         {children}
       </AppLayout>
     </AppCydoProvider>
-  );
+  </>);
 }

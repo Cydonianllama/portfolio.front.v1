@@ -18,7 +18,7 @@ export const ChatMessage = ({ data, type }: PropsWithChildren<ChatMessageProp>) 
       <div className="w-1/2">
         <div className="flex flex-col">
           <div className="flex items-end">
-            <span className="text-xs p-2 bg-gray-100 rounded-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate consequatur minima minus atque illo?</span>
+            <span className="text-xs p-2 bg-gray-100 rounded-lg">{data?.content}</span>
             <div className="pl-1">
               <div className="h-7 w-7 rounded-full bg-gray-400"></div>
             </div>
@@ -39,7 +39,7 @@ export const ChatMessage = ({ data, type }: PropsWithChildren<ChatMessageProp>) 
             <div className="pr-1">
               <div className="h-7 w-7 rounded-full bg-gray-400"></div>
             </div>
-            <span className="text-xs p-2 bg-gray-100 rounded-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate consequatur minima minus atque illo?</span>
+            <span className="text-xs p-2 bg-gray-100 rounded-lg">{data?.content}</span>
           </div>
           <div className="flex justify-start pl-9">
             <span className="text-xs">7m - Autoreply</span>

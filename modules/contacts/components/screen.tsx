@@ -36,7 +36,7 @@ import { toast } from "sonner";
 import { useListContacts } from "../hooks/useList";
 
 // store
-import { useManagerv1Store } from "../store/store";
+import { useContactStore } from "../store/store";
 
 // schemas
 import { CreationSchema } from "../schemas/item.creation";
@@ -48,7 +48,7 @@ import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { DialogCreateConversationContact } from "./dialog.contact.createconversation";
-import { UseChatActions } from "@/modules/chat/hooks/useChatActions";
+import { UseChatActions } from "@/hooks/useChatActions";
 import { CreationConversationSchema } from "../schemas/creation.conversation";
 import { ListIntegrations } from "@/api/integration/integration.api";
 
@@ -56,7 +56,7 @@ export const ConctatsScreen = () => {
 
   const workspaceAppStore = useWorkspaceSelectionStore();
 
-  const moduleState = useManagerv1Store();
+  const moduleState = useContactStore();
 
   const [page, setPage] = useState(1)
   const [query, setQuery] = useState('')

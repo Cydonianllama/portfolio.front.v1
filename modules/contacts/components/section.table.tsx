@@ -43,7 +43,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ContactDTO } from "../models/dto";
 
 // state
-import { useManagerv1Store } from '../store/store';
+import { useContactStore } from '../store/store';
 
 // icons
 import { MdOutlineChat, MdOutlineEdit } from 'react-icons/md';
@@ -119,7 +119,7 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
 // ActionsRow
 const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
   const user = data.row.original;
-  const moduleState = useManagerv1Store();
+  const moduleState = useContactStore();
   return (
     <div className="flex gap-2">
       <DropdownMenu>

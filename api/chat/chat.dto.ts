@@ -1,3 +1,5 @@
+import { ResponsePagination } from "@/types/api/utils.pagination";
+
 export interface MessageDTO {
   id: string;
   message: string;
@@ -11,10 +13,13 @@ export interface RoomDTO {
   workspaceId: string;
   platformId: string;
   participants: Array<{
-    contactId: string
+    contactId: string;
+    contactName: string;
   }>;
   creationDate: Date;
+  lastMessage: string
 }
+
 
 // create chat
 export interface CreateChatResponseDTO {
@@ -32,6 +37,7 @@ export interface CreateChatRequestDTO {
 // list chat
 export interface ListChatRequestDTO {
   page: number;
+  workspaceId: string;
 }
 
 export interface ListChatResponseDTO {
@@ -51,10 +57,19 @@ export interface SendMessageResponseDTO {
 // open chat
 export interface OpenChatResponseDTO {
   messages: Array<MessageDTO>
-  totalMessage: number
-  room: RoomDTO
+  paginationMessage: ResponsePagination | null
 }
 
 export interface OpenChatRequestDTO {
   roomId: string
+}
+
+// list messages
+export interface ListMessagesRequestDTO {
+  page: number;
+  roomId: string;
+}
+
+export interface ListMessagesResponseDTO {
+  list: Array<MessageDTO>
 }

@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable @next/next/no-img-element */
 import { PropsWithChildren } from 'react'
 import {
@@ -31,15 +33,22 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
       variant="outline"
       role="listitem"
       render={<a href="#">
-        <ItemMedia variant="image">
-          <img
-            src={data.thumb}
-            alt={data.name}
-            width={32}
-            height={32}
-            className="object-cover grayscale"
-          />
-        </ItemMedia>
+        {data.thumb && (<>
+          <ItemMedia variant="image">
+            <img
+              src={data.thumb}
+              alt={data.name}
+              width={32}
+              height={32}
+              className="object-cover grayscale"
+            />
+          </ItemMedia>
+        </>)}
+        {!data.thumb && (<>
+          <div className='h-7 bg-gray-200 text-gray-700 flex items-center justify-center font-bold w-7 rounded-full'>
+            {data.name.charAt(0)}
+          </div>
+        </>)}
         <ItemContent>
           <ItemTitle className="line-clamp-1">
             {data.name} -{" "}
