@@ -16,7 +16,7 @@ export const ChatMessage = ({ data, type }: PropsWithChildren<ChatMessageProp>) 
   if (type == 'me') return <>
     <div className="w-full flex justify-end px-2">
       <div className="w-1/2">
-        <div className="flex flex-col">
+        <div className="flex flex-col items-end">
           <div className="flex items-end">
             <span className="text-xs p-2 bg-gray-100 rounded-lg">{data?.content}</span>
             <div className="pl-1">

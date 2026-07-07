@@ -58,6 +58,7 @@ export interface SendMessageResponseDTO {
 export interface OpenChatResponseDTO {
   messages: Array<MessageDTO>
   paginationMessage: ResponsePagination | null
+  room: RoomDTO | null
 }
 
 export interface OpenChatRequestDTO {

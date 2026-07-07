@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination";
 import { MessageDTO, RoomDTO } from "@/api/chat/chat.dto";
+import { ContactDTO } from "@/api/contacts/contacts.dto";
 
 interface ChatStore {
 
@@ -32,6 +33,10 @@ interface ChatStore {
   messages: Array<MessageDTO>
   paginationMessages: ResponsePagination | null,
   setChatSelectedStates: (data: Partial<{ roomIdOpened: string | null, openingChat: boolean, hasSuccessOpeningChat: boolean, messages: Array<MessageDTO>, paginationMessages: ResponsePagination | null }>) => void;
+
+  // individual contact room information
+  contactIndividualOpenedInformation: ContactDTO | null
+  setIndividualContact: (data: Partial<{ contactIndividualOpenedInformation: ContactDTO | null }>) => void
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -82,10 +87,9 @@ export const useChatStore = create<ChatStore>((set) => ({
   // listing messages
   listingMessages: false,
   successListingMessages: false,
-  setListingMessageStates: (data) => set((state) => {
-    return {
-      ...state,
-      ...data
-    }
-  }),
+  setListingMessageStates: (data) => set((state) => ({ ...state, ...data })),
+
+  // individual:
+  contactIndividualOpenedInformation: null,
+  setIndividualContact: (data: Partial<{ contactIndividualOpenedInformation: ContactDTO | null }>) => set((state) => ({ ...state, ...data })),
 }));
