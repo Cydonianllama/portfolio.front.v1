@@ -164,7 +164,7 @@ export const ChatScreen = () => {
         {/* end:aside */}
 
         {/* start-leftsidechat  */}
-        <div className="w-70 h-full ">
+        <div className="w-70 flex flex-col h-full min-h-0 ">
           {/*  */}
           <div className="border-b h-15 px-2 flex items-center gap-2">
             <Button variant={'ghost'} size={'icon'}>
@@ -182,8 +182,8 @@ export const ChatScreen = () => {
           {/*  */}
 
           {/*  */}
-          <div className="flex w-full max-w-md flex-col gap-6 px-2 py-2">
-            <ItemGroup className="gap-2">
+          <div className="flex flex-1 flex-col overflow-auto min-h-0  w-full gap-6 px-2 py-2">
+            <ItemGroup className="h-full">
               {chatStore.listChats.map((item, index) => (
                 <ContactCard
                   handleOpenChat={HandleOpenChat}
@@ -203,7 +203,6 @@ export const ChatScreen = () => {
         </div>
         {/* end:leftside-chat */}
 
-        {/*  */}
         {/*  */}
         <div className="flex-1 flex h-full min-h-0 min-w-0 overflow-hidden">
 
@@ -231,7 +230,7 @@ export const ChatScreen = () => {
             {/* end:message content */}
 
             {/* start:footer */}
-            <div className="h-40 flex-col min-h-0  px-2">
+            <div className="min-h-40 max-h-70 px-2 bottom-0 py-2 ">
               <TextAreaChat sending={chatStore.sendingMessage} resetSignal={resetSignal} HandleToSendMessage={HandleToSendMessage} />
             </div>
             {/* end:footer */}
@@ -254,7 +253,6 @@ export const ChatScreen = () => {
           </div>
           {/*  */}
         </div>
-        {/*  */}
         {/*  */}
 
       </div>

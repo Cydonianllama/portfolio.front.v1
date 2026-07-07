@@ -33,7 +33,7 @@ export const MessagesShowcase = memo(({ messages, handleLoadMore, topRef, wrappe
     );
     observer.observe(target);
     return () => observer.disconnect();
-  }, [handleLoadMore]);
+  }, [handleLoadMore, topRef, wrapperListMessagesRef]);
 
   return (<>
     <div ref={wrapperListMessagesRef} className="flex-1 overflow-auto min-h-0 flex flex-col gap-2 py-2">

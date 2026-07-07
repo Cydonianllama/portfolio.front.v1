@@ -99,6 +99,13 @@ const ActionsRow = ({ data, workspaceId }: { data: CellContext<IntegrationDTO, u
 
 const columnsIntegrationsTable = (workspaceId: string): ColumnDef<IntegrationDTO>[] => [
   {
+    accessorKey: "id",
+    header: "Id",
+    cell: ({ row }) => (<>
+      {row.original.id}
+    </>)
+  },
+  {
     accessorKey: "alias",
     header: "Name",
     cell: ({ row }) => (<>

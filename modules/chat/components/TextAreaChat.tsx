@@ -29,12 +29,12 @@ export const TextAreaChat = ({
   }, [resetSignal]);
 
   return (
-    <InputGroup>
+    <InputGroup className="h-full">
       <TextareaAutosize
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         data-slot="input-group-control"
-        className="flex field-sizing-content min-h-25 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
+        className="flex min-h-24 max-h-50 field-sizing-content h-full w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
         placeholder="Escribe el mensaje..."
       />
       <InputGroupAddon align="block-end">
