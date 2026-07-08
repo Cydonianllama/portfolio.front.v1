@@ -140,7 +140,10 @@ export const ConctatsScreen = () => {
 
       const req = await createContactAction.mutateAsync({
         fullname: data.fullname,
-        workspaceId: workspaceAppStore.selectedWorkspaceId || ''
+        workspaceId: workspaceAppStore.selectedWorkspaceId || '',
+        mainDirection: data.mainDirection || null,
+        mainEmail: data.mainEmail || null,
+        mainPhone: data.mainPhone || null
       })
 
       console.log(req)
@@ -180,9 +183,10 @@ export const ConctatsScreen = () => {
       const req = await updateContactAction.mutateAsync({
         id: moduleState.informationIpdateItem.itemId,
         fullname: data.fullname,
+        mainDirection: data.mainDirection || null,
+        mainEmail: data.mainEmail || null,
+        mainPhone: data.mainPhone || null,
       })
-
-      console.log(req)
 
     } catch (error) {
       // error en proceso

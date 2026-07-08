@@ -40,7 +40,6 @@ import {
 
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
-import { ContactDTO } from "../models/dto";
 
 // state
 import { useContactStore } from '../store/store';
@@ -53,6 +52,7 @@ import { SpinnerListing } from '../shared/Listing';
 import { ErrorStateComponent } from '../shared/Error';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { ContactDTO } from '@/api/contacts/contacts.dto';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
@@ -86,6 +86,18 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
   {
     accessorKey: "fullname",
     header: "Nombre"
+  },
+  {
+    accessorKey: "mainPhone",
+    header: "Celular"
+  },
+  {
+    accessorKey: "mainEmail",
+    header: "Correo electrónico"
+  },
+  {
+    accessorKey: "mainDirection",
+    header: "Dirección"
   },
   // {
   //   accessorKey: "id",

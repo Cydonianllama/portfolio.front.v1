@@ -54,6 +54,9 @@ export const DialogCreateContact = (config: DialogCreateContactConfig) => {
     if (!config.open) {
       reset({
         fullname: '',
+        mainDirection: '',
+        mainEmail: '',
+        mainPhone: ''
       });
     }
   }, [config.open, reset]);
@@ -91,6 +94,47 @@ export const DialogCreateContact = (config: DialogCreateContactConfig) => {
             {errors.fullname && (
               <p className="text-sm text-red-500">
                 {errors.fullname.message}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <Label>Celular</Label>
+            <Input
+              placeholder="Celular"
+              {...register("mainPhone")}
+            />
+            {errors.mainPhone && (
+              <p className="text-sm text-red-500">
+                {errors.mainPhone.message}
+              </p>
+            )}
+          </Field>
+
+
+          <Field>
+            <Label>Correo electrónico</Label>
+            <Input
+              placeholder="Correo electrónico"
+              {...register("mainEmail")}
+            />
+            {errors.mainEmail && (
+              <p className="text-sm text-red-500">
+                {errors.mainEmail.message}
+              </p>
+            )}
+          </Field>
+
+
+          <Field>
+            <Label>Dirección</Label>
+            <Input
+              placeholder="Dirección"
+              {...register("mainDirection")}
+            />
+            {errors.mainDirection && (
+              <p className="text-sm text-red-500">
+                {errors.mainDirection.message}
               </p>
             )}
           </Field>

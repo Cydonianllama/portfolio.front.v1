@@ -25,7 +25,7 @@ import {
   UpdateSchema,
   updateSchema
 } from "../schemas/item.update";
-import { ContactDTO } from "../models/dto"
+import { ContactDTO } from "@/api/contacts/contacts.dto"
 
 export interface DialogEditContactConfig {
   onUpdate: (data: UpdateSchema) => void
@@ -54,12 +54,18 @@ export const DialogEditContact = (config: DialogEditContactConfig) => {
     if (!config.open) {
       reset({
         fullname: '',
+        mainDirection: '',
+        mainEmail: '',
+        mainPhone: ''
       });
     }
 
     if (config.data) {
       reset({
         fullname: config.data.fullname || '',
+        mainDirection: config.data.mainDirection,
+        mainEmail: config.data.mainEmail,
+        mainPhone: config.data.mainPhone,
       })
     }
   }, [config.open, reset, config.data]);
@@ -99,6 +105,48 @@ export const DialogEditContact = (config: DialogEditContactConfig) => {
               </p>
             )}
           </Field>
+
+          <Field>
+            <Label>Celular</Label>
+            <Input
+              placeholder="Celular"
+              {...register("mainPhone")}
+            />
+            {errors.mainPhone && (
+              <p className="text-sm text-red-500">
+                {errors.mainPhone.message}
+              </p>
+            )}
+          </Field>
+
+
+          <Field>
+            <Label>Correo electrónico</Label>
+            <Input
+              placeholder="Correo electrónico"
+              {...register("mainEmail")}
+            />
+            {errors.mainEmail && (
+              <p className="text-sm text-red-500">
+                {errors.mainEmail.message}
+              </p>
+            )}
+          </Field>
+
+
+          <Field>
+            <Label>Dirección</Label>
+            <Input
+              placeholder="Dirección"
+              {...register("mainDirection")}
+            />
+            {errors.mainDirection && (
+              <p className="text-sm text-red-500">
+                {errors.mainDirection.message}
+              </p>
+            )}
+          </Field>
+
         </FieldGroup>
         <DialogFooter>
           <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
