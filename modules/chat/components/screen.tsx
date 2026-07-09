@@ -21,7 +21,7 @@ import { HandleToSendMessageProp, TextAreaChat } from "./TextAreaChat";
 import { MessagesShowcase } from "./MessagesShowcase";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { FaRegUser } from "react-icons/fa";
-import { ListConversationPagesSection } from "./states/ListConversationPages";
+import { ListConversationPagesSection } from "./ListConversationPages";
 import { EmptySectionListContacts } from "./states/EmptySectionListContat";
 import { ListingSectionListContacts } from "./states/ListingSectionListContacts";
 import { NotRoomOpenedState } from "./states/NotRoomOpenedState";
@@ -30,8 +30,12 @@ import { ListingMessages } from "./states/ListingMessages";
 import { ChatList } from "./ChatList";
 import { Separator } from "@/components/ui/separator";
 import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "react-icons/md";
+import { DialogManageConversationFilters } from "./DialogManageConversationFilters";
+import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter";
+import { useCoversationFiltersStore } from "../store/store.conversationFilters";
 
 export const ChatScreen = () => {
+  const conversationFilterStore = useCoversationFiltersStore()
   const chatStore = useChatStore()
   const chatActions = UseChatActions()
   const workspaceSelectionStore = useWorkspaceSelectionStore()
@@ -213,7 +217,11 @@ export const ChatScreen = () => {
             {/*  */}
 
             {/*  */}
-            <ListConversationPagesSection />
+            <ListConversationPagesSection
+              handleOpenManageConversationFilter={() => {
+                conversationFilterStore.setDialogs({ manageDialogOpen: true })
+              }}
+            />
             {/*  */}
 
           </div>
@@ -353,5 +361,13 @@ export const ChatScreen = () => {
 
       </div>
     </div>
+
+    <DialogManageConversationFilters
+      open={conversationFilterStore.manageDialogOpen}
+      setOpen={(open) => { conversationFilterStore.setDialogs({ manageDialogOpen: open }) }}
+    />
+    {/* <DialogCreateConversationFilter
+
+    /> */}
   </>)
 }

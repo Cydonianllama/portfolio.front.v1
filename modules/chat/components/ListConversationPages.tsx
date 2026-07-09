@@ -23,7 +23,11 @@ const ConversationPageItem = ({ data, active }: ConversationPageItemProps) => {
   </>)
 }
 
-export const ListConversationPagesSection = () => {
+type ListConversationPagesSection = {
+  handleOpenManageConversationFilter: () => void;
+}
+
+export const ListConversationPagesSection = ({ handleOpenManageConversationFilter } : ListConversationPagesSection) => {
   return (<>
     <div className="px-2">
       <h2 className="font-semibold">Conversations</h2>
@@ -38,7 +42,7 @@ export const ListConversationPagesSection = () => {
         <ConversationPageItem data={{ qty: 200, title: 'Early' }} />
       </div>
       <div>
-        <Button className={'text-gray-400'} variant={'ghost'} >Show 20 hidden</Button>
+        <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400'} variant={'ghost'} >Show 20 hidden</Button>
       </div>
     </div>
   </>)
