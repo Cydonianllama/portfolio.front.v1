@@ -22,30 +22,31 @@ import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  creationConversationFilterSchema,
-  CreationConversationFilterSchema
-} from "../schemas/createConversationFilter.schema";
-export interface DialogCreateConversationFilterConfig {
-  onCreate: (data: CreationConversationFilterSchema) => void
+  UpdateConversationFilterSchema,
+  updateConversationFilterSchema
+} from "../schemas/updateConversationFilter.schema";
+import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto"
+
+export interface DialogEditConversationFilterConfig {
+  onUpdate: (data: UpdateConversationFilterSchema) => void
   open: boolean
   setOpen: (open: boolean) => void
-  creating?: boolean;
+  data?: ConversationFilterDTO | null;
+  updating: boolean
 }
 
-export const DialogCreateConversationFilter = (config: DialogCreateConversationFilterConfig) => {
+export const DialogEditConversationFilter = (config: DialogEditConversationFilterConfig) => {
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     watch,
-    setValue
-  } = useForm<CreationConversationFilterSchema>({
-    resolver: zodResolver(creationConversationFilterSchema),
+    setValue,
+  } = useForm<UpdateConversationFilterSchema>({
+    resolver: zodResolver(updateConversationFilterSchema),
   });
-
-  // para ver como los valores cambian
-  // console.log('FORM', watch())
 
   useEffect(() => {
     if (!config.open) {
@@ -53,10 +54,16 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
         name: ''
       });
     }
-  }, [config.open, reset]);
 
-  const HandleToCreate = async (data: CreationConversationFilterSchema) => {
-    await config.onCreate(data)
+    if (config.data) {
+      reset({
+        name: config.data.name || ''
+      })
+    }
+  }, [config.open, reset, config.data]);
+
+  const HandleToUpdate = (data: UpdateConversationFilterSchema) => {
+    config.onUpdate(data)
   }
 
   const HandleToCancel = () => {
@@ -67,9 +74,9 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
     <Dialog open={config.open} onOpenChange={(open) => config.setOpen(open)}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Filtros de conversaciones</DialogTitle>
+          <DialogTitle>Editar filtros</DialogTitle>
           <DialogDescription>
-            Creación de filtro de conversaciones.
+            Edición de filtros de conversación.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -85,12 +92,13 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
               </p>
             )}
           </Field>
+
         </FieldGroup>
         <DialogFooter>
-          <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
-          <Button disabled={config.creating ? true : false} onClick={handleSubmit(HandleToCreate)}>
-            {config.creating && <Spinner data-icon="inline-start" />}
-            Crear convesation filter
+          <Button variant="outline" onClick={HandleToCancel}>Cancelar</Button>
+          <Button disabled={config.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
+            {config.updating && <Spinner data-icon="inline-start" />}
+            Actualizar filtro
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -42,7 +42,7 @@ export const CreateConversationFilter = async (data: CreateConversationFilterReq
 
 export const DeleteConversationFilter = async (data: DeleteConversationFilterRequestDTO): Promise<ResponseApi<DeleteConversationFilterResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/conversationFilters/${data.id}`);
+    const req = await api.delete(`/api/conversationFilters/${data.id}`);
     return req.data;
   } catch (ex) {
     return null;

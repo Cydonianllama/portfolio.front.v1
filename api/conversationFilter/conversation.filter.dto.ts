@@ -1,4 +1,5 @@
 export interface ConversationFilterDTO {
+  id: string;
   name: string
 }
 
@@ -41,7 +42,8 @@ export interface DeleteConversationFilterResponseDTO {
 
 // create one
 export interface CreateConversationFilterRequestDTO {
-  name: string
+  name: string;
+  workspaceId: string;
 }
   
 export interface CreateConversationFilterResponseDTO {

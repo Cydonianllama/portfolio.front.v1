@@ -8,7 +8,10 @@ interface ConversationFiltersStore {
   // dialogs
   manageDialogOpen: boolean,
   creationDialogOpen: boolean,
-  setDialogs: (data: Partial<{ manageDialogOpen: boolean, creationDialogOpen: boolean }>) => void
+  updateDialogOpen: boolean,
+  deleteDialogOpen: boolean,
+  currentItemInAction: ConversationFilterDTO | null,
+  setDialogs: (data: Partial<{ manageDialogOpen: boolean, creationDialogOpen: boolean, updateDialogOpen: boolean, deleteDialogOpen: boolean, currentItemInAction: ConversationFilterDTO | null}>) => void
 
   // pagination list
   loadingFilters: boolean
@@ -24,15 +27,30 @@ interface ConversationFiltersStore {
   errorCreatingFilter: string;
   successCreation: boolean;
   setCreation: (data: Partial<{ creatingFilter: boolean, isErrorCreatingFilter: boolean, errorCreatingFilter: string, successCreation: boolean }>) => void;
+
   // update
+  updating: boolean,
+  isErrorUpdating: boolean,
+  errorUpdating: string,
+  successUpdating: boolean,
+  setUpdate: (data: Partial<{ updating: boolean, isErrorUpdating: boolean, errorUpdating: string, successUpdating: boolean}>) => void
+
 
   // delete 
+  deleting: boolean,
+  isErrorDeleting: boolean,
+  errorDeleting: string,
+  successDeleting: boolean,
+  setDelete: (data: Partial<{ deleting: boolean, isErrorDeleting: boolean, errorDeleting: string, successDeleting: boolean }>) => void;
 }
 
 export const useCoversationFiltersStore = create<ConversationFiltersStore>((set) => ({
   // dialogs
   manageDialogOpen: false,
   creationDialogOpen: false,
+  updateDialogOpen: false,
+  deleteDialogOpen: false,
+  currentItemInAction: null,
   setDialogs: (data) => set((state) => ({ ...state, ...data })),
 
   // list
@@ -48,5 +66,19 @@ export const useCoversationFiltersStore = create<ConversationFiltersStore>((set)
   errorCreatingFilter: '',
   isErrorCreatingFilter: false,
   successCreation: false,
-  setCreation: (data) => set((state) => ({ ...state, ...data }))
+  setCreation: (data) => set((state) => ({ ...state, ...data })),
+
+  // update
+  updating: false,
+  isErrorUpdating: false,
+  errorUpdating: '',
+  successUpdating: false,
+  setUpdate: (data) => set((state) => ({ ...state, ...data })),
+
+  // delete
+  deleting: false,
+  isErrorDeleting: false,
+  errorDeleting: '',
+  successDeleting: false,
+  setDelete: (data) => set((state) => ({ ...state, ...data })),
 }));

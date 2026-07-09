@@ -33,8 +33,15 @@ import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "
 import { DialogManageConversationFilters } from "./DialogManageConversationFilters";
 import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter";
 import { useCoversationFiltersStore } from "../store/store.conversationFilters";
+import { UseConversationFilters } from "@/hooks/useConversationFilters";
+import { CreationConversationFilterSchema } from "../schemas/createConversationFilter.schema";
+import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
+import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto";
+import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
+
 
 export const ChatScreen = () => {
+  const conversationFilterActions = UseConversationFilters()
   const conversationFilterStore = useCoversationFiltersStore()
   const chatStore = useChatStore()
   const chatActions = UseChatActions()
@@ -67,6 +74,10 @@ export const ChatScreen = () => {
 
   useEffect(() => {
     if (workspaceSelectionStore.selectedWorkspaceId) {
+      // list convesations filters
+      conversationFilterActions.ListConversationFiltersAction({ page: 1 })
+
+      // List Chat actions
       const page = 1;
       chatActions.ListChatsAction({ page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
     }
@@ -197,6 +208,17 @@ export const ChatScreen = () => {
     chatActions.ListChatsAction({ page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
   }, [chatStore.loadingChats, chatStore.paginationChat]);
 
+  //
+  // Dialog create conversation filter
+  //
+
+  const HandleToCreateConversationItem = (data: CreationConversationFilterSchema) => {
+    conversationFilterActions.CreateConversationFilterAction({
+      name: data.name || '',
+      workspaceId: workspaceSelectionStore.selectedWorkspaceId || ''
+    })
+  }
+
   return (<>
     <div className="w-full border-t  h-full flex flex-col">
       <div className="flex h-full">
@@ -218,6 +240,7 @@ export const ChatScreen = () => {
 
             {/*  */}
             <ListConversationPagesSection
+              listConvesationFilters={conversationFilterStore.listConvesationFilters}
               handleOpenManageConversationFilter={() => {
                 conversationFilterStore.setDialogs({ manageDialogOpen: true })
               }}
@@ -365,9 +388,43 @@ export const ChatScreen = () => {
     <DialogManageConversationFilters
       open={conversationFilterStore.manageDialogOpen}
       setOpen={(open) => { conversationFilterStore.setDialogs({ manageDialogOpen: open }) }}
+      conversationsFilter={conversationFilterStore.listConvesationFilters}
+      onClickCreate={() => {
+        conversationFilterStore.setDialogs({ creationDialogOpen: true })
+      }}
+      onClickEdit={(item) => {
+        conversationFilterStore.setDialogs({ updateDialogOpen: true, currentItemInAction: item })
+      }}
+      onClickDelete={(item) => {
+        conversationFilterStore.setDialogs({ deleteDialogOpen: true, currentItemInAction: item })
+      }}
     />
-    {/* <DialogCreateConversationFilter
 
-    /> */}
+    <DialogCreateConversationFilter
+      open={conversationFilterStore.creationDialogOpen}
+      setOpen={(open) => conversationFilterStore.setDialogs({ creationDialogOpen: open })}
+      creating={false}
+      onCreate={HandleToCreateConversationItem}
+    />
+
+    <DialogEditConversationFilter
+      open={conversationFilterStore.updateDialogOpen}
+      setOpen={(open) => conversationFilterStore.setDialogs({ updateDialogOpen: open })}
+      onUpdate={(data) => { 
+        conversationFilterActions.UdpateConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '', name: data.name || '' }) 
+      }}
+      updating={conversationFilterStore.updating}
+      data={conversationFilterStore.currentItemInAction || null}
+    />
+
+    <DialogConfirmDeleteConversationFilter 
+      open={conversationFilterStore.deleteDialogOpen}
+      deleting={conversationFilterStore.deleting}
+      onDelete={() => {
+        conversationFilterActions.DeleteConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '' })
+      }}
+      setOpen={(open) => conversationFilterStore.setDialogs({ deleteDialogOpen: open })}
+    />
+
   </>)
 }
