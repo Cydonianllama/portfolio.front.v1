@@ -10,6 +10,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item"
+import { FaWhatsapp } from 'react-icons/fa';
 
 export interface ContactCardData {
   id: string;
@@ -51,12 +52,13 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
         </>)}
         <ItemContent>
           <ItemTitle className="line-clamp-1">
-            {data.name} -{" "}
-            <span className="text-muted-foreground">{data.name}</span>
+            {data.name}
           </ItemTitle>
-          <ItemDescription>{data.lastMessage}</ItemDescription>
+          <ItemDescription>
+            <FaWhatsapp className='inline' /> {data.lastMessage}
+          </ItemDescription>
         </ItemContent>
-        <ItemContent className="flex-none text-center">
+        <ItemContent className="flex-none text-xs">
           <ItemDescription>{data.time}</ItemDescription>
         </ItemContent>
       </a>} />

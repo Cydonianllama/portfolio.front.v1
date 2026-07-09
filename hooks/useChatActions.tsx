@@ -19,7 +19,9 @@ export const UseChatActions = () => {
     try {
       
       chatStore.setStates({ loadingChats: true })
-      await sleep(4600)
+
+      await sleep(1600)
+
       if (data.page == 1) {
         chatStore.setChats([])
       }
@@ -44,6 +46,10 @@ export const UseChatActions = () => {
         return;
       }
 
+      // setting pagination
+      chatStore.setStates({ paginationChat: req.pagination || null })
+
+      // seting chats
       if (data.page > 1) {
         chatStore.setChats([...chatStore.listChats, ...req.data.list])
       } else {
@@ -55,7 +61,7 @@ export const UseChatActions = () => {
     } finally {
       chatStore.setStates({ loadingChats: false })
     }
-  }, [])
+  }, [chatStore.listChats])
 
   const OpenChatAction = useCallback(async (data: { roomId: string }) => {
     try {
@@ -82,9 +88,8 @@ export const UseChatActions = () => {
       })
 
       // room de un participante
-      if (req.data.room?.participants.length == 1){
-        const contactRoom = req.data.room.participants[0]
-        ListContactInformation({ contactId: contactRoom.contactId })
+      if (req.data.room?.typeRoom == 'individual'){
+        chatStore.setIndividualContact({ contactIndividualOpenedInformation: req.data?.contact })
       }
 
     } catch (error) {

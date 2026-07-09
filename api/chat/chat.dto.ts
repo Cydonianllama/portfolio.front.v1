@@ -1,4 +1,5 @@
 import { ResponsePagination } from "@/types/api/utils.pagination";
+import { ContactDTO } from "../contacts/contacts.dto";
 
 export interface MessageDTO {
   id: string;
@@ -17,7 +18,8 @@ export interface RoomDTO {
     contactName: string;
   }>;
   creationDate: Date;
-  lastMessage: string
+  lastMessage: string;
+  typeRoom: 'individual' | 'group'
 }
 
 
@@ -59,6 +61,7 @@ export interface OpenChatResponseDTO {
   messages: Array<MessageDTO>
   paginationMessage: ResponsePagination | null
   room: RoomDTO | null
+  contact: ContactDTO | null
 }
 
 export interface OpenChatRequestDTO {

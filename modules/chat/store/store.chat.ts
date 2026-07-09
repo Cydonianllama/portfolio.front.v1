@@ -5,15 +5,15 @@ import { MessageDTO, RoomDTO } from "@/api/chat/chat.dto";
 import { ContactDTO } from "@/api/contacts/contacts.dto";
 
 interface ChatStore {
-
   // chats
   loadingChats: boolean
   errorListMessage: string;
   isError: boolean;
   page: number;
   listChats: Array<RoomDTO>,
+  paginationChat: ResponsePagination | null,
   setChats: (chats: Array<RoomDTO>) => void,
-  setStates: (data: Partial<{ loadingChats: boolean, errorListMessage: string, isError: boolean, page: number }>) => void
+  setStates: (data: Partial<{ loadingChats: boolean, errorListMessage: string, isError: boolean, page: number, paginationChat: ResponsePagination | null }>) => void
   resetAll: () => void;
 
   // sending message
@@ -45,6 +45,7 @@ export const useChatStore = create<ChatStore>((set) => ({
   isError: false,
   loadingChats: false,
   page: 1,
+  paginationChat: null,
   setChats: (data) => set((state) => ({ listChats: data })),
   setStates: (data) => set((state) => {
     return {
@@ -58,7 +59,8 @@ export const useChatStore = create<ChatStore>((set) => ({
     isError: false,
     listChats: [],
     loadingChats: false,
-    page: 1
+    page: 1,
+    paginationChat: null
   })),
 
   // chat selected

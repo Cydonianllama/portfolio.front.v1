@@ -3,6 +3,9 @@ import { MessageDTO } from "@/api/chat/chat.dto"
 import { ChatMessage } from "./chat.message"
 import { memo, RefObject, useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  format,
+} from "date-fns";
 
 type MessagesShowcaseProps = {
   messages: MessageDTO[]
@@ -39,7 +42,15 @@ export const MessagesShowcase = memo(({ messages, handleLoadMore, topRef, wrappe
   return (<>
     <div ref={wrapperListMessagesRef} className='flex flex-col min-h-0 gap-5 py-2 flex-1 overflow-auto '>
       <div ref={topRef} />
-      {messages.map((el, index) => <ChatMessage key={index} type="me" data={{ content: el.message, id: el.id }} />)}
+      {messages.map((el, index) => <ChatMessage
+        key={index}
+        type="me"
+        data={{
+          id: el.id,
+          content: el.message,
+          date: format(el.creationDate, "HH:mm")
+        }}
+      />)}
     </div>
   </>)
 })

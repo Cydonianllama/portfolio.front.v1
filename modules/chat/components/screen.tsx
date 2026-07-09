@@ -27,6 +27,9 @@ import { ListingSectionListContacts } from "./states/ListingSectionListContacts"
 import { NotRoomOpenedState } from "./states/NotRoomOpenedState";
 import { InitConversationChat } from "./states/InitConversationChat";
 import { ListingMessages } from "./states/ListingMessages";
+import { ChatList } from "./ChatList";
+import { Separator } from "@/components/ui/separator";
+import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "react-icons/md";
 
 export const ChatScreen = () => {
   const chatStore = useChatStore()
@@ -39,11 +42,15 @@ export const ChatScreen = () => {
     // limpiar textarea
     handleResetTextarea()
 
+    // contact
+    chatStore.setStates({ paginationChat: null })
+
     // limpiar mensajes y estado de room opened
-    chatStore.setChatSelectedStates({ messages: [], roomIdOpened: null })
+    chatStore.setChatSelectedStates({ messages: [], roomIdOpened: null, paginationMessages: null })
 
     // limpiar informacion de contacto
     chatStore.setIndividualContact({ contactIndividualOpenedInformation: null })
+
   }
 
   const handleResetTextarea = () => {
@@ -73,7 +80,7 @@ export const ChatScreen = () => {
   }
 
   //
-  //
+  // LISTADO DE MENSAJES
   //
 
   // si el envío del mensaje es exitoso
@@ -112,10 +119,8 @@ export const ChatScreen = () => {
         return;
       }
     }
-
     console.log("Cargar más mensajes");
     chatActions.ListMessagesAction({ page: page, roomId: chatStore.roomIdOpened || '' })
-
   }, [chatStore.listingMessages, chatStore.openingChat, chatStore.paginationMessages, chatStore.roomIdOpened]);
 
   // referencias de la seccion del listado de mensajes
@@ -155,26 +160,63 @@ export const ChatScreen = () => {
     }
   }, [workspaceSelectionStore.selectedWorkspaceId])
 
+  //
+  // logica para el aside
+  //
+  const [openedAside, setOpenAside] = useState(true)
+  const HandleToggleAsideListConversations = () => {
+    setOpenAside(!openedAside)
+  }
+
+  //
+  // listado de contactos
+  //
+
+  // Listar más contactos
+  const handleLoadMoreContacts = useCallback(() => {
+    if (chatStore.loadingChats) {
+      console.log("[INTERSECTION OBSERVER] not running is listing rooms");
+      return;
+    }
+
+    let page = 1;
+
+    if (chatStore.paginationChat) {
+      if (chatStore.paginationChat.hasNextPage) {
+        page = (chatStore?.paginationChat?.page || 0) + 1;
+      } else {
+        console.log('No hay más paginas que listar')
+        return;
+      }
+    }
+    console.log("Cargar más rooms", { page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' });
+    chatActions.ListChatsAction({ page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
+  }, [chatStore.loadingChats, chatStore.paginationChat]);
+
   return (<>
     <div className="w-full border-t  h-full flex flex-col">
       <div className="flex h-full">
         {/* start:aside */}
-        <div className="w-65 h-full border-r">
+        <div className={`${openedAside ? 'w-65' : 'w-0'}  h-full  overflow-hidden transition-all duration-175`}>
 
-          {/*  */}
-          <div className="flex justify-between px-2 h-15 items-center">
-            <h1 className="font-semibold">Inbox</h1>
-            <div>
-              <Button variant={'ghost'} size={'icon'}>
-                <IoSearch />
-              </Button>
+          <div className={`w-65 max-w-65 min-w-65 border-r h-full`}>
+
+            {/*  */}
+            <div className="flex justify-between px-2 h-15 items-center">
+              <h1 className="font-semibold">Inbox</h1>
+              <div>
+                <Button variant={'ghost'} size={'icon'}>
+                  <IoSearch />
+                </Button>
+              </div>
             </div>
-          </div>
-          {/*  */}
+            {/*  */}
 
-          {/*  */}
-          <ListConversationPagesSection />
-          {/*  */}
+            {/*  */}
+            <ListConversationPagesSection />
+            {/*  */}
+
+          </div>
 
         </div>
         {/* end:aside */}
@@ -183,7 +225,7 @@ export const ChatScreen = () => {
         <div className="w-70 flex flex-col h-full min-h-0 border-r">
           {/*  */}
           <div className="border-b h-15 px-2 flex items-center gap-2">
-            <Button variant={'ghost'} size={'icon'}>
+            <Button className={'cursor-pointer'} onClick={HandleToggleAsideListConversations} variant={'ghost'} size={'icon'}>
               <RxHamburgerMenu />
             </Button>
             <span className="font-semibold">All</span>
@@ -199,27 +241,15 @@ export const ChatScreen = () => {
 
           {/*  */}
           <div className="flex flex-1 flex-col overflow-auto min-h-0  w-full gap-6 ">
-            {chatStore.loadingChats && (<ListingSectionListContacts />)}
-            {!chatStore.loadingChats && (<>
+            {(chatStore.loadingChats && !chatStore.paginationChat) && (<ListingSectionListContacts />)}
+            {(chatStore.paginationChat) && (<>
               {(chatStore.listChats.length == 0) && (<EmptySectionListContacts />)}
               {(chatStore.listChats.length > 0) && (
-                <ScrollArea className="h-full px-2 py-2">
-                  <ItemGroup className="h-full">
-                    {chatStore.listChats.map((item, index) => (
-                      <ContactCard
-                        handleOpenChat={HandleOpenChat}
-                        data={{
-                          id: item.id,
-                          lastMessage: item.lastMessage || 'No registramos mensajes',
-                          name: item.name,
-                          thumb: '',
-                          time: '-'
-                        }}
-                        key={index}
-                      />
-                    ))}
-                  </ItemGroup>
-                </ScrollArea>
+                <ChatList
+                  HandleOpenChat={HandleOpenChat}
+                  contacts={chatStore.listChats || []}
+                  handleLoadMoreContacts={handleLoadMoreContacts}
+                />
               )}
             </>)}
           </div>
@@ -245,8 +275,7 @@ export const ChatScreen = () => {
               {/* end:Header content */}
 
               {/* start:message content */}
-              {chatStore.listingMessages && (<ListingMessages />)}
-
+              {(chatStore.listingMessages) && (<ListingMessages />)}
               {!chatStore.listingMessages && (<>
                 {chatStore.messages.length == 0 && <InitConversationChat />}
                 {chatStore.messages.length > 0 && <MessagesShowcase
@@ -257,9 +286,6 @@ export const ChatScreen = () => {
                   loading={false}
                 />}
               </>)}
-
-
-
               {/* end:message content */}
 
               {/* start:footer */}
@@ -283,6 +309,40 @@ export const ChatScreen = () => {
                 </div>
               </div>
               {/*  */}
+              <Separator />
+              <div className="px-2 py-2">
+                <div className="">
+                  <div className="inline-block">
+                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                      <MdOutlineMapsHomeWork />
+                      Dirección
+                    </div>
+                  </div>
+                  <div className="inline-block ml-1">{chatStore.contactIndividualOpenedInformation?.mainDirection || '-'}</div>
+                </div>
+                <div className="">
+                  <div className="inline-block">
+                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                      <MdOutlineAlternateEmail />
+                      Email
+                    </div>
+                  </div>
+                  <div className="inline-block ml-1">
+                    {chatStore.contactIndividualOpenedInformation?.mainEmail || '-'}
+                  </div>
+                </div>
+                <div className="">
+                  <div className="inline-block">
+                    <div className="flex items-center gap-2 text-gray-400 text-sm">
+                      <MdOutlinePhone />
+                      Número celular
+                    </div>
+                  </div>
+                  <div className="inline-block ml-1">
+                    {chatStore.contactIndividualOpenedInformation?.mainPhone || '-'}
+                  </div>
+                </div>
+              </div>
             </div>
             {/*  */}
           </div>
