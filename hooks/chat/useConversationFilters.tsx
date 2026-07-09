@@ -1,33 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CreateConversationFilterRequestDTO, DeleteConversationFilterRequestDTO, GetConversationsFilterRequestDTO, UpdateConversationFilterRequestDTO } from "@/api/conversationFilter/conversation.filter.dto"
+import { CreateConversationFilterRequestDTO, DeleteConversationFilterRequestDTO, GetConversationsFilterRequestDTO, GetConversationsFilterResponseDTO, UpdateConversationFilterRequestDTO } from "@/api/conversationFilter/conversation.filter.dto"
 import { CreateConversationFilter, DeleteConversationFilter, GetConversationFilters, UpdateConversationFilter } from "@/api/conversationFilter/convesation.filter.api"
 import { useCoversationFiltersStore } from "@/modules/chat/store/store.conversationFilters";
+import { ResponseApi } from "@/types/api/response";
 import { useCallback } from "react"
 
 export const UseConversationFilters = () => {
 
   const conversationFiltersStore = useCoversationFiltersStore();
 
-  const ListConversationFiltersAction = useCallback(async (data: GetConversationsFilterRequestDTO) => {
+  const ListConversationFiltersAction = useCallback(async (data: GetConversationsFilterRequestDTO) : Promise<ResponseApi<GetConversationsFilterResponseDTO> | null> =>   {
     try {
       conversationFiltersStore.setStates({ loadingFilters: true, isError: false, errorList: '' })
       const req = await GetConversationFilters(data)
       if (!req) {
-        return;
+        return null;
       }
 
       if (!req?.status) {
-        return;
+        return null;
       }
 
       if (!req?.data) {
-        return;
+        return null;
       }
-
       conversationFiltersStore.setStates({ listConvesationFilters: req.data.list, paginationFilters: req.pagination || null })
-
+      return req;
     } catch (error: any) {
       conversationFiltersStore.setStates({ isError: true, errorList: error.message || '' })
+      return null;
     } finally {
       conversationFiltersStore.setStates({ loadingFilters: false })
     }

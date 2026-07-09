@@ -48,11 +48,13 @@ import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { DialogCreateConversationContact } from "./dialog.contact.createconversation";
-import { UseChatActions } from "@/hooks/useChatActions";
+import { UseChatActions } from "@/hooks/chat/useChatActions";
 import { CreationConversationSchema } from "../schemas/creation.conversation";
 import { ListIntegrations } from "@/api/integration/integration.api";
+import { UseAppInitializer } from "@/hooks/useAppInitiallizer";
 
 export const ConctatsScreen = () => {
+  UseAppInitializer({ moduleName: 'contacts' })
 
   const workspaceAppStore = useWorkspaceSelectionStore();
 

@@ -40,6 +40,7 @@ export interface CreateChatRequestDTO {
 export interface ListChatRequestDTO {
   page: number;
   workspaceId: string;
+  filter?: string;
 }
 
 export interface ListChatResponseDTO {

@@ -23,7 +23,7 @@ export const OpenChat = async (config: OpenChatRequestDTO): Promise<ResponseApi<
 
 export const ListChats = async (data: ListChatRequestDTO): Promise<ResponseApi<ListChatResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/chats?page=${data.page}&workspaceId=${data.workspaceId}`)
+    const req = await api.get(`/api/chats?page=${data.page}&workspaceId=${data.workspaceId}${data.filter ? `&filter=${data.filter}` : ''}`)
     return req.data;
   } catch (ex) {
     return null

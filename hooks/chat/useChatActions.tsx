@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback } from 'react'
-import { useChatStore } from '../modules/chat/store/store.chat'
+import { useChatStore } from '../../modules/chat/store/store.chat'
 import { CreateChat, ListChats, ListMessages, OpenChat, SendMessage } from '@/api/chat/chat.api'
 import { CreateChatRequestDTO, ListChatRequestDTO, ListMessagesRequestDTO } from '@/api/chat/chat.dto'
 import { useContactStore } from '@/modules/contacts/store/store'

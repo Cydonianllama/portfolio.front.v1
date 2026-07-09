@@ -11,16 +11,12 @@ import { Button } from "@/components/ui/button";
 import { IoSearch } from "react-icons/io5";
 
 import { RiWhatsappLine } from "react-icons/ri";
-import { ContactCard, ContactCardData } from "./contact.card";
-import { ChatMessage } from "./chat.message";
-import { createRef, useCallback, useEffect, useRef, useState } from "react";
-import { UseChatActions } from "../../../hooks/useChatActions";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { UseChatActions } from "../../../hooks/chat/useChatActions";
 import { useChatStore } from "../store/store.chat";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { HandleToSendMessageProp, TextAreaChat } from "./TextAreaChat";
 import { MessagesShowcase } from "./MessagesShowcase";
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { FaRegUser } from "react-icons/fa";
 import { ListConversationPagesSection } from "./ListConversationPages";
 import { EmptySectionListContacts } from "./states/EmptySectionListContat";
 import { ListingSectionListContacts } from "./states/ListingSectionListContacts";
@@ -33,14 +29,15 @@ import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "
 import { DialogManageConversationFilters } from "./DialogManageConversationFilters";
 import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter";
 import { useCoversationFiltersStore } from "../store/store.conversationFilters";
-import { UseConversationFilters } from "@/hooks/useConversationFilters";
+import { UseConversationFilters } from "@/hooks/chat/useConversationFilters";
 import { CreationConversationFilterSchema } from "../schemas/createConversationFilter.schema";
 import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
-import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto";
 import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
-
+import { UseAppInitializer } from "@/hooks/useAppInitiallizer";
 
 export const ChatScreen = () => {
+  UseAppInitializer({ moduleName: 'chat' })
+
   const conversationFilterActions = UseConversationFilters()
   const conversationFilterStore = useCoversationFiltersStore()
   const chatStore = useChatStore()
@@ -68,20 +65,6 @@ export const ChatScreen = () => {
     setResetSignal((prev) => prev + 1);
   };
 
-  //
-  // INIT
-  //
-
-  useEffect(() => {
-    if (workspaceSelectionStore.selectedWorkspaceId) {
-      // list convesations filters
-      conversationFilterActions.ListConversationFiltersAction({ page: 1 })
-
-      // List Chat actions
-      const page = 1;
-      chatActions.ListChatsAction({ page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
-    }
-  }, [workspaceSelectionStore.selectedWorkspaceId])
 
   const HandleOpenChat = (roomId: string) => {
     chatActions.OpenChatAction({ roomId: roomId })

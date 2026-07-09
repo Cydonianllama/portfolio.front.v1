@@ -63,6 +63,7 @@ import { BsChatDots } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { useAuthCydoStore } from '@/modules/auth/store/store';
+import { useAppStore } from '@/modules/app/stores/appStore';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -306,6 +307,9 @@ function AppSidebar({ pathname }: { pathname: string }) {
 // ─── Header reutilizable ─────────────────────────────────────────────────────
 
 function BackofficeHeader({ pathname }: { pathname: string }) {
+
+  const appStore = useAppStore()
+
   const breadcrumb = getBreadcrumb(pathname)
 
   return (
@@ -332,6 +336,9 @@ function BackofficeHeader({ pathname }: { pathname: string }) {
             )}
             <BreadcrumbItem>
               <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage>{appStore.test}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
