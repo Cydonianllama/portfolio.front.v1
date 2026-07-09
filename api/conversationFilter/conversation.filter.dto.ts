@@ -16,6 +16,7 @@ export interface UpdateConversationFilterResponseDTO {
 // get many
 export interface GetConversationsFilterRequestDTO {
   page: number
+  workspaceId: string;
 }
 
 export interface GetConversationsFilterResponseDTO {

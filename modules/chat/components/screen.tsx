@@ -44,6 +44,8 @@ export const ChatScreen = () => {
   const chatActions = UseChatActions()
   const workspaceSelectionStore = useWorkspaceSelectionStore()
 
+  const currentFilterData = conversationFilterStore.listConvesationFilters.find(el => el.id == chatStore.filter)
+
   const [resetSignal, setResetSignal] = useState(0);
 
   const handleResetAll = () => {
@@ -208,7 +210,7 @@ export const ChatScreen = () => {
         {/* start:aside */}
         <div className={`${openedAside ? 'w-65' : 'w-0'}  h-full  overflow-hidden transition-all duration-175`}>
 
-          <div className={`w-65 max-w-65 min-w-65 border-r h-full`}>
+          <div className={`w-65 max-w-65 min-w-65 border-r h-full flex flex-col`}>
 
             {/*  */}
             <div className="flex justify-between px-2 h-15 items-center">
@@ -227,6 +229,13 @@ export const ChatScreen = () => {
               handleOpenManageConversationFilter={() => {
                 conversationFilterStore.setDialogs({ manageDialogOpen: true })
               }}
+              onClickOpenConversationFilter={(id) => {
+                chatActions.ListChatsAction({
+                  page: 1,
+                  workspaceId: workspaceSelectionStore.selectedWorkspaceId || '',
+                  filter: id
+                })
+              }}
             />
             {/*  */}
 
@@ -242,7 +251,8 @@ export const ChatScreen = () => {
             <Button className={'cursor-pointer'} onClick={HandleToggleAsideListConversations} variant={'ghost'} size={'icon'}>
               <RxHamburgerMenu />
             </Button>
-            <span className="font-semibold">All</span>
+            {currentFilterData && (<span className="font-semibold">{currentFilterData.name || ''}</span>)}
+            
           </div>
           {/*  */}
 

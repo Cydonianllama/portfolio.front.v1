@@ -64,6 +64,8 @@ import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { useAuthCydoStore } from '@/modules/auth/store/store';
 import { useAppStore } from '@/modules/app/stores/appStore';
+import { DialogSettings } from '@/modules/settings/components/DialogSettings';
+import { useSettingsStore } from '@/modules/settings/store/settingsStore';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -115,6 +117,8 @@ function getBreadcrumb(pathname: string) {
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
+
+  const settingsStore = useSettingsStore()
 
   const userStore = useAuthCydoStore()
 
@@ -275,15 +279,23 @@ function AppSidebar({ pathname }: { pathname: string }) {
                       <span className="text-xs text-muted-foreground truncate">{userStore.basicUserInformation.email}</span>
                     </div>
                   </div>
-                  {/* <DropdownMenuSeparator /> */}
-                  {/* <DropdownMenuItem>
-                        <User data-icon="inline-start" />
-                        Perfil
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Settings data-icon="inline-start" />
-                        Preferenias
-                      </DropdownMenuItem> */}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      settingsStore.setOpen(true)
+                    }}
+                  >
+                    <User data-icon="inline-start" />
+                    Perfil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      settingsStore.setOpen(true)
+                    }}
+                  >
+                    <Settings data-icon="inline-start" />
+                    Preferenias
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {
@@ -297,8 +309,6 @@ function AppSidebar({ pathname }: { pathname: string }) {
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
-
-
       </SidebarFooter>
     </Sidebar>
   )
@@ -306,7 +316,7 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
 // ─── Header reutilizable ─────────────────────────────────────────────────────
 
-function BackofficeHeader({ pathname }: { pathname: string }) {
+function Header({ pathname }: { pathname: string }) {
 
   const appStore = useAppStore()
 
@@ -367,11 +377,12 @@ export default function AppLayout({
           <AppSidebar pathname={pathname} />
           <SidebarInset className='h-full'>
             <div className='h-full flex flex-col'>
-              <BackofficeHeader pathname={pathname} />
+              <Header pathname={pathname} />
               <div className='flex-1 min-h-0'>
                 {children}
               </div>
             </div>
+            <DialogSettings />
           </SidebarInset>
         </SidebarProvider>
       </ReactQueryProvider>

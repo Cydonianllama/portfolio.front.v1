@@ -17,18 +17,20 @@ export const UseChatActions = () => {
 
   const ListChatsAction = useCallback(async (data: ListChatRequestDTO) => {
     try {
-      
-      chatStore.setStates({ loadingChats: true })
 
-      await sleep(1600)
+      chatStore.setStates({ loadingChats: true, filter: data.filter })
 
       if (data.page == 1) {
         chatStore.setChats([])
+        chatStore.setStates({ paginationChat: null })
       }
+
+      await sleep(400)
 
       const req = await ListChats({
         page: data.page,
-        workspaceId: data.workspaceId
+        workspaceId: data.workspaceId,
+        filter: data.filter
       })
 
       if (!req) {
@@ -67,7 +69,7 @@ export const UseChatActions = () => {
     try {
 
       chatStore.setChatSelectedStates({ openingChat: true, hasSuccessOpeningChat: false, messages: [] })
-      
+
       const req = await OpenChat({
         roomId: data.roomId
       })
@@ -88,7 +90,7 @@ export const UseChatActions = () => {
       })
 
       // room de un participante
-      if (req.data.room?.typeRoom == 'individual'){
+      if (req.data.room?.typeRoom == 'individual') {
         chatStore.setIndividualContact({ contactIndividualOpenedInformation: req.data?.contact })
       }
 

@@ -9,8 +9,11 @@ export const UseConversationFilters = () => {
 
   const conversationFiltersStore = useCoversationFiltersStore();
 
-  const ListConversationFiltersAction = useCallback(async (data: GetConversationsFilterRequestDTO) : Promise<ResponseApi<GetConversationsFilterResponseDTO> | null> =>   {
+  const ListConversationFiltersAction = useCallback(async (data: GetConversationsFilterRequestDTO): Promise<ResponseApi<GetConversationsFilterResponseDTO> | null> => {
     try {
+      if (data.page == 1) {
+        conversationFiltersStore.setStates({ paginationFilters: null, listConvesationFilters: [] })
+      }
       conversationFiltersStore.setStates({ loadingFilters: true, isError: false, errorList: '' })
       const req = await GetConversationFilters(data)
       if (!req) {
@@ -111,7 +114,7 @@ export const UseConversationFilters = () => {
       if (!req.status) {
         return;
       }
-      
+
       let items = [...conversationFiltersStore.listConvesationFilters]
       items = items.filter((el) => el.id != req.data.id)
       conversationFiltersStore.setStates({ listConvesationFilters: items })

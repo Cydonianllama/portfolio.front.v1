@@ -12,8 +12,9 @@ interface ChatStore {
   page: number;
   listChats: Array<RoomDTO>,
   paginationChat: ResponsePagination | null,
+  filter: string | null,
   setChats: (chats: Array<RoomDTO>) => void,
-  setStates: (data: Partial<{ loadingChats: boolean, errorListMessage: string, isError: boolean, page: number, paginationChat: ResponsePagination | null }>) => void
+  setStates: (data: Partial<{ loadingChats: boolean, errorListMessage: string, isError: boolean, page: number, paginationChat: ResponsePagination | null , filter: string | null}>) => void
   resetAll: () => void;
 
   // sending message
@@ -46,6 +47,7 @@ export const useChatStore = create<ChatStore>((set) => ({
   loadingChats: false,
   page: 1,
   paginationChat: null,
+  filter: null,
   setChats: (data) => set((state) => ({ listChats: data })),
   setStates: (data) => set((state) => {
     return {

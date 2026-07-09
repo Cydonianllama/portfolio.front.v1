@@ -5,7 +5,7 @@ import { CreateConversationFilterRequestDTO, CreateConversationFilterResponseDTO
 
 export const GetConversationFilters = async (data: GetConversationsFilterRequestDTO): Promise<ResponseApi<GetConversationsFilterResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/conversationFilters?page=${data.page}`);
+    const req = await api.get(`/api/conversationFilters?page=${data.page}&workspaceId=${data.workspaceId}`);
     return req.data;
   } catch (ex) {
     return null;
