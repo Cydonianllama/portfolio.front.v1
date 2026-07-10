@@ -13,57 +13,58 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   return (
     <Card {...props}>
       <CardHeader>
-        <CardTitle className="text-lg">Create an account</CardTitle>
+        <CardTitle className="text-lg">Crear cuenta</CardTitle>
         <CardDescription>
-          Enter your information below to create your account
+          Ingresa la información requerida para crear una cuenta.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="name">Full Name</FieldLabel>
-              <Input id="name" type="text" placeholder="John Doe" required />
+              <FieldLabel htmlFor="name">Nombres</FieldLabel>
+              <Input className="bg-white" id="name" type="text" placeholder="Jorge Doe" required />
             </Field>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="jorgedoe@ejemplo.com"
                 required
+                className="bg-white"
               />
               <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
+                Usaremos su correo electrónico para confirmar su cuenta.
               </FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" required />
+              <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+              <Input className="bg-white" placeholder="*********" id="password" type="password" required />
               <FieldDescription>
-                Must be at least 8 characters long.
+                Debe tener al menos 8 caractéres
               </FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="confirm-password">
-                Confirm Password
+                Confirmar contraseña
               </FieldLabel>
-              <Input id="confirm-password" type="password" required />
-              <FieldDescription>Please confirm your password.</FieldDescription>
+              <Input className="bg-white" placeholder="*********" id="confirm-password" type="password" required />
+              <FieldDescription>Porfavor vualva a escribir su contraseña.</FieldDescription>
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit">Crear cuenta</Button>
                 <Button variant="outline" type="button">
-                  Sign up with Google
+                  Registrate con Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Ya tienes cuenta? <Link href="/login">Ingresar</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

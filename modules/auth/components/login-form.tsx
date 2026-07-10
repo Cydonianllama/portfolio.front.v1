@@ -28,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Login } from "@/modules/auth/services/auth.service"
 import { toast } from "sonner";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -83,40 +84,43 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="bg-gray-50">
         <CardHeader>
-          <CardTitle className="text-lg">Login to your account</CardTitle>
+          <CardTitle className="text-lg">Ingresa a tu cuenta</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Ingresa tu correo y contraseña para ingresar a tu cuenta.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(HandleToSubmitLogin)}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
                 <Input
                   {...register("emailOrUsername")}
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="jorgedoe@ejemplo.com"
                   required
+                  className="bg-white"
                 />
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
+                  <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+                  <Link
+                    href="/forget-pass"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
-                  </a>
+                    Olvidaste tu contraseña?
+                  </Link>
                 </div>
                 <Input
                   {...register("password")}
-                  id="password"
-                  type="password" required
+                  type="password"
+                  required
+                  placeholder="*******"
+                  className="bg-white"
                 />
               </Field>
               <Field>
@@ -125,7 +129,7 @@ export function LoginForm({
                   Login with Google
                 </Button> */}
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  No tienes una cuenta? <Link href="/register">Registrate</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
