@@ -244,8 +244,9 @@ export const SectionTable = (data: SectionTableProps) => {
 
       {/* Hay data */}
       {data.list.length > 0 && (<>
-        <div className="border rounded flex-1">
-          <Table>
+        <div className="border rounded flex-1 min-w-0 w-full">
+          {/* <div className='h-12 bg-fuchsia-100 w-950'></div> */}
+          <Table className='min-w-full w-full'>
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
                 <TableRow key={headerIdx}>
@@ -260,7 +261,7 @@ export const SectionTable = (data: SectionTableProps) => {
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody>
+            <TableBody className='overflow-auto'>
               {table.getRowModel().rows.map((row, index) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell, cellIdx) => (

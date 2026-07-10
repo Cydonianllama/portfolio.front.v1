@@ -358,14 +358,14 @@ export default function AppLayout({
   }
 
   return (<>
-    <div className="h-screen max-h-screen">
+    <div className="h-screen w-screen max-h-screen max-w-full">
       <ReactQueryProvider>
-        <SidebarProvider className='h-full'>
+        <SidebarProvider className='h-full w-full'>
           <AppSidebar pathname={pathname} />
-          <SidebarInset className='h-full'>
-            <div className='h-full flex flex-col'>
+          <SidebarInset className='h-full w-full min-w-0'>
+            <div className='h-full flex flex-col w-full min-w-0'>
               <Header pathname={pathname} />
-              <div className='flex-1 min-h-0'>
+              <div className='flex-1 min-h-0 w-full min-w-0'>
                 {children}
               </div>
             </div>
