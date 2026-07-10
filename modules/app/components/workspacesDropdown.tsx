@@ -69,7 +69,7 @@ const workspaces: Workspace[] = [
 export function WorkspaceDropdown() {
   const workspaceActions = UseWorkspacesAction()
   const appWorkspacesStore = useWorkspaceSelectionStore();
-  const activeWorkspace = appWorkspacesStore.workspaces.find((w) => w.id === appWorkspacesStore.selectedWorkspaceId) || workspaces[0]
+  const activeWorkspace = appWorkspacesStore.workspaces.find((w) => w.id === appWorkspacesStore.selectedWorkspaceId) || { id: '-', logoURL: '', name: '-' }
 
   const CreateWorkspace = async (data: RequestCreateWorkspace) => {
     try {

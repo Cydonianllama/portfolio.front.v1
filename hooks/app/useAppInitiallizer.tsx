@@ -1,7 +1,7 @@
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
 import { useEffect } from "react"
-import { UseScreenChatAction } from "./chat/useScreenChatActions"
-import { UserBreadCrumb } from "./layout/useBreadcrumb"
+import { UseScreenChatAction } from "../chat/useScreenChatActions"
+import { UserBreadCrumb } from "../layout/useBreadcrumb"
 
 export type StaticModulesApp = 'chat' | 'contacts'
 

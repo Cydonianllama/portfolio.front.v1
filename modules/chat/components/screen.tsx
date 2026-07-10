@@ -33,7 +33,7 @@ import { UseConversationFilters } from "@/hooks/chat/useConversationFilters";
 import { CreationConversationFilterSchema } from "../schemas/createConversationFilter.schema";
 import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
 import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
-import { UseAppInitializer } from "@/hooks/useAppInitiallizer";
+import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
 
 export const ChatScreen = () => {
   UseAppInitializer({ moduleName: 'chat' })

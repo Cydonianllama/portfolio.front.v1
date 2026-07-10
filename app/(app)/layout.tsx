@@ -1,33 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import AppLayout from "@/layouts/appLayout/layout";
-import { AppCydoProvider } from "@/modules/app/components/AppCydoProvider";
-import { GetUserInfoService } from "@/modules/app/services/get-userinfo";
+import { BootstrapProvider } from "@/modules/app/components/BootstrapProvider";
 import { headers } from "next/headers";
 import { cookies } from "next/headers";
+import { BootstrapApp } from "@/server/bootstrap/app.bootstrap";
 
 export default async function PageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  
+
   // const pathname = usePathname();
   // if (pathname === "/backoffice/login") {
   //   return <>{children}</>;
   // }
 
-  const headersList = await headers();
+  // const headersList = await headers();
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  const user = await GetUserInfoService(token || '')
+  const bootstrap = await BootstrapApp({
+    token: token || ''
+  })
 
   return (
-    <AppCydoProvider userData={user?.data.user}>
+    <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
       <AppLayout>
         {children}
       </AppLayout>
-    </AppCydoProvider>
+    </BootstrapProvider>
   );
 }

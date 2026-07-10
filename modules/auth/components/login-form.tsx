@@ -103,6 +103,7 @@ export function LoginForm({
                   placeholder="jorgedoe@ejemplo.com"
                   required
                   className="bg-white"
+                  tabIndex={1}
                 />
               </Field>
               <Field>
@@ -121,6 +122,7 @@ export function LoginForm({
                   required
                   placeholder="*******"
                   className="bg-white"
+                  tabIndex={2}
                 />
               </Field>
               <Field>

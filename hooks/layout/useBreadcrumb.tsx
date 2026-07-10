@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { StaticModulesApp } from "../useAppInitiallizer"
+import { StaticModulesApp } from "../app/useAppInitiallizer"
 import { useAppStore } from "@/modules/app/stores/appStore"
 
 type UserBreadCrumbProps = {

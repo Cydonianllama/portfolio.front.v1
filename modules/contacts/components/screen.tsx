@@ -51,7 +51,7 @@ import { DialogCreateConversationContact } from "./dialog.contact.createconversa
 import { UseChatActions } from "@/hooks/chat/useChatActions";
 import { CreationConversationSchema } from "../schemas/creation.conversation";
 import { ListIntegrations } from "@/api/integration/integration.api";
-import { UseAppInitializer } from "@/hooks/useAppInitiallizer";
+import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
