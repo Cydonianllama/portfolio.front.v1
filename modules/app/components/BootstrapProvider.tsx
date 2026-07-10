@@ -25,6 +25,9 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
   const workspaceActions = UseWorkspacesAction()
 
   const OnInitApplication = async () => {
+
+    // fetch('http://localhost:3030/static/test.json')
+
     console.log(`query::workspaceId => ${workspaceId}`)
     console.log('OnInitApplication => ', userData)
 

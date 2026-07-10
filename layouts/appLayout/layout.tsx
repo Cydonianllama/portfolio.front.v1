@@ -320,8 +320,6 @@ function Header({ pathname }: { pathname: string }) {
 
   const appStore = useAppStore()
 
-  const breadcrumb = getBreadcrumb(pathname)
-
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
@@ -336,20 +334,9 @@ function Header({ pathname }: { pathname: string }) {
               <BreadcrumbLink href="#">App</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden md:block" />
-            {breadcrumb.parent && (
-              <>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>{breadcrumb.parent}</BreadcrumbPage>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-              </>
-            )}
-            <BreadcrumbItem>
-              <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbPage>{appStore.test}</BreadcrumbPage>
-            </BreadcrumbItem>
+            {appStore.Breadcrum.map((el, index) => <BreadcrumbItem key={index}>
+              <BreadcrumbPage>{el.text}</BreadcrumbPage>
+            </BreadcrumbItem>)}
           </BreadcrumbList>
         </Breadcrumb>
       </div>

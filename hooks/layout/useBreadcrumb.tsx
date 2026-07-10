@@ -12,9 +12,11 @@ export const UserBreadCrumb = ({ module } : UserBreadCrumbProps) => {
 
   useEffect(() => {
     if (module == 'chat'){
-      appStore.setTest('chatero')
+      appStore.setBreadcrum([{ text: 'chat', route: null }])
     } else if (module == 'contacts') {
-      appStore.setTest('contactero')
+      appStore.setBreadcrum([{ text: 'contactos', route: null }])
+    } else if (module == 'home') {
+      appStore.setBreadcrum([{ text: 'inicio', route: null }])
     }
   }, [module])
 }
