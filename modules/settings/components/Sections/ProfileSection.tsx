@@ -15,16 +15,16 @@ import { UseSettingsActions } from "@/hooks/settings/useSettingsActions";
 
 export const ProfileSection = () => {
   const { user } = UseAppData()
-  
+  const settingsActions = UseSettingsActions();
 
   return (<>
     <FieldGroup>
 
       <FieldSettingConfigurationInput
-        initialValue={user.name || ''}
+        initialValue={user.fullname || ''}
         label="Nombres"
         onUpdate={(text) => {
-          
+          settingsActions.updateParamUser([{ param: 'fullname', value: text }])
         }}
         placeholder="Nombres"
       />
@@ -33,7 +33,7 @@ export const ProfileSection = () => {
         initialValue={user.email || 'pepa'}
         label="Correo"
         onUpdate={() => { 
-
+          // no hay actualizacion para este elemento
         }}
         placeholder="jorgedoe@ejemplo.com"
         disabled

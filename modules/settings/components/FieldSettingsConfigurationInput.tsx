@@ -17,7 +17,7 @@ type FieldSettingConfigurationInputProps = {
   onUpdate: (val: string) => void;
   disabled?: boolean
 }
-export const FieldSettingConfigurationInput = ({ initialValue, placeholder, onUpdate, disabled }: FieldSettingConfigurationInputProps) => {
+export const FieldSettingConfigurationInput = ({ label, initialValue, placeholder, onUpdate, disabled }: FieldSettingConfigurationInputProps) => {
   const [intervalId, setIntervalId] = useState<any>('')
   const [val, setVal] = useState(initialValue)
 
@@ -27,7 +27,7 @@ export const FieldSettingConfigurationInput = ({ initialValue, placeholder, onUp
 
   return <Field orientation="horizontal">
     <FieldContent>
-      <FieldTitle>Nombre</FieldTitle>
+      <FieldTitle>{label}</FieldTitle>
       <FieldDescription></FieldDescription>
       <Input
         disabled={disabled ? true : false}

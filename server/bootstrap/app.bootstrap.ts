@@ -3,7 +3,7 @@
 'use server'
 
 import { UserDTO } from '@/api/user/user.dto'
-import { WorkspaceSelectionDTO } from '@/modules/app/dto/dtos'
+import { WorkspaceDTO } from '@/api/workspace/workspace.dto'
 import { GetUser } from '@/server/services/get.user'
 import { GetUserSubscription } from '@/server/services/get.usersubscription'
 import { GetUserWorkspaces } from '@/server/services/get.userworkspaces'
@@ -14,7 +14,7 @@ type BootstrapAppProps = {
 
 type BootstrapAppRespomse = {
   user: UserDTO | null;
-  workspaces: Array<WorkspaceSelectionDTO>
+  workspaces: Array<WorkspaceDTO>
 }
 
 export const BootstrapApp = async ({ token } : BootstrapAppProps): Promise<BootstrapAppRespomse | null> => {

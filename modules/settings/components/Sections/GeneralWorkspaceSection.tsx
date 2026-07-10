@@ -20,13 +20,13 @@ export const GeneralWorkspaceSection = () => {
   return <>
     <FieldGroup>
       <FieldSettingConfigurationInput
-        initialValue={workspace?.name || 'pepa'}
+        initialValue={workspace?.name || ''}
         label="Nombre"
         onUpdate={(text) => {
-          settingsActions.updateParamUser([{ param: 'name', value: text }])
+          settingsActions.updateParamWorkspace([{ param: 'name', value: text }])
         }}
         placeholder="Nombre"
       />
     </FieldGroup>
-  </>
+  </> 
 }

@@ -2,9 +2,9 @@
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { FieldToArray } from '@/types/types';
-import { CreateWorkspaceDto, CreateWorkspaceResponseDto, DeleteWorkspaceDto, DeleteWorkspaceResponseDto, UpdateWorkspaceRequestDTO } from './workspace.dto';
+import { CreateWorkspaceDto, CreateWorkspaceResponseDto, DeleteWorkspaceDto, DeleteWorkspaceResponseDto, UpdateWorkspaceRequestDTO, UpdateWorkspaceResponseDTO } from './workspace.dto';
 
-export const UpdateWorkspace = async (id: string, data: FieldToArray<UpdateWorkspaceRequestDTO>[]): Promise<ResponseApi<any> | null> => {
+export const UpdateWorkspace = async (id: string, data: FieldToArray<UpdateWorkspaceRequestDTO>[]): Promise<ResponseApi<UpdateWorkspaceResponseDTO> | null> => {
   try {
       const jsonToSend: Partial<UpdateWorkspaceRequestDTO> = {};
       for (const field of data) {

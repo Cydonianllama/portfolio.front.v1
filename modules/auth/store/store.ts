@@ -15,7 +15,7 @@ export const useAuthCydoStore = create<AuthStore>((set) => ({
   basicUserInformation: {
     email: '',
     id: '',
-    name: ''
+    fullname: ''
   },
   setToken: (token: string | null) => set((state) => ({
     ...state,

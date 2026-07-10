@@ -1,16 +1,11 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { WorkspaceDTO } from "../workspace/workspace.dto";
-
-// userinformation DTO
-export interface GetUserInformationResponse {
-  user: UserDTO | null
-}
 
 export interface UserDTO {
   id: string;
-  name: string;
+  fullname: string;
   email: string
 }
-
 
 // list workspaces user
 export interface ListWorkspacesUserDto {
@@ -19,4 +14,18 @@ export interface ListWorkspacesUserDto {
 
 export interface ListWorkspacesUserResponseDto {
   list: WorkspaceDTO[]
+}
+
+// userinformation DTO
+export interface GetUserInformationResponse {
+  user: UserDTO | null
+}
+
+// Update
+export interface UpdateUserRequestDTO {
+  fullname: string
+}
+
+export interface UpdateUserResponse {
+  user: UserDTO | null
 }

@@ -3,6 +3,10 @@ export interface UpdateWorkspaceRequestDTO {
   name: string;
 }
 
+export interface UpdateWorkspaceResponseDTO {
+  workspace: WorkspaceDTO;
+}
+
 
 // create workpace
 export interface CreateWorkspaceDto {
@@ -21,7 +25,6 @@ export interface DeleteWorkspaceDto {
 export interface DeleteWorkspaceResponseDto {
   id: string
 }
-
 
 // workspace DTO
 export interface WorkspaceDTO {

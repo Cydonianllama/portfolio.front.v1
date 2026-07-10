@@ -39,7 +39,7 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
       if (userData) {
         userStore.setBasicUserInformation({
           email: userData.email,
-          fullname: userData.name,
+          fullname: userData.fullname,
           id: userData.id,
         })
       }
