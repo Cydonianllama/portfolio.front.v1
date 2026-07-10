@@ -1,17 +1,17 @@
+import { WorkspaceDTO } from "@/api/workspace/workspace.dto";
 import { create } from "zustand";
-import { WorkspaceSelectionDTO } from "../dto/dtos";
 
 type workspaceCreationState = {
   loading: boolean;
-  workspaceCreated: WorkspaceSelectionDTO |  null;
+  workspaceCreated: WorkspaceDTO |  null;
   hasError: boolean;
   open: boolean;
 }
 
 interface WorkspaceSelectionState {
-  workspaces: WorkspaceSelectionDTO[];
+  workspaces: WorkspaceDTO[];
   selectedWorkspaceId: string | null;
-  setWorkspaces: (workspaces: WorkspaceSelectionDTO[]) => void;
+  setWorkspaces: (workspaces: WorkspaceDTO[]) => void;
   setSelectedWorkspaceId: (workspaceId: string | null) => void;
   // create workspace
   workspaceCreationState: workspaceCreationState,

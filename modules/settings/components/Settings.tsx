@@ -40,16 +40,15 @@ export const Settings = () => {
     <div className="flex h-full w-full flex-col gap-6 p-0">
       <Tabs defaultValue="projects" orientation="vertical" className="gap-5 h-full">
         <TabsList variant="line" className="w-48 shrink-0  h-full ">
-
-          <div className="flex flex-col gap-2 w-full px-2">
+          <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Personal</div>
             <TabsTrigger value="profile" className="justify-start gap-2">
               <TiUserOutline className="size-4" />
               Perfil
             </TabsTrigger>
           </div>
-          <Separator className="my-2" />
-          <div className="flex flex-col gap-2 w-full px-2">
+          {/* <Separator className="my-2" /> */}
+          <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Ajustes de Workspace</div>
             <TabsTrigger value="general" className="justify-start gap-2">
               <MdOutlineSettingsInputComponent className="size-4" />

@@ -26,16 +26,9 @@ export const DialogSettings = (config: DialogSettingsConfig) => {
   return (<>
     <Dialog open={settings.open} onOpenChange={(open) => settings.setOpen(open)}>
       <DialogContent showCloseButton={false} className="sm:max-w-5xl">
-        {/* <DialogHeader>
-          <DialogTitle></DialogTitle>
-          <DialogDescription></DialogDescription>
-        </DialogHeader> */}
         <div className="min-h-180">
           <Settings />
         </div>
-        {/* <DialogFooter>
-          <Button variant="outline" onClick={() => { settings.setOpen(false) }}>Cancelar</Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   </>)

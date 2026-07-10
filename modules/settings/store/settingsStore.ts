@@ -9,22 +9,22 @@ interface SettingsStore {
   setOpen: (open: boolean) => void;
 
   // dialogs
-  manageDialogOpen: boolean,
-  creationDialogOpen: boolean,
-  updateDialogOpen: boolean,
-  deleteDialogOpen: boolean,
-  currentItemInAction: ConversationFilterDTO | null,
-  setDialogs: (data: Partial<{ manageDialogOpen: boolean, creationDialogOpen: boolean, updateDialogOpen: boolean, deleteDialogOpen: boolean, currentItemInAction: ConversationFilterDTO | null}>) => void
+  // manageDialogOpen: boolean,
+  // creationDialogOpen: boolean,
+  // updateDialogOpen: boolean,
+  // deleteDialogOpen: boolean,
+  // currentItemInAction: ConversationFilterDTO | null,
+  // setDialogs: (data: Partial<{ manageDialogOpen: boolean, creationDialogOpen: boolean, updateDialogOpen: boolean, deleteDialogOpen: boolean, currentItemInAction: ConversationFilterDTO | null}>) => void
 }
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
   open: false,
   setOpen: (open) => set((state) => ({ ...state, open })),
   // dialogs
-  manageDialogOpen: false,
-  creationDialogOpen: false,
-  updateDialogOpen: false,
-  deleteDialogOpen: false,
-  currentItemInAction: null,
-  setDialogs: (data) => set((state) => ({ ...state, ...data })),
+  // manageDialogOpen: false,
+  // creationDialogOpen: false,
+  // updateDialogOpen: false,
+  // deleteDialogOpen: false,
+  // currentItemInAction: null,
+  // setDialogs: (data) => set((state) => ({ ...state, ...data })),
 }));

@@ -8,12 +8,12 @@ import { ListWorkspacesUserService } from "../services/list-workspaces-user";
 import { useWorkspaceSelectionStore } from "../stores/workspaceStore";
 import { useAuthCydoStore } from "@/modules/auth/store/store";
 import { UserDTO } from "@/api/user/user.dto";
-import { WorkspaceSelectionDTO } from '../dto/dtos';
 import { UseWorkspacesAction } from '@/modules/hooks/useWorkspacesActions';
+import { WorkspaceDTO } from '@/api/workspace/workspace.dto';
 
 interface AppCydoProviderProps {
   userData?: UserDTO | null,
-  workspaces: Array<WorkspaceSelectionDTO>
+  workspaces: Array<WorkspaceDTO>
 }
 
 export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithChildren<AppCydoProviderProps>) => {
@@ -49,7 +49,7 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
         workspaceStore.setWorkspaces(workspaces)
 
       // validar query workspaceId
-      let currentWorkspaceOpened: WorkspaceSelectionDTO | null = null;
+      let currentWorkspaceOpened: WorkspaceDTO | null = null;
       
       // validar si hay query
       if (workspaceId){

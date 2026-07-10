@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
+import { UserDTO } from "@/api/user/user.dto";
 
 interface AuthStore {
   token: string | null;
-  basicUserInformation: {
-    email: string;
-    fullname: string;
-    id: string;
-  }
+  basicUserInformation: UserDTO,
   setToken: (token: string | null) => void;
   setBasicUserInformation: (data: { email: string; fullname: string; id: string }) => void;
 
@@ -17,8 +14,8 @@ export const useAuthCydoStore = create<AuthStore>((set) => ({
   token: null,
   basicUserInformation: {
     email: '',
-    fullname: '',
-    id: ''
+    id: '',
+    name: ''
   },
   setToken: (token: string | null) => set((state) => ({
     ...state,

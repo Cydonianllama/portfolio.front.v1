@@ -9,6 +9,10 @@ type UseAppInitializerPops = {
   moduleName: StaticModulesApp
 }
 
+//
+// Una sola instancia en cada pagina
+//
+
 export const UseAppInitializer = ({ moduleName } : UseAppInitializerPops) => {
 
   UserBreadCrumb({ module: moduleName })
