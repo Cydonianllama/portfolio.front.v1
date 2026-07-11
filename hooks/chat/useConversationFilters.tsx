@@ -5,7 +5,7 @@ import { useCoversationFiltersStore } from "@/modules/chat/store/store.conversat
 import { ResponseApi } from "@/types/api/response";
 import { useCallback } from "react"
 
-export const UseConversationFilters = () => {
+export const UseConversationFiltersActions = () => {
 
   const conversationFiltersStore = useCoversationFiltersStore();
 

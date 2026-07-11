@@ -29,16 +29,21 @@ import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "
 import { DialogManageConversationFilters } from "./DialogManageConversationFilters";
 import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter";
 import { useCoversationFiltersStore } from "../store/store.conversationFilters";
-import { UseConversationFilters } from "@/hooks/chat/useConversationFilters";
 import { CreationConversationFilterSchema } from "../schemas/createConversationFilter.schema";
 import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
 import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
+import { UseConversationFiltersActions } from "@/hooks/chat/useConversationFilters";
+import { UseWebsocketChat } from "@/hooks/chat/useWebsocketsChat";
 
 export const ChatScreen = () => {
+  // websocket para el chat
+  UseWebsocketChat()
+
+  // configuracion general de chat
   UseAppInitializer({ moduleName: 'chat' })
 
-  const conversationFilterActions = UseConversationFilters()
+  const conversationFilterActions = UseConversationFiltersActions()
   const conversationFilterStore = useCoversationFiltersStore()
   const chatStore = useChatStore()
   const chatActions = UseChatActions()

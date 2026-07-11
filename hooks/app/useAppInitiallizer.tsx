@@ -2,6 +2,7 @@ import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
 import { useEffect } from "react"
 import { UseScreenChatAction } from "../chat/useScreenChatActions"
 import { UserBreadCrumb } from "../layout/useBreadcrumb"
+import { useSocket } from "../useSocket"
 
 export type StaticModulesApp = 'chat' | 'contacts' | 'home'
 
@@ -29,6 +30,7 @@ export const UseAppInitializer = ({ moduleName } : UseAppInitializerPops) => {
       }
     }
   }, [workspaceSelector.selectedWorkspaceId, moduleName])
+
 
   return {
 

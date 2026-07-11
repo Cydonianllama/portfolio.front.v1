@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // utils
 import { format } from 'date-fns';
@@ -53,6 +53,10 @@ import { ErrorStateComponent } from '../shared/Error';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { ContactDTO } from '@/api/contacts/contacts.dto';
+import { FaCheck, FaRegCopy } from 'react-icons/fa';
+import { ShowcaseId } from '@/components/cydocompos';
+
+
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
@@ -79,10 +83,13 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
   //   enableSorting: false,
   //   enableHiding: false,
   // },
-  {
-    accessorKey: "id",
-    header: "Id"
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "Id",
+  //   cell: (data) => {
+  //     return (<ShowcaseId id={data.row.original.id} />)
+  //   }
+  // },
   {
     accessorKey: "fullname",
     header: "Nombre"
