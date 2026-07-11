@@ -28,7 +28,7 @@ import { MdOutlineSettingsInputComponent } from "react-icons/md";
 import { ProfileSection } from "./Sections/ProfileSection"
 import { GeneralWorkspaceSection } from "./Sections/GeneralWorkspaceSection"
 import { MembersSection } from "./Sections/MembersSection"
-import { VariablesSection } from "./Sections/VariablesSection"
+import { VariablesSection } from "./VariablesSection/VariablesSection"
 import { IntegrationSection } from "./Sections/IntegrationSection"
 import { PlansSection } from "./Sections/PlansSections"
 import { SubscriptionSection } from "./Sections/SubscriptionSection"
