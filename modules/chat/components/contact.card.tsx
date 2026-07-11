@@ -11,6 +11,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item"
 import { FaWhatsapp } from 'react-icons/fa';
+import { useChatStore } from '../store/store.chat';
 
 export interface ContactCardData {
   id: string;
@@ -26,14 +27,16 @@ export interface ContactCardProps {
 }
 
 export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactCardProps>) => {
+  const chatStore = useChatStore()
   return <>
     <Item
+      className={`${chatStore.roomIdOpened == data.id ? 'border-blue-400' : ''} cursor-pointer`}
       onClick={() => {
         if (handleOpenChat) handleOpenChat(data.id)
       }}
       variant="outline"
       role="listitem"
-      render={<a href="#">
+      render={<div>
         {data.thumb && (<>
           <ItemMedia variant="image">
             <img
@@ -61,6 +64,6 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
         <ItemContent className="flex-none text-xs">
           <ItemDescription>{data.time}</ItemDescription>
         </ItemContent>
-      </a>} />
+      </div>} />
   </>
 }

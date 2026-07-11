@@ -25,33 +25,33 @@ export const UseWebsocketChat = () => {
     }
   }, [chatStore.roomIdOpened])
 
-  //
-  // Realizar la primera conexion
-  //
-  useEffect(() => {
-    console.log("setting up socket listeners")
+  // //
+  // // Realizar la primera conexion
+  // //
+  // useEffect(() => {
+  //   console.log("setting up socket listeners")
 
-    if (workspaceSelectionStore.selectedWorkspaceId) {
-      if (socket) {
-        socket.on("newMessage", (data) => {
-          console.log("[socket] Nuevo mensaje:", { roomId: data.roomId, message: data.message });
-          // // validamos que el mensaje recibido por socket corresponde al contacto actualmente seleccionado
-          // if (data.contactId === selectedContactId) {
-          //   // si es así, lo agregamos al listado de mensajes para mostrarlo en la UI
-          //   if (data.message) setMessages((prev) => [...prev, data.message]);
-          //   else console.log("[socket] El mensaje recibido no tiene formato esperado:", data)
-          // } else {
-          //   //console.log("[socket] El mensaje recibido no corresponde al contacto seleccionado, no se actualizará la UI")
-          // }
-        });
-      }
-    }
+  //   if (workspaceSelectionStore.selectedWorkspaceId) {
+  //     if (socket) {
+  //       socket.on("newMessage", (data) => {
+  //         console.log("[socket] Nuevo mensaje:", { roomId: data.roomId, message: data.message });
+  //         // // validamos que el mensaje recibido por socket corresponde al contacto actualmente seleccionado
+  //         // if (data.contactId === selectedContactId) {
+  //         //   // si es así, lo agregamos al listado de mensajes para mostrarlo en la UI
+  //         //   if (data.message) setMessages((prev) => [...prev, data.message]);
+  //         //   else console.log("[socket] El mensaje recibido no tiene formato esperado:", data)
+  //         // } else {
+  //         //   //console.log("[socket] El mensaje recibido no corresponde al contacto seleccionado, no se actualizará la UI")
+  //         // }
+  //       });
+  //     }
+  //   }
 
-    return () => {
-      console.log("[socket] Reseteando socket")
-      socket.off("newMessage");
-    };
-  }, [socket, workspaceSelectionStore.selectedWorkspaceId]);
+  //   return () => {
+  //     console.log("[socket] Reseteando socket")
+  //     socket.off("newMessage");
+  //   };
+  // }, [socket, workspaceSelectionStore.selectedWorkspaceId]);
 
   return {
 
