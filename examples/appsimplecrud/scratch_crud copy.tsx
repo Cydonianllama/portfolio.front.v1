@@ -1,6 +1,6 @@
 'use client'
 /*
-  EntityName
+  Folder
 */
 
 // #region Components
@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 /*
-  NameComponent
+  Folder
 */
 
 import { Button } from "@/components/ui/button"
@@ -45,16 +45,16 @@ import {
 //___________ ___________ Main
 
 
-type NameComponentProps = {
+type FolderProps = {
 
 }
 
-export const NameComponentSection = ({ }: NameComponentProps) => {
-  const _Item_Store_Store = use_Item_Store_Store();
-  const useEntityNameActions = UseEntityNameActions({})
+export const FolderSection = ({ }: FolderProps) => {
+  const useFolderActions = UseFolderActions({})
+  const FolderStore = useFolderStore();
 
   const InitialList = () => {
-    useEntityNameActions.listEntityNameAction({ page: 1 })
+    useFolderActions.listFolderAction({ page: 1 })
   }
 
   const OnInit = () => {
@@ -65,25 +65,20 @@ export const NameComponentSection = ({ }: NameComponentProps) => {
     OnInit()
   }, [])
 
-  useEffect(() => {
-    OnInit()
-  }, [])
-
   return <>
     <div className="p-2">
-
       <div className="flex justify-end gap-2 items-center mb-2">
-        <Button disabled={_Item_Store_Store.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
+        <Button disabled={FolderStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
           Refresar
         </Button>
-        <Button onClick={() => { _Item_Store_Store.setCreateState({ openCreate: true }) }}>
+        <Button onClick={() => { FolderStore.setCreateState({ openCreate: true }) }}>
           Crear Item
         </Button>
       </div>
-      <NameComponentTable />
+      <FolderTable />
     </div>
-    <DialogCreateNameComponent />
-    <DialogUpdateNameComponent />
+    <DialogCreateFolder />
+    <DialogUpdateFolder />
     <DialogConfirmDelete />
   </>
 }
@@ -118,9 +113,9 @@ import {
 import { ColumnDef } from '@tanstack/react-table';
 
 // ActionsRow
-const ActionsRow = ({ data }: { data: CellContext<name_entityDTO, unknown> }) => {
+const ActionsRow = ({ data }: { data: CellContext<FolderDTO, unknown> }) => {
   const item = data.row.original;
-  const _Item_Store_Store = use_Item_Store_Store();
+  const FolderStore = useFolderStore();
 
   return (
     <div className="flex gap-2">
@@ -129,7 +124,7 @@ const ActionsRow = ({ data }: { data: CellContext<name_entityDTO, unknown> }) =>
         size={'icon'}
         onClick={() => {
           console.log("Editar", item.id)
-          _Item_Store_Store.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
+          FolderStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
         }}
       >
         <MdOutlineEdit />
@@ -140,7 +135,7 @@ const ActionsRow = ({ data }: { data: CellContext<name_entityDTO, unknown> }) =>
         size={'icon'}
         onClick={() => {
           console.log("Eliminar", item.id)
-          _Item_Store_Store.setDeleteState({ currentElementSelected: item.id, openDelete: true })
+          FolderStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })
         }}
       >
         <FiTrash2 />
@@ -149,12 +144,12 @@ const ActionsRow = ({ data }: { data: CellContext<name_entityDTO, unknown> }) =>
   )
 }
 
-type NameComponentTableProps = {
+type FolderTableProps = {
 
 }
 
-export const NameComponentTable = ({ }: NameComponentTableProps) => {
-  const _Item_Store_Store = use_Item_Store_Store();
+export const FolderTable = ({ }: FolderTableProps) => {
+  const FolderStore = useFolderStore();
   const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
@@ -162,7 +157,7 @@ export const NameComponentTable = ({ }: NameComponentTableProps) => {
   }, [rowSelection])
 
   // configuracion de columna
-  const columnsUsersTable: ColumnDef<name_entityDTO>[] = [
+  const columnsUsersTable: ColumnDef<FolderDTO>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -213,7 +208,7 @@ export const NameComponentTable = ({ }: NameComponentTableProps) => {
   ];
 
   const table = useReactTable({
-    data: _Item_Store_Store.list || [],
+    data: FolderStore.list || [],
     columns: columnsUsersTable,
     getCoreRowModel: getCoreRowModel(),
 
@@ -226,7 +221,7 @@ export const NameComponentTable = ({ }: NameComponentTableProps) => {
 
 
   return <>
-    {_Item_Store_Store.list.length > 0 && (<>
+    {FolderStore.list.length > 0 && (<>
       <div className="border rounded flex-1">
         <Table>
           <TableHeader>
@@ -281,13 +276,13 @@ export const NameComponentTable = ({ }: NameComponentTableProps) => {
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 
-type DialogCreateNameComponentProps = {
+type DialogCreateFolderProps = {
 
 }
 
-const DialogCreateNameComponent = ({ }: DialogCreateNameComponentProps) => {
-  const _Item_Store_Store = use_Item_Store_Store();
-  const useEntityNameActions = UseEntityNameActions({})
+const DialogCreateFolder = ({ }: DialogCreateFolderProps) => {
+  const FolderStore = useFolderStore();
+  const useFolderActions = UseFolderActions({})
 
   const {
     register,
@@ -296,29 +291,29 @@ const DialogCreateNameComponent = ({ }: DialogCreateNameComponentProps) => {
     reset,
     watch,
     setValue
-  } = useForm<CreationEntityNameSchema>({
-    resolver: zodResolver(creationEntityNameSchema),
+  } = useForm<CreationFolderSchema>({
+    resolver: zodResolver(creationFolderSchema),
     defaultValues: {
       name: ""
     }
   });
 
   useEffect(() => {
-    if (!_Item_Store_Store.openCreate) {
+    if (!FolderStore.openCreate) {
       reset({
         name: '',
       });
     }
-  }, [_Item_Store_Store.openCreate, reset]);
+  }, [FolderStore.openCreate, reset]);
 
-  const HandleToCreate = async (data: CreationEntityNameSchema) => {
-    await useEntityNameActions.createEntityNameAction({
+  const HandleToCreate = async (data: CreationFolderSchema) => {
+    await useFolderActions.createFolderAction({
       name: data.name
     })
   }
 
   return <>
-    <Dialog open={_Item_Store_Store.openCreate} onOpenChange={(open) => { _Item_Store_Store.setCreateState({ openCreate: open }) }} >
+    <Dialog open={FolderStore.openCreate} onOpenChange={(open) => { FolderStore.setCreateState({ openCreate: open }) }} >
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Crear item</DialogTitle>
@@ -342,8 +337,8 @@ const DialogCreateNameComponent = ({ }: DialogCreateNameComponentProps) => {
         </FieldGroup>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button disabled={_Item_Store_Store.creating ? true : false} onClick={handleSubmit(HandleToCreate)} type="button">
-            {_Item_Store_Store.creating && <Spinner data-icon="inline-start" />}
+          <Button disabled={FolderStore.creating ? true : false} onClick={handleSubmit(HandleToCreate)} type="button">
+            {FolderStore.creating && <Spinner data-icon="inline-start" />}
             Crear item
           </Button>
         </DialogFooter>
@@ -370,15 +365,15 @@ const DialogCreateNameComponent = ({ }: DialogCreateNameComponentProps) => {
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 
-type DialogUpdateNameComponentProps = {
+type DialogUpdateFolderProps = {
 
 }
 
-const DialogUpdateNameComponent = ({ }: DialogUpdateNameComponentProps) => {
-  const _Item_Store_Store = use_Item_Store_Store();
-  const useEntityNameActions = UseEntityNameActions({})
+const DialogUpdateFolder = ({ }: DialogUpdateFolderProps) => {
+  const FolderStore = useFolderStore();
+  const useFolderActions = UseFolderActions({})
 
-  const currentOpened = _Item_Store_Store.list.find(el => _Item_Store_Store.currentElementSelected == el.id)
+  const currentOpened = FolderStore.list.find(el => FolderStore.currentElementSelected == el.id)
 
   const {
     register,
@@ -387,15 +382,15 @@ const DialogUpdateNameComponent = ({ }: DialogUpdateNameComponentProps) => {
     reset,
     watch,
     setValue
-  } = useForm<UpdateEntityNameSchema>({
-    resolver: zodResolver(updateEntityNameSchema),
+  } = useForm<UpdateFolderSchema>({
+    resolver: zodResolver(updateFolderSchema),
     defaultValues: {
       name: ""
     }
   });
 
   useEffect(() => {
-    if (!_Item_Store_Store.openUpdate) {
+    if (!FolderStore.openUpdate) {
       reset({
         name: '',
       });
@@ -408,16 +403,16 @@ const DialogUpdateNameComponent = ({ }: DialogUpdateNameComponentProps) => {
     }
 
 
-  }, [_Item_Store_Store.openUpdate, reset, currentOpened]);
+  }, [FolderStore.openUpdate, reset, currentOpened]);
 
-  const HandleToUpdate = async (data: UpdateEntityNameSchema) => {
+  const HandleToUpdate = async (data: UpdateFolderSchema) => {
     if (!currentOpened) return;
-    await useEntityNameActions.updateEntityNameAction(currentOpened.id, {
+    await useFolderActions.updateFolderAction(currentOpened?.id, {
       name: data.name
     })
   }
   return <>
-    <Dialog open={_Item_Store_Store.openUpdate} onOpenChange={(open) => { _Item_Store_Store.setUpdateState({ openUpdate: open }) }}>
+    <Dialog open={FolderStore.openUpdate} onOpenChange={(open) => { FolderStore.setUpdateState({ openUpdate: open }) }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Actualizar item</DialogTitle>
@@ -436,8 +431,8 @@ const DialogUpdateNameComponent = ({ }: DialogUpdateNameComponentProps) => {
         </FieldGroup>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button disabled={_Item_Store_Store.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
-            {_Item_Store_Store.updating && <Spinner data-icon="inline-start" />}
+          <Button disabled={FolderStore.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
+            {FolderStore.updating && <Spinner data-icon="inline-start" />}
             Actualizar item
           </Button>
         </DialogFooter>
@@ -470,16 +465,16 @@ type DialogConfirmDelete = {
 }
 
 const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
-  const _Item_Store_Store = use_Item_Store_Store();
-  const useEntityNameActions = UseEntityNameActions({})
+  const FolderStore = useFolderStore();
+  const useFolderActions = UseFolderActions({})
 
   const HandleToDelete = () => {
-    if (!_Item_Store_Store.currentElementSelected) return;
-    useEntityNameActions.deleteEntityNameAction({ id: _Item_Store_Store.currentElementSelected || '' })
+    if (!FolderStore.currentElementSelected) return;
+    useFolderActions.deleteFolderAction({ id: FolderStore.currentElementSelected || '' })
   }
 
   return <>
-    <Dialog open={_Item_Store_Store.openDelete} onOpenChange={(open) => { _Item_Store_Store.setDeleteState({ openDelete: open }) }}>
+    <Dialog open={FolderStore.openDelete} onOpenChange={(open) => { FolderStore.setDeleteState({ openDelete: open }) }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Confirmar eliminación</DialogTitle>
@@ -489,8 +484,8 @@ const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
         </DialogHeader>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button disabled={_Item_Store_Store.deleting ? true : false} onClick={HandleToDelete} type="button">
-            {_Item_Store_Store.deleting && <Spinner data-icon="inline-start" />}
+          <Button disabled={FolderStore.deleting ? true : false} onClick={HandleToDelete} type="button">
+            {FolderStore.deleting && <Spinner data-icon="inline-start" />}
             Confirmar eliminación
           </Button>
         </DialogFooter>
@@ -506,36 +501,36 @@ import { z } from "zod/v3";
 
 // creation schema
 
-export const creationEntityNameSchema = z.object({
+export const creationFolderSchema = z.object({
   name: z.string().min(3, "Mínimo 3 caracteres"),
 });
 
-export type CreationEntityNameSchema = z.infer<typeof creationEntityNameSchema>;
+export type CreationFolderSchema = z.infer<typeof creationFolderSchema>;
 
 // update schema
 
-export const updateEntityNameSchema = z.object({
+export const updateFolderSchema = z.object({
   name: z.string().min(3, "Mínimo 3 caracteres"),
 });
 
-export type UpdateEntityNameSchema = z.infer<typeof updateEntityNameSchema>;
+export type UpdateFolderSchema = z.infer<typeof updateFolderSchema>;
 
 // #region Hooks
 //___________ hooks
 // import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 
-export type UseEntityNameActionsProps = {
+export type UseFolderActionsProps = {
 
 }
 
-export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
-  const _Item_Store_Store = use_Item_Store_Store();
+export const UseFolderActions = ({ }: UseFolderActionsProps) => {
+  const FolderStore = useFolderStore();
 
-  const createEntityNameAction = useCallback(async (data: Createname_entityRequestDTO) => {
+  const createFolderAction = useCallback(async (data: CreateFolderRequestDTO) => {
     try {
-      _Item_Store_Store.setCreateState({ creating: true })
-      const reqCreation = await Createname_entity(data);
+      FolderStore.setCreateState({ creating: true })
+      const reqCreation = await CreateFolder(data);
 
       if (!reqCreation?.status) {
         toast.error('[error 1]')
@@ -545,23 +540,23 @@ export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
         toast.error('[error 2]')
       }
 
-      if (reqCreation?.data.property_entity && reqCreation.status) {
-        const list = [reqCreation?.data.property_entity, ..._Item_Store_Store.list]
-        _Item_Store_Store.setListState({ list: list })
+      if (reqCreation?.data.folder && reqCreation.status) {
+        const list = [reqCreation?.data.folder, ...FolderStore.list]
+        FolderStore.setListState({ list: list })
         toast.success('Item creado')
       }
 
     } catch (ex) {
 
     } finally {
-      _Item_Store_Store.setCreateState({ creating: false, openCreate: false })
+      FolderStore.setCreateState({ creating: false, openCreate: false })
     }
-  }, [_Item_Store_Store.list])
+  }, [FolderStore.list])
 
-  const updateEntityNameAction = useCallback(async (id: string, data: Updatename_entityRequestDTO) => {
+  const updateFolderAction = useCallback(async (id: string, data: UpdateFolderRequestDTO) => {
     try {
-      _Item_Store_Store.setUpdateState({ updating: true })
-      const reqUpdate = await Updatename_entity(id, data);
+      FolderStore.setUpdateState({ updating: true })
+      const reqUpdate = await UpdateFolder(id, data);
 
       if (!reqUpdate?.status) {
         toast.error('[error 1]')
@@ -571,35 +566,35 @@ export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
         toast.error('[error 2]')
       }
 
-      if (reqUpdate?.status && reqUpdate.data.property_entity) {
-        let list = [..._Item_Store_Store.list]
+      if (reqUpdate?.status && reqUpdate.data.folder) {
+        let list = [...FolderStore.list]
         list = list.map(el => {
           if (el.id == id) {
-            return reqUpdate.data.property_entity || el
+            return reqUpdate.data.folder || el
           } else {
             return el;
           }
         })
-        _Item_Store_Store.setListState({ list: list })
+        FolderStore.setListState({ list: list })
         toast.success('Item actualizado')
       }
 
     } catch (ex) {
 
     } finally {
-      _Item_Store_Store.setUpdateState({ updating: false, openUpdate: false })
+      FolderStore.setUpdateState({ updating: false, openUpdate: false })
     }
-  }, [_Item_Store_Store.list])
+  }, [FolderStore.list])
 
-  const listEntityNameAction = useCallback(async (data: Getname_entitysRequestDTO) => {
+  const listFolderAction = useCallback(async (data: GetFoldersRequestDTO) => {
     try {
-      _Item_Store_Store.setListState({ listing: true })
+      FolderStore.setListState({ listing: true })
 
       if (data.page == 1) {
-        _Item_Store_Store.setListState({ list: [] })
+        FolderStore.setListState({ list: [] })
       }
 
-      const reqList = await Getname_entity(data)
+      const reqList = await GetFolder(data)
 
       if (!reqList?.status) {
         toast.error('[error 1]')
@@ -611,23 +606,23 @@ export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
 
       if (reqList?.status && reqList.data.list) {
         if (data.page == 1) {
-          _Item_Store_Store.setListState({ list: reqList.data.list })
+          FolderStore.setListState({ list: reqList.data.list })
         } else {
-          _Item_Store_Store.setListState({ list: [..._Item_Store_Store.list, ...reqList.data.list] })
+          FolderStore.setListState({ list: [...FolderStore.list, ...reqList.data.list] })
         }
       }
 
     } catch (ex) {
 
     } finally {
-      _Item_Store_Store.setListState({ listing: false })
+      FolderStore.setListState({ listing: false })
     }
-  }, [])
+  }, [FolderStore.list])
 
-  const deleteEntityNameAction = useCallback(async (data: Deletename_entityRequestDTO) => {
+  const deleteFolderAction = useCallback(async (data: DeleteFolderRequestDTO) => {
     try {
-      _Item_Store_Store.setDeleteState({ deleting: true })
-      const reqDelete = await Deletename_entity(data)
+      FolderStore.setDeleteState({ deleting: true })
+      const reqDelete = await DeleteFolder(data)
 
       if (!reqDelete?.status) {
         toast.error('[error 1]')
@@ -638,23 +633,23 @@ export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
       }
 
       if (reqDelete?.status && reqDelete.data) {
-        let list = [..._Item_Store_Store.list]
+        let list = [...FolderStore.list]
         list = list.filter(el => el.id != data.id)
-        _Item_Store_Store.setListState({ list: list })
+        FolderStore.setListState({ list: list })
         toast.success('Item eliminado')
       }
     } catch (ex) {
 
     } finally {
-      _Item_Store_Store.setDeleteState({ deleting: false, openDelete: false })
+      FolderStore.setDeleteState({ deleting: false, openDelete: false })
     }
-  }, [_Item_Store_Store.list])
+  }, [FolderStore.list])
 
   return {
-    createEntityNameAction,
-    updateEntityNameAction,
-    listEntityNameAction,
-    deleteEntityNameAction,
+    createFolderAction,
+    updateFolderAction,
+    listFolderAction,
+    deleteFolderAction,
   }
 }
 
@@ -662,13 +657,13 @@ export const UseEntityNameActions = ({ }: UseEntityNameActionsProps) => {
 //___________ store
 
 /*
-  _Item_Store_
+  Folder
 */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 
-interface _Item_Store_Store {
+interface FolderStore {
   // state: string | null,
   // setState: (data: Partial<{ state: string | null }>) => void
   // setState2: (state: string) => void
@@ -690,12 +685,12 @@ interface _Item_Store_Store {
   setDeleteState: (data: Partial<{ openDelete: boolean, deleting: boolean, currentElementSelected: string | null }>) => void
 
   // getall
-  list: Array<name_entityDTO>
+  list: Array<FolderDTO>
   listing: boolean;
-  setListState: (data: Partial<{ list: Array<name_entityDTO>, listing: boolean }>) => void
+  setListState: (data: Partial<{ list: Array<FolderDTO>, listing: boolean }>) => void
 }
 
-export const use_Item_Store_Store = create<_Item_Store_Store>((set) => ({
+export const useFolderStore = create<FolderStore>((set) => ({
   // state: null,
   // setState: (data) => set((state) => ({ ...state, ...data })),
   // setState2: (data) => set((state) => ({ ...state, state: data })),
@@ -733,15 +728,15 @@ import { ResponseApi } from '@/types/api/response';
 /*
 
 test_entity
-/api/entity_api
-name_entity
-property_entity
+/api/folders
+Folder
+folder
 
 */
 
-export const Getname_entity = async (data: Getname_entitysRequestDTO): Promise<ResponseApi<Getname_entitysResponseDTO> | null> => {
+export const GetFolder = async (data: GetFoldersRequestDTO): Promise<ResponseApi<GetFoldersResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/entity_api?page=${data.page}`);
+    const req = await api.get(`/api/folders?page=${data.page}`);
     return req.data;
   } catch (ex) {
     return null;
@@ -749,27 +744,27 @@ export const Getname_entity = async (data: Getname_entitysRequestDTO): Promise<R
 }
 
 
-export const Updatename_entity = async (id: string, data: Updatename_entityRequestDTO): Promise<ResponseApi<Updatename_entityResponseDTO> | null> => {
+export const UpdateFolder = async (id: string, data: UpdateFolderRequestDTO): Promise<ResponseApi<UpdateFolderResponseDTO> | null> => {
   try {
-    const req = await api.put(`/api/entity_api/${id}`, data);
+    const req = await api.put(`/api/folders/${id}`, data);
     return req.data;
   } catch (ex) {
     return null;
   }
 }
 
-export const Createname_entity = async (data: Createname_entityRequestDTO): Promise<ResponseApi<Createname_entityResponseDTO> | null> => {
+export const CreateFolder = async (data: CreateFolderRequestDTO): Promise<ResponseApi<CreateFolderResponseDTO> | null> => {
   try {
-    const req = await api.post(`/api/entity_api`, data);
+    const req = await api.post(`/api/folders`, data);
     return req.data;
   } catch (ex) {
     return null;
   }
 }
 
-export const Deletename_entity = async (data: Deletename_entityRequestDTO): Promise<ResponseApi<Deletename_entityResponseDTO> | null> => {
+export const DeleteFolder = async (data: DeleteFolderRequestDTO): Promise<ResponseApi<DeleteFolderResponseDTO> | null> => {
   try {
-    const req = await api.delete(`/api/entity_api/${data.id}`);
+    const req = await api.delete(`/api/folders/${data.id}`);
     return req.data;
   } catch (ex) {
     return null;
@@ -781,52 +776,52 @@ export const Deletename_entity = async (data: Deletename_entityRequestDTO): Prom
 /// DTOs
 ///
 
-export interface name_entityDTO {
+export interface FolderDTO {
   id: string;
   name: string
 }
 
 // get one
-export interface Getname_entityRequestDTO {
+export interface GetFolderRequestDTO {
   id: string;
 }
 
-export interface Getname_entityResponseDTO {
-  property_entity: name_entityDTO | null
+export interface GetFolderResponseDTO {
+  folder: FolderDTO | null
 }
 
 // get many
-export interface Getname_entitysRequestDTO {
+export interface GetFoldersRequestDTO {
   page: number
 }
 
-export interface Getname_entitysResponseDTO {
-  list: Array<name_entityDTO>
+export interface GetFoldersResponseDTO {
+  list: Array<FolderDTO>
 }
 
 // update one
-export interface Updatename_entityRequestDTO {
+export interface UpdateFolderRequestDTO {
   name: string;
 }
 
-export interface Updatename_entityResponseDTO {
-  property_entity: name_entityDTO | null
+export interface UpdateFolderResponseDTO {
+  folder: FolderDTO | null
 }
 
 // delete one
-export interface Deletename_entityRequestDTO {
+export interface DeleteFolderRequestDTO {
   id: string
 }
 
-export interface Deletename_entityResponseDTO {
+export interface DeleteFolderResponseDTO {
   id: string
 }
 
 // create one
-export interface Createname_entityRequestDTO {
+export interface CreateFolderRequestDTO {
   name: string;
 }
 
-export interface Createname_entityResponseDTO {
-  property_entity: name_entityDTO | null
+export interface CreateFolderResponseDTO {
+  folder: FolderDTO | null
 }
