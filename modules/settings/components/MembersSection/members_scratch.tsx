@@ -48,11 +48,12 @@ type MembersProps = {
 }
 
 export const MembersSection_ = ({ }: MembersProps) => {
+  const useAppData = UseAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
   const InitialList = () => {
-    useMembersActions.listMembersAction({ page: 1 })
+    useMembersActions.listMembersAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -917,7 +918,7 @@ import { ResponseApi } from '@/types/api/response';
 
 export const GetMember = async (data: GetMembersRequestDTO): Promise<ResponseApi<GetMembersResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/members?page=${data.page}`);
+    const req = await api.get(`/api/members?page=${data.page}&workspaceId=${data.workspaceId}`);
     return req.data;
   } catch (ex) {
     return null;
@@ -990,6 +991,7 @@ export interface GetMemberResponseDTO {
 // get many
 export interface GetMembersRequestDTO {
   page: number
+  workspaceId: string;
 }
 
 export interface GetMembersResponseDTO {
