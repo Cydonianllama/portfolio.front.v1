@@ -1,7 +1,7 @@
-import { FolderSection } from "@/examples/appsimplecrud/scratch_crud copy"
+import { VariableSection } from "@/modules/settings/components/VariablesSection/variables_scratch";
 
-export default function Page()  {
+export default function Page() {
   return <>
-    <FolderSection />
+    <VariableSection />
   </>
 }
