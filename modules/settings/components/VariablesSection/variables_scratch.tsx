@@ -174,7 +174,7 @@ type VariableListProps = {
 }
 
 export const VariableList_ = ({ isLoading, isError, list, HandleDragEndEvent, onClickDelete, onClickEdit }: VariableListProps) => {
-
+  const VariableStore = useVariableStore();
   const handleDragEndEvent = (event: DragEndEvent) => {
     if (HandleDragEndEvent) HandleDragEndEvent(event)
   }
@@ -213,13 +213,15 @@ export const VariableList_ = ({ isLoading, isError, list, HandleDragEndEvent, on
 
         {list.length == 0 && (<>
           <EmptyStateComponent
-            description="Usted no cuenta con items."
-            title="Items"
+            description="Usted no cuenta con variables."
+            title="Variables"
             isActiveCreate
             isActiveImport={false}
             isActiveLearn={false}
-            onClickCreate={() => { }}
-            textButtonCreate={'Agregar item'}
+            onClickCreate={() => { 
+              VariableStore.setCreateState({ openCreate: true })
+            }}
+            textButtonCreate={'Agregar variable'}
             mainIcon={<MdOutlineLabel />}
           />
         </>)}
@@ -376,8 +378,8 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
             {/* <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div> */}
             {data.name}
           </ItemTitle>
-          <LuDot />
-          <span className="text-gray-500">x registros</span>
+          {/* <LuDot /> */}
+          {/* <span className="text-gray-500">x registros</span> */}
         </div>
         {/* <ItemDescription>
           A simple item with title and description.

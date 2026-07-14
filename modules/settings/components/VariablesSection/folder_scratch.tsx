@@ -73,7 +73,7 @@ export const FolderSection = ({ }: FolderProps) => {
     <div className="p-2">
 
       <div className="flex justify-between gap-2 items-center mb-2">
-        <h1 className="text-lg font-semibold">Listado de folders</h1>
+        <h1 className="text-lg font-semibold">Folders</h1>
         <div>
           <Button disabled={FolderStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
             Refresar
@@ -211,7 +211,7 @@ export const FolderList_ = ({ isLoading, isError, list, HandleDragEndEvent, onCl
         </>)}
 
         {list.length == 0 && (<>
-          <EmptyStateComponent
+          {/* <EmptyStateComponent
             description="Usted no cuenta con items."
             title="Items"
             isActiveCreate
@@ -220,7 +220,10 @@ export const FolderList_ = ({ isLoading, isError, list, HandleDragEndEvent, onCl
             onClickCreate={() => { }}
             textButtonCreate={'Agregar item'}
             mainIcon={<MdOutlineLabel />}
-          />
+          /> */}
+          <div>
+            <div className="p-2 border-dotted flex justify-center items-center">No tienes carpetas registradas</div>
+          </div>
         </>)}
 
       </>)}
@@ -373,11 +376,9 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
 
         <div className="flex items-center gap-1.5">
           <ItemTitle className="font-semibold">
-            {/* <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div> */}
             {data.name}
           </ItemTitle>
-          <LuDot />
-          <span className="text-gray-500">x registros</span>
+          {/* <LuDot /> */}
         </div>
         {/* <ItemDescription>
           A simple item with title and description.

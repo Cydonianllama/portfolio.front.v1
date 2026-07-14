@@ -1,0 +1,8 @@
+import { z } from "zod/v3";
+
+export const actionNameSchema = z.object({
+  name: z.string().trim().min(1, "Debe tener al menos 1 caracteres").max(200),
+  email: z.string().email().trim().min(1, "Debe tener al menos 1 caracteres").max(200)
+});
+
+export type RequestactionNameSchema = z.infer<typeof actionNameSchema>;

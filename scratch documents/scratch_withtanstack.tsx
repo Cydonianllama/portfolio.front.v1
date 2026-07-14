@@ -774,6 +774,7 @@ interface _Item_Store_Store {
   openCreate: boolean;
   creating: boolean;
   setCreateState: (data: Partial<{ openCreate: boolean, creating: boolean, currentElementSelected: string | null }>) => void
+
   // update
   openUpdate: boolean;
   updating: boolean;
@@ -832,13 +833,19 @@ property_entity
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ResponsePagination } from "@/types/api/utils.pagination"
+import axios from 'axios'
 
 export const Getname_entity = async (data: Getname_entitysRequestDTO): Promise<ResponseApi<Getname_entitysResponseDTO> | null> => {
   try {
     const req = await api.get(`/api/entity_api?page=${data.page}`);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -848,7 +855,12 @@ export const Updatename_entity = async (data: Updatename_entityRequestDTO): Prom
     const req = await api.put(`/api/entity_api/${data.id}`, data);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -857,7 +869,12 @@ export const Createname_entity = async (data: Createname_entityRequestDTO): Prom
     const req = await api.post(`/api/entity_api`, data);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -866,7 +883,12 @@ export const Deletename_entity = async (data: Deletename_entityRequestDTO): Prom
     const req = await api.delete(`/api/entity_api/${data.id}`);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 

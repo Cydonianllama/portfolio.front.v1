@@ -40,7 +40,15 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ResponsePagination } from '@/types/api/utils.pagination';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+import { Controller } from "react-hook-form";
 //___________ ___________ Main
 
 type MembersProps = {
@@ -75,22 +83,9 @@ export const MembersSection_ = ({ }: MembersProps) => {
           Refresar
         </Button>
         <Button onClick={() => { MembersStore.setCreateState({ openCreate: true }) }}>
-          Crear Item
+          Agregar miembro
         </Button>
       </div>
-
-      {/* <MembersList_
-        isError={false}
-        isLoading={MembersStore.listing}
-        list={MembersStore.list}
-        HandleDragEndEvent={() => {}}
-        onClickDelete={(id, item) => {
-          MembersStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })
-        }}
-        onClickEdit={(id, item) => {
-          MembersStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
-        }}
-      /> */}
 
       <MembersTable_
         isError={false}
@@ -185,36 +180,71 @@ export const MembersTable_ = ({ handleDelete, handleEdit, list, isLoading, isErr
 
   // configuracion de columna
   const columnsUsersTable: ColumnDef<MemberDTO>[] = [
+    // {
+    //   id: "select",
+    //   header: ({ table }) => (
+    //     <Checkbox
+    //       checked={table.getIsAllPageRowsSelected()}
+    //       onCheckedChange={(value) =>
+    //         table.toggleAllPageRowsSelected(!!value)
+    //       }
+    //       aria-label="Seleccionar todos"
+    //     />
+    //   ),
+    //   cell: ({ row }) => (
+    //     <Checkbox
+    //       checked={row.getIsSelected()}
+    //       onCheckedChange={(value) =>
+    //         row.toggleSelected(!!value)
+    //       }
+    //       aria-label="Seleccionar fila"
+    //     />
+    //   ),
+    //   enableSorting: false,
+    //   enableHiding: false,
+    // },
+    // {
+    //   accessorKey: "id",
+    //   header: "Id"
+    // },
+
+    // configurationDefaultRoles
+
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Seleccionar todos"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) =>
-            row.toggleSelected(!!value)
-          }
-          aria-label="Seleccionar fila"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
+      accessorKey: "email",
+      header: "Email",
+      cell: (data) => {
+        return (<>
+          <div className="flex flex-col gap-1">
+            <span>{data.row.original.email}</span>
+            {(data.row.original.invitation?.status != InvitationMemberStatus.acepted && !data.row.original.isOwner) && (<>
+              <Badge>
+                {data.row.original.invitation?.status == InvitationMemberStatus.pending && 'Invitación pediente'}
+                {data.row.original.invitation?.status == InvitationMemberStatus.rechazed && 'Invitación rechazada'}
+              </Badge>
+            </>)}
+            {data.row.original.isOwner && (<Badge>Owner</Badge>)}
+          </div>
+        </>)
+      }
     },
     {
-      accessorKey: "id",
-      header: "Id"
+      accessorKey: "status",
+      header: "Estatus",
+      cell: (data) => {
+        return (<>
+          {MemberStatusConfiguration[(data.row.original.status || 0) as MemberStatus]?.text || '-'}
+        </>)
+      }
     },
     {
-      accessorKey: "name",
-      header: "Nombre"
+      accessorKey: "rolId",
+      header: "Rol",
+      cell: (data) => {
+        return (<>
+          {configurationDefaultRoles[data.row.original.rolId as DefaultRole]?.text || '-'}
+        </>)
+      }
     },
     // {
     //   id: 'date',
@@ -420,6 +450,13 @@ export const MembersFooterTable = ({ HandleToNextPage, HandleToPrevPage, paginat
 // import { Spinner } from "@/components/ui/spinner"
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select"
 
 type DialogCreateMembersProps = {
 
@@ -458,20 +495,26 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
     })
   }
 
+  const roles = [
+    // { label: "Selecciona un rol", value: null },
+    { label: "Administrador", value: DEFAULT_ROLES.ADMIN },
+    { label: "Operador", value: DEFAULT_ROLES.OPERATOR },
+  ]
+
   return <>
     <Dialog open={MembersStore.openCreate} onOpenChange={(open) => { MembersStore.setCreateState({ openCreate: open }) }} >
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear item</DialogTitle>
+          <DialogTitle>Agregar miembro</DialogTitle>
           <DialogDescription>
-            Creación de item
+            Agregado de miembros al workspace.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
-            <Label>Nombre</Label>
+            <Label>Correo electrónico</Label>
             <Input
-              placeholder="Nombre"
+              placeholder="usuario@gmail.com"
               {...register("email")}
             />
             {errors.email && (
@@ -482,7 +525,7 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
           </Field>
           <Field>
             <Label>Rol</Label>
-            <Input
+            {/* <Input
               placeholder="Rol"
               {...register("rolId")}
             />
@@ -490,7 +533,20 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
               <p className="text-sm text-red-500">
                 {errors.rolId.message}
               </p>
-            )}
+            )} */}
+            <Select items={roles} onValueChange={(e) => {
+              setValue('rolId', String(e), {
+                shouldDirty: true,
+                shouldValidate: true
+              })
+            }} >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Seleccionar rol" />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map(el => <SelectItem key={el.value} value={el.value}>{el.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </Field>
         </FieldGroup>
         <DialogFooter>
@@ -540,7 +596,8 @@ const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
     formState: { errors, isSubmitting },
     reset,
     watch,
-    setValue
+    setValue,
+    control,
   } = useForm<UpdateMembersSchema>({
     resolver: zodResolver(updateMembersSchema),
   });
@@ -556,11 +613,9 @@ const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
     if (currentOpened) {
       reset({
         rolId: currentOpened.rolId,
-        status: currentOpened.status as MemberStatus || MemberStatus.disabled
+        status: currentOpened.status as MemberStatus || MemberStatus.active
       })
     }
-
-
   }, [MembersStore.openUpdate, reset, currentOpened]);
 
   const HandleToUpdate = async (data: UpdateMembersSchema) => {
@@ -571,6 +626,18 @@ const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
       workspaceId: useAppData.workspace?.id || ''
     })
   }
+
+  const roles = [
+    // { label: "Selecciona un rol", value: null },
+    { label: "Administrador", value: DEFAULT_ROLES.ADMIN },
+    { label: "Operador", value: DEFAULT_ROLES.OPERATOR },
+  ]
+
+  const allowedStatuses = [
+    { label: MemberStatusConfiguration[MemberStatus.disabled].text, value: MemberStatus.disabled },
+    { label: MemberStatusConfiguration[MemberStatus.active].text, value: MemberStatus.active },
+  ]
+
   return <>
     <Dialog open={MembersStore.openUpdate} onOpenChange={(open) => { MembersStore.setUpdateState({ openUpdate: open }) }}>
       <DialogContent className="sm:max-w-sm">
@@ -583,22 +650,65 @@ const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
         <FieldGroup>
           <Field>
             <Label>Rol</Label>
-            <Input
+            {/* <Input
               placeholder="Rol"
               {...register("rolId")}
+            /> */}
+            <Controller
+              control={control}
+              name="rolId"
+              render={({ field }) => (
+                <Select
+                  items={roles}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Seleccionar rol" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {roles.map((el) => (
+                      <SelectItem key={el.value} value={el.value}>
+                        {el.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
             {errors.rolId && (
               <p className="text-sm text-red-500">
                 {errors.rolId.message}
               </p>
             )}
+
           </Field>
           <Field>
             <Label>Status</Label>
-            <Input
+            {/* <Input
               placeholder="status"
               {...register("status")}
+            /> */}
+            <Controller
+              control={control}
+              name="status"
+              render={({ field }) => (
+                <Select
+                  items={allowedStatuses}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Seleccionar estatus" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {allowedStatuses.map(el => <SelectItem key={el.value} value={el.value}>{el.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              )}
             />
+
             {errors.status && (
               <p className="text-sm text-red-500">
                 {errors.status.message}
@@ -681,7 +791,7 @@ import { z } from "zod/v3";
 // creation schema
 
 export const creationMembersSchema = z.object({
-  email: z.string().trim(),
+  email: z.string().email('Debe ser email').trim(),
   rolId: z.string().trim(),
 });
 
@@ -715,11 +825,14 @@ export const UseMembersActions = ({ }: UseMembersActionsProps) => {
       const reqCreation = await CreateMember(data);
 
       if (!reqCreation?.status) {
-        toast.error('[error 1]')
+        console.log(reqCreation?.message)
+        toast.error(reqCreation?.message || '[Error 1]')
+        return;
       }
 
       if (!reqCreation?.data) {
         toast.error('[error 2]')
+        return;
       }
 
       if (reqCreation?.data.member && reqCreation.status) {
@@ -915,12 +1028,19 @@ member
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
+import axios from "axios"
+
 
 export const GetMember = async (data: GetMembersRequestDTO): Promise<ResponseApi<GetMembersResponseDTO> | null> => {
   try {
     const req = await api.get(`/api/members?page=${data.page}&workspaceId=${data.workspaceId}`);
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null;
   }
 }
@@ -931,6 +1051,11 @@ export const UpdateMember = async (id: string, data: UpdateMemberRequestDTO): Pr
     const req = await api.put(`/api/members/${id}`, data);
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null;
   }
 }
@@ -940,6 +1065,11 @@ export const CreateMember = async (data: CreateMemberRequestDTO): Promise<Respon
     const req = await api.post(`/api/members`, data);
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null;
   }
 }
@@ -949,6 +1079,11 @@ export const DeleteMember = async (data: DeleteMemberRequestDTO): Promise<Respon
     const req = await api.delete(`/api/members/${data.id}`);
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null;
   }
 }
@@ -958,12 +1093,37 @@ export const DeleteMember = async (data: DeleteMemberRequestDTO): Promise<Respon
 /// DTOs
 ///
 
-export enum MemberStatus {
+export enum InvitationMemberStatus {
   pending = 1,
+  acepted = 2,
+  rechazed = 3,
+}
+
+export enum MemberStatus {
   active = 2,
-  rejected = 3,
   disabled = 4,
 }
+
+export const MemberStatusConfiguration: Record<MemberStatus, { text: string }> = {
+  [MemberStatus.active]: { text: "Activo" },
+  [MemberStatus.disabled]: { text: "Deshabilitado" },
+};
+
+const configurationDefaultRoles: Record<DefaultRole, { text: string }> = {
+  "defaultRol::admin": {
+    text: 'Administrador',
+  },
+  "defaultRol::operator": {
+    text: 'Operador'
+  }
+}
+
+export const DEFAULT_ROLES = {
+  ADMIN: "defaultRol::admin",
+  OPERATOR: "defaultRol::operator",
+} as const;
+
+export type DefaultRole = typeof DEFAULT_ROLES[keyof typeof DEFAULT_ROLES];
 
 export interface MemberDTO {
   id: string;
@@ -974,7 +1134,7 @@ export interface MemberDTO {
   isOwner: boolean
   status: MemberStatus,
   invitation: {
-    accepted: boolean,
+    status: InvitationMemberStatus,
     acceptedDate: Date
   } | null
 }

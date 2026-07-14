@@ -880,13 +880,19 @@ property_entity
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
+import axios from 'axios'
 
 export const Getname_entity = async (data: Getname_entitysRequestDTO): Promise<ResponseApi<Getname_entitysResponseDTO> | null> => {
   try {
     const req = await api.get(`/api/entity_api?page=${data.page}`);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -896,7 +902,12 @@ export const Updatename_entity = async (id: string, data: Updatename_entityReque
     const req = await api.put(`/api/entity_api/${id}`, data);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -905,7 +916,12 @@ export const Createname_entity = async (data: Createname_entityRequestDTO): Prom
     const req = await api.post(`/api/entity_api`, data);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -914,7 +930,12 @@ export const Deletename_entity = async (data: Deletename_entityRequestDTO): Prom
     const req = await api.delete(`/api/entity_api/${data.id}`);
     return req.data;
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
