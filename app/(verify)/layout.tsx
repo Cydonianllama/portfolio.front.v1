@@ -20,7 +20,6 @@ export default async function PageLayout({
   // }
 
   // const headersList = await headers();
-  
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -28,24 +27,17 @@ export default async function PageLayout({
     token: token || ''
   })
 
-  if (bootstrap?.user){
-    if (!bootstrap.user.isVerified){
-      redirect('/verify')
-    }
-
-    if (!bootstrap.user.isOnboardingFinished){
-      redirect('/onboarding')
+  if (bootstrap?.user) {
+    if (bootstrap.user.isOnboardingFinished) {
+      redirect('/home')
     }
   } else {
-    console.log('[layout app] redirect login')
     redirect('/login')
   }
 
-  return (
+  return (<>
     <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
-      <AppLayout>
-        {children}
-      </AppLayout>
+      {children}
     </BootstrapProvider>
-  );
+  </>);
 }

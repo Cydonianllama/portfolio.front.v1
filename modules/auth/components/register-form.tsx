@@ -14,9 +14,42 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
+import { useState } from "react"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, RegisterSchema } from "../schemas/register-form.schema"
+
+// ({ ...props }: React.ComponentProps<typeof Card>)
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+type SignupFormProps = {
+  handleRegister: (data: RegisterSchema) => void;
+}
+
+export const SignupForm = ({ handleRegister }: SignupFormProps) => {
+  const [proccesing, setProccesing] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    watch,
+    setValue,
+    control
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const HandleToProcess = (data: RegisterSchema) => {
+    console.log('HandleToProcess')
+    handleRegister(data)
+  }
+
   return (
-    <Card {...props}>
+    <Card>
       <CardHeader>
         <CardTitle className="text-lg">Crear cuenta</CardTitle>
         <CardDescription>
@@ -24,11 +57,17 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit(HandleToProcess)}>
           <FieldGroup>
+
             <Field>
               <FieldLabel htmlFor="name">Nombres</FieldLabel>
-              <Input className="bg-white" id="name" type="text" placeholder="Jorge Doe" required />
+              <Input {...register("fullname")} className="bg-white" id="name" type="text" placeholder="Jorge Doe" required />
+              {errors.fullname && (
+                <p className="text-sm text-red-500">
+                  {errors.fullname.message}
+                </p>
+              )}
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
@@ -38,14 +77,25 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 placeholder="jorgedoe@ejemplo.com"
                 required
                 className="bg-white"
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
               <FieldDescription>
                 Usaremos su correo electrónico para confirmar su cuenta.
               </FieldDescription>
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-              <Input className="bg-white" placeholder="*********" id="password" type="password" required />
+              <Input {...register("password")} className="bg-white" placeholder="*********" id="password" type="password" required />
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
               <FieldDescription>
                 Debe tener al menos 8 caractéres
               </FieldDescription>
@@ -54,12 +104,20 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <FieldLabel htmlFor="confirm-password">
                 Confirmar contraseña
               </FieldLabel>
-              <Input className="bg-white" placeholder="*********" id="confirm-password" type="password" required />
+              <Input {...register("confirmPassword")} className="bg-white" placeholder="*********" id="confirm-password" type="password" required />
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
               <FieldDescription>Porfavor vualva a escribir su contraseña.</FieldDescription>
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Crear cuenta</Button>
+                <Button type="submit" disabled={proccesing ? true : false} >
+                  {proccesing && <Spinner data-icon="inline-start" />}
+                  Crear cuenta
+                </Button>
                 <Button variant="outline" type="button">
                   Registrate con Google
                 </Button>

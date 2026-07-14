@@ -12,11 +12,7 @@ interface AuthStore {
 
 export const useAuthCydoStore = create<AuthStore>((set) => ({
   token: null,
-  basicUserInformation: {
-    email: '',
-    id: '',
-    fullname: ''
-  },
+  basicUserInformation: { email: '', fullname: '', id: '', isOnboardingFinished: false, isVerified: false },
   setToken: (token: string | null) => set((state) => ({
     ...state,
     token

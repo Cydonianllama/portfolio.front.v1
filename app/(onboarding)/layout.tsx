@@ -38,6 +38,8 @@ export default async function PageLayout({
   }
 
   return (<>
-    { children }
+    <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
+      {children}
+    </BootstrapProvider>
   </>);
 }

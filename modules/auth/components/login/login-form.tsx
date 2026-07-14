@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   loginSchema,
   LoginSchema
-} from "@/modules/auth/components/login-form.schema";
+} from "@/modules/auth/schemas/login-form.schema";
 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -29,11 +29,13 @@ import { Input } from "@/components/ui/input"
 import { Login } from "@/modules/auth/services/auth.service"
 import { toast } from "sonner";
 import Link from "next/link";
+import { useLogin } from "./store.login";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const loginStore = useLogin()
 
   const router = useRouter()
 
@@ -109,12 +111,13 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-                  <Link
-                    href="/forget-pass"
+                  <Button
+                    onClick={() => { loginStore.setState({ open: true }) }}
+                    variant={'link'}
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Olvidaste tu contraseña?
-                  </Link>
+                  </Button>
                 </div>
                 <Input
                   {...register("password")}

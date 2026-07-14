@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   loginSchema,
   LoginSchema
-} from "@/modules/auth/components/login-form.schema";
+} from "@/modules/auth/schemas/login-form.schema";
 
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
