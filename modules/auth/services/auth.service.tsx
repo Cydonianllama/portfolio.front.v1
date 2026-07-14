@@ -12,3 +12,21 @@ export const Login = async (username: string, password: string) : Promise<Respon
     return null;
   }
 }
+
+import Cookies from "js-cookie";
+export const Logout = async (): Promise<boolean> => {
+  try {
+    // const req = await api.post<ResponseApi<null>>(`/back-office/logout`);
+    // return req.data;
+    localStorage.removeItem("token");
+    Cookies.remove("token");
+
+    return true
+
+  } catch (error) {
+    // if (axios.isAxiosError<ResponseApi<null>>(error)) {
+    //   return error.response?.data || null;
+    // }
+    return false;
+  }
+}

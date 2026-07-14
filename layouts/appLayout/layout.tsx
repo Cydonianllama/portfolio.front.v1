@@ -35,27 +35,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
-  SidebarGroupLabel,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
 
 import { Separator } from "@/components/ui/separator"
-import { ChevronRight, LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { FaRegUser } from "react-icons/fa";
-import { logoutBackoffice } from "@/backoffice/auth/services/auth.service";
-import { useAuthStore } from '@/backoffice/auth/store/store';
 import { WorkspaceDropdown } from '../../modules/app/components/workspacesDropdown';
 import { FiHome } from 'react-icons/fi';
 import { TiFlowMerge } from "react-icons/ti";
@@ -66,6 +52,7 @@ import { useAuthCydoStore } from '@/modules/auth/store/store';
 import { useAppStore } from '@/modules/app/stores/appStore';
 import { DialogSettings } from '@/modules/settings/components/DialogSettings';
 import { useSettingsStore } from '@/modules/settings/store/settingsStore';
+import { Logout } from '@/modules/auth/services/auth.service';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -299,7 +286,7 @@ function AppSidebar({ pathname }: { pathname: string }) {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {
-                  logoutBackoffice()
+                  Logout()
                   router.refresh()
                 }}>
                   <LogOut data-icon="inline-start" />

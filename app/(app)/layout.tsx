@@ -20,6 +20,7 @@ export default async function PageLayout({
   // }
 
   // const headersList = await headers();
+  
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -35,6 +36,8 @@ export default async function PageLayout({
     if (!bootstrap.user.isOnboardingFinished){
       redirect('/onboarding')
     }
+  } else {
+    redirect('/login')
   }
 
   return (
