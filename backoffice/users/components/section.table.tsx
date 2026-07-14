@@ -59,6 +59,7 @@ import { EmptyStateComponent } from '@/components/Empty';
 import { ErrorStateComponent } from '@/components/Error';
 import { SpinnerListing } from '@/components/Listing';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { FaCheck } from 'react-icons/fa';
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<UserDTO>[] = [
@@ -100,8 +101,9 @@ export const columnsUsersTable: ColumnDef<UserDTO>[] = [
           <TooltipContent>
             <p>Usuario es interno</p>
           </TooltipContent>
-        </Tooltip></>)} {row.original.fullname}</span>
+        </Tooltip></>)} {row.original.fullname} {row.original.isVerified && (<FaCheck className='text-xs text-blue-500' />)}</span>
         <span className="text-xs text-muted-foreground">{row.original.email}</span>
+        {!row.original.isVerified && (<span className="text-xs text-muted-foreground">opt: {row.original.optValidationCode}</span>)}
       </div>
     </>),
   },

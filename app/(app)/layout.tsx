@@ -28,7 +28,11 @@ export default async function PageLayout({
   })
 
   if (bootstrap?.user){
-    if (!bootstrap.user.fFinishOnboarding){
+    if (!bootstrap.user.isVerified){
+      redirect('/onboarding')
+    }
+
+    if (!bootstrap.user.isOnboardingFinished){
       redirect('/onboarding')
     }
   }

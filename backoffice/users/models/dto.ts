@@ -60,7 +60,11 @@ export interface UserDTO {
   qtyWorkspaces: number
   plan?: PlanInfoDTO | null
   creationDate: Date
+  optValidationCode: string;
+  isOnboardingFinished: boolean;
+  isVerified: boolean;
 }
+
 
 export interface UserWorkspaceDTO {
   id: string;

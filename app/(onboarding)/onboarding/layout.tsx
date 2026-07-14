@@ -27,13 +27,17 @@ export default async function PageLayout({
     token: token || ''
   })
 
-  if (bootstrap?.user){
-    if (bootstrap.user.fFinishOnboarding){
+  if (bootstrap?.user) {
+    if (!bootstrap.user.isVerified) {
+      redirect('/verify')
+    }
+
+    if (bootstrap.user.isOnboardingFinished) {
       redirect('/home')
     }
   }
 
-  return (
-    {children}
-  );
+  return (<>
+    { children }
+  </>);
 }
