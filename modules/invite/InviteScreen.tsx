@@ -8,9 +8,7 @@ type InviteScreenProps = {
 }
 
 export const InviteScreen = ({  }: InviteScreenProps) => {
-
   const useAppData = UseAppData()
-
   return (
     <>
       <div className="h-screen w-screen flex items-center justify-center">

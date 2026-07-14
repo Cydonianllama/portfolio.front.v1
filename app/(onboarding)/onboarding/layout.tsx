@@ -28,16 +28,12 @@ export default async function PageLayout({
   })
 
   if (bootstrap?.user){
-    if (!bootstrap.user.fFinishOnboarding){
-      redirect('/onboarding')
+    if (bootstrap.user.fFinishOnboarding){
+      redirect('/home')
     }
   }
 
   return (
-    <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
-      <AppLayout>
-        {children}
-      </AppLayout>
-    </BootstrapProvider>
+    {children}
   );
 }

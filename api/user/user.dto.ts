@@ -5,6 +5,7 @@ export interface UserDTO {
   id: string;
   fullname: string;
   email: string
+  fFinishOnboarding: boolean;
 }
 
 // list workspaces user

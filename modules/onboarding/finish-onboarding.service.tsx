@@ -6,16 +6,19 @@ import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 
 interface FinishOnboardingRequestDTO {
-  workspaceId: string
+  nameWorkspace: string
+  rol: string
+  industry: string
+  qtyTeam: string
 }
 
 interface FinishOnboardingResponseDTO {
   list: Array<{ id: string, name: string }>
 }
 
-export const FinishOnboarding= async (data: FinishOnboardingRequestDTO): Promise<ResponseApi<FinishOnboardingResponseDTO> | null> => {
+export const FinishOnboarding = async (data: FinishOnboardingRequestDTO): Promise<ResponseApi<FinishOnboardingResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/entity_api`);
+    const req = await api.post(`/onboarding/finish`, data);
     return req.data;
   } catch (ex) {
     if (axios.isAxiosError(ex)) {

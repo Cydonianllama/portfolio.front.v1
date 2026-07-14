@@ -31,7 +31,8 @@ interface OnboardingStore {
 
   // steps
   step: number,
-  setStep: (data: Partial<{ step: number }>) => void;
+  finalizing: boolean,
+  setStep: (data: Partial<{ step: number, finalizing: boolean }>) => void;
   // step
   nameWorkspace: string;
   rol: string
@@ -45,7 +46,7 @@ interface OnboardingStore {
 
 export const useOnboarding = create<OnboardingStore>((set) => ({
   currentElementSelected: null,
-
+  
   // getall
   list: [],
   listing: false,
@@ -69,6 +70,7 @@ export const useOnboarding = create<OnboardingStore>((set) => ({
 
   // steps
   step: 1,
+  finalizing: false,
   setStep: (data) => set((state) => ({ ...state, ...data })),
 
   // step1
