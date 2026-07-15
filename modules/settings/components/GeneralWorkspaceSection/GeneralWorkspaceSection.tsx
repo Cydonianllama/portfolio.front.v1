@@ -13,9 +13,13 @@ import { FieldSettingConfigurationInput } from "../FieldSettingsConfigurationInp
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
 import { UseAppData } from "@/hooks/app/useAppData"
 import { UseSettingsActions } from "@/hooks/settings/useSettingsActions"
+import { Button } from "@/components/ui/button"
+import { useGeneralWorkspaceSection } from "./store"
+import { DialogDeleteWorkspace } from "./DialogDeleteWorkspace"
 
 export const GeneralWorkspaceSection = () => {
   const { workspace } = UseAppData()
+  const generalWorkspaceStore = useGeneralWorkspaceSection()
   const settingsActions = UseSettingsActions();
   return <>
     <FieldGroup>
@@ -28,5 +32,10 @@ export const GeneralWorkspaceSection = () => {
         placeholder="Nombre"
       />
     </FieldGroup>
+
+    <Button onClick={() => { generalWorkspaceStore.setDeleteState({ openDelete: true }) }} variant={'destructive'}>Eliminar workspace</Button>
+
+    <DialogDeleteWorkspace />
+
   </> 
 }

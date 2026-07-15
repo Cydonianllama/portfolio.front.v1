@@ -26,7 +26,7 @@ import { LuShieldCheck } from "react-icons/lu";
 import { BiHash } from "react-icons/bi";
 import { MdOutlineSettingsInputComponent } from "react-icons/md";
 import { ProfileSection } from "./Sections/ProfileSection"
-import { GeneralWorkspaceSection } from "./Sections/GeneralWorkspaceSection"
+import { GeneralWorkspaceSection } from "./GeneralWorkspaceSection/GeneralWorkspaceSection"
 import { MembersSection } from "./MembersSection/MembersSection"
 import { VariablesSection } from "./VariablesSection/VariablesSection"
 import { IntegrationSection } from "./IntegrationSection/IntegrationSection"
