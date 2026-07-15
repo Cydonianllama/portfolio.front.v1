@@ -2,11 +2,13 @@
 
 import { UseAppData } from "@/hooks/app/useAppData";
 import { SignupForm } from "./register-form";
-import { RegisterSchema } from "../schemas/register-form.schema";
-import { RegisterUser } from "../services/auth.service";
+import { RegisterSchema } from "../../schemas/register-form.schema";
+import { RegisterUser } from "../../services/auth.service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useInvite } from "@/modules/invite/store";
+import { useAuthCydoStore } from "../../store/store";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type RegisterScreenProps = {
@@ -14,12 +16,15 @@ type RegisterScreenProps = {
 }
 
 export const RegisterScreen = ({ }: RegisterScreenProps) => {
+  const inviteStore = useInvite()
   const useAppData = UseAppData()
   const router = useRouter()
+  const authStore = useAuthCydoStore()
 
   const HandleRegister = async (data: RegisterSchema) => {
     console.log('HandleRegister')
     try {
+      authStore.setState({ proccesingRegister: true })
       const req = await RegisterUser({
         email: data.email,
         password: data.password,
@@ -32,19 +37,21 @@ export const RegisterScreen = ({ }: RegisterScreenProps) => {
       }
 
       if (!req?.status) {
-        toast.error('[Register error 2]')
+        toast.error(req.message || '[Register error 2]')
         return;
       }
 
       if (req?.data.token) {
-        toast.error('[Registro exitoso]')
+        toast.success('[Registro exitoso]')
         localStorage.setItem('token', req.data.token)
         Cookies.set("token", req.data.token);
-        router.replace("home");
+        router.replace("/verify");
       }
 
     } catch (error) {
 
+    } finally {
+      authStore.setState({ proccesingRegister: false })
     }
   }
 

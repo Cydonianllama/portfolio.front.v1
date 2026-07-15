@@ -63,7 +63,7 @@ export function LoginForm({
       }
 
       if (!req.data.token) {
-        toast.error('Error desconocido (2)')
+        toast.error(req.message || 'Error desconocido (2)')
         clearSession()
         return;
       }

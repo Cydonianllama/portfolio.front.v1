@@ -20,11 +20,12 @@ export interface GetInvitationInformationResponseDTO {
     email: string
   },
   forceRegister?: boolean;
+  forceHome?: boolean;
 }
 
 export const GetInvitationInformation = async (data: GetInvitationInformationRequestDTO): Promise<ResponseApi<GetInvitationInformationResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/invitations?invitationId=${data.invitationId}&tokenUser=${data.tokenUser}`);
+    const req = await api.get(`/api/invitations?invitationId=${encodeURI(data.invitationId)}&tokenUser=${encodeURI(data.tokenUser)}`);
     return req.data;
   } catch (ex) {
     if (axios.isAxiosError(ex)) {

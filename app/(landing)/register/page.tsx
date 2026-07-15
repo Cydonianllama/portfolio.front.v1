@@ -1,5 +1,5 @@
 'use server'
-import { RegisterScreen } from "@/modules/auth/components/RegisterScreen"
+import { RegisterScreen } from "@/modules/auth/components/register/RegisterScreen"
 
 export default async function Page() {
   return <>

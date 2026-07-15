@@ -16,10 +16,20 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, RegisterSchema } from "../schemas/register-form.schema"
+import { registerSchema, RegisterSchema } from "../../schemas/register-form.schema"
+import { useInvite } from "@/modules/invite/store"
+
+import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { InfoIcon } from "lucide-react"
+import { useAuthCydoStore } from "../../store/store"
 
 // ({ ...props }: React.ComponentProps<typeof Card>)
 
@@ -29,8 +39,8 @@ type SignupFormProps = {
 }
 
 export const SignupForm = ({ handleRegister }: SignupFormProps) => {
-  const [proccesing, setProccesing] = useState(false)
-
+  const inviteStore = useInvite()
+  const authStore = useAuthCydoStore()
   const {
     register,
     handleSubmit,
@@ -48,9 +58,24 @@ export const SignupForm = ({ handleRegister }: SignupFormProps) => {
     handleRegister(data)
   }
 
+  useEffect(() => {
+    if (inviteStore.invitationInformation){
+      setValue('email', inviteStore.invitationInformation.invitation?.email || '', { shouldValidate: true })
+    }
+  }, [inviteStore.invitationInformation])
+
   return (
     <Card>
       <CardHeader>
+        {inviteStore.invitationInformation && (<>
+          <Alert className="bg-gray-100">
+            <InfoIcon />
+            <AlertTitle>Oye!</AlertTitle>
+            <AlertDescription>
+              Antes de aceptar la invitacion debes crearte una cuenta con el correo de la invitación.
+            </AlertDescription>
+          </Alert>
+        </>)}
         <CardTitle className="text-lg">Crear cuenta</CardTitle>
         <CardDescription>
           Ingresa la información requerida para crear una cuenta.
@@ -59,7 +84,6 @@ export const SignupForm = ({ handleRegister }: SignupFormProps) => {
       <CardContent>
         <form onSubmit={handleSubmit(HandleToProcess)}>
           <FieldGroup>
-
             <Field>
               <FieldLabel htmlFor="name">Nombres</FieldLabel>
               <Input {...register("fullname")} className="bg-white" id="name" type="text" placeholder="Jorge Doe" required />
@@ -114,8 +138,8 @@ export const SignupForm = ({ handleRegister }: SignupFormProps) => {
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit" disabled={proccesing ? true : false} >
-                  {proccesing && <Spinner data-icon="inline-start" />}
+                <Button type="submit" disabled={authStore.proccesingRegister ? true : false} >
+                  {authStore.proccesingRegister && <Spinner data-icon="inline-start" />}
                   Crear cuenta
                 </Button>
                 <Button variant="outline" type="button">

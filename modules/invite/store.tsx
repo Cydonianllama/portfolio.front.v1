@@ -22,7 +22,7 @@ interface InviteStore {
 }
 
 export const useInvite = create<InviteStore>((set) => ({
-  gettingInfo: false,
+  gettingInfo: true,
   processingCommand: false,
   invitationInformation: null,
   setInvitation: (data) => set((state) => ({ ...state, ...data })),

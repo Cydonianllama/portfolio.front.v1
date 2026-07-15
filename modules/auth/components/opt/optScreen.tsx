@@ -18,7 +18,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { VerifyAccount } from "../services/auth.service"
 import { useState } from "react"
 import { toast } from "sonner"
 import Cookies from "js-cookie";
@@ -26,8 +25,11 @@ import { Spinner } from "@/components/ui/spinner"
 import { useRouter } from "next/navigation";
 import { sleep } from "@/backoffice/automation/utils/sleep"
 import { UseAppData } from "@/hooks/app/useAppData"
+import { VerifyAccount } from "../../services/auth.service"
+import { useInvite } from "@/modules/invite/store";
 
 export const OPTSection = () => {
+  const inviteStore = useInvite()
   const useAppData = UseAppData()
   const router = useRouter()
 
@@ -56,7 +58,14 @@ export const OPTSection = () => {
         toast.success('[Cuenta exitosamente verificada]')
         localStorage.setItem('token', reqVerify.data.token)
         Cookies.set("token", reqVerify.data.token);
-        router.replace("home");
+        
+        if (inviteStore.invitationInformation){
+          // si hay invitacion redirigir en invite
+          router.replace(`/invite?invitationId=${inviteStore.invitationInformation.invitation?.id}`);
+        } else {
+          // si no hay invitación redirigir home
+          router.replace("home");
+        }
       }
 
     } catch (ex) {

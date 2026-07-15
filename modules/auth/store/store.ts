@@ -8,6 +8,8 @@ interface AuthStore {
   setToken: (token: string | null) => void;
   setBasicUserInformation: (data: { email: string; fullname: string; id: string }) => void;
 
+  proccesingRegister: boolean;
+  setState: (data: Partial<{ proccesingRegister: boolean }>) => void;
 }
 
 export const useAuthCydoStore = create<AuthStore>((set) => ({
@@ -24,4 +26,6 @@ export const useAuthCydoStore = create<AuthStore>((set) => ({
       ...data
     }
   })),
+  proccesingRegister: false,
+  setState: (data) => set(state => ({...state, ...data}))
 }));

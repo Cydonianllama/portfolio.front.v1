@@ -30,6 +30,7 @@ export const InviteScreen = ({ invitationId }: InviteScreenProps) => {
 
       if (!req.status){
         toast.error(req.message || 'Error 2')
+        router.push('home')
         return
       }
 
@@ -38,6 +39,12 @@ export const InviteScreen = ({ invitationId }: InviteScreenProps) => {
 
       if (req.data.forceRegister){
         router.push('register')
+        return;
+      }
+
+      if (req.data.forceHome){
+        router.push('home')
+        return;
       }
 
     } catch (ex) {
