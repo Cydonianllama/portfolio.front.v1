@@ -59,6 +59,7 @@ import {
   CellContext,
   ColumnDef,
 } from "@tanstack/react-table";
+import { ShowcaseId } from "@/components/cydocompos";
 
 export interface DialogMembersConfig {
   workspaceId: string;
@@ -164,6 +165,13 @@ const ActionsRow = ({ data, workspaceId }: { data: CellContext<MemberBackofficeD
 }
 
 const columnsMembersTable = (workspaceId: string): ColumnDef<MemberBackofficeDTO>[] => [
+  {
+    accessorKey: "id",
+    header: "Id",
+    cell: ({ row }) => (<>
+      <ShowcaseId id={row.original.id} />
+    </>)
+  },
   {
     accessorKey: "email",
     header: "Email",
