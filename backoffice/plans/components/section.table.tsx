@@ -24,6 +24,7 @@ import { LiaSitemapSolid } from "react-icons/lia";
 import { EmptyStateComponent } from '../shared/Empty';
 import { SpinnerListing } from '../shared/Listing';
 import { ErrorStateComponent } from '../shared/Error';
+import { Switch } from "@/components/ui/switch"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -65,6 +66,9 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
 import { HiDotsHorizontal, HiOutlineSortDescending } from "react-icons/hi";
 import { HiMiniArrowSmallUp } from "react-icons/hi2";
+import { ShowcaseId } from '@/components/cydocompos';
+import { useUpdateManagerV1 } from '../hooks/useUpdate';
+import { PlanStatus } from '@/api/plan';
 
 // componente Columna personalizada
 type ColumnTableStates = 'none' | 'desc' | 'asc'
@@ -105,112 +109,6 @@ const ColumnTable2 = ({ name, onChange, hasStatus = true }: ColumnTable2Props) =
   </div>)
 }
 
-// configuracion de columna
-export const columnsUsersTable: ColumnDef<PlanDTO>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={table.getIsAllPageRowsSelected()}
-  //       onCheckedChange={(value) =>
-  //         table.toggleAllPageRowsSelected(!!value)
-  //       }
-  //       aria-label="Seleccionar todos"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) =>
-  //         row.toggleSelected(!!value)
-  //       }
-  //       aria-label="Seleccionar fila"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
-  {
-    accessorKey: "id",
-    header: ({ table, column, header }) => (<>
-      <ColumnTable2 hasStatus={false} name={'Id'} onChange={() => { }} />
-    </>)
-  },
-  {
-    accessorKey: "name",
-    header: () => (<>
-      <ColumnTable2 hasStatus={false} name={'Name'} onChange={() => { }} />
-    </>)
-  },
-  // {
-  //   accessorKey: "status",
-  //   header: ({ table, column, header }) => (<>
-  //     <ColumnTable2 name={'Estatus'} onChange={() => { }} />
-  //   </>),
-  //   cell: ({ row }) => (<>
-  //     <Badge variant="secondary">{row.original.statusName}</Badge>
-  //   </>),
-  // },
-  {
-    accessorKey: 'qty',
-    header: ({ table, column, header }) => (<>
-      <ColumnTable2 hasStatus={false}  name={'Qty'} onChange={() => { }} />
-    </>)
-  },
-  {
-    id: 'date',
-    header: ({ table, column, header }) => (<>
-      <ColumnTable2 hasStatus={false}  name={'Fecha de creación'} onChange={() => { }} />
-    </>),
-    cell: (data) => {
-      return (<>
-        {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
-      </>)
-    }
-  },
-  {
-    id: "actions",
-    header: "Acciones",
-    cell: (data) => {
-      return (<ActionsRow data={data} />)
-    }
-  }
-];
-
-// ActionsRow
-const ActionsRow = ({ data }: { data: CellContext<PlanDTO, unknown> }) => {
-  const user = data.row.original;
-  const moduleState = useManagerv1Store();
-  return (
-    <div className="flex gap-2">
-      <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="ghost" size={'icon-xs'}><HiDotsHorizontal /></Button>} />
-        <DropdownMenuContent>
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => {
-              console.log("Editar", user.id)
-              moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
-            }}>
-              <PencilIcon />
-              Edit
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem variant="destructive" onClick={() => {
-              console.log("Eliminar", user.id)
-              moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
-            }}>
-              <TrashIcon />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  )
-}
-
 export type SectionTableProps = {
   list: Array<PlanDTO>
   loading: boolean;
@@ -218,11 +116,106 @@ export type SectionTableProps = {
   onChangeSelection?: (state: any) => void
   OnClickEmptyCreate?: () => void;
   OnClickRetry?: () => void;
+  OnSwitchStatus: (id: string) => void
 }
 
 export const SectionTable = (data: SectionTableProps) => {
-
   const [rowSelection, setRowSelection] = useState({});
+
+  // configuracion de columna
+  const columnsUsersTable: ColumnDef<PlanDTO>[] = [
+    {
+      accessorKey: "id",
+      header: ({ table, column, header }) => (<>
+        <ColumnTable2 hasStatus={false} name={'Id'} onChange={() => { }} />
+      </>),
+      cell: ({ row }) => (<>
+        <ShowcaseId id={row.original.id} />
+      </>)
+    },
+    {
+      accessorKey: "name",
+      header: () => (<>
+        <ColumnTable2 hasStatus={false} name={'Name'} onChange={() => { }} />
+      </>)
+    },
+    {
+      accessorKey: "status",
+      header: () => (<>
+        <ColumnTable2 hasStatus={false} name={'Status'} onChange={() => { }} />
+      </>),
+      cell: ({ row }) => {
+        return (<>
+          {/* {row.original.status} */}
+          <Switch
+            checked={row.original.status == PlanStatus.active ? true : false}
+            onCheckedChange={() => {
+              data.OnSwitchStatus(row.original.id)
+            }}
+          />
+        </>)
+      }
+    },
+    {
+      accessorKey: 'qty',
+      header: ({ table, column, header }) => (<>
+        <ColumnTable2 hasStatus={false} name={'Qty'} onChange={() => { }} />
+      </>),
+    },
+    {
+      id: 'date',
+      header: ({ table, column, header }) => (<>
+        <ColumnTable2 hasStatus={false} name={'Fecha de creación'} onChange={() => { }} />
+      </>),
+      cell: (data) => {
+        return (<>
+          {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
+        </>)
+      }
+    },
+    {
+      id: "actions",
+      header: "Acciones",
+      cell: (data) => {
+        return (<ActionsRow data={data} />)
+      }
+    }
+  ];
+
+  // ActionsRow
+  const ActionsRow = ({ data }: { data: CellContext<PlanDTO, unknown> }) => {
+    const user = data.row.original;
+    const moduleState = useManagerv1Store();
+    return (
+      <div className="flex gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="ghost" size={'icon-xs'}><HiDotsHorizontal /></Button>} />
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => {
+                console.log("Editar", user.id)
+                moduleState.setInformationUpdateItem({ isOpen: true, itemData: user, itemId: user.id })
+              }}>
+                <PencilIcon />
+                Edit
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem variant="destructive" onClick={() => {
+                console.log("Eliminar", user.id)
+                moduleState.setInformationDeleteItem({ isOpen: true, itemId: user.id })
+              }}>
+                <TrashIcon />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    )
+  }
+
 
   useEffect(() => {
     if (data.onChangeSelection) {

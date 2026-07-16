@@ -50,6 +50,7 @@ import { useUpdateManagerV1 } from "../hooks/useUpdate";
 import { useDeleteManagerV1 } from "../hooks/useDelete";
 import { configurationModule, mainTabListConfiguration, tabsAvailables } from "../config";
 import { MdSettings } from "react-icons/md";
+import { PlanStatus } from "@/api/plan";
 
 export const PlanScreen = () => {
 
@@ -262,36 +263,44 @@ export const PlanScreen = () => {
 
     <div className="px-12 relative h-full  flex flex-col">
       {/* start::header filter  */}
-        <SectionHeaderFilter
-          OnSearch={OnSearch}
-          itemsSelected={moduleState.itemsSelected || []}
-          currentTab={moduleState.filterTab}
-          onChangeTabSelection={(tab) => moduleState.setFilterTab(tab)}
-          defaultTab={configurationModule.filterTabs[0]}
+      <SectionHeaderFilter
+        OnSearch={OnSearch}
+        itemsSelected={moduleState.itemsSelected || []}
+        currentTab={moduleState.filterTab}
+        onChangeTabSelection={(tab) => moduleState.setFilterTab(tab)}
+        defaultTab={configurationModule.filterTabs[0]}
 
-          HandleToOpenAddItem={HandleToOpenAddItem}
-          HandleToRefresh={HandleToRefresh}
-        />
-        {/* end::header filter  */}
+        HandleToOpenAddItem={HandleToOpenAddItem}
+        HandleToRefresh={HandleToRefresh}
+      />
+      {/* end::header filter  */}
 
-        {/* start::table */}
-        <SectionTable
-          list={data?.data.list || []}
-          loading={isFetching}
-          hasError={(!data?.status || isError) ? true : false}
-          onChangeSelection={OnChangeSelection}
-          OnClickEmptyCreate={OnClickEmptyCreate}
-          OnClickRetry={OnClickRetry}
-        />
-        {/* end::table */}
+      {/* start::table */}
+      <SectionTable
+        list={data?.data.list || []}
+        loading={isFetching}
+        hasError={(!data?.status || isError) ? true : false}
+        onChangeSelection={OnChangeSelection}
+        OnClickEmptyCreate={OnClickEmptyCreate}
+        OnClickRetry={OnClickRetry}
+        OnSwitchStatus={async (id: string) => {
+          const current = data?.data.list.find(el => el.id == id)
+          await updatePlanAction.mutateAsync({
+            id: id,
+            name: current?.name || '',
+            status: current?.status == PlanStatus.active ? PlanStatus.inactive : PlanStatus.active
+          })
+        }}
+      />
+      {/* end::table */}
 
-        {/* start::footer table */}
-        <SectionFooterTable
-          HandleToNextPage={HandleToNextPage}
-          HandleToPrevPage={HandleToPrevPage}
-          pagination={data?.pagination || null}
-        />
-        {/* end::footer table */}
+      {/* start::footer table */}
+      <SectionFooterTable
+        HandleToNextPage={HandleToNextPage}
+        HandleToPrevPage={HandleToPrevPage}
+        pagination={data?.pagination || null}
+      />
+      {/* end::footer table */}
 
       {/* start::Dialogs */}
       <DialogCreatePlan
