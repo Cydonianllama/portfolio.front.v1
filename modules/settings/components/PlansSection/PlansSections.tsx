@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { UseAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { GetPlans } from "./service.getplans";
-
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -26,7 +26,7 @@ import {
 // _NAME_STORE_
 // ------------------
 
-export const PlansSection= () => {
+export const PlansSection = () => {
 
   const store = usePlans()
 
@@ -34,16 +34,16 @@ export const PlansSection= () => {
 
   const ListItems = async () => {
     try {
-      
+
       store.setList({ list: [], listing: true })
-      
+
       const items = await GetPlans({ workspaceId: useAppData.workspace?.id || '' })
-      if (!items?.status){
+      if (!items?.status) {
         toast.error('[Error 1]')
         return;
       }
 
-      if (!items?.data){
+      if (!items?.data) {
         toast.error('[Error 2]')
         return;
       }
@@ -66,19 +66,26 @@ export const PlansSection= () => {
   }, [])
 
   return <>
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-6 px-5">
       {store.list.map((el, index) => (<Card key={index}>
-      <CardHeader>
-        <CardTitle>{el.name}</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
-    </Card>))}
+        <CardHeader>
+          <CardTitle>{el.name}</CardTitle>
+          {/* <CardDescription>Card Description</CardDescription> */}
+        </CardHeader>
+        <CardContent>
+          <div className="px-4">
+            <ul className="list-disc">
+              <li>Lorem ipsum dolor sit amet.</li>
+              <li>Lorem ipsum dolor sit amet.</li>
+              <li>Lorem ipsum dolor sit amet.</li>
+              <li>Lorem ipsum dolor sit amet.</li>
+            </ul>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button variant={'outline'} className={'w-full'}>Elegir</Button>
+        </CardFooter>
+      </Card>))}
     </div>
   </>
 }
@@ -92,7 +99,7 @@ interface PlanStore {
   list: Array<{ id: string, name: string }>;
   pagination: ResponsePagination | null;
   listing: boolean;
-  setList: (data : Partial<{ list: Array<{ id: string, name: string }>, listing: boolean, pagination: ResponsePagination | null }>) => void;
+  setList: (data: Partial<{ list: Array<{ id: string, name: string }>, listing: boolean, pagination: ResponsePagination | null }>) => void;
 }
 
 export const usePlans = create<PlanStore>((set) => ({

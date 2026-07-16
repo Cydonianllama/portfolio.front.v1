@@ -73,14 +73,17 @@ export const FolderSection = ({ }: FolderProps) => {
     <div className="p-2">
 
       <div className="flex justify-between gap-2 items-center mb-2">
-        <h1 className="text-lg font-semibold">Folders</h1>
+        <h1 className="text-lg font-semibold flex gap-1 items-center">
+          <span><TiFolderOpen /></span>
+          <span>Folders</span>
+        </h1>
         <div>
-          <Button disabled={FolderStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
+          {/* <Button disabled={FolderStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
             Refresar
           </Button>
           <Button onClick={() => { FolderStore.setCreateState({ openCreate: true }) }}>
             Crear Item
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -173,6 +176,7 @@ type FolderListProps = {
 }
 
 export const FolderList_ = ({ isLoading, isError, list, HandleDragEndEvent, onClickDelete, onClickEdit }: FolderListProps) => {
+  const FolderStore = useFolderStore();
 
   const handleDragEndEvent = (event: DragEndEvent) => {
     if (HandleDragEndEvent) HandleDragEndEvent(event)
@@ -195,7 +199,7 @@ export const FolderList_ = ({ isLoading, isError, list, HandleDragEndEvent, onCl
       {(!isLoading && !isError) && (<>
 
         {list.length > 0 && (<>
-          <ItemGroup className="flex flex-row flex-wrap">
+          <ItemGroup className="flex flex-row flex-wrap items-center">
             <DndContext
               collisionDetection={closestCenter}
               onDragEnd={handleDragEndEvent}
@@ -205,6 +209,10 @@ export const FolderList_ = ({ isLoading, isError, list, HandleDragEndEvent, onCl
                 strategy={horizontalListSortingStrategy}
               >
                 {list.map((item, idx) => (<SortableItem id={item.id} data={item} key={idx} onClickDelete={onClickDelete} onClickEdit={onClickEdit} />))}
+                <Button variant={'outline'} onClick={() => { FolderStore.setCreateState({ openCreate: true }) }}>
+                  <GoPlus />
+                  Crear Item
+                </Button>
               </SortableContext>
             </DndContext>
           </ItemGroup>
@@ -370,7 +378,8 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
         {...listeners}
         variant="icon"
       >
-        <PiDotsSixVerticalBold />
+        <TiFolderOpen />
+        {/* <PiDotsSixVerticalBold /> */}
       </ItemMedia>
       <ItemContent>
 
@@ -949,6 +958,8 @@ folder
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
+import { TiFolderOpen } from "react-icons/ti"
+import { GoPlus } from "react-icons/go"
 
 export const GetFolder = async (data: GetFoldersRequestDTO): Promise<ResponseApi<GetFoldersResponseDTO> | null> => {
   try {

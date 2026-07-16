@@ -22,20 +22,23 @@ export const GeneralWorkspaceSection = () => {
   const generalWorkspaceStore = useGeneralWorkspaceSection()
   const settingsActions = UseSettingsActions();
   return <>
-    <FieldGroup>
-      <FieldSettingConfigurationInput
-        initialValue={workspace?.name || ''}
-        label="Nombre"
-        onUpdate={(text) => {
-          settingsActions.updateParamWorkspace([{ param: 'name', value: text }])
-        }}
-        placeholder="Nombre"
-      />
-    </FieldGroup>
-
-    <Button onClick={() => { generalWorkspaceStore.setDeleteState({ openDelete: true }) }} variant={'destructive'}>Eliminar workspace</Button>
-
+    <div className="h-full flex-1 flex flex-col">
+      <div className="flex-1">
+        <FieldGroup>
+          <FieldSettingConfigurationInput
+            initialValue={workspace?.name || ''}
+            label="Nombre"
+            onUpdate={(text) => {
+              settingsActions.updateParamWorkspace([{ param: 'name', value: text }])
+            }}
+            placeholder="Nombre"
+          />
+        </FieldGroup>
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={() => { generalWorkspaceStore.setDeleteState({ openDelete: true }) }} variant={'destructive'}>Eliminar workspace</Button>
+      </div>
+    </div>
     <DialogDeleteWorkspace />
-
-  </> 
+  </>
 }

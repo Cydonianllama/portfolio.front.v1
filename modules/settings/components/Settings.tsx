@@ -48,7 +48,7 @@ export const Settings = () => {
               Perfil
             </TabsTrigger>
           </div>
-          {/* <Separator className="my-2" /> */}
+          <Separator className="my-2" />
           <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Ajustes de Workspace</div>
             <TabsTrigger value="general" className="justify-start gap-2">
@@ -70,7 +70,7 @@ export const Settings = () => {
           </div>
 
           <Separator className="my-2" />
-          <div className="flex flex-col gap-2 w-full px-2 ">
+          <div className="flex flex-col gap-2 w-full">
             <div className="font-semibold">Billing settings</div>
             <TabsTrigger value="plans" className="justify-start gap-2">
               <FiCodesandbox className="size-4" />
@@ -90,15 +90,15 @@ export const Settings = () => {
             </TabsTrigger>
           </div> */}
         </TabsList>
-        <TabsContent className={'h-full'} value="profile">
+        <TabsContent className={'h-full flex flex-col'} value="profile">
           <TabHeaderDialogSettings title="Perfil" />
           <div>
             <ProfileSection />
           </div>
         </TabsContent>
-        <TabsContent value="general">
+        <TabsContent className={'h-full flex flex-col'} value="general">
           <TabHeaderDialogSettings title="General" />
-          <div>
+          <div className="flex-1">
             <GeneralWorkspaceSection />
           </div>
         </TabsContent>

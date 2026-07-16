@@ -75,7 +75,10 @@ export const VariableSection = ({ }: VariableProps) => {
     <div className="p-2">
 
       <div className="flex justify-between gap-2 items-center mb-2">
-        <h1 className="text-lg font-semibold">Mis variables</h1>
+        <h1 className="text-lg font-semibold flex gap-1 items-center">
+          <TbCodeVariable />
+          Mis variables
+        </h1>
         <div>
           <Button disabled={VariableStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
             Refresar
@@ -218,7 +221,7 @@ export const VariableList_ = ({ isLoading, isError, list, HandleDragEndEvent, on
             isActiveCreate
             isActiveImport={false}
             isActiveLearn={false}
-            onClickCreate={() => { 
+            onClickCreate={() => {
               VariableStore.setCreateState({ openCreate: true })
             }}
             textButtonCreate={'Agregar variable'}
@@ -361,7 +364,7 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
       ref={setNodeRef}
       style={style}
 
-      className="bg-gray-50"
+      // className="bg-gray-50"
       variant="outline"
     >
       <ItemMedia
@@ -369,7 +372,8 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
         {...listeners}
         variant="icon"
       >
-        <PiDotsSixVerticalBold />
+        {/* <PiDotsSixVerticalBold /> */}
+        <TbCodeVariable />
       </ItemMedia>
       <ItemContent>
 
@@ -947,6 +951,7 @@ variable
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { FolderSection } from "./folder_scratch"
+import { TbCodeVariable } from "react-icons/tb"
 
 export const GetVariable = async (data: GetVariablesRequestDTO): Promise<ResponseApi<GetVariablesResponseDTO> | null> => {
   try {

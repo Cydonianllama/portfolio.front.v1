@@ -8,25 +8,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/progress"
+
 type showcaseSubscriptionProps = {
-  
+
 }
 
-export const ShowcaseSubscription = ({  }: showcaseSubscriptionProps) => {
+export const ShowcaseSubscription = ({ }: showcaseSubscriptionProps) => {
   const useAppData = UseAppData()
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Suscription</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardTitle>Nombre subscripcion</CardTitle>
+          {/* <CardDescription>Card Description</CardDescription> */}
         </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
+        <CardContent className="space-y-3">
+          <div className="  max-w-xs">
+            <Progress value={10} className="">
+              <ProgressLabel>Contactos</ProgressLabel>
+              <ProgressValue />
+            </Progress>
+          </div>
+          <div className=" max-w-xs">
+            <Progress value={60} className="">
+              <ProgressLabel>Miembros</ProgressLabel>
+              <ProgressValue />
+            </Progress>
+          </div>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
     </>
   )
