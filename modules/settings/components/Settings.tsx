@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import { Badge } from "@/components/ui/badge"
 
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,15 +16,13 @@ import { BuildingIcon, CheckSquareIcon, FileTextIcon, FolderIcon, UserIcon, User
 import { TiUserOutline } from "react-icons/ti";
 import { RiAccountCircle2Line } from "react-icons/ri";
 import { FaRegBell } from "react-icons/fa";
-import { LuBriefcaseBusiness } from "react-icons/lu";
+import { LuBriefcaseBusiness, LuSettings2 } from "react-icons/lu";
 import { FaCode } from "react-icons/fa6";
 import { FaPowerOff } from "react-icons/fa";
 import { TiCreditCard } from "react-icons/ti";
 import { FiCodesandbox } from "react-icons/fi";
 import { ImFilesEmpty } from "react-icons/im";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import { LuShieldCheck } from "react-icons/lu";
-import { BiHash } from "react-icons/bi";
 import { MdOutlineSettingsInputComponent } from "react-icons/md";
 import { ProfileSection } from "./PofileSection/ProfileSection"
 import { GeneralWorkspaceSection } from "./GeneralWorkspaceSection/GeneralWorkspaceSection"
@@ -33,6 +32,9 @@ import { IntegrationSection } from "./IntegrationSection/IntegrationSection"
 import { PlansSection } from "./PlansSection/PlansSections"
 import { SubscriptionSection } from "./SubscriptionSection/SubscriptionSection"
 import { TabHeaderDialogSettings } from "./TabHeader"
+import { TbCodeVariable } from "react-icons/tb";
+import { TbUsersGroup } from "react-icons/tb";
+import { MdOutlinePayment } from "react-icons/md";
 
 export const Settings = () => {
   return <>
@@ -50,15 +52,15 @@ export const Settings = () => {
           <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Ajustes de Workspace</div>
             <TabsTrigger value="general" className="justify-start gap-2">
-              <MdOutlineSettingsInputComponent className="size-4" />
+              <LuSettings2 className="size-4" />
               General
             </TabsTrigger>
             <TabsTrigger value="members" className="justify-start gap-2">
-              <BiHash className="size-4" />
+              <TbUsersGroup className="size-4" />
               Miembros
             </TabsTrigger>
             <TabsTrigger value="variables" className="justify-start gap-2">
-              <LuShieldCheck className="size-4" />
+              <TbCodeVariable className="size-4" />
               Variables
             </TabsTrigger>
             <TabsTrigger value="integrations" className="justify-start gap-2">
@@ -71,11 +73,11 @@ export const Settings = () => {
           <div className="flex flex-col gap-2 w-full px-2 ">
             <div className="font-semibold">Billing settings</div>
             <TabsTrigger value="plans" className="justify-start gap-2">
-              <ImFilesEmpty className="size-4" />
+              <FiCodesandbox className="size-4" />
               Plans
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="justify-start gap-2">
-              <FiCodesandbox className="size-4" />
+              <MdOutlinePayment  className="size-4" />
               Subscriptions
             </TabsTrigger>
           </div>
