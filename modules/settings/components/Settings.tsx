@@ -25,14 +25,13 @@ import { VscDebugDisconnect } from "react-icons/vsc";
 import { LuShieldCheck } from "react-icons/lu";
 import { BiHash } from "react-icons/bi";
 import { MdOutlineSettingsInputComponent } from "react-icons/md";
-import { ProfileSection } from "./Sections/ProfileSection"
+import { ProfileSection } from "./PofileSection/ProfileSection"
 import { GeneralWorkspaceSection } from "./GeneralWorkspaceSection/GeneralWorkspaceSection"
 import { MembersSection } from "./MembersSection/MembersSection"
 import { VariablesSection } from "./VariablesSection/VariablesSection"
 import { IntegrationSection } from "./IntegrationSection/IntegrationSection"
-import { PlansSection } from "./Sections/PlansSections"
-import { SubscriptionSection } from "./Sections/SubscriptionSection"
-import { BillingSection } from "./Sections/BillingSection"
+import { PlansSection } from "./PlansSection/PlansSections"
+import { SubscriptionSection } from "./SubscriptionSection/SubscriptionSection"
 import { TabHeaderDialogSettings } from "./TabHeader"
 
 export const Settings = () => {
@@ -68,7 +67,7 @@ export const Settings = () => {
             </TabsTrigger>
           </div>
 
-          {/* <Separator className="my-2" />
+          <Separator className="my-2" />
           <div className="flex flex-col gap-2 w-full px-2 ">
             <div className="font-semibold">Billing settings</div>
             <TabsTrigger value="plans" className="justify-start gap-2">
@@ -79,11 +78,7 @@ export const Settings = () => {
               <FiCodesandbox className="size-4" />
               Subscriptions
             </TabsTrigger>
-            <TabsTrigger value="billing" className="justify-start gap-2">
-              <TiCreditCard className="size-4" />
-              Billing
-            </TabsTrigger>
-          </div> */}
+          </div>
 
           {/* <Separator className="my-2" />
           <div className="flex flex-col gap-2 w-full px-2">
@@ -141,12 +136,6 @@ export const Settings = () => {
           <TabHeaderDialogSettings title="Subscripciones" />
           <div>
             <SubscriptionSection />
-          </div>
-        </TabsContent>
-        <TabsContent value="billing">
-          <TabHeaderDialogSettings title="Ordenes" />
-          <div>
-            <BillingSection />
           </div>
         </TabsContent>
       </Tabs>

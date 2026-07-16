@@ -891,5 +891,80 @@
       "}"
     ],
     "description": ""
-  }
+  },
+  "Hooks actions": {
+    "prefix": "w_hookactions",
+    "body": [
+      "import { useCallback } from \"react\"",
+      "import { toast } from \"sonner\"",
+      "",
+      "// eslint-disable-next-line @typescript-eslint/no-empty-object-type",
+      "type ${1:name}HookActionsProps = {",
+      "",
+      "}",
+      "",
+      "export const Use${1:name}HookActions = ({} : ${1:name}HookActionsProps) => {",
+      "",
+      "  const ${2:method}= useCallback(async () => {",
+      "    try {",
+      "      $3",
+      "    } catch (ex) {",
+      "",
+      "    } finally {",
+      "      ",
+      "    }",
+      "  }, [])",
+      "",
+      "  return {",
+      "",
+      "  }",
+      "}"
+    ],
+    "description": ""
+  },
+  "Hooks actions method": {
+    "prefix": "w_hookactions_method",
+    "body": [
+      "const ${1:method}= useCallback(async () => {",
+      "  try {",
+      "    $2",
+      "  } catch (ex) {",
+      "",
+      "  } finally {",
+      "    ",
+      "  }",
+      "}, [])"
+    ],
+    "description": ""
+  },
+  "Hooks actions method with service": {
+  "prefix": "w_hookactions_methodservice",
+  "body": [
+    "const ${1:method}= useCallback(async (data: any) => {",
+    "  try {",
+    "    const req = await ${2:nameservice}(data)",
+    "    if (!req) {",
+    "      toast.error('Error 1')",
+    "      return;",
+    "    }",
+    "",
+    "    if (!req?.status) {",
+    "      toast.error(req.message || 'Error 2')",
+    "      return;",
+    "    }",
+    "",
+    "    // success",
+    "    toast.success('Success')",
+    "",
+    "    $3",
+    "",
+    "  } catch (ex) {",
+    "",
+    "  } finally {",
+    "",
+    "  }",
+    "}, [])"
+  ],
+  "description": ""
+}
 }
