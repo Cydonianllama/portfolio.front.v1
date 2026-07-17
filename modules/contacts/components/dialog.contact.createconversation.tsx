@@ -45,8 +45,9 @@ import {
 import { FaWhatsapp } from "react-icons/fa"
 import { PiTelegramLogo } from "react-icons/pi"
 import { IntegrationDTO } from "@/api/integration/integration.dto"
-import { ContactDTO } from "../models/dto"
 import { error } from "console"
+import { ContactDTO } from "@/api/contacts/contacts.dto"
+import { UseAppData } from "@/hooks/app/useAppData";
 
 //
 export interface DialogCreateConversationContactConfig {
@@ -59,7 +60,7 @@ export interface DialogCreateConversationContactConfig {
 }
 
 export const DialogCreateConversationContact = (config: DialogCreateConversationContactConfig) => {
-
+const useAppData = UseAppData()
   const {
     register,
     handleSubmit,
@@ -87,7 +88,7 @@ export const DialogCreateConversationContact = (config: DialogCreateConversation
       reset({
         integrationId: '',
         participants: [{ contactId: config.data.id }],
-        workspaceId: config.data.workspaceId
+        workspaceId: useAppData.workspace?.id || ''
       })
     }
   }, [config.open, config.data, reset]);

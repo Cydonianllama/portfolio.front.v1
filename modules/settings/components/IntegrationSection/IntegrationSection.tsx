@@ -10,8 +10,12 @@ import {
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { api } from '@/setup/axios'
+import { UseIntegrationHookActions } from "./hook.actions.integration"
+import { UseAppData } from "@/hooks/app/useAppData";
 
 export const IntegrationSection = () => {
+  const useAppData = UseAppData()
+  const integrationActions = UseIntegrationHookActions({})
 
   const [integrationsJson, setIntegrationsJson] = useState<Array<{ code: string, title: string }>>([])
 
@@ -37,12 +41,21 @@ export const IntegrationSection = () => {
           <ItemContent>
             <ItemTitle>{el.title}</ItemTitle>
             <ItemDescription>
-              A simple item with title and description.
+              Acá irá la descripción de la integración.
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button variant="outline" size="sm">
-              Action
+            <Button 
+            onClick={() => {
+              integrationActions.AddIngrationTestAction({
+                workspaceId: useAppData.workspace?.id || '',
+                code: el.code
+              })
+            }}
+            variant="outline" 
+            size="sm"
+            >
+              test add
             </Button>
           </ItemActions>
         </Item>

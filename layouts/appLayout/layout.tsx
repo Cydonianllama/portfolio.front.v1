@@ -43,7 +43,7 @@ import { ReactElement } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { WorkspaceDropdown } from '../../modules/app/components/workspacesDropdown';
-import { FiHome } from 'react-icons/fi';
+import { FiActivity, FiHome } from 'react-icons/fi';
 import { TiFlowMerge } from "react-icons/ti";
 import { BsChatDots } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
@@ -176,6 +176,17 @@ function AppSidebar({ pathname }: { pathname: string }) {
                 render={<Link href="/admin">
                   <MdOutlineManageAccounts />
                   Administracion
+                </Link>}
+                tooltip="Home"
+                className={isActive('/admin') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+              />
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                render={<Link href="/activities">
+                  <FiActivity />
+                  Actividades
                 </Link>}
                 tooltip="Home"
                 className={isActive('/admin') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}

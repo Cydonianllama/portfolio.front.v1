@@ -151,8 +151,8 @@ export const TableInvoices = ({ list, loading, hasError }: TableInvoicesProps) =
     {/* cargando data */}
     {(loading) && (<>
       <SpinnerListing
-        title='Listando los items'
-        description='Espere unos momentos mientras obtenemos los items'
+        title='Listando los facturas'
+        description='Espere unos momentos mientras obtenemos las facturas'
       />
     </>)}
 
@@ -166,9 +166,9 @@ export const TableInvoices = ({ list, loading, hasError }: TableInvoicesProps) =
       {/* No hay data */}
       {list.length == 0 && (<>
         <EmptyStateComponent
-          title='Items'
-          description='No tenemos items registrados'
-          isActiveCreate={true}
+          title='Facturas'
+          description='No tenemos facturas registrados'
+          isActiveCreate={false}
           onClickCreate={() => { }}
           isActiveImport={false}
           isActiveLearn={false}

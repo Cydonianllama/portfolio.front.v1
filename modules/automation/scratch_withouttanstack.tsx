@@ -209,7 +209,10 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
     // },
     {
       accessorKey: "id",
-      header: "Id"
+      header: "Id",
+      cell: ({ row }) => (<>
+        <ShowcaseId id={row.original.id || ''}  />
+      </>)
     },
     {
       accessorKey: "title",
@@ -299,13 +302,13 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
       </>)}
       {list.length == 0 && (<>
         <EmptyStateComponent
-          description="Usted no cuenta con items."
-          title="Items"
+          description="Usted no cuenta con automatizaciones."
+          title="Automatizaciones"
           isActiveCreate
           isActiveImport={false}
           isActiveLearn={false}
           onClickCreate={() => { }}
-          textButtonCreate={'Agregar item'}
+          textButtonCreate={'Agregar automatización'}
           mainIcon={<MdOutlineLabel />}
         />
       </>)}
@@ -460,9 +463,9 @@ const DialogCreateAutomation = ({ }: DialogCreateAutomationProps) => {
     <Dialog open={AutomationStore.openCreate} onOpenChange={(open) => { AutomationStore.setCreateState({ openCreate: open }) }} >
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear item</DialogTitle>
+          <DialogTitle>Crear Automatización</DialogTitle>
           <DialogDescription>
-            Creación de item
+            Creación una nueva automatización
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -483,7 +486,7 @@ const DialogCreateAutomation = ({ }: DialogCreateAutomationProps) => {
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
           <Button disabled={AutomationStore.creating ? true : false} onClick={handleSubmit(HandleToCreate)} type="button">
             {AutomationStore.creating && <Spinner data-icon="inline-start" />}
-            Crear item
+            Crear automatización
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -557,9 +560,9 @@ const DialogUpdateAutomation = ({ }: DialogUpdateAutomationProps) => {
     <Dialog open={AutomationStore.openUpdate} onOpenChange={(open) => { AutomationStore.setUpdateState({ openUpdate: open }) }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Actualizar item</DialogTitle>
+          <DialogTitle>Actualizar automatización</DialogTitle>
           <DialogDescription>
-            Actualización de item
+            Actualización de automatización.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -575,7 +578,7 @@ const DialogUpdateAutomation = ({ }: DialogUpdateAutomationProps) => {
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
           <Button disabled={AutomationStore.updating ? true : false} onClick={handleSubmit(HandleToUpdate)} type="button">
             {AutomationStore.updating && <Spinner data-icon="inline-start" />}
-            Actualizar item
+            Actualizar automatización
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -878,6 +881,7 @@ automation
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
+import { ShowcaseId } from "@/components/cydocompos";
 
 export const GetAutomation = async (data: GetAutomationsRequestDTO): Promise<ResponseApi<GetAutomationsResponseDTO> | null> => {
   try {
