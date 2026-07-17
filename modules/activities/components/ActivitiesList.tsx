@@ -15,6 +15,8 @@ import { ErrorStateComponent } from "@/components/Error";
 import { SpinnerListing } from "@/components/Listing";
 import { EmptyStateComponent } from "@/components/Empty";
 import { MdOutlineLabel } from "react-icons/md";
+import { VscDebugDisconnect } from "react-icons/vsc";
+import { ActivityItem } from "./ActivityItem";
 
 // -------- a cambiar
 // ComponentName
@@ -56,8 +58,8 @@ export const ListActivitiesComponent = () => {
 
       {(!activitiesStore.listing && !isError) && (<>
         {activitiesStore.list.length > 0 && (<>
-          <div className="border rounded flex-1">
-            listao
+          <div className=" flex-1">
+            {activitiesStore.list.map((el, index) => (<ActivityItem data={el} key={index} />))}
           </div>
         </>)}
         {activitiesStore.list.length == 0 && (<>

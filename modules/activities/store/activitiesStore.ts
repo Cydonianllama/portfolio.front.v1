@@ -2,14 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination"
-import { NotificationDTO } from "@/api/notification/dto";
-
+import { ActivityDTO } from "@/api/activity/dto";
 interface ActivitiesStore {
   // getall
-  list: Array<NotificationDTO>
+  list: Array<ActivityDTO>
   pagination: ResponsePagination | null;
   listing: boolean;
-  setListState: (data: Partial<{ list: Array<NotificationDTO>, listing: boolean, pagination: ResponsePagination | null }>) => void
+  setListState: (data: Partial<{ list: Array<ActivityDTO>, listing: boolean, pagination: ResponsePagination | null }>) => void
 }
 
 export const useActivities = create<ActivitiesStore>((set) => ({

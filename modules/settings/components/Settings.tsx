@@ -92,7 +92,7 @@ export const Settings = () => {
         </TabsList>
         <TabsContent className={'h-full flex flex-col'} value="profile">
           <TabHeaderDialogSettings title="Perfil" />
-          <div>
+          <div className="flex-1">
             <ProfileSection />
           </div>
         </TabsContent>

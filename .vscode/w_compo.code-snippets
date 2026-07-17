@@ -925,7 +925,7 @@
   "Hooks actions method": {
     "prefix": "w_hookactions_method",
     "body": [
-      "const ${1:method}= useCallback(async () => {",
+      "const ${1:method} = useCallback(async () => {",
       "  try {",
       "    $2",
       "  } catch (ex) {",
@@ -940,7 +940,7 @@
   "Hooks actions method with service": {
   "prefix": "w_hookactions_methodservice",
   "body": [
-    "const ${1:method}= useCallback(async (data: any) => {",
+    "const ${1:method} = useCallback(async (data: any) => {",
     "  try {",
     "    const req = await ${2:nameservice}(data)",
     "    if (!req) {",

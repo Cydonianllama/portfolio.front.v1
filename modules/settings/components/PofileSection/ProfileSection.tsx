@@ -12,40 +12,53 @@ import { useEffect, useState } from "react";
 import { FieldSettingConfigurationInput } from "../FieldSettingsConfigurationInput";
 import { UseAppData } from "@/hooks/app/useAppData";
 import { UseSettingsActions } from "@/hooks/settings/useSettingsActions";
+import { Button } from "@/components/ui/button"
+import { useProfileSettings } from "./profileStore";
+import { DialogConfirmDeleteAccount } from "./DialogConfirmDeleteAccount";
 
 export const ProfileSection = () => {
   const { user } = UseAppData()
   const settingsActions = UseSettingsActions();
+  const profileSettingsStore = useProfileSettings()
 
   return (<>
-    <FieldGroup>
+    <div className=" flex flex-col flex-1 h-full">
+      <div className="flex-1">
+        <FieldGroup>
 
-      <FieldSettingConfigurationInput
-        initialValue={user.fullname || ''}
-        label="Nombres"
-        onUpdate={(text) => {
-          settingsActions.updateParamUser([{ param: 'fullname', value: text }])
-        }}
-        placeholder="Nombres"
-      />
+          <FieldSettingConfigurationInput
+            initialValue={user.fullname || ''}
+            label="Nombres"
+            onUpdate={(text) => {
+              settingsActions.updateParamUser([{ param: 'fullname', value: text }])
+            }}
+            placeholder="Nombres"
+          />
 
-      <FieldSettingConfigurationInput
-        initialValue={user.email || 'pepa'}
-        label="Correo"
-        onUpdate={() => { 
-          // no hay actualizacion para este elemento
-        }}
-        placeholder="jorgedoe@ejemplo.com"
-        disabled
-      />
+          <FieldSettingConfigurationInput
+            initialValue={user.email || 'pepa'}
+            label="Correo"
+            onUpdate={() => {
+              // no hay actualizacion para este elemento
+            }}
+            placeholder="jorgedoe@ejemplo.com"
+            disabled
+          />
 
-      {/*<Field orientation="horizontal">
+          {/*<Field orientation="horizontal">
         <FieldContent>
           <FieldTitle>Correo</FieldTitle>
           <FieldDescription></FieldDescription>
           <Input disabled placeholder="erick@gmail.com" />
         </FieldContent>
       </Field> */}
-    </FieldGroup>
+        </FieldGroup>
+      </div>
+      <div className="flex justify-end">
+        <Button variant={'destructive'} onClick={() => { profileSettingsStore.setDeleteState({ openDelete: true }) }} >Eliminar cuenta</Button>
+      </div>
+    </div>
+
+    <DialogConfirmDeleteAccount />
   </>)
 }
