@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback } from 'react'
+import { useContactStore } from '@/modules/contacts/store/store'
 import { useChatStore } from '../../modules/chat/store/store.chat'
 import { CreateChat, ListChats, ListMessages, OpenChat, SendMessage } from '@/api/chat/chat.api'
 import { CreateChatRequestDTO, ListChatRequestDTO, ListMessagesRequestDTO, MessageDTO } from '@/api/chat/chat.dto'
-import { useContactStore } from '@/modules/contacts/store/store'
 import { toast } from 'sonner'
-import { sleep } from '@/backoffice/automation/utils/sleep'
 import { GetContactRequestDTO } from '@/api/contacts/contacts.dto'
 import { GetContact } from '@/api/contacts/contacts.api'
 
@@ -24,8 +23,6 @@ export const UseChatActions = () => {
         chatStore.setChats([])
         chatStore.setStates({ paginationChat: null })
       }
-
-      await sleep(400)
 
       const req = await ListChats({
         page: data.page,
@@ -205,26 +202,7 @@ export const UseChatActions = () => {
 
     }
   }, [chatStore.messages])
-
-  const OnNewMessage = useCallback(async (data: { roomId: string, message: MessageDTO }) => {
-    try{
-      console.log("[socket] Nuevo mensaje:", { roomId: data.roomId, message: data.message });
-      const roomId = data.roomId;
-      const message = data.message;
-
-      // validar si son el mismo roomId
-      console.log({roomId, currentRoom: chatStore.roomIdOpened})
-      if (roomId == chatStore.roomIdOpened){
-        console.log('mismo room')
-        // insertar nuevo mensaje
-        const messages__ = [...chatStore.messages]
-        chatStore.setChatSelectedStates({ messages: [...messages__, message] })
-      }
-    } catch (ex) {
-
-    }
-  }, [chatStore.listChats, chatStore.messages, chatStore.roomIdOpened, chatStore.setChatSelectedStates])
-
+  
   return {
     ListChatsAction,
     OpenChatAction,
@@ -232,6 +210,5 @@ export const UseChatActions = () => {
     CreateConversation,
     ListMessagesAction,
     ListContactInformation,
-    OnNewMessage
   }
 }

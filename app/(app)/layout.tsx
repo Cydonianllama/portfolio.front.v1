@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import { BootstrapApp } from "@/server/bootstrap/app.bootstrap";
 import { redirect } from "next/navigation";
+import { LiveAppProvider } from "@/liveapp/LiveAppProvider";
 
 export default async function PageLayout({
   children,
@@ -20,7 +21,7 @@ export default async function PageLayout({
   // }
 
   // const headersList = await headers();
-  
+
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -28,12 +29,12 @@ export default async function PageLayout({
     token: token || ''
   })
 
-  if (bootstrap?.user){
-    if (!bootstrap.user.isVerified){
+  if (bootstrap?.user) {
+    if (!bootstrap.user.isVerified) {
       redirect('/verify')
     }
 
-    if (!bootstrap.user.isOnboardingFinished){
+    if (!bootstrap.user.isOnboardingFinished) {
       redirect('/onboarding')
     }
   } else {
@@ -43,9 +44,11 @@ export default async function PageLayout({
 
   return (
     <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
-      <AppLayout>
-        {children}
-      </AppLayout>
+      <LiveAppProvider>
+        <AppLayout>
+          {children}
+        </AppLayout>
+      </LiveAppProvider>
     </BootstrapProvider>
   );
 }

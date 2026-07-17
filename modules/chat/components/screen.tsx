@@ -34,12 +34,8 @@ import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
 import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
 import { UseConversationFiltersActions } from "@/hooks/chat/useConversationFilters";
-import { UseWebsocketChat } from "@/hooks/chat/useWebsocketsChat";
 
 export const ChatScreen = () => {
-  // websocket para el chat
-  UseWebsocketChat()
-
   // configuracion general de chat
   UseAppInitializer({ moduleName: 'chat' })
 

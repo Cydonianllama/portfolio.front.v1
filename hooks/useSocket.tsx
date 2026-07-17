@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { socket } from "@/setup/socket";
-import { UseChatActions } from "./chat/useChatActions";
-import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { useChatStore } from "@/modules/chat/store/store.chat";
+import { UseEventsHookActions } from "@/liveapp/hooksEventsAction";
+import { EVENT_CHAT_NEW_MESSAGE, EVENT_NEW_USER_NOTIFICATION, EVENT_NEW_WORKSPACE_NOTIFICATION } from "@/liveapp/constants";
+import { UseAppData } from "@/hooks/app/useAppData";
 
 export function useSocket() {
-
-  const workspaceSelection = useWorkspaceSelectionStore()
   const chatStore = useChatStore()
-  const chatActions = UseChatActions()
+  const liveEvents = UseEventsHookActions({})
+  const useAppData = UseAppData()
 
   useEffect(() => {
     console.log("useSocket hook called, socket connected:", socket.connected);
     if (!socket.connected) {
       try {
+        console.log('connecting')
         socket.connect();
       } catch (ex) {
         console.error("Error connecting to socket:", ex);
@@ -28,10 +29,24 @@ export function useSocket() {
   useEffect(() => {
     if (chatStore.roomIdOpened) {
       if (socket) {
-        socket.on("newMessage", chatActions.OnNewMessage);
+        console.log(`instanace of [${EVENT_CHAT_NEW_MESSAGE}]`)
+        console.log(`instanace of [${EVENT_NEW_USER_NOTIFICATION}]`)
+        console.log(`instanace of [${EVENT_NEW_WORKSPACE_NOTIFICATION }]`)
+        socket.on(EVENT_CHAT_NEW_MESSAGE, liveEvents.OnMessageReceived);
+        socket.on(EVENT_NEW_USER_NOTIFICATION, liveEvents.OnGeneralNotificationReceived);
+        socket.on(EVENT_NEW_WORKSPACE_NOTIFICATION, liveEvents.OnWorkspaceNotificationReceived);
       }
     }
-  }, [chatStore.roomIdOpened, chatActions.OnNewMessage])
+  }, [chatStore.roomIdOpened, liveEvents.OnMessageReceived])
+
+  useEffect(() => {
+    if (useAppData.workspace){
+      if (socket) {
+        console.log(`instanace of [${EVENT_NEW_WORKSPACE_NOTIFICATION}]`)
+        socket.on(EVENT_NEW_WORKSPACE_NOTIFICATION, liveEvents.OnWorkspaceNotificationReceived);
+      }
+    }
+  }, [useAppData.workspace])
 
   return socket;
 }
