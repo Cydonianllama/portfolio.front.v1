@@ -24,8 +24,7 @@ export function useSocket() {
       socket.disconnect();
     };
   }, []);
-
-
+  
   useEffect(() => {
     if (chatStore.roomIdOpened) {
       if (socket) {
