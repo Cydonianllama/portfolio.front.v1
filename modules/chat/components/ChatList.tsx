@@ -71,7 +71,7 @@ export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
 
   return (<>
     <ScrollArea ref={wrapperContacts} className="h-full px-2 py-2">
-      <div className="flex flex-col gap-4" >
+      <div className="flex flex-col gap-2" >
         {contacts.map((item, index) => (
           <ContactCard
             handleOpenChat={HandleOpenChat}
