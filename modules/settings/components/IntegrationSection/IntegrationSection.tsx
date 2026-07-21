@@ -16,6 +16,7 @@ import { useWhatsappIntegration } from "./Whatsapp/store/store"
 import { DialogWhatsappIntegration } from "./Whatsapp/DialogManageWhatsapp"
 import { useTelegramIntegrations } from "./Telegram/store/store"
 import { DialogManageTelegram } from "./Telegram/DialogManageTelegram"
+import { IntegrationItem } from "./IntegrationItem"
 
 export const IntegrationSection = () => {
   const whatsappStore = useWhatsappIntegration()
@@ -42,39 +43,7 @@ export const IntegrationSection = () => {
 
   return (<>
     <div className="space-y-2 flex flex-col">
-      {integrationsJson.map((el, index) => (
-        <Item variant="outline" key={index}>
-          <ItemContent>
-            <ItemTitle>{el.title}</ItemTitle>
-            <ItemDescription>
-              Acá irá la descripción de la integración.
-            </ItemDescription>
-          </ItemContent>
-          <ItemActions>
-            <Button onClick={() => {
-              if (el.code == 'whatsapp') {
-                whatsappStore.setOpenManage({ openManage: true })
-              } else if (el.code == 'telegram') {
-                telegramStore.setOpenManage({ openManage: true })
-              }
-            }}>
-              Administrar
-            </Button>
-            <Button
-              onClick={() => {
-                integrationActions.AddIngrationTestAction({
-                  workspaceId: useAppData.workspace?.id || '',
-                  code: el.code
-                })
-              }}
-              variant="outline"
-              size="sm"
-            >
-              test add
-            </Button>
-          </ItemActions>
-        </Item>
-      ))}
+      {integrationsJson.map((el, index) => (<IntegrationItem key={index} data={el} />))}
     </div>
     <DialogWhatsappIntegration />
     <DialogManageTelegram />

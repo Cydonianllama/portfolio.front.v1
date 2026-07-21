@@ -31,12 +31,10 @@ export const DialogManageTelegram = ({ } : DialogManageTelegramProps) => {
 
   return <>
     <Dialog open={store.openManage} onOpenChange={(open) => store.setOpenManage({ openManage: open })}>
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Crear Item</DialogTitle>
-          <DialogDescription>
-            Creación de items.
-          </DialogDescription>
+          <DialogTitle>Integración de Telegram</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         
         {/* content here */}
