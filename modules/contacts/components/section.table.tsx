@@ -55,6 +55,8 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 import { ContactDTO } from '@/api/contacts/contacts.dto';
 import { FaCheck, FaRegCopy } from 'react-icons/fa';
 import { ShowcaseId } from '@/components/cydocompos';
+import { RiChatSearchLine } from 'react-icons/ri';
+import { useWatchConversations } from '../store/store.watch.conversations';
 
 
 
@@ -139,6 +141,7 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
 const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
   const user = data.row.original;
   const moduleState = useContactStore();
+  const watchConversationStore = useWatchConversations()
   return (
     <div className="flex gap-2">
       <DropdownMenu>
@@ -159,6 +162,13 @@ const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
             }}>
               <MdOutlineChat />
               Iniciar conversación
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              console.log("ver conversaciones", user.id)
+              watchConversationStore.setGeneral({ open: true, contactOpened: user.id })
+            }}>
+              <RiChatSearchLine />
+              Ver chats
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

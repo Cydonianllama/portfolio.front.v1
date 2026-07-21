@@ -53,6 +53,7 @@ import { CreationConversationSchema } from "../schemas/creation.conversation";
 import { ListIntegrations } from "@/api/integration/integration.api";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
 import { UseConversacionHookActions } from "../hooks/hook.actions.conversation";
+import { DialogManageConversations } from "./whatchconversations/dialog.manage.conversations";
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
@@ -416,6 +417,8 @@ export const ConctatsScreen = () => {
         integrations={moduleState.infoCreationConvContact.integrations}
         data={moduleState.infoCreationConvContact.contact}
       />
+
+      <DialogManageConversations />
       {/* end::Dialogs */}
     </div>
   </>)

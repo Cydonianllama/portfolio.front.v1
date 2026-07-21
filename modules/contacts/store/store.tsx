@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { ContactDTO } from "../models/dto";
 import { IntegrationDTO } from "@/api/integration/integration.dto";
+import { ContactDTO } from "@/api/contacts/contacts.dto";
 
 type informationCreationItemType = {
   // states of operation
