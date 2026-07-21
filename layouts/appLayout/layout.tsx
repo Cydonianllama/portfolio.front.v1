@@ -16,100 +16,35 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar"
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-
-import { Separator } from "@/components/ui/separator"
-import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { ReactElement } from "react";
 import { usePathname } from "next/navigation";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { WorkspaceDropdown } from '../../modules/app/components/workspacesDropdown';
-import { FiActivity, FiHome } from 'react-icons/fi';
-import { TiFlowMerge } from "react-icons/ti";
-import { BsChatDots } from "react-icons/bs";
-import { LuUsersRound } from "react-icons/lu";
-import { MdOutlineManageAccounts } from "react-icons/md";
 import { useAuthCydoStore } from '@/modules/auth/store/store';
-import { useAppStore } from '@/modules/app/stores/appStore';
 import { DialogSettings } from '@/modules/settings/components/DialogSettings';
 import { useSettingsStore } from '@/modules/settings/store/settingsStore';
-import { Logout } from '@/modules/auth/services/auth.service';
-import { NotificationDropdown } from '@/modules/app/components/NotificationDropdown';
-
-// ─── Tipos ───────────────────────────────────────────────────────────────────
-
-type NavItem = {
-  title: string
-  url: string
-  icon?: ReactElement
-  items?: { title: string; url: string }[]
-}
-
-// ─── Configuración de navegación ─────────────────────────────────────────────
-
-const navItems: NavItem[] = [
-  {
-    title: 'Home',
-    url: '/home',
-    icon: <span className="[&>svg]:size-4"><FiHome /></span>,
-  },
-  {
-    title: 'Momo',
-    url: '#',
-    icon: <span className="[&>svg]:size-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-blocks"><rect width="7" height="7" x="14" y="3" rx="1" /><path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" /></svg></span>,
-    items: [
-      { title: 'Usuarios', url: '/backoffice/users' },
-      { title: 'Workspaces', url: '/backoffice/workspace' },
-      { title: 'Planes', url: '/backoffice/plans' },
-      // { title: 'Contact', url: '/backoffice/contact' },
-      // { title: 'Automatizaciones', url: '/backoffice/automation' },
-    ]
-  },
-]
-
-// ─── Mapeo de rutas a breadcrumb ───────────────────────────────────────────
-
-const breadcrumbMap: Record<string, { label: string; parent?: string }> = {
-  '/': { label: 'Dashboard' },
-  '/users': { label: 'Usuarios', parent: 'Modulos' },
-  '/workspace': { label: 'Workspaces', parent: 'Modulos' },
-  '/plans': { label: 'Planes', parent: 'Modulos' },
-  '/contact': { label: 'Contact', parent: 'Modulos' },
-  '/automation': { label: 'Automatizaciones', parent: 'Modulos' },
-}
-
-function getBreadcrumb(pathname: string) {
-  const config = breadcrumbMap[pathname] || { label: 'Módulo' }
-  return config
-}
+import { Header } from './Header';
+import { Footer } from './Footer';
+import { SidebarItems } from './config';
+import { FaArrowUpRightDots } from "react-icons/fa6";
+import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { useSidebar } from "@/components/ui/sidebar"
 
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
+  const {
+    state,
+    open,
+    setOpen,
+    openMobile,
+    setOpenMobile,
+    isMobile,
+    toggleSidebar,
+  } = useSidebar()
 
   const settingsStore = useSettingsStore()
-
   const userStore = useAuthCydoStore()
-
   const router = useRouter()
 
   const isActive = (url: string) => {
@@ -119,80 +54,51 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
   return (
     <Sidebar side='left' variant="sidebar" collapsible={'icon'}>
+
       <SidebarHeader>
         <WorkspaceDropdown />
       </SidebarHeader>
 
       <SidebarContent>
+
         {/* Dashboard link standalone */}
+        <SidebarGroup className='flex-1'>
+          <SidebarMenu className="gap-3 ">
+            {SidebarItems.map((el, index) => (
+              <SidebarMenuItem key={index}>
+                <SidebarMenuButton
+                  render={<Link href={el.goto}>
+                    {el.icon}
+                    {el.title}
+                  </Link>}
+                  tooltip="Home"
+                  className={isActive(el.goto) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+                />
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        {/* tarjeta de suscripcion */}
         <SidebarGroup>
           <SidebarMenu className="gap-3">
             <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/home">
-                  <FiHome />
-                  Home
-                </Link>}
-                tooltip="Home"
-                className={isActive('/home') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
+              {!open && (
+                <SidebarMenuButton
+                  // size='lg'
+                  render={<>
+                    <Button variant={'outline'} size={'icon'}>
+                      <FaArrowUpRightDots />
+                    </Button>
+                  </>}
+                />
+              )}
+              {open && (<>
+                <div className='border rounded p-2 flex justify-center items-center bg-white'>
+                  Hola como estas?
+                </div>
+              </>)}
             </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/contacts">
-                  <LuUsersRound />
-                  Contactos
-                </Link>}
-                tooltip="Home"
-                className={isActive('/contacts') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/chat">
-                  <BsChatDots />
-                  Chat
-                </Link>}
-                tooltip="Home"
-                className={isActive('/chat') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/automation">
-                  <TiFlowMerge />
-                  Automatizaciones
-                </Link>}
-                tooltip="Automatizaciones"
-                className={isActive('/automation') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/activities">
-                  <FiActivity />
-                  Actividades
-                </Link>}
-                tooltip="Home"
-                className={isActive('/activities') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/admin">
-                  <MdOutlineManageAccounts />
-                  Administracion
-                </Link>}
-                tooltip="Home"
-                className={isActive('/admin') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
-
           </SidebarMenu>
         </SidebarGroup>
 
@@ -247,113 +153,16 @@ function AppSidebar({ pathname }: { pathname: string }) {
       </SidebarContent>
 
       {/* ─── Footer: Tarjeta de usuario ─────────────────────────────────────── */}
-      <SidebarFooter>
-
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu >
-              <DropdownMenuTrigger render={<SidebarMenuButton
-                size='lg'
-                render={<div className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{userStore.basicUserInformation.fullname}</span>
-                    <span className="truncate text-xs">{userStore.basicUserInformation.email}</span>
-                  </div>
-                </div>}
-              />}>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="start" side="right" className="w-56">
-
-                <DropdownMenuGroup>
-                  <div className="flex items-center gap-3 rounded-lg ">
-                    <Avatar size="default" className="h-8 w-8">
-                      <AvatarFallback className="text-xs">AD</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col items-start text-left overflow-hidden">
-                      <span className="text-sm font-medium truncate">{userStore.basicUserInformation.fullname}</span>
-                      <span className="text-xs text-muted-foreground truncate">{userStore.basicUserInformation.email}</span>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      settingsStore.setOpen(true)
-                    }}
-                  >
-                    <User data-icon="inline-start" />
-                    Perfil
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      settingsStore.setOpen(true)
-                    }}
-                  >
-                    <Settings data-icon="inline-start" />
-                    Preferenias
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => {
-                  Logout()
-                  router.refresh()
-                }}>
-                  <LogOut data-icon="inline-start" />
-                  Cerrar sesión
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+      <Footer />
     </Sidebar>
   )
 }
 
-// ─── Header reutilizable ─────────────────────────────────────────────────────
-
-function Header({ pathname }: { pathname: string }) {
-
-  const appStore = useAppStore()
-
-  return (
-    <header className="px-4 flex justify-between h-11 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-none">
-      <div className="flex items-center gap-2 ">
-        <SidebarTrigger className="-ml-1" />
-        <Separator
-          orientation="vertical"
-          className="mr-2 data-[orientation=vertical]:h-4"
-        />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">App</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            {appStore.Breadcrum.map((el, index) => <BreadcrumbItem key={index}>
-              <BreadcrumbPage>{el.text}</BreadcrumbPage>
-            </BreadcrumbItem>)}
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-      <div>
-        <NotificationDropdown />
-      </div>
-    </header>
-  )
-}
 
 // ─── Layout principal ────────────────────────────────────────────────────────
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AppLayout({ children, }: { children: React.ReactNode; }) {
+
   const pathname = usePathname();
 
   if (pathname === "/backoffice/login") {
@@ -361,8 +170,8 @@ export default function AppLayout({
   }
 
   return (<>
-    <div className="h-screen w-screen max-h-screen max-w-full">
-      <ReactQueryProvider>
+    <ReactQueryProvider>
+      <div className="h-screen w-screen max-h-screen max-w-full">
         <SidebarProvider className='h-full w-full'>
           <AppSidebar pathname={pathname} />
           <SidebarInset className='h-full w-full min-w-0'>
@@ -375,8 +184,8 @@ export default function AppLayout({
             <DialogSettings />
           </SidebarInset>
         </SidebarProvider>
-      </ReactQueryProvider>
-    </div>
+      </div>
+    </ReactQueryProvider>
 
   </>);
 }
