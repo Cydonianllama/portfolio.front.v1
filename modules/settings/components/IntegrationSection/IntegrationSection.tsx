@@ -14,9 +14,12 @@ import { UseIntegrationHookActions } from "./hook.actions.integration"
 import { UseAppData } from "@/hooks/app/useAppData";
 import { useWhatsappIntegration } from "./Whatsapp/store/store"
 import { DialogWhatsappIntegration } from "./Whatsapp/DialogManageWhatsapp"
+import { useTelegramIntegrations } from "./Telegram/store/store"
+import { DialogManageTelegram } from "./Telegram/DialogManageTelegram"
 
 export const IntegrationSection = () => {
   const whatsappStore = useWhatsappIntegration()
+  const telegramStore = useTelegramIntegrations()
   const useAppData = UseAppData()
   const integrationActions = UseIntegrationHookActions({})
 
@@ -48,7 +51,13 @@ export const IntegrationSection = () => {
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button onClick={() => { whatsappStore.setOpenManage({ openManage: true }) }}>
+            <Button onClick={() => {
+              if (el.code == 'whatsapp') {
+                whatsappStore.setOpenManage({ openManage: true })
+              } else if (el.code == 'telegram') {
+                telegramStore.setOpenManage({ openManage: true })
+              }
+            }}>
               Administrar
             </Button>
             <Button
@@ -68,5 +77,6 @@ export const IntegrationSection = () => {
       ))}
     </div>
     <DialogWhatsappIntegration />
+    <DialogManageTelegram />
   </>)
 }
