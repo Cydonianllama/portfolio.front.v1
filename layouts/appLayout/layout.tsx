@@ -173,6 +173,17 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
             <SidebarMenuItem>
               <SidebarMenuButton
+                render={<Link href="/activities">
+                  <FiActivity />
+                  Actividades
+                </Link>}
+                tooltip="Home"
+                className={isActive('/activities') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+              />
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton
                 render={<Link href="/admin">
                   <MdOutlineManageAccounts />
                   Administracion
@@ -182,16 +193,6 @@ function AppSidebar({ pathname }: { pathname: string }) {
               />
             </SidebarMenuItem>
 
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                render={<Link href="/activities">
-                  <FiActivity />
-                  Actividades
-                </Link>}
-                tooltip="Home"
-                className={isActive('/admin') ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-              />
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
 
@@ -320,7 +321,7 @@ function Header({ pathname }: { pathname: string }) {
   const appStore = useAppStore()
 
   return (
-    <header className="px-4 flex justify-between h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+    <header className="px-4 flex justify-between h-11 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-none">
       <div className="flex items-center gap-2 ">
         <SidebarTrigger className="-ml-1" />
         <Separator
