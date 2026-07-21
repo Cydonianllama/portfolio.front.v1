@@ -50,9 +50,10 @@ type AutomationProps = {
 export const AutomationSection = ({ }: AutomationProps) => {
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})
+  const useAppData = UseAppData()
 
   const InitialList = () => {
-    useEntityNameActions.listEntityNameAction({ page: 1 })
+    useEntityNameActions.listEntityNameAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -64,8 +65,8 @@ export const AutomationSection = ({ }: AutomationProps) => {
   }, [])
 
   useEffect(() => {
-    OnInit()
-  }, [])
+    if (useAppData.workspace?.id) OnInit()
+  }, [useAppData.workspace?.id])
 
   return <>
     <div className="p-2">
@@ -885,7 +886,7 @@ import { ShowcaseId } from "@/components/cydocompos";
 
 export const GetAutomation = async (data: GetAutomationsRequestDTO): Promise<ResponseApi<GetAutomationsResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/automations?page=${data.page}`);
+    const req = await api.get(`/api/automations?page=${data.page}&workspaceId=${data.workspaceId}`);
     return req.data;
   } catch (ex) {
     if (axios.isAxiosError(ex)) {
@@ -961,6 +962,7 @@ export interface GetAutomationResponseDTO {
 
 // get many
 export interface GetAutomationsRequestDTO {
+  workspaceId: string;
   page: number
 }
 
