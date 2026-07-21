@@ -744,6 +744,10 @@ export type UpdateFolderSchema = z.infer<typeof updateFolderSchema>;
 //___________ hooks
 // import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
+import { CreateFolder, CreateFolderRequestDTO, DeleteFolder, DeleteFolderRequestDTO, FolderDTO, GetFolder, GetFoldersRequestDTO, UpdateFolder, UpdateFolderRequestDTO } from "@/api/folder/folder.api"
+import { useFolderStore } from "./store/folder.store"
+import { TiFolderOpen } from "react-icons/ti"
+import { GoPlus } from "react-icons/go"
 
 export type UseFolderActionsProps = {
 
@@ -886,63 +890,7 @@ export const UseFolderActions = ({ }: UseFolderActionsProps) => {
 // #region Store
 //___________ store
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { create } from "zustand";
-//import { ResponsePagination } from '@/types/api/utils.pagination';
 
-interface FolderStore {
-  // state: string | null,
-  // setState: (data: Partial<{ state: string | null }>) => void
-  // setState2: (state: string) => void
-
-  currentElementSelected: string | null
-  pagination: ResponsePagination | null
-
-  // create
-  openCreate: boolean;
-  creating: boolean;
-  setCreateState: (data: Partial<{ openCreate: boolean, creating: boolean, currentElementSelected: string | null }>) => void
-  // update
-  openUpdate: boolean;
-  updating: boolean;
-  setUpdateState: (data: Partial<{ openUpdate: boolean, updating: boolean, currentElementSelected: string | null }>) => void
-
-  // delete
-  openDelete: boolean;
-  deleting: boolean;
-  setDeleteState: (data: Partial<{ openDelete: boolean, deleting: boolean, currentElementSelected: string | null }>) => void
-
-  // getall
-  list: Array<FolderDTO>
-  listing: boolean;
-  setListState: (data: Partial<{ list: Array<FolderDTO>, listing: boolean, pagination: ResponsePagination | null }>) => void
-}
-
-export const useFolderStore = create<FolderStore>((set) => ({
-  // state: null,
-  // setState: (data) => set((state) => ({ ...state, ...data })),
-  // setState2: (data) => set((state) => ({ ...state, state: data })),
-  currentElementSelected: null,
-  pagination: null,
-  //create
-  openCreate: false,
-  creating: false,
-  setCreateState: (data) => set((state) => ({ ...state, ...data })),
-  //update
-  openUpdate: false,
-  updating: false,
-  setUpdateState: (data) => set((state) => ({ ...state, ...data })),
-  //delete
-  openDelete: false,
-  deleting: false,
-  setDeleteState: (data) => set((state) => ({ ...state, ...data })),
-
-  // getall
-  list: [],
-  listing: false,
-  setListState: (data) => set((state) => ({ ...state, ...data }))
-}));
-// #endregion Store
 
 // Reemplazar por los nombre correctos
 /*
@@ -953,110 +901,3 @@ folder
 */
 // #region API
 //___________ api
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { api } from '@/setup/axios'
-import { ResponseApi } from '@/types/api/response';
-import { TiFolderOpen } from "react-icons/ti"
-import { GoPlus } from "react-icons/go"
-
-export const GetFolder = async (data: GetFoldersRequestDTO): Promise<ResponseApi<GetFoldersResponseDTO> | null> => {
-  try {
-    const req = await api.get(`/api/folders?page=${data.page}&workspaceId=${data.workspaceId}`);
-    return req.data;
-  } catch (ex) {
-    return null;
-  }
-}
-
-
-export const UpdateFolder = async (id: string, data: UpdateFolderRequestDTO): Promise<ResponseApi<UpdateFolderResponseDTO> | null> => {
-  try {
-    const req = await api.put(`/api/folders/${id}`, data);
-    return req.data;
-  } catch (ex) {
-    return null;
-  }
-}
-
-export const CreateFolder = async (data: CreateFolderRequestDTO): Promise<ResponseApi<CreateFolderResponseDTO> | null> => {
-  try {
-    const req = await api.post(`/api/folders`, data);
-    return req.data;
-  } catch (ex) {
-    return null;
-  }
-}
-
-export const DeleteFolder = async (data: DeleteFolderRequestDTO): Promise<ResponseApi<DeleteFolderResponseDTO> | null> => {
-  try {
-    const req = await api.delete(`/api/folders/${data.id}`);
-    return req.data;
-  } catch (ex) {
-    return null;
-  }
-}
-
-
-///
-/// DTOs
-///
-
-export interface FolderDTO {
-  id: string;
-  name: string;
-  module: string;
-  creationDate: Date;
-  workspaceId: string;
-}
-
-// get one
-export interface GetFolderRequestDTO {
-  id: string;
-}
-
-export interface GetFolderResponseDTO {
-  folder: FolderDTO | null
-}
-
-// get many
-export interface GetFoldersRequestDTO {
-  page: number,
-  workspaceId: string
-}
-
-export interface GetFoldersResponseDTO {
-  list: Array<FolderDTO>
-}
-
-// update one
-export interface UpdateFolderRequestDTO {
-  name: string;
-  workspaceId: string;
-}
-
-export interface UpdateFolderResponseDTO {
-  folder: FolderDTO | null
-}
-
-// delete one
-export interface DeleteFolderRequestDTO {
-  id: string
-}
-
-export interface DeleteFolderResponseDTO {
-  id: string
-}
-
-// create one
-export interface CreateFolderRequestDTO {
-  name: string;
-  module: string;
-  workspaceId: string;
-}
-
-export interface CreateFolderResponseDTO {
-  folder: FolderDTO | null
-}
-// #endregion API
