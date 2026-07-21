@@ -13,6 +13,17 @@ import {
 import { FaWhatsapp } from 'react-icons/fa';
 import { useChatStore } from '../store/store.chat';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button';
+import { HiDotsHorizontal } from 'react-icons/hi';
+
 export interface ContactCardData {
   id: string;
   name: string;
@@ -47,8 +58,25 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
           <div className='text-xs  font-semibold'>
             {data.name}
           </div>
-          <div className='text-xs text-gray-400 '>
-            {data.time}
+          <div className='flex gap-1.5 items-center'>
+            <div className='text-xs text-gray-400 '>
+              {data.time}
+            </div>
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger render={<Button variant={'ghost'} size={'icon-xs'}><HiDotsHorizontal /></Button>} ></DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuSeparator /> 
+                  {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>Team</DropdownMenuItem>
+                <DropdownMenuItem>Subscription</DropdownMenuItem> */}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
 
