@@ -14,6 +14,7 @@ export interface GetIntegrationsResponse {
 
 export interface GetIntegrationsRequest {
   workspaceId: string;
+  code: string;
 }
 
 //

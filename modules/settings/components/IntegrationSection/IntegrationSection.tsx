@@ -12,8 +12,11 @@ import { useEffect, useState } from "react"
 import { api } from '@/setup/axios'
 import { UseIntegrationHookActions } from "./hook.actions.integration"
 import { UseAppData } from "@/hooks/app/useAppData";
+import { useWhatsappIntegration } from "./Whatsapp/store/store"
+import { DialogWhatsappIntegration } from "./Whatsapp/DialogManageWhatsapp"
 
 export const IntegrationSection = () => {
+  const whatsappStore = useWhatsappIntegration()
   const useAppData = UseAppData()
   const integrationActions = UseIntegrationHookActions({})
 
@@ -45,15 +48,18 @@ export const IntegrationSection = () => {
             </ItemDescription>
           </ItemContent>
           <ItemActions>
-            <Button 
-            onClick={() => {
-              integrationActions.AddIngrationTestAction({
-                workspaceId: useAppData.workspace?.id || '',
-                code: el.code
-              })
-            }}
-            variant="outline" 
-            size="sm"
+            <Button onClick={() => { whatsappStore.setOpenManage({ openManage: true }) }}>
+              Administrar
+            </Button>
+            <Button
+              onClick={() => {
+                integrationActions.AddIngrationTestAction({
+                  workspaceId: useAppData.workspace?.id || '',
+                  code: el.code
+                })
+              }}
+              variant="outline"
+              size="sm"
             >
               test add
             </Button>
@@ -61,5 +67,6 @@ export const IntegrationSection = () => {
         </Item>
       ))}
     </div>
+    <DialogWhatsappIntegration />
   </>)
 }

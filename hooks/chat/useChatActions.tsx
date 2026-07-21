@@ -124,31 +124,6 @@ export const UseChatActions = () => {
     }
   }, [])
 
-  const CreateConversation = useCallback(async (data: CreateChatRequestDTO) => {
-    try {
-      contactStore.setInfoCreationConvContact({ loading: true })
-      console.log('CreateConversation - hook')
-      const req = await CreateChat(data)
-
-      if (!req) {
-        toast.error('Error 1')
-        return;
-      }
-
-      if (!req.status) {
-        toast.error('Error 2')
-        return;
-      }
-
-      toast.success('Conversación creada')
-
-    } catch (error) {
-      toast.error('Error inseperado')
-    } finally {
-      contactStore.setInfoCreationConvContact({ isOpen: false, loading: false })
-    }
-  }, [])
-
   const ListMessagesAction = useCallback(async (data: ListMessagesRequestDTO) => {
     try {
       // contactStore.setInfoCreationConvContact({ loading: true })
@@ -207,7 +182,6 @@ export const UseChatActions = () => {
     ListChatsAction,
     OpenChatAction,
     SendMessageAction,
-    CreateConversation,
     ListMessagesAction,
     ListContactInformation,
   }

@@ -52,9 +52,12 @@ import { UseChatActions } from "@/hooks/chat/useChatActions";
 import { CreationConversationSchema } from "../schemas/creation.conversation";
 import { ListIntegrations } from "@/api/integration/integration.api";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
+import { UseConversacionHookActions } from "../hooks/hook.actions.conversation";
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
+
+  const conversationActions = UseConversacionHookActions({})
 
   const workspaceAppStore = useWorkspaceSelectionStore();
 
@@ -246,7 +249,7 @@ export const ConctatsScreen = () => {
   const OnCreateConversationContact = async (data: CreationConversationSchema) => {
     try {
       console.log('OnCreateConversationContact')
-      await chatActions.CreateConversation({
+      await conversationActions.CreateConversationAction({
         participants: data.participants || [],
         workspaceId: data.workspaceId || '',
         integrationId: data.integrationId || ''
@@ -290,7 +293,8 @@ export const ConctatsScreen = () => {
   const ListIntegrationsAction = async () => {
     try {
       const req = await ListIntegrations({
-        workspaceId: workspaceAppStore.selectedWorkspaceId || ''
+        workspaceId: workspaceAppStore.selectedWorkspaceId || '',
+        code: ''
       })
 
       if (!req) {
