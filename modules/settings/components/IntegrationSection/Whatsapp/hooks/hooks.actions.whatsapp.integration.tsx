@@ -4,6 +4,7 @@ import { useWhatsappIntegration } from "../store/store"
 import { ListIntegrations } from "@/api/integration/integration.api"
 import { UseAppData } from "@/hooks/app/useAppData"
 import { DeleteIntegrationItem, DeleteIntegrationItemRequestDTO } from "@/api/integration/delete.integration"
+import { IntegrationCodes } from "@/configs/integration.codes"
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -40,7 +41,7 @@ export const UseWhatsappIntegrationHookActions = ({ }: WhatsappIntegrationHookAc
 
       store.setList({ list: [], listing: true })
 
-      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: 'whatsapp' })
+      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: IntegrationCodes.whatsapp.code })
       if (!items?.status) {
         toast.error('[Error 1]')
         return;

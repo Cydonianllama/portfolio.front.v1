@@ -5,6 +5,7 @@ import {
 import { ContactCard } from "./contact.card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { RoomDTO } from "@/api/chat/chat.dto"
+import { FaWhatsapp } from 'react-icons/fa';
 
 // utils
 import {
@@ -15,6 +16,7 @@ import {
 } from "date-fns";
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useChatStore } from "../store/store.chat";
+import { RiTelegram2Line } from "react-icons/ri";
 
 function formatChatDate(date: Date | string) {
   const creationDate = new Date(date);
@@ -78,7 +80,8 @@ export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
               lastMessage: item.lastMessage || 'No registramos mensajes',
               name: item.typeRoom == 'individual' ? item.participants[0].contactName : item.name,
               thumb: '',
-              time: item.creationDate ? formatChatDate(item.creationDate) : ''
+              time: item.creationDate ? formatChatDate(item.creationDate) : '',
+              icon: item.platformId == 'whatsapp' ? <FaWhatsapp className='inline' /> : <RiTelegram2Line className='inline' />
             }}
             key={index}
           />

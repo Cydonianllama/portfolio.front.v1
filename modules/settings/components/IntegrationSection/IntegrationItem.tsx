@@ -11,6 +11,7 @@ import {
 import { useWhatsappIntegration } from "./Whatsapp/store/store";
 import { useTelegramIntegrations } from "./Telegram/store/store";
 import { UseIntegrationHookActions } from "./hook.actions.integration";
+import { IntegrationCodes } from "@/configs/integration.codes";
 
 
 
@@ -23,8 +24,8 @@ export const IntegrationItem = ({ data }: IntegrationItemProps) => {
   const useAppData = UseAppData()
 
   const whatsappStore = useWhatsappIntegration()
-    const telegramStore = useTelegramIntegrations()
-    const integrationActions = UseIntegrationHookActions({})
+  const telegramStore = useTelegramIntegrations()
+  const integrationActions = UseIntegrationHookActions({})
 
   return (
     <>
@@ -37,9 +38,9 @@ export const IntegrationItem = ({ data }: IntegrationItemProps) => {
         </ItemContent>
         <ItemActions>
           <Button onClick={() => {
-            if (data.code == 'whatsapp') {
+            if (data.code == IntegrationCodes.whatsapp.code) {
               whatsappStore.setOpenManage({ openManage: true })
-            } else if (data.code == 'telegram') {
+            } else if (data.code == IntegrationCodes.telegram.code) {
               telegramStore.setOpenManage({ openManage: true })
             }
           }}>

@@ -1,7 +1,7 @@
 "use client"
 
 /* eslint-disable @next/next/no-img-element */
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactElement } from 'react'
 import {
   Item,
   ItemContent,
@@ -18,7 +18,8 @@ export interface ContactCardData {
   name: string;
   lastMessage: string;
   thumb: string;
-  time: string
+  time: string;
+  icon?: ReactElement
 }
 
 export interface ContactCardProps {
@@ -58,7 +59,9 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
             {data.name}
           </ItemTitle>
           <ItemDescription>
-            <FaWhatsapp className='inline' /> {data.lastMessage}
+            {/* <FaWhatsapp className='inline' /> */}
+            {data.icon && (<>{data.icon}</>)} 
+            {data.lastMessage}
           </ItemDescription>
         </ItemContent>
         <ItemContent className="flex-none text-xs">

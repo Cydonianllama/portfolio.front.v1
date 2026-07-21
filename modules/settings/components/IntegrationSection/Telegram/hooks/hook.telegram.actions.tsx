@@ -4,6 +4,7 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { useTelegramIntegrations } from "../store/store"
 import { DeleteIntegrationItem, DeleteIntegrationItemRequestDTO } from "@/api/integration/delete.integration"
+import { IntegrationCodes } from "@/configs/integration.codes"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TelgramIntegrationsHookActionsProps = {
@@ -17,7 +18,7 @@ export const UseTelgramIntegrationsHookActions = ({ }: TelgramIntegrationsHookAc
   const GetIntegrationsTelegramAction = useCallback(async () => {
 
     try {
-      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: 'telegram' })
+      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: IntegrationCodes.telegram.code })
       if (!items?.status) {
         toast.error('[Error 1]')
         return;

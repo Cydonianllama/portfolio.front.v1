@@ -48,6 +48,7 @@ import { IntegrationDTO } from "@/api/integration/integration.dto"
 import { error } from "console"
 import { ContactDTO } from "@/api/contacts/contacts.dto"
 import { UseAppData } from "@/hooks/app/useAppData";
+import { IntegrationCodes } from "@/configs/integration.codes"
 
 //
 export interface DialogCreateConversationContactConfig {
@@ -147,8 +148,8 @@ const useAppData = UseAppData()
                 <SelectValue>
                   {integration && (
                     <div className="flex items-center gap-2">
-                      {integration.code == 'global:whatsapp' && <FaWhatsapp />}
-                      {integration.code == 'global:telegram' && <PiTelegramLogo />}
+                      {integration.code == IntegrationCodes.whatsapp.code && <FaWhatsapp />}
+                      {integration.code == IntegrationCodes.telegram.code && <PiTelegramLogo />}
                       {integration.alias}
                     </div>
                   )}
@@ -160,8 +161,8 @@ const useAppData = UseAppData()
                   <SelectLabel>Integraciones</SelectLabel>
                   {config.integrations.map((item) => (
                     <SelectItem key={item.id} value={item.id}>
-                      {item.code == 'global:whatsapp' && <FaWhatsapp />}
-                      {item.code == 'global:telegram' && <PiTelegramLogo />}
+                      {item.code == IntegrationCodes.whatsapp.code && <FaWhatsapp />}
+                      {item.code == IntegrationCodes.telegram.code && <PiTelegramLogo />}
                       {item.alias}
                     </SelectItem>
                   ))}
