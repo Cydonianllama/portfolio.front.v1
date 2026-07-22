@@ -10,7 +10,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-
+import { AiOutlineTags } from "react-icons/ai";
 import { BuildingIcon, CheckSquareIcon, FileTextIcon, FolderIcon, UserIcon, UsersIcon, ZapIcon } from 'lucide-react'
 
 import { TiUserOutline } from "react-icons/ti";
@@ -35,6 +35,7 @@ import { TabHeaderDialogSettings } from "./TabHeader"
 import { TbCodeVariable } from "react-icons/tb";
 import { TbUsersGroup } from "react-icons/tb";
 import { MdOutlinePayment } from "react-icons/md";
+import { TagsSection } from "./TagsSection/TagsSection";
 
 export const Settings = () => {
   return <>
@@ -58,6 +59,10 @@ export const Settings = () => {
             <TabsTrigger value="members" className="justify-start gap-2">
               <TbUsersGroup className="size-4" />
               Miembros
+            </TabsTrigger>
+            <TabsTrigger value="tags" className="justify-start gap-2">
+              <AiOutlineTags className="size-4"  />
+              Etiquetas
             </TabsTrigger>
             <TabsTrigger value="variables" className="justify-start gap-2">
               <TbCodeVariable className="size-4" />
@@ -138,6 +143,12 @@ export const Settings = () => {
           <TabHeaderDialogSettings title="Subscripciones" />
           <div>
             <SubscriptionSection />
+          </div>
+        </TabsContent>
+        <TabsContent value="tags">
+          <TabHeaderDialogSettings title="Etiquetas" />
+          <div>
+            <TagsSection />
           </div>
         </TabsContent>
       </Tabs>
