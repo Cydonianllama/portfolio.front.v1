@@ -4,39 +4,21 @@ import {
   Position,
   NodeResizer,
 } from "@xyflow/react";
+import { BaseNode } from "./_base.node";
+import { GeneralConfigurationNode } from "../_configs";
 
 export function ActionNode({ data }: NodeProps) {
   return (
     <>
-      <NodeResizer minWidth={220} minHeight={120} />
-
-      <Handle
-        type="target"
-        position={Position.Left}
-      />
-
-      <div
-        style={{
-          border: "2px solid royalblue",
-          borderRadius: 10,
-          background: "#eef4ff",
-          width: "100%",
-          height: "100%",
-          padding: 12,
-        }}
+      {/* <NodeResizer minWidth={220} minHeight={120} /> */}
+      <BaseNode
+        color={GeneralConfigurationNode["action-node"].color}
+        Icon={GeneralConfigurationNode["action-node"].icon}
+        title={GeneralConfigurationNode["action-node"].title}
+        description={GeneralConfigurationNode["action-node"].description}
       >
-        <strong>
-          {/* {data.title} */}
-          action node
-        </strong>
-
-        <p>Acción...</p>
-      </div>
-
-      <Handle
-        type="source"
-        position={Position.Right}
-      />
+        Lovebug again
+      </BaseNode>
     </>
   );
 }

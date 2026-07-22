@@ -16,7 +16,7 @@ import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { testFlowDataNodes } from "../mock_test/test.flow.data";
 
 type FlowScreenProps = {
-
+  isLoading?: boolean;
 }
 
 const initalEdges: any[] = []

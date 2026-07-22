@@ -4,35 +4,21 @@ import {
   Position,
   NodeResizer,
 } from "@xyflow/react";
+import { BaseNode } from "./_base.node";
+import { GeneralConfigurationNode } from "../_configs";
 
 export function TriggerNode({ data }: NodeProps) {
   return (
     <>
-      <NodeResizer minWidth={180} minHeight={100} />
-      <Handle
-        type="target"
-        position={Position.Left}
-      />
-      <div
-        style={{
-          border: "1px solid #555",
-          borderRadius: 10,
-          background: "#fff",
-          width: "100%",
-          height: "100%",
-          padding: 12,
-        }}
+      {/* <NodeResizer minWidth={180} minHeight={100} /> */}
+      <BaseNode
+        color={GeneralConfigurationNode["trigger-node"].color}
+        Icon={GeneralConfigurationNode["trigger-node"].icon}
+        title={GeneralConfigurationNode["trigger-node"].title}
+        description={GeneralConfigurationNode["trigger-node"].description}
       >
-        <strong>
-          {/* {data?.title || ''} */}
-          Trigger node
-        </strong>
-        <p>Contenido del mensaje</p>
-      </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-      />
+        Complicate
+      </BaseNode>
     </>
   );
 }
