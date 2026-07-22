@@ -13,13 +13,9 @@ import { TriggerNode } from "./nodes/trigger.node";
 import { FirstSteNode } from "./nodes/firststep.node";
 import { ConditionNode } from "./nodes/condition.node";
 
-export enum nodeTypes {
-  message = 'message-node',
-  action = 'action-node',
-  trigger = 'trigger-node',
-  firstStep = 'first-step-node',
-  condition = 'condition-node'
-}
+//
+// Node Types
+//
 
 export const nodeTypesConfigurations: Record<nodeTypes, ComponentType<any>> = {
   'message-node': MessageNode,
@@ -29,16 +25,19 @@ export const nodeTypesConfigurations: Record<nodeTypes, ComponentType<any>> = {
   "condition-node": ConditionNode
 };
 
+//
+// Edges
+//
+
 import { DefaultEdge } from "./edges/DefaultEdge";
 
-export enum edgeTypes {
-  default = 'default-edge',
-}
-
-export const edgeTypesConfiguration = {
-  default: DefaultEdge,
+export const edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>> = {
+  'default-edge': DefaultEdge,
 };
 
+//
+// Configuration Node
+//
 
 export type colorDefaultNode =  'blue' | 'green' | 'yellow' | 'gray' | 'red'
 
@@ -74,5 +73,36 @@ export const GeneralConfigurationNode: Record<nodeTypes, generalConfigurationNod
     icon: FiFilter,
     title: 'Condición',
     color: 'red'
+  }
+}
+
+//
+// Editors
+//
+
+import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
+import { nodeTypes } from "./engineSimple/node.types";
+import { edgeTypes } from "./engineSimple/edges.types";
+
+export const EditorsConfiguration: Record<nodeTypes, { hasEditor: boolean, Editor: ComponentType}> = {
+  [nodeTypes.message]: {
+    hasEditor: true,
+    Editor: MessageEditor
+  },
+  [nodeTypes.action]: {
+    hasEditor: false,
+    Editor: TriggerEditor
+  },
+  [nodeTypes.trigger]: {
+    hasEditor: true,
+    Editor: TriggerEditor
+  },
+  [nodeTypes.firstStep]: {
+    hasEditor: false,
+    Editor: TriggerEditor
+  },
+  [nodeTypes.condition]: {
+    hasEditor: true,
+    Editor: ConditionEditor
   }
 }

@@ -8,6 +8,9 @@ import { ButtonsMemento } from "./ButtonsMemento";
 import { EditorName } from "./EditorName";
 import { ContentLoading } from "./states/Content.loading";
 import FlowScreen from "../engineSimple/FlowShowcase";
+import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
+import { EditorFlow } from "./EditorFlow";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
 
@@ -15,7 +18,6 @@ type AutomationFlowScreenProps = {
 
 export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
   const useAppData = UseAppData()
-
   return (
     <>
       <div className="flex flex-col w-full h-full">
@@ -30,9 +32,15 @@ export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
             {/* <ButtonEdit /> */}
           </div>
         </div>
-        <div className="flex-1 w-full">
+        <div className="flex-1 w-full relative">
+          <EditorFlow />
           {/* <ContentLoading /> */}
-          <FlowScreen />
+          <FlowScreen
+            edgeTypesConfiguration={edgeTypesConfiguration}
+            nodeTypesConfigurations={nodeTypesConfigurations}
+            initalEdges={[]}
+            initialNodes={[]}
+          />
         </div>
       </div>
     </>

@@ -61,7 +61,7 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
 
   return <>
     <div className='border rounded-lg bg-white flex shadow-xl'>
-      <div className='pt-2 pb-2 pl-2'>
+      <div className='pt-2 pb-2 pl-2 flex items-start'>
         <div className='flex gap-2 items-center'>
           <span className={`h-9 w-9 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>
             <Icon className='text-white' />

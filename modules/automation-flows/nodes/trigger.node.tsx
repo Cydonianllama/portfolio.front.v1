@@ -19,7 +19,7 @@ export function TriggerNode({ data }: NodeProps) {
         description={GeneralConfigurationNode["trigger-node"].description}
         config={{ hasSource: true, hasTarget: false }}
       >
-        <div className="w-50 flex flex-col">
+        <div className="w-50 flex flex-col pr-2 pb-2">
           <div className="text-xs text-gray-400 p-3">
             No cuentas con triggers agregados
           </div>

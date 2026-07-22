@@ -1,10 +1,10 @@
 import { UseAppData } from "@/hooks/app/useAppData";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type MessageEditorProps = {
+type ConditionEditorProps = {
   
 }
 
-export const MessageEditor = ({  }: MessageEditorProps) => {
+export const ConditionEditor = ({  }: ConditionEditorProps) => {
   const useAppData = UseAppData()
 
   return (

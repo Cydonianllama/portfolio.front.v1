@@ -1,15 +1,15 @@
 import { UseAppData } from "@/hooks/app/useAppData";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type MessageEditorProps = {
+type AddTriggerOptionsProps = {
   
 }
 
-export const MessageEditor = ({  }: MessageEditorProps) => {
+export const AddTriggerOptions = ({  }: AddTriggerOptionsProps) => {
   const useAppData = UseAppData()
 
   return (
     <>
-      
+      Listado de opciones trigger
     </>
   )
 }
