@@ -29,7 +29,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox";
-import { MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineEdit, MdOutlineRemoveRedEye } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
 import {
   Table,
@@ -51,6 +51,7 @@ export const AutomationSection = ({ }: AutomationProps) => {
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})
   const useAppData = UseAppData()
+  const automationTestStore = useAutomationTest()
 
   const InitialList = () => {
     useEntityNameActions.listEntityNameAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
@@ -73,6 +74,10 @@ export const AutomationSection = ({ }: AutomationProps) => {
       <div className="flex justify-end gap-2 items-center mb-2">
         <Button disabled={AutomationStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
           Refresar
+        </Button>
+        <Button variant={'outline'} onClick={() => { automationTestStore.setState({ openChat: true }) }}> 
+          <RiChatSettingsLine />
+          Chat de test
         </Button>
         <Button onClick={() => { AutomationStore.setCreateState({ openCreate: true }) }}>
           Crear Item
@@ -320,6 +325,7 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
 
 //--
 // ActionsRow
+import { useRouter } from 'next/navigation'
 type ActionsRowProps = {
   data: CellContext<AutomationDTO, unknown>
   handleEdit: (id: string, data: AutomationDTO) => void
@@ -328,6 +334,7 @@ type ActionsRowProps = {
 
 const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
   const item = data.row.original;
+  const router = useRouter()
   // const AutomationStore = useAutomationStore();
 
   return (
@@ -342,6 +349,17 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
         }}
       >
         <MdOutlineEdit />
+      </Button>
+
+      <Button
+        variant="outline"
+        size={'icon'}
+        onClick={() => {
+          console.log("Editar", item.id)
+          router.push(`/automation/${item.id}`)
+        }}
+      >
+        <MdOutlineRemoveRedEye />
       </Button>
 
       <Button
@@ -883,6 +901,8 @@ import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 import { ShowcaseId } from "@/components/cydocompos";
+import { RiChatSettingsLine } from "react-icons/ri";
+import { useAutomationTest } from "../automation-test/store/automation.test.store";
 
 export const GetAutomation = async (data: GetAutomationsRequestDTO): Promise<ResponseApi<GetAutomationsResponseDTO> | null> => {
   try {

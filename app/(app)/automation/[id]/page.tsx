@@ -1,9 +1,9 @@
 'use server'
 
-import { AutomationScreen } from "@/modules/automation/automationScreen"
+import { AutomationFlowScreen } from "@/modules/automation-flows/components/AutomationFlowScreen"
 
 export default async function Page() {
   return <>
-    la cagado on
+    <AutomationFlowScreen />
   </>
 }
