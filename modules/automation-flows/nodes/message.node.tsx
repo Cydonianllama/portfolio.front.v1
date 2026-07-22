@@ -16,6 +16,7 @@ export function MessageNode({ data }: NodeProps) {
         Icon={GeneralConfigurationNode["message-node"].icon}
         title={GeneralConfigurationNode["message-node"].title}
         description={GeneralConfigurationNode["message-node"].description}
+        config={{ hasSource: true, hasTarget: true }}
       >
         Im yours
       </BaseNode>

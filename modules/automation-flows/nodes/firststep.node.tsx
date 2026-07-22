@@ -16,6 +16,7 @@ export function FirstSteNode({ data }: NodeProps) {
         Icon={GeneralConfigurationNode["first-step-node"].icon}
         title={GeneralConfigurationNode["first-step-node"].title}
         description={GeneralConfigurationNode["first-step-node"].description}
+        config={{ hasSource: true, hasTarget: false }}
       >
         No more
       </BaseNode>

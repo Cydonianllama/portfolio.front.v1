@@ -16,6 +16,7 @@ export function ActionNode({ data }: NodeProps) {
         Icon={GeneralConfigurationNode["action-node"].icon}
         title={GeneralConfigurationNode["action-node"].title}
         description={GeneralConfigurationNode["action-node"].description}
+        config={{ hasSource: true, hasTarget: true }}
       >
         Lovebug again
       </BaseNode>

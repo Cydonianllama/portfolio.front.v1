@@ -34,5 +34,13 @@ export const testFlowDataNodes: Node<any>[] = [
     data: {
       title: "Acción"
     }
+  },
+  {
+    id: "5",
+    type: nodeTypes.condition,
+    position: { x: 150, y: 130 },
+    data: {
+      title: "Acción"
+    }
   }
 ];
