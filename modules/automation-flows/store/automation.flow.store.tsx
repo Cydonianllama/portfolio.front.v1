@@ -7,6 +7,11 @@ import { ResponsePagination } from "@/types/api/utils.pagination"
 type testEntity = { id: string, name: string }
 
 interface AutomationFlowStore {
+  currentNodeIdEditing: string | null
+  openEdit: boolean
+  setStartEdit: (data: Partial<{ currentNodeIdEditing: string, openEdit: boolean }>) => void
+  clearEdit: () => void
+
   // currentElementSelected: string | null
 
   // // getall
@@ -14,7 +19,7 @@ interface AutomationFlowStore {
   // pagination: ResponsePagination | null;
   // listing: boolean;
   // setListState: (data: Partial<{ list: Array<testEntity>, listing: boolean, pagination: ResponsePagination | null }>) => void
-  
+
   // // create
   // openCreate: boolean;
   // creating: boolean;
@@ -33,6 +38,11 @@ interface AutomationFlowStore {
 }
 
 export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
+  currentNodeIdEditing: null,
+  openEdit: false,
+  setStartEdit: (data) => set((state) => ({ ...state, ...data })),
+  clearEdit: () => set((state) => ({ ...state, openEdit: false, currentNodeIdEditing: null })),
+  
   // currentElementSelected: null,
 
   // // getall

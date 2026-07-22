@@ -10,6 +10,7 @@ import { ContentLoading } from "./states/Content.loading";
 import FlowScreen from "../engineSimple/FlowShowcase";
 import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
+import { useAutomationFlow } from "../store/automation.flow.store";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
@@ -18,6 +19,14 @@ type AutomationFlowScreenProps = {
 
 export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
   const useAppData = UseAppData()
+
+  const automationFlowStore = useAutomationFlow()
+
+  const OnClickNode = () => {
+    console.log('OnClickNode')
+    automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
+  }
+
   return (
     <>
       <div className="flex flex-col w-full h-full">
@@ -33,13 +42,14 @@ export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
           </div>
         </div>
         <div className="flex-1 w-full relative">
-          <EditorFlow />
+          {automationFlowStore.openEdit && (<EditorFlow />)}
           {/* <ContentLoading /> */}
           <FlowScreen
             edgeTypesConfiguration={edgeTypesConfiguration}
             nodeTypesConfigurations={nodeTypesConfigurations}
             initalEdges={[]}
             initialNodes={[]}
+            onClickNode={OnClickNode}
           />
         </div>
       </div>

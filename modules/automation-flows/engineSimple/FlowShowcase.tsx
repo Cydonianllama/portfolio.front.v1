@@ -24,9 +24,10 @@ type FlowScreenProps = {
   nodeTypesConfigurations: Record<nodeTypes, ComponentType<any>>
   initialNodes: Array<any>
   initalEdges: Array<any>
+  onClickNode: () => void;
 }
 
-export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
+export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations, onClickNode }: FlowScreenProps) {
 
   const initialNodes: any[] = []
   const initalEdges: any[] = []
@@ -77,7 +78,6 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   //   [setEdges, automationFlow.currentAutomationData, dispatch],
   // );
 
-
   const onConnect = useCallback(
     (connection: any) => {
       setEdges((eds) =>
@@ -121,6 +121,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // } catch (error: any) {
           //   console.log(error.message)
           // }
+          onClickNode()
         }}
         onMoveEnd={(event, viewport) => {
           // try {

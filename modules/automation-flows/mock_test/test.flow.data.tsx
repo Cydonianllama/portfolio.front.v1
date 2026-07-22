@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Node, ReactFlowProps } from "@xyflow/react";
-import { nodeTypes } from "../_configs";
+import { nodeTypes } from "../engineSimple/node.types";
 
 export const testFlowDataNodes: Node<any>[] = [
   {
