@@ -14,7 +14,7 @@ export const ButtonsViewFlow = ({ }: ButtonsViewFlowProps) => {
 
   return (
     <>
-      <div className="flex items-center items-center gap-2">
+      <div className="flex items-center gap-2">
         <ButtonGroup>
           <Button variant="outline">
             <TiFlowMerge />

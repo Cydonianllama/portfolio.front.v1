@@ -7,6 +7,7 @@ import { ButtonsViewFlow } from "./ButtonsViewFlow";
 import { ButtonsMemento } from "./ButtonsMemento";
 import { EditorName } from "./EditorName";
 import { ContentLoading } from "./states/Content.loading";
+import FlowScreen from "../engineSimple/FlowShowcase";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
 
@@ -30,7 +31,8 @@ export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
           </div>
         </div>
         <div className="flex-1 w-full">
-          <ContentLoading />
+          {/* <ContentLoading /> */}
+          <FlowScreen />
         </div>
       </div>
     </>

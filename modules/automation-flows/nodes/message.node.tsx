@@ -5,7 +5,7 @@ import {
   NodeResizer,
 } from "@xyflow/react";
 
-export function TriggerNode({ data }: NodeProps) {
+export function MessageNode({ data }: NodeProps) {
   return (
     <>
       <NodeResizer minWidth={180} minHeight={100} />
@@ -25,7 +25,7 @@ export function TriggerNode({ data }: NodeProps) {
       >
         <strong>
           {/* {data?.title || ''} */}
-          Trigger node
+          Message node
         </strong>
         <p>Contenido del mensaje</p>
       </div>

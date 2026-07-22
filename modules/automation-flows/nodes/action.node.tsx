@@ -5,30 +5,34 @@ import {
   NodeResizer,
 } from "@xyflow/react";
 
-export function TriggerNode({ data }: NodeProps) {
+export function ActionNode({ data }: NodeProps) {
   return (
     <>
-      <NodeResizer minWidth={180} minHeight={100} />
+      <NodeResizer minWidth={220} minHeight={120} />
+
       <Handle
         type="target"
         position={Position.Left}
       />
+
       <div
         style={{
-          border: "1px solid #555",
+          border: "2px solid royalblue",
           borderRadius: 10,
-          background: "#fff",
+          background: "#eef4ff",
           width: "100%",
           height: "100%",
           padding: 12,
         }}
       >
         <strong>
-          {/* {data?.title || ''} */}
-          Trigger node
+          {/* {data.title} */}
+          action node
         </strong>
-        <p>Contenido del mensaje</p>
+
+        <p>Acción...</p>
       </div>
+
       <Handle
         type="source"
         position={Position.Right}
