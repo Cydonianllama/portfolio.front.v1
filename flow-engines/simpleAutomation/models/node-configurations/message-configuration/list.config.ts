@@ -6,11 +6,12 @@ export interface SendListConfigNode {
     buttonTitle: string;
     sections: Array<{
       sectionTitle: string,
-      options: {
+      options: Array<{
         title: string;
         description?: string;
         id: string;
-      }
+        nextNode?: string | null;
+      }>
     }>
   },
 }

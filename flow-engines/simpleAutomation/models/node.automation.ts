@@ -26,7 +26,7 @@ export interface IAutomationNode {
   title: string;
   nextNode: string | null;
   type: NodeType
-  workspaceId: string;
+  automationId: string,
   platform: ConversationPlaform
   action?: actionConfigurationType | null
   message?: messageConfigurationType | null
@@ -35,5 +35,9 @@ export interface IAutomationNode {
   note?: NodeNoteConfig | null
   condition?: NodeConditionConfig | null
   requestService?: NodeRequestServiceConfig | null
-  sendNotification?: NodeSendNotificationConfig | null
+  sendNotification?: NodeSendNotificationConfig | null,
+  position?: {
+    x: number,
+    y: number
+  }
 }

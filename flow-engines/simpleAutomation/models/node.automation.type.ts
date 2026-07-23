@@ -7,5 +7,5 @@ export enum NodeType {
   condition = 6,
   requestService = 7,
   sendNotification = 8,
-  code = 9
+  code = 9,
 }

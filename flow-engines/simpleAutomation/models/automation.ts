@@ -4,6 +4,6 @@ export interface IAutomation {
   id: string;
   title: string;
   creationDate: Date;
-  automationId: string
-  state: AutomationState
+  state: AutomationState;
+  workspaceId: string;
 }

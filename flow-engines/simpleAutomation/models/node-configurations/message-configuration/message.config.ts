@@ -3,5 +3,6 @@ export interface SendMessageConfigNode {
   buttons: Array<{
     id: string;
     text: string;
+    nextNode: string;
   }>
 }

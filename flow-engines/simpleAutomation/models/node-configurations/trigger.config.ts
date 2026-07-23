@@ -1,3 +1,3 @@
 export interface NodeTriggerConfig {
-  triggerId: string;
+  list: Array<{ triggerId: string; }>
 }

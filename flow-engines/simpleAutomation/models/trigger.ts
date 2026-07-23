@@ -10,4 +10,5 @@ export interface Trigger {
   keyConfiguration?: Array<{ operator: string; value: string }> | null
   intention?: { description: string, examples: Array<{ content: string }> } | null,
   workspaceId: string;
+  automationId?: string;
 }

@@ -1,5 +1,5 @@
 export interface NodeConditionConfig {
-  rules: {
+  rules: Array<{
     operator: 'AND' | 'OR'
     conditions: Array<{
       type: 'validate:variable' | 'validate:event',
@@ -7,5 +7,5 @@ export interface NodeConditionConfig {
       operator: string;
       value?: string;
     }>
-  }
+  }>
 }
