@@ -110,6 +110,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // if (!automationFlow.startEditingFlow) return;
           // const currentNode = b
           // dispatch(ChangeStateIsOpenEditorNode({ isOpenEditorNode: true, currentNodeEditing: currentNode.id }))
+          onClickNode()
         }}
         onNodeDragStop={(a, b) => {
           // try {
@@ -121,7 +122,6 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // } catch (error: any) {
           //   console.log(error.message)
           // }
-          onClickNode()
         }}
         onMoveEnd={(event, viewport) => {
           // try {

@@ -1,0 +1,1 @@
+export type MessageType = 'simple' | 'image' | 'video' | 'file' | 'list'
