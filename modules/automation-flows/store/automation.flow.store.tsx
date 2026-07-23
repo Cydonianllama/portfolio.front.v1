@@ -12,6 +12,9 @@ interface AutomationFlowStore {
   setStartEdit: (data: Partial<{ currentNodeIdEditing: string, openEdit: boolean }>) => void
   clearEdit: () => void
 
+  workspaceId: string | null
+  setWorkspaceId: (data: Partial<{ workspaceId: string | null }>) => void
+
   // currentElementSelected: string | null
 
   // // getall
@@ -42,6 +45,9 @@ export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
   openEdit: false,
   setStartEdit: (data) => set((state) => ({ ...state, ...data })),
   clearEdit: () => set((state) => ({ ...state, openEdit: false, currentNodeIdEditing: null })),
+
+  workspaceId: null,
+  setWorkspaceId: (data) => set((state) => ({ ...state, ...data })),
   
   // currentElementSelected: null,
 

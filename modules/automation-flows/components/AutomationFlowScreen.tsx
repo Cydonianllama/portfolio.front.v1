@@ -11,13 +11,14 @@ import FlowScreen from "../engineSimple/FlowShowcase";
 import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
 import { useAutomationFlow } from "../store/automation.flow.store";
+import { useEffect } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
-
+  automationId: string
 }
 
-export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
+export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps) => {
   const useAppData = UseAppData()
 
   const automationFlowStore = useAutomationFlow()
@@ -26,6 +27,10 @@ export const AutomationFlowScreen = ({ }: AutomationFlowScreenProps) => {
     console.log('OnClickNode')
     automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
   }
+
+  useEffect(() => {
+    if (automationId) automationFlowStore.setWorkspaceId({ workspaceId: automationId })
+  }, [automationId])
 
   return (
     <>
