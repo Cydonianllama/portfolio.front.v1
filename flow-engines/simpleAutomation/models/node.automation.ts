@@ -6,14 +6,14 @@ import type { NodeType } from "./node.automation.type.js";
 import type { NodeMessageType } from "./node.message.type.js";
 import type { ConversationPlaform } from "./platform.enum.js";
 
-type actionConfigurationType = 
+export type actionConfigurationType = 
 { type: NodeActionsType.addTag, configAddTag?: ActionAddTagConfig } |  
 { type: NodeActionsType.removeTag, configRemoveTag?: ActionRemoveTagConfig } |
 { type: NodeActionsType.setVariable, configSetVar?: ActionSetVariableConfig } |
 { type: NodeActionsType.startAutomation, configStartAutomation?: ActionStartAutomationConfig } |
 { type: NodeActionsType.stopAutomation, configStopAutomation?: ActionStopAutomationConfig }
 
-type messageConfigurationType = 
+export type messageConfigurationType = 
 { type: NodeMessageType.Message, configMessage?: SendMessageConfigNode } |
 { type: NodeMessageType.File, configFile?: SendFileConfigNode } |
 { type: NodeMessageType.List, configList?: SendListConfigNode } |
