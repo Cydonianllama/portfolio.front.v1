@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination"
+import { InformationAutomationFlow } from "@/api/flow/dto";
 
-type testEntity = { id: string, name: string }
 
 interface AutomationFlowStore {
   currentNodeIdEditing: string | null
@@ -18,10 +18,9 @@ interface AutomationFlowStore {
   // currentElementSelected: string | null
 
   // // getall
-  // list: Array<testEntity>
-  // pagination: ResponsePagination | null;
-  // listing: boolean;
-  // setListState: (data: Partial<{ list: Array<testEntity>, listing: boolean, pagination: ResponsePagination | null }>) => void
+  information: InformationAutomationFlow | null
+  listing: boolean;
+  setListState: (data: Partial<{ information: InformationAutomationFlow, listing: boolean, pagination: ResponsePagination | null }>) => void
 
   // // create
   // openCreate: boolean;
@@ -52,10 +51,9 @@ export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
   // currentElementSelected: null,
 
   // // getall
-  // list: [],
-  // listing: false,
-  // pagination: null,
-  // setListState: (data) => set((state) => ({ ...state, ...data })),
+  information: null,
+  listing: false,
+  setListState: (data) => set((state) => ({ ...state, ...data })),
 
   // //create
   // openCreate: false,

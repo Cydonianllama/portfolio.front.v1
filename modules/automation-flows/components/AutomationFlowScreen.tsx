@@ -12,6 +12,7 @@ import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
 import { useAutomationFlow } from "../store/automation.flow.store";
 import { useEffect } from "react";
+import { FlowHookActions } from "../hooks/action.hooks.flow";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
@@ -19,6 +20,8 @@ type AutomationFlowScreenProps = {
 }
 
 export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps) => {
+  const flowActions = FlowHookActions({})
+
   const useAppData = UseAppData()
 
   const automationFlowStore = useAutomationFlow()
@@ -29,7 +32,10 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
   }
 
   useEffect(() => {
-    if (automationId) automationFlowStore.setWorkspaceId({ workspaceId: automationId })
+    if (automationId) {
+      automationFlowStore.setWorkspaceId({ workspaceId: automationId })
+      flowActions.GetAutomationInformationAction({ automationId: automationId })
+    }
   }, [automationId])
 
   return (
