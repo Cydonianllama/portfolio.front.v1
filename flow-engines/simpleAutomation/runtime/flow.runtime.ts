@@ -1,6 +1,6 @@
 // runtime
 import type { IPlatformAdapter } from "../adapters/platform.adapter.js";
-import type { NodeType } from "../models/node.automation.type.js";
+import type { NodeType, NodeTypesType } from "../models/node.automation.type.js";
 import type { IAutomationNode } from "../models/node.automation.js";
 import type { IPublishedAutomation } from "../models/published.automation.js";
 import type { IRoomExecutionStateMachine } from "../state-machine/room.execution.statemachine.js";
@@ -13,13 +13,13 @@ import type { IWorkspaceRepository } from "../repositories/workspace.repository.
 import type { ITriggerRepository } from "../repositories/trigger.repository.js";
 import type { IRoomExecutionRepository } from "../repositories/room.execution.repository.js";
 import type { IPlatformAdapterFactory } from "../factories/platform.factories.js";
-import { ConversationPlaform } from "../models/platform.enum.js";
 import type { IRoomRepository } from "../repositories/room.repository.js";
 import type { Room } from "../models/room.js";
 import { TriggerMatcher } from "../services/trigger-matcher.js";
 import type { NodeExecutor } from "../executors/node-executors/_node.executor.js";
 import type { IMessageRepository } from "../repositories/message.repository.js";
 import type { IVariableRepository } from "../repositories/variables.repository.js";
+import { ConversationPlatform } from "../models/platform.enum.js";
 
 export interface IRuntimeSimpleAutomation {
   platform: IPlatformAdapter | null;
@@ -29,7 +29,7 @@ export interface IRuntimeSimpleAutomation {
 
   //
   conversationConfiguration: ConversationConfiguration;
-  executors: Map<NodeType, NodeExecutor>;
+  executors: Map<NodeTypesType, NodeExecutor>;
   roomExecutionStateMachine: IRoomExecutionStateMachine
   platformFactory: IPlatformAdapterFactory
 
@@ -71,14 +71,14 @@ export interface IRuntimeSimpleAutomationContext {
   variablesRepo: IVariableRepository
 
   conversationConfiguration: ConversationConfiguration;
-  executors: Map<NodeType, NodeExecutor>;
+  executors: Map<NodeTypesType, NodeExecutor>;
   roomExecutionStateMachine: IRoomExecutionStateMachine;
   replaceVariables: () => void;
 }
 
 interface RuntimeSimpleAutomationConstructor {
   conversationConfiguration: ConversationConfiguration;
-  executors: Map<NodeType, NodeExecutor>
+  executors: Map<NodeTypesType, NodeExecutor>
   roomExecutionStateMachine: IRoomExecutionStateMachine
   platformFactory: IPlatformAdapterFactory
 
@@ -101,7 +101,7 @@ export class FlowRuntimeSimpleAutomation implements IRuntimeSimpleAutomation {
   public roomExecution: RoomExecution | null = null;
 
   public readonly conversationConfiguration: ConversationConfiguration;
-  public readonly executors: Map<NodeType, NodeExecutor>;
+  public readonly executors: Map<NodeTypesType, NodeExecutor>;
   public readonly roomExecutionStateMachine: IRoomExecutionStateMachine;
   public readonly roomRepo: IRoomRepository;
   public readonly messageRepo: IMessageRepository;
@@ -221,7 +221,7 @@ export class FlowRuntimeSimpleAutomation implements IRuntimeSimpleAutomation {
     // TODO: validar estados de roomExecution
 
     // validar triggers
-    const triggers = await this.triggerRepo.GetAll({ workspaceId: workspace.id, platforms: [ConversationPlaform.general] })
+    const triggers = await this.triggerRepo.GetAll({ workspaceId: workspace.id, platforms: [ConversationPlatform.general] })
     if (!triggers.status) {
       return this.stop()
     }

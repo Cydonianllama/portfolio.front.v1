@@ -1,10 +1,10 @@
 import type { IAutomationNode } from "engines/simpleAutomation/models/node.automation.js";
-import { NodeActionsType } from "engines/simpleAutomation/models/node.action.type.js";
+import { nodeTypes } from "engines/simpleAutomation/models/node.automation.type.js";
 import type { IRuntimeSimpleAutomationContext } from "engines/simpleAutomation/runtime/flow.runtime.js";
-import type { ActionExecutorBase, NodeExecutionResult } from "./_action.executor.js";
+import type { NodeExecutor, NodeExecutionResult } from "./_node.executor.js";
 
-export class StopAutomationExecutor implements ActionExecutorBase {
-  type: NodeActionsType = NodeActionsType.stopAutomation;
+export class AddTagExecutor implements NodeExecutor {
+  type = nodeTypes.NODE_TYPE_ADDTAG
   
   async execute(node: IAutomationNode, runtime: IRuntimeSimpleAutomationContext): Promise<NodeExecutionResult> {
 

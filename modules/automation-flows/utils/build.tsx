@@ -37,6 +37,36 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
   const nodesToSend: nodesFlow[] = []
   const edgesToSend: FlowEdge[] = []
 
+  //TODO: validar si no tiene nodos
+
+  // validar si es una automatizacion inicial (solo un nodo trigger)
+  if (nodes.length == 1) {
+    if (nodes[0].type == NodeType.trigger) {
+
+      const triggerNode = nodes[0]
+      const idFirstStep = 'first-step-node'
+
+      nodesToSend.push({
+        id: idFirstStep,
+        type: nodeTypes.firstStep,
+        data: {
+          id: idFirstStep,
+          type: NodeType.action
+        },
+        position: {
+          x: (triggerNode.position?.x || 0) + 390,
+          y: (triggerNode.position?.y || 0),
+        },
+      })
+
+      edgesToSend.push({
+        id: 'first-step-node---edge',
+        source: triggerNode.id,
+        target: idFirstStep,
+      })
+    }
+  }
+
   for (const node of nodes) {
 
     nodesToSend.push({
@@ -58,7 +88,6 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
         edgesToSend.push({
           id: `${node.id}---${node.nextNode}`,
           source: node.id,
-          // sourceHandle: `siguiente-${item.id || ''}`,
           target: node.nextNode,
         })
       } else {

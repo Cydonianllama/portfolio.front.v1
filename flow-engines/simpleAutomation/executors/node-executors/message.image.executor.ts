@@ -5,7 +5,7 @@ import type { NodeExecutor, NodeExecutionResult } from "./_node.executor.js";
 
 import { RoomExecutionState } from "engines/simpleAutomation/models/room.execution.state.js";
 
-export class MessageExecutor implements NodeExecutor {
+export class MessageImageExecutor implements NodeExecutor {
   type = nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE
 
   async execute(node: IAutomationNode, runtime: IRuntimeSimpleAutomation): Promise<NodeExecutionResult> {
@@ -18,7 +18,7 @@ export class MessageExecutor implements NodeExecutor {
       }
     }
     
-    // await runtime?.platform?.SendMessage({});
+    // await runtime?.platform?.sendMessage()
 
     runtime.roomExecutionStateMachine.transition(runtime.roomExecution, RoomExecutionState.Waiting)
 
@@ -31,6 +31,3 @@ export class MessageExecutor implements NodeExecutor {
     }
   }
 }
-
-
-

@@ -1,4 +1,4 @@
-export enum ConversationPlaform {
+export enum ConversationPlatform {
   whatsapp = 1,
   telegram = 2,
 

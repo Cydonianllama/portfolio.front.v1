@@ -60,6 +60,7 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
             initalEdges={[]}
             initialNodes={[]}
             onClickNode={OnClickNode}
+            nodes_={automationFlowStore.information?.nodeList || []}
           />
         </div>
       </div>

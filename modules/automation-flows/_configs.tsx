@@ -57,7 +57,8 @@ export const GeneralConfigurationNode: Record<nodeTypes, generalConfigurationNod
   "first-step-node": {
     icon: IoPlayOutline,
     title: 'Primer paso',
-    color: 'blue'
+    color: 'blue',
+    description: 'Selecciona el primer paso.'
   },
   "message-node": {
     icon: LuMessageSquareText,

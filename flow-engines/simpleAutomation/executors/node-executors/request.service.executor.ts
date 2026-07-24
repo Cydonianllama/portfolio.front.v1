@@ -1,10 +1,9 @@
-import { NodeType } from "engines/simpleAutomation/models/node.automation.type.js";
-import type { NodeExecutionResult, NodeExecutor } from "./_node.executor.js";
 import type { IAutomationNode } from "engines/simpleAutomation/models/node.automation.js";
+import { nodeTypes } from "engines/simpleAutomation/models/node.automation.type.js";
 import type { IRuntimeSimpleAutomationContext } from "engines/simpleAutomation/runtime/flow.runtime.js";
-
+import type { NodeExecutor, NodeExecutionResult } from "./_node.executor.js";
 export class RequestServiceExecutor implements NodeExecutor {
-  type: NodeType = NodeType.requestService;
+  type = nodeTypes.NODE_TYPE_REQUEST_SERVICE
   
   async execute(node: IAutomationNode, runtime: IRuntimeSimpleAutomationContext): Promise<NodeExecutionResult> {
 

@@ -60,22 +60,21 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
   }
 
   return <>
-    <div className='border rounded-lg bg-white flex shadow-xl'>
-      <div className='pt-2 pb-2 pl-2 flex items-start'>
-        <div className='flex gap-2 items-center'>
-          <span className={`h-9 w-9 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>
+    <div className='border rounded-lg bg-white flex flex-col shadow-xl p-2'>
+      <div className='flex items-start '>
+        <div className='flex gap-2 justify-between'>
+          <span className={`h-10 w-10 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>
             <Icon className='text-white' />
           </span>
+          <div className="pr-2 flex flex-col justify-center">
+            <h2 className='font-semibold leading-4'>{title}</h2>
+            <p className='text-gray-500 text-xs'>{description}</p>
+          </div>
         </div>
       </div>
-      <div className='pl-2'>
-        <div className='flex flex-col'>
-          <div className="pr-2">
-            <h2 className='font-semibold'>{title}</h2>
-          </div>
-          <div>
-            {children}
-          </div>
+      <div className=''>
+        <div>
+          {children}
         </div>
       </div>
     </div>

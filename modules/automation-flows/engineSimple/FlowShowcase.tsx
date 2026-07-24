@@ -17,6 +17,8 @@ import "@xyflow/react/dist/style.css";
 import { testFlowDataNodes } from "../mock_test/test.flow.data";
 import { edgeTypes } from "./edges.types";
 import { nodeTypes } from "./node.types";
+import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
+import { BuildNodeAndEdges } from "../utils/build";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -25,15 +27,18 @@ type FlowScreenProps = {
   initialNodes: Array<any>
   initalEdges: Array<any>
   onClickNode: () => void;
+  nodes_: Array<IAutomationNode>
 }
 
-export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations, onClickNode }: FlowScreenProps) {
+export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
 
-  const initialNodes: any[] = []
-  const initalEdges: any[] = []
+  // const initialNodes: any[] = []
+  // const initalEdges: any[] = []
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(testFlowDataNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initalEdges);
+  const { edges: fEdges, nodes: fNodes } = BuildNodeAndEdges({ nodes: nodes_ })
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(fNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(fEdges);
 
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
