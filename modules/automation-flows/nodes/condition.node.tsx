@@ -14,11 +14,12 @@ export function ConditionNode({ data }: NodeProps) {
     <>
       {/* <NodeResizer minWidth={180} minHeight={100} /> */}
       <BaseNode
+        id={String(data?.id) || ''}
         color={GeneralConfigurationNode[type].color}
         Icon={GeneralConfigurationNode[type].icon}
         title={GeneralConfigurationNode[type].title}
         description={GeneralConfigurationNode[type].description}
-        config={{ hasSource: true, hasTarget: true }}
+        config={{ hasSource: true, hasTarget: false }}
       >
         condition-node
       </BaseNode>

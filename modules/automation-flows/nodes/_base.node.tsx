@@ -6,13 +6,20 @@ import {
   Position,
   NodeResizer,
 } from "@xyflow/react";
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 
 import { Component, ComponentClass, ComponentType, FunctionComponent, PropsWithChildren, ReactElement } from 'react'
 import { colorDefaultNode } from "../_configs";
+import { GoPlus } from "react-icons/go";
+import { LuTrash2 } from "react-icons/lu";
+import { HiOutlineDotsHorizontal, HiOutlineDuplicate } from "react-icons/hi";
+import { FlowHookActions } from "../hooks/action.hooks.flow";
 
 type versionTypes = 'v1' | 'v2' | 'v3'
 
 export type BaseNodeProps = {
+  id: string;
   Icon: ComponentType<{ className: string }>;
   title: string;
   description?: string;
@@ -24,7 +31,9 @@ export type BaseNodeProps = {
   }
 }
 
-export const BaseNode = ({ title, description, color, Icon, children, config, type = 'v1' }: PropsWithChildren<BaseNodeProps>) => {
+export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1' }: PropsWithChildren<BaseNodeProps>) => {
+
+  const flowActions = FlowHookActions({})
 
   const Factory: Record<versionTypes, FunctionComponent<PropsWithChildren<BaseNodeProps>>> = {
     v1: BaseNodev1,
@@ -33,7 +42,25 @@ export const BaseNode = ({ title, description, color, Icon, children, config, ty
   }
 
   return <>
-    <Factory.v1 title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
+    <Factory.v1 id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
+      <div className="absolute bottom-[100%] h-[35%] left-1/2 -translate-x-1/2 hidden group-hover:block">
+        <div className="h-[100%]">
+          <ButtonGroup>
+            <Button variant={'outline'} size={'icon-xs'}>
+              <GoPlus />
+            </Button>
+            <Button variant={'outline'} size={'icon-xs'}>
+              <HiOutlineDuplicate />
+            </Button>
+            <Button onClick={() => { flowActions.RemoveNodeAction({ id: id }) }} variant={'outline'} size={'icon-xs'}>
+              <LuTrash2 />
+            </Button>
+            <Button variant={'outline'} size={'icon-xs'}>
+              <HiOutlineDotsHorizontal />
+            </Button>
+          </ButtonGroup>
+        </div>
+      </div>
       {children}
     </Factory.v1>
   </>
@@ -56,11 +83,20 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
     },
     red: {
       classColor: 'bg-red-500'
+    },
+    orange: {
+      classColor: 'bg-orange-500'
+    },
+    purple: {
+      classColor: 'bg-purple-500'
+    },
+    sky: {
+      classColor: 'bg-sky-500'
     }
   }
 
   return <>
-    <div className='border rounded-lg bg-white flex flex-col shadow-xl p-2'>
+    <div className='border-2 border-gray-200 rounded-xl bg-white flex flex-col shadow-xl p-2 relative group'>
       <div className='flex items-start '>
         <div className='flex gap-2 justify-between'>
           <span className={`h-10 w-10 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>

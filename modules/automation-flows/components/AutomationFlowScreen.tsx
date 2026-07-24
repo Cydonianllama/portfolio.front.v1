@@ -14,6 +14,8 @@ import { useAutomationFlow } from "../store/automation.flow.store";
 import { useEffect } from "react";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
+import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
+import { BuildNodeAndEdges } from "../utils/build";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
@@ -38,6 +40,8 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
     }
   }, [automationId])
 
+  const { edges: fEdges, nodes: fNodes } = BuildNodeAndEdges({ nodes: automationFlowStore.information?.nodeList || [] })
+
   return (
     <>
       <div className="flex flex-col w-full h-full">
@@ -59,12 +63,13 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
             <FlowScreen
               edgeTypesConfiguration={edgeTypesConfiguration}
               nodeTypesConfigurations={nodeTypesConfigurations}
-              initalEdges={[]}
-              initialNodes={[]}
+              edgesF={fEdges}
+              nodesF={fNodes}
               onClickNode={OnClickNode}
               nodes_={automationFlowStore.information?.nodeList || []}
             />
           </>)}
+          <SideSelectorNode />
         </div>
       </div>
 

@@ -12,35 +12,40 @@ import {
   ReactFlowInstance,
   Edge,
 } from "@xyflow/react";
-import { ComponentType, useCallback, useRef } from "react";
+import { ComponentType, useCallback, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
 import { edgeTypes } from "./edges.types";
 import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
 import { BuildNodeAndEdges } from "../utils/build";
 import { useAutomationFlow } from "../store/automation.flow.store";
 import { canOpenEditor } from "../utils/can-open-editor";
+import { FlowEdge, nodesFlow } from "./types";
+import { FlowHookActions } from "../hooks/action.hooks.flow";
 
 type FlowScreenProps = {
   isLoading?: boolean;
   edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>>
   nodeTypesConfigurations: Record<string, ComponentType<any>>
-  initialNodes: Array<any>
-  initalEdges: Array<any>
   onClickNode: () => void;
   nodes_: Array<IAutomationNode>
+  //
+  nodesF: Array<nodesFlow>
+  edgesF: FlowEdge[]; 
 }
 
-export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
-
-  // const initialNodes: any[] = []
-  // const initalEdges: any[] = []
+export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations, nodesF, edgesF }: FlowScreenProps) {
 
   const automationFlowStore = useAutomationFlow()
+  const flowActions = FlowHookActions({})
 
-  const { edges: fEdges, nodes: fNodes } = BuildNodeAndEdges({ nodes: nodes_ })
+  const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(edgesF);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(fNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(fEdges);
+
+  useEffect(() => {
+    if (nodesF) setNodes(nodesF)
+    if (edgesF) setEdges(edgesF)
+  }, [nodesF, edgesF])
 
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
@@ -136,6 +141,8 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
           // } catch (error: any) {
           //   console.log(error.message)
           // }
+          const currentNode = b
+          flowActions.UpdatePositionNodAction({ nodeId: currentNode.id || '', x: currentNode.position.x, y: currentNode.position.y  })
         }}
         onMoveEnd={(event, viewport) => {
           // try {
