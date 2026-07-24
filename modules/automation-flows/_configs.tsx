@@ -25,6 +25,7 @@ export const nodeTypesConfigurations: Record<string, ComponentType<any>> = {
   [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: MessageNode,
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: TriggerNode,
   [nodeTypes.NODE_TYPE_CONDITION]: ConditionNode,
+  [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: RequestServiceNode,
 };
 
 //
@@ -118,9 +119,9 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
     color: 'yellow'
   },
   [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: {
-    icon: GrTrigger,
+    icon: RiWebhookFill,
     title: 'Solicitud externa',
-    color: 'yellow'
+    color: 'gray'
   },
   [nodeTypes.NODE_TYPE_START_AUTOMATION]: {
     icon: GrTrigger,
@@ -135,7 +136,7 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
   [nodeTypes.NODE_TYPE_CONDITION]: {
     icon: FiFilter,
     title: 'Condición',
-    color: 'red'
+    color: 'yellow'
   }
 }
 
@@ -145,6 +146,8 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
 
 import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
 import { edgeTypes } from "./engineSimple/edges.types";
+import { RiWebhookFill } from "react-icons/ri";
+import { RequestServiceNode } from "./nodes/request.service.node";
 
 export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null }>> = {
   [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
@@ -158,5 +161,44 @@ export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: bo
   [nodeTypes.NODE_TYPE_CONDITION]: {
     hasEditor: true,
     Editor: ConditionEditor
+  }
+}
+
+//
+// misc
+//
+
+export const bgColor: Record<colorDefaultNode, { classColor: string, textColor: string }> = {
+  blue: {
+    classColor: 'bg-blue-500',
+    textColor: "text-white"
+  },
+  green: {
+    classColor: 'bg-green-500',
+    textColor: "text-white"
+  },
+  yellow: {
+    classColor: 'bg-yellow-500',
+    textColor: "text-white"
+  },
+  gray: {
+    classColor: 'bg-gray-500',
+    textColor: "text-white"
+  },
+  red: {
+    classColor: 'bg-red-500',
+    textColor: "text-white"
+  },
+  orange: {
+    classColor: 'bg-orange-500',
+    textColor: "text-white"
+  },
+  purple: {
+    classColor: 'bg-purple-500',
+    textColor: "text-white"
+  },
+  sky: {
+    classColor: 'bg-sky-500',
+    textColor: "text-white"
   }
 }

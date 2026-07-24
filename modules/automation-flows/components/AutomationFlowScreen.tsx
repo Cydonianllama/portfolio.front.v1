@@ -16,6 +16,8 @@ import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
 import { BuildNodeAndEdges } from "../utils/build";
+import { ButtonAddNodes } from "./ButtonAddNodes";
+import { ReactFlowProvider } from "@xyflow/react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
@@ -59,17 +61,20 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
         <div className="flex-1 w-full relative">
           {automationFlowStore.openEdit && (<EditorFlow />)}
           {/* <ContentLoading /> */}
-          {!automationFlowStore.listing && (<>
-            <FlowScreen
-              edgeTypesConfiguration={edgeTypesConfiguration}
-              nodeTypesConfigurations={nodeTypesConfigurations}
-              edgesF={fEdges}
-              nodesF={fNodes}
-              onClickNode={OnClickNode}
-              nodes_={automationFlowStore.information?.nodeList || []}
-            />
+          {(!automationFlowStore.listing && automationFlowStore.initialListFinished)  && (<>
+            <ReactFlowProvider >
+              <FlowScreen
+                edgeTypesConfiguration={edgeTypesConfiguration}
+                nodeTypesConfigurations={nodeTypesConfigurations}
+                edgesF={fEdges}
+                nodesF={fNodes}
+                onClickNode={OnClickNode}
+                nodes_={automationFlowStore.information?.nodeList || []}
+              />
+            </ReactFlowProvider>
           </>)}
-          <SideSelectorNode />
+          {automationFlowStore.openSelectNode && <SideSelectorNode />}
+          <ButtonAddNodes />
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import { UpdatePositionNode, UpdatePositionNodeRequestDTO } from "@/api/flow/upd
 import { useCallback } from "react"
 import { toast } from "sonner"
 import { useAutomationFlow } from "../store/automation.flow.store"
+import { useReactFlow } from "@xyflow/react"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type FlowHookActionsProps = {
@@ -15,6 +16,7 @@ type FlowHookActionsProps = {
 
 export const FlowHookActions = ({ }: FlowHookActionsProps) => {
 
+  const { screenToFlowPosition } = useReactFlow();
   const automationFlowStore = useAutomationFlow()
 
   const CreateNodeAction = useCallback(async (data: CreateNodeRequestDTO) => {
@@ -34,7 +36,7 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
       toast.success('Success')
 
       if (automationFlowStore.information?.nodeList && req.data.node) {
-        console.log('actualizandose el listado')
+        // console.log('actualizandose el listado')
         const list = [
           ...automationFlowStore.information.nodeList,
           req.data.node
@@ -91,7 +93,7 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
       toast.success('Success')
 
       if (automationFlowStore.information?.nodeList && req.data.node) {
-        console.log('actualizandose el listado')
+        // console.log('actualizandose el listado')
         let list = [
           ...automationFlowStore.information.nodeList,
         ]
@@ -199,7 +201,7 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
 
       // success
       toast.success('Success')
-      automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers } })
+      automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers }, initialListFinished: true })
 
     } catch (ex) {
 

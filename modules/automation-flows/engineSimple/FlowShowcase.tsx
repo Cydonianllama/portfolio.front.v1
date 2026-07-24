@@ -11,6 +11,7 @@ import {
   addEdge,
   ReactFlowInstance,
   Edge,
+  useReactFlow,
 } from "@xyflow/react";
 import { ComponentType, useCallback, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
@@ -21,6 +22,7 @@ import { useAutomationFlow } from "../store/automation.flow.store";
 import { canOpenEditor } from "../utils/can-open-editor";
 import { FlowEdge, nodesFlow } from "./types";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
+import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -30,10 +32,11 @@ type FlowScreenProps = {
   nodes_: Array<IAutomationNode>
   //
   nodesF: Array<nodesFlow>
-  edgesF: FlowEdge[]; 
+  edgesF: FlowEdge[];
 }
 
 export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations, nodesF, edgesF }: FlowScreenProps) {
+  const { setCenter } = useReactFlow();
 
   const automationFlowStore = useAutomationFlow()
   const flowActions = FlowHookActions({})
@@ -41,11 +44,32 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
   const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
   const [edges, setEdges, onEdgesChange] = useEdgesState(edgesF);
 
-
   useEffect(() => {
+    // if (nodesF && edgesF) console.log('actualizacion desde fuera')
     if (nodesF) setNodes(nodesF)
     if (edgesF) setEdges(edgesF)
   }, [nodesF, edgesF])
+
+  // centrar el nodo trigger al finalizar el listado
+  useEffect(() => {
+    if (automationFlowStore.initialListFinished) {
+      setTimeout(() => {
+        const node = nodes.find(n => n.type === nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING);
+
+        if (!node) return;
+
+        console.log('realizar el centrado')
+        setCenter(
+          node.position.x + ((node.measured?.width || 0) / 2),
+          node.position.y + ((node.measured?.height || 0) / 2),
+          {
+            zoom: 1.5,
+            duration: 800,
+          }
+        );
+      }, 600)
+    }
+  }, [automationFlowStore.initialListFinished])
 
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
@@ -120,11 +144,10 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
         }}
         onNodeClick={(a, b) => {
           // if (!automationFlow.startEditingFlow) return;
-          // dispatch(ChangeStateIsOpenEditorNode({ isOpenEditorNode: true, currentNodeEditing: currentNode.id }))
           const currentNode = b
           // onClickNode()
 
-          if (!canOpenEditor(currentNode)){
+          if (!canOpenEditor(currentNode)) {
             console.log('Cant open for this node')
             return;
           }
@@ -142,7 +165,7 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
           //   console.log(error.message)
           // }
           const currentNode = b
-          flowActions.UpdatePositionNodAction({ nodeId: currentNode.id || '', x: currentNode.position.x, y: currentNode.position.y  })
+          flowActions.UpdatePositionNodAction({ nodeId: currentNode.id || '', x: currentNode.position.x, y: currentNode.position.y })
         }}
         onMoveEnd={(event, viewport) => {
           // try {

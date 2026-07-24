@@ -18,12 +18,16 @@ interface AutomationFlowStore {
   openTriggerSelector: boolean,
   setTriggerSelector: (data: Partial<{ openTriggerSelector: boolean }>) => void
 
+  openSelectNode: boolean
+  setSelectNode: (data: Partial<{ openSelectNode: boolean }>) => void
+
   // currentElementSelected: string | null
 
   // // getall
   information: InformationAutomationFlow | null
   listing: boolean;
-  setListState: (data: Partial<{ information: InformationAutomationFlow, listing: boolean, pagination: ResponsePagination | null }>) => void
+  initialListFinished: boolean
+  setListState: (data: Partial<{ information: InformationAutomationFlow, listing: boolean, pagination: ResponsePagination | null, initialListFinished: boolean }>) => void
 
   // // create
   // openCreate: boolean;
@@ -53,12 +57,17 @@ export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
 
   openTriggerSelector: false,
   setTriggerSelector: (data) => set((state) => ({ ...state, ...data })),
+
+  openSelectNode: false,
+  setSelectNode: (data) => set((state) => ({ ...state, ...data })),
+
   
   // currentElementSelected: null,
 
   // // getall
   information: null,
   listing: false,
+  initialListFinished: false,
   setListState: (data) => set((state) => ({ ...state, ...data })),
 
   // //create
