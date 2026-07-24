@@ -42,7 +42,7 @@ export const edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>> = {
 // Configuration Node
 //
 
-export type colorDefaultNode =  'blue' | 'green' | 'yellow' | 'gray' | 'red'
+export type colorDefaultNode =  'blue' | 'green' | 'yellow' | 'gray' | 'red' | 'purple' | 'orange' | 'sky' 
 
 type generalConfigurationNode = {
   icon: ComponentType<{ className: string }>, // ReactElement {} // ComponentType <> // ReactNode {}
@@ -63,9 +63,74 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
     title: 'Mensaje',
     color: 'green'
   },
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_FILE]: {
+    icon: LuMessageSquareText,
+    title: 'Archivo',
+    color: 'green'
+  },
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_IMAGE]: {
+    icon: LuMessageSquareText,
+    title: 'Imagen',
+    color: 'green'
+  },
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_LIST]: {
+    icon: LuMessageSquareText,
+    title: 'Lista',
+    color: 'green'
+  },
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_VOICE]: {
+    icon: LuMessageSquareText,
+    title: 'Voz',
+    color: 'green'
+  },
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: {
     icon: GrTrigger,
     title: 'Disparador',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_CODE]: {
+    icon: GrTrigger,
+    title: 'Codigo',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_NOTE]: {
+    icon: GrTrigger,
+    title: 'Nota',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
+    icon: GrTrigger,
+    title: 'Mensaje privado',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_REMOVETAG]: {
+    icon: GrTrigger,
+    title: 'Remover etiqueta',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_ADDTAG]: {
+    icon: GrTrigger,
+    title: 'Agregar etiqueta',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_SEND_NOTIFICATION]: {
+    icon: GrTrigger,
+    title: 'Enviar notificacion',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: {
+    icon: GrTrigger,
+    title: 'Solicitud externa',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_START_AUTOMATION]: {
+    icon: GrTrigger,
+    title: 'Iniciar automatización',
+    color: 'yellow'
+  },
+  [nodeTypes.NODE_TYPE_STOP_CURRENTAUTOMATION]: {
+    icon: GrTrigger,
+    title: 'Parar automatización',
     color: 'yellow'
   },
   [nodeTypes.NODE_TYPE_CONDITION]: {
