@@ -7,7 +7,6 @@ import { CiSettings } from "react-icons/ci";
 import { FiFilter } from "react-icons/fi";
 
 import { Component, ComponentType, FunctionComponent, ReactElement } from "react";
-import { ActionNode } from "./nodes/action.node";
 import { MessageNode } from "./nodes/message.node";
 import { TriggerNode } from "./nodes/trigger.node";
 import { FirstSteNode } from "./nodes/firststep.node";
@@ -25,7 +24,6 @@ export const nodeTypesConfigurations: Record<string, ComponentType<any>> = {
   [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: MessageNode,
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: TriggerNode,
   [nodeTypes.NODE_TYPE_CONDITION]: ConditionNode,
-  'action-node': ActionNode,
 };
 
 //
@@ -147,7 +145,7 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
 import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
 import { edgeTypes } from "./engineSimple/edges.types";
 
-export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType}>> = {
+export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null}>> = {
   [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
     hasEditor: true,
     Editor: MessageEditor

@@ -7,24 +7,22 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button"
+import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
 
 export function TriggerNode({ data }: NodeProps) {
+  const type = nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING
+
   return (
     <>
       {/* <NodeResizer minWidth={180} minHeight={100} /> */}
       <BaseNode
-        color={GeneralConfigurationNode["trigger-node"].color}
-        Icon={GeneralConfigurationNode["trigger-node"].icon}
-        title={GeneralConfigurationNode["trigger-node"].title}
-        description={GeneralConfigurationNode["trigger-node"].description}
-        config={{ hasSource: true, hasTarget: false }}
+        color={GeneralConfigurationNode[type].color}
+        Icon={GeneralConfigurationNode[type].icon}
+        title={GeneralConfigurationNode[type].title}
+        description={GeneralConfigurationNode[type].description}
+        config={{ hasSource: true, hasTarget: true }}
       >
-        <div className="w-50 flex flex-col">
-          <div className="text-xs text-gray-400 py-2">
-            No cuentas con triggers agregados
-          </div>
-          <Button variant={'outline'}>Agregar Disparador</Button>
-        </div>
+        triggers
       </BaseNode>
     </>
   );

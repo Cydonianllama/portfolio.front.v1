@@ -6,16 +6,19 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
+import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
 
 export function SetVariableNode({ data }: NodeProps) {
+  const type = nodeTypes.NODE_TYPE_SETVAR
+
   return (
     <>
       {/* <NodeResizer minWidth={180} minHeight={100} /> */}
       <BaseNode
-        color={GeneralConfigurationNode["message-node"].color}
-        Icon={GeneralConfigurationNode["message-node"].icon}
-        title={GeneralConfigurationNode["message-node"].title}
-        description={GeneralConfigurationNode["message-node"].description}
+        color={GeneralConfigurationNode[type].color}
+        Icon={GeneralConfigurationNode[type].icon}
+        title={GeneralConfigurationNode[type].title}
+        description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: true }}
       >
         set-var
