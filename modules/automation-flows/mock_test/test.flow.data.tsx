@@ -1,24 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Node, ReactFlowProps } from "@xyflow/react";
 import { nodeTypes } from "../engineSimple/node.types";
+import { NodeType } from "@/flow-engines/simpleAutomation/models/node.automation.type";
 
-export const testFlowDataNodes: Node<{ id: string, type: nodeTypes }>[] = [
-  {
-    id: "1",
-    type: nodeTypes.firstStep,
-    position: { x: 160, y: 160 },
-    data: {
-      id: "First step",
-      type: nodeTypes.message
-    }
-  },
+export const testFlowDataNodes: Node<{ id: string, type: NodeType }>[] = [
   {
     id: "2",
     type: nodeTypes.trigger,
     position: { x: 20, y: 40 },
     data: {
       id: "Trigger step",
-      type: nodeTypes.message
+      type: NodeType.trigger
     }
   },
   {
@@ -27,7 +19,7 @@ export const testFlowDataNodes: Node<{ id: string, type: nodeTypes }>[] = [
     position: { x: 100, y: 100 },
     data: {
       id: "Mensaje",
-      type: nodeTypes.message
+      type: NodeType.message
     }
   },
   {
@@ -36,7 +28,7 @@ export const testFlowDataNodes: Node<{ id: string, type: nodeTypes }>[] = [
     position: { x: 450, y: 100 },
     data: {
       id: "Acción",
-      type: nodeTypes.message
+      type: NodeType.message
     }
   },
   {
@@ -45,7 +37,7 @@ export const testFlowDataNodes: Node<{ id: string, type: nodeTypes }>[] = [
     position: { x: 150, y: 130 },
     data: {
       id: "Acción",
-      type: nodeTypes.message
+      type: NodeType.message
     }
   }
 ];

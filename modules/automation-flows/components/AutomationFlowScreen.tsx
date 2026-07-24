@@ -27,13 +27,12 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
   const automationFlowStore = useAutomationFlow()
 
   const OnClickNode = () => {
-    console.log('OnClickNode')
     automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
   }
 
   useEffect(() => {
     if (automationId) {
-      automationFlowStore.setWorkspaceId({ workspaceId: automationId })
+      automationFlowStore.setAutomationId({ automationId: automationId })
       flowActions.GetAutomationInformationAction({ automationId: automationId })
     }
   }, [automationId])

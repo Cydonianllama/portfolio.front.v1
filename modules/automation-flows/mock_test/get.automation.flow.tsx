@@ -15,7 +15,6 @@ export const publishedAutomation: IPublishedAutomation = {
       platform: ConversationPlaform.general,
       title: '',
       type: NodeType.action,
-      workspaceId: '',
       action: {
         type: NodeActionsType.addTag,
         configAddTag: {
@@ -23,7 +22,8 @@ export const publishedAutomation: IPublishedAutomation = {
             { tagId: '' }
           ]
         }
-      }
+      },
+      automationId: ''
     }
   ],
   startNodeId: '',

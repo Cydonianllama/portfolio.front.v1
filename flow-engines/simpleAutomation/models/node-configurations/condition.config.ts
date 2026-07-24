@@ -6,6 +6,7 @@ export interface NodeConditionConfig {
       variableId?: string;
       operator: string;
       value?: string;
-    }>
+    }>,
+    nextNode?: string | null
   }>
 }
