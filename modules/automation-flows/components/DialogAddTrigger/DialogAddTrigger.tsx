@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
 import { AddTriggerOptions } from "./AddTriggerOptions"
+import { useAutomationFlow } from "../../store/automation.flow.store"
 
 type DialogAddTriggerProps = {
 
@@ -19,22 +20,22 @@ type DialogAddTriggerProps = {
 
 export const DialogAddTrigger= ({  } : DialogAddTriggerProps) => {
 
+  const automationFlowStore = useAutomationFlow()
+
   const HandleToProcess = () => {
     // onProccessing({})
   }
 
   const HandleToCancel = () => {
-    // setOpen(false)
+    automationFlowStore.setTriggerSelector({ openTriggerSelector: false })
   }
 
   return <>
-    <Dialog open={false} onOpenChange={(open) => {}}>
+    <Dialog open={automationFlowStore.openTriggerSelector} onOpenChange={(open) => { automationFlowStore.setTriggerSelector({ openTriggerSelector: open }) }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear Item</DialogTitle>
-          <DialogDescription>
-            Creación de items.
-          </DialogDescription>
+          <DialogTitle>Selecciona el trigger a crear</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         
         <AddTriggerOptions />

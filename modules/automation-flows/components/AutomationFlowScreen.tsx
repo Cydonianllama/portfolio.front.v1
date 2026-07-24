@@ -13,6 +13,7 @@ import { EditorFlow } from "./EditorFlow";
 import { useAutomationFlow } from "../store/automation.flow.store";
 import { useEffect } from "react";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
+import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
@@ -54,16 +55,20 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
         <div className="flex-1 w-full relative">
           {automationFlowStore.openEdit && (<EditorFlow />)}
           {/* <ContentLoading /> */}
-          <FlowScreen
-            edgeTypesConfiguration={edgeTypesConfiguration}
-            nodeTypesConfigurations={nodeTypesConfigurations}
-            initalEdges={[]}
-            initialNodes={[]}
-            onClickNode={OnClickNode}
-            nodes_={automationFlowStore.information?.nodeList || []}
-          />
+          {!automationFlowStore.listing && (<>
+            <FlowScreen
+              edgeTypesConfiguration={edgeTypesConfiguration}
+              nodeTypesConfigurations={nodeTypesConfigurations}
+              initalEdges={[]}
+              initialNodes={[]}
+              onClickNode={OnClickNode}
+              nodes_={automationFlowStore.information?.nodeList || []}
+            />
+          </>)}
         </div>
       </div>
+
+      <DialogAddTrigger />
     </>
   )
 }

@@ -15,6 +15,9 @@ interface AutomationFlowStore {
   automationId: string | null
   setAutomationId: (data: Partial<{ automationId: string | null }>) => void
 
+  openTriggerSelector: boolean,
+  setTriggerSelector: (data: Partial<{ openTriggerSelector: boolean }>) => void
+
   // currentElementSelected: string | null
 
   // // getall
@@ -47,6 +50,9 @@ export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
 
   automationId: null,
   setAutomationId: (data) => set((state) => ({ ...state, ...data })),
+
+  openTriggerSelector: false,
+  setTriggerSelector: (data) => set((state) => ({ ...state, ...data })),
   
   // currentElementSelected: null,
 

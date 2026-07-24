@@ -11,6 +11,7 @@ const foundeNodeFromId = (id: string, nodes: Array<IAutomationNode>): IAutomatio
 }
 
 export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }): { nodes: Array<nodesFlow>, edges: FlowEdge[]; } => {
+  // console.log('BuildNodeAndEdges', nodes)
 
   const nodesToSend: nodesFlow[] = []
   const edgesToSend: FlowEdge[] = []
@@ -158,6 +159,11 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
 
     }
   }
+
+  // console.log({
+  //   nodes: nodesToSend,
+  //   edges: edgesToSend
+  // })
 
   return {
     nodes: nodesToSend,

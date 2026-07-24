@@ -8,9 +8,12 @@ import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button"
 import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { useAutomationFlow } from "../store/automation.flow.store";
 
 export function TriggerNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING
+
+  const automationFlowStore = useAutomationFlow()
 
   return (
     <>
@@ -22,7 +25,18 @@ export function TriggerNode({ data }: NodeProps) {
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: true }}
       >
-        triggers
+        <div className="pt-2">
+          <Button
+            className={'w-full'}
+            variant={'outline'}
+            onClick={(e) => {
+              e.stopPropagation()
+              automationFlowStore.setTriggerSelector({ openTriggerSelector: true })
+            }}
+          >
+            Agregar disparador
+          </Button>
+        </div>
       </BaseNode>
     </>
   );
