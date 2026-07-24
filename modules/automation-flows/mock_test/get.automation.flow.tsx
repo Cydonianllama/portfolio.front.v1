@@ -1,7 +1,6 @@
-import { NodeActionsType } from '@/flow-engines/simpleAutomation/models/node.action.type'
 import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation'
-import { NodeType } from '@/flow-engines/simpleAutomation/models/node.automation.type'
-import { ConversationPlaform } from '@/flow-engines/simpleAutomation/models/platform.enum'
+import { nodeTypes } from '@/flow-engines/simpleAutomation/models/node.automation.type'
+import { ConversationPlatform } from '@/flow-engines/simpleAutomation/models/platform.enum'
 import { IPublishedAutomation } from '@/flow-engines/simpleAutomation/models/published.automation'
 
 export const publishedAutomation: IPublishedAutomation = {
@@ -12,16 +11,11 @@ export const publishedAutomation: IPublishedAutomation = {
       id: '',
       creationDate: new Date(),
       nextNode: null,
-      platform: ConversationPlaform.general,
+      platform: ConversationPlatform.general,
       title: '',
-      type: NodeType.action,
-      action: {
-        type: NodeActionsType.addTag,
-        configAddTag: {
-          toAdd: [
-            { tagId: '' }
-          ]
-        }
+      type: nodeTypes.NODE_TYPE_ADDTAG,
+      configuration: {
+
       },
       automationId: ''
     }

@@ -13,16 +13,19 @@ import { TriggerNode } from "./nodes/trigger.node";
 import { FirstSteNode } from "./nodes/firststep.node";
 import { ConditionNode } from "./nodes/condition.node";
 
+import { nodeTypes } from '@/flow-engines/simpleAutomation/models/node.automation.type'
+type NodeTypeValue = (typeof nodeTypes)[keyof typeof nodeTypes]
+
 //
 // Node Types
 //
 
-export const nodeTypesConfigurations: Record<nodeTypes, ComponentType<any>> = {
-  'message-node': MessageNode,
-  'action-node': ActionNode,
+export const nodeTypesConfigurations: Record<string, ComponentType<any>> = {
   'first-step-node': FirstSteNode,
-  'trigger-node': TriggerNode,
-  "condition-node": ConditionNode
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: MessageNode,
+  [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: TriggerNode,
+  [nodeTypes.NODE_TYPE_CONDITION]: ConditionNode,
+  'action-node': ActionNode,
 };
 
 //
@@ -48,29 +51,24 @@ type generalConfigurationNode = {
   color: colorDefaultNode
 }
 
-export const GeneralConfigurationNode: Record<nodeTypes, generalConfigurationNode> = {
-  "action-node": {
-    icon: CiSettings,
-    title: 'Acción',
-    color: 'gray'
-  },
+export const GeneralConfigurationNode: Record<string, generalConfigurationNode> = {
   "first-step-node": {
     icon: IoPlayOutline,
     title: 'Primer paso',
     color: 'blue',
     description: 'Selecciona el primer paso.'
   },
-  "message-node": {
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: {
     icon: LuMessageSquareText,
     title: 'Mensaje',
     color: 'green'
   },
-  "trigger-node": {
+  [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: {
     icon: GrTrigger,
     title: 'Disparador',
     color: 'yellow'
   },
-  "condition-node": {
+  [nodeTypes.NODE_TYPE_CONDITION]: {
     icon: FiFilter,
     title: 'Condición',
     color: 'red'
@@ -82,27 +80,18 @@ export const GeneralConfigurationNode: Record<nodeTypes, generalConfigurationNod
 //
 
 import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
-import { nodeTypes } from "./engineSimple/node.types";
 import { edgeTypes } from "./engineSimple/edges.types";
 
-export const EditorsConfiguration: Record<nodeTypes, { hasEditor: boolean, Editor: ComponentType}> = {
-  [nodeTypes.message]: {
+export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType}>> = {
+  [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
     hasEditor: true,
     Editor: MessageEditor
   },
-  [nodeTypes.action]: {
+  [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: {
     hasEditor: false,
     Editor: TriggerEditor
   },
-  [nodeTypes.trigger]: {
-    hasEditor: true,
-    Editor: TriggerEditor
-  },
-  [nodeTypes.firstStep]: {
-    hasEditor: false,
-    Editor: TriggerEditor
-  },
-  [nodeTypes.condition]: {
+  [nodeTypes.NODE_TYPE_CONDITION]: {
     hasEditor: true,
     Editor: ConditionEditor
   }

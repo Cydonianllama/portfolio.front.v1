@@ -1,15 +1,3 @@
-export enum NodeType {
-  trigger = 1,
-  action = 2,
-  message = 3,
-  sendPrivateMessage = 4,
-  note = 5,
-  condition = 6,
-  requestService = 7,
-  sendNotification = 8,
-  code = 9,
-}
-
 export const NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING = 'trigger.general.incoming.message' as const
 export const NODE_TYPE_GENERAL_MESSAGE_SIMPLE = 'node.messaging.general.send.simple' as const
 export const NODE_TYPE_GENERAL_MESSAGE_LIST = 'node.messaging.general.send.list' as const

@@ -14,16 +14,14 @@ import {
 } from "@xyflow/react";
 import { ComponentType, useCallback, useRef } from "react";
 import "@xyflow/react/dist/style.css";
-import { testFlowDataNodes } from "../mock_test/test.flow.data";
 import { edgeTypes } from "./edges.types";
-import { nodeTypes } from "./node.types";
 import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
 import { BuildNodeAndEdges } from "../utils/build";
 
 type FlowScreenProps = {
   isLoading?: boolean;
   edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>>
-  nodeTypesConfigurations: Record<nodeTypes, ComponentType<any>>
+  nodeTypesConfigurations: Record<string, ComponentType<any>>
   initialNodes: Array<any>
   initalEdges: Array<any>
   onClickNode: () => void;
