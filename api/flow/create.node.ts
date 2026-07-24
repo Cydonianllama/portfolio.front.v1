@@ -1,21 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ______________ Service
 
-import { NodeActionsType } from '@/flow-engines/simpleAutomation/models/node.action.type';
 import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
-import { NodeMessageType } from '@/flow-engines/simpleAutomation/models/node.message.type';
-import { ConversationPlaform } from '@/flow-engines/simpleAutomation/models/platform.enum';
-import { nodeTypes } from '@/modules/automation-flows/engineSimple/node.types';
+import { NodeTypesType } from '@/flow-engines/simpleAutomation/models/node.automation.type';
+
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 
 export interface CreateNodeRequestDTO {
   automationId: string,
-  nodeType: nodeTypes,
-  platform: ConversationPlaform,
-  messageType: NodeMessageType,
-  actionType: NodeActionsType
+  nodeType: NodeTypesType
 }
 
 interface CreateNodeResponseDTO {

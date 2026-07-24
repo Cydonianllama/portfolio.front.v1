@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { Edge, Node } from "@xyflow/react";
 import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation"
 import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { FlowEdge, nodesFlow } from "../engineSimple/types";
 
-type nodesFlow = Node<{ id: string, type: string }>
-type FlowEdge = Edge;
+
 
 
 const foundeNodeFromId = (id: string, nodes: Array<IAutomationNode>): IAutomationNode | null => {

@@ -2,26 +2,15 @@
 
 // ______________ Service
 
-import { NodeConditionConfig, NodeNoteConfig, NodePrivateMessageConfig, NodeRequestServiceConfig, NodeSendNotificationConfig, NodeTriggerConfig } from '@/flow-engines/simpleAutomation/models/node-configurations/_index';
-import { actionConfigurationType, IAutomationNode, messageConfigurationType } from '@/flow-engines/simpleAutomation/models/node.automation';
+import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 
-
 export interface UpdateNodeRequestDTO {
   id: string,
   title?: string,
-
-  action?: actionConfigurationType
-  message?: messageConfigurationType
-  trigger?: NodeTriggerConfig
-  privateMessage?: NodePrivateMessageConfig
-  note?: NodeNoteConfig
-  condition?: NodeConditionConfig
-  requestService?: NodeRequestServiceConfig
-  sendNotification?: NodeSendNotificationConfig
-
+  configuration: any
 }
 
 interface UpdateNodeResponseDTO {

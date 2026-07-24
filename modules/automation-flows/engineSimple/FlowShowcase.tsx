@@ -17,6 +17,8 @@ import "@xyflow/react/dist/style.css";
 import { edgeTypes } from "./edges.types";
 import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
 import { BuildNodeAndEdges } from "../utils/build";
+import { useAutomationFlow } from "../store/automation.flow.store";
+import { canOpenEditor } from "../utils/can-open-editor";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -32,6 +34,8 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
 
   // const initialNodes: any[] = []
   // const initalEdges: any[] = []
+
+  const automationFlowStore = useAutomationFlow()
 
   const { edges: fEdges, nodes: fNodes } = BuildNodeAndEdges({ nodes: nodes_ })
 
@@ -111,9 +115,16 @@ export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration
         }}
         onNodeClick={(a, b) => {
           // if (!automationFlow.startEditingFlow) return;
-          // const currentNode = b
           // dispatch(ChangeStateIsOpenEditorNode({ isOpenEditorNode: true, currentNodeEditing: currentNode.id }))
-          onClickNode()
+          const currentNode = b
+          // onClickNode()
+
+          if (!canOpenEditor(currentNode)){
+            console.log('Cant open for this node')
+            return;
+          }
+
+          automationFlowStore.setStartEdit({ currentNodeIdEditing: currentNode.id, openEdit: true })
         }}
         onNodeDragStop={(a, b) => {
           // try {

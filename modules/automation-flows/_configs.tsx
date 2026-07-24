@@ -14,13 +14,14 @@ import { ConditionNode } from "./nodes/condition.node";
 
 import { nodeTypes } from '@/flow-engines/simpleAutomation/models/node.automation.type'
 type NodeTypeValue = (typeof nodeTypes)[keyof typeof nodeTypes]
+export const FIRST_STEP_NODE = "first-step-node"
 
 //
 // Node Types
 //
 
 export const nodeTypesConfigurations: Record<string, ComponentType<any>> = {
-  'first-step-node': FirstSteNode,
+  [FIRST_STEP_NODE]: FirstSteNode,
   [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: MessageNode,
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: TriggerNode,
   [nodeTypes.NODE_TYPE_CONDITION]: ConditionNode,
@@ -40,7 +41,7 @@ export const edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>> = {
 // Configuration Node
 //
 
-export type colorDefaultNode =  'blue' | 'green' | 'yellow' | 'gray' | 'red' | 'purple' | 'orange' | 'sky' 
+export type colorDefaultNode = 'blue' | 'green' | 'yellow' | 'gray' | 'red' | 'purple' | 'orange' | 'sky'
 
 type generalConfigurationNode = {
   icon: ComponentType<{ className: string }>, // ReactElement {} // ComponentType <> // ReactNode {}
@@ -50,7 +51,7 @@ type generalConfigurationNode = {
 }
 
 export const GeneralConfigurationNode: Record<string, generalConfigurationNode> = {
-  "first-step-node": {
+  [FIRST_STEP_NODE]: {
     icon: IoPlayOutline,
     title: 'Primer paso',
     color: 'blue',
@@ -145,7 +146,7 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
 import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
 import { edgeTypes } from "./engineSimple/edges.types";
 
-export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null}>> = {
+export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null }>> = {
   [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
     hasEditor: true,
     Editor: MessageEditor
