@@ -10,6 +10,7 @@ import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 
 export interface CreateNodeRequestDTO {
+  id: string,
   automationId: string,
   nodeType: NodeTypesType
 }

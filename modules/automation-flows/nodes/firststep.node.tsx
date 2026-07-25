@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { useAutomationFlow } from "../store/automation.flow.store";
 import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { v4 as uuidv4 } from "uuid";
 
 export function FirstSteNode({ data }: NodeProps) {
   const type = 'first-step-node'
@@ -34,7 +35,7 @@ export function FirstSteNode({ data }: NodeProps) {
             variant={'outline'}
             onClick={(e) => {
               e.stopPropagation()
-              flowActions.CreateNodeAction({ automationId: automationFlowStore.automationId || '', nodeType: nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE })
+              flowActions.CreateNodeAction({ id: uuidv4(), automationId: automationFlowStore.automationId || '', nodeType: nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE })
             }}
           >
             Mensaje
@@ -44,7 +45,7 @@ export function FirstSteNode({ data }: NodeProps) {
             variant={'outline'}
             onClick={(e) => {
               e.stopPropagation()
-              flowActions.CreateNodeAction({ automationId: automationFlowStore.automationId || '', nodeType: nodeTypes.NODE_TYPE_CONDITION })
+              flowActions.CreateNodeAction({ id: uuidv4(), automationId: automationFlowStore.automationId || '', nodeType: nodeTypes.NODE_TYPE_CONDITION })
             }}
           >
             Condicion

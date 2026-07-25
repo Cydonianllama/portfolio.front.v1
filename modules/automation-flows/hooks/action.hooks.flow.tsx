@@ -4,10 +4,13 @@ import { PublishAutomationRequestDTO, PublishAutomation } from "@/api/flow/publi
 import { RemoveNodeRequestDTO, RemoveNode } from "@/api/flow/remove.node"
 import { UpdateNodeRequestDTO, UpdateNode } from "@/api/flow/update.node"
 import { UpdatePositionNode, UpdatePositionNodeRequestDTO } from "@/api/flow/update.position.node"
-import { useCallback } from "react"
+import { useCallback, useContext } from "react"
 import { toast } from "sonner"
 import { useAutomationFlow } from "../store/automation.flow.store"
 import { useReactFlow } from "@xyflow/react"
+import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
+import { BuildNodeAndEdges } from "../utils/build"
+import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type FlowHookActionsProps = {
@@ -16,7 +19,24 @@ type FlowHookActionsProps = {
 
 export const FlowHookActions = ({ }: FlowHookActionsProps) => {
 
-  const { screenToFlowPosition } = useReactFlow();
+  const context = useContext(WorkflowEditorContext);
+  const {
+    nodes,
+    edges,
+    setNodes,
+    setEdges,
+    onNodesChange,
+    onEdgesChange,
+  } = context || {
+    nodes: [],
+    edges: [],
+    setNodes: () => { },
+    setEdges: () => { },
+    onNodesChange: () => { },
+    onEdgesChange: () => { },
+  }
+
+  // const { screenToFlowPosition } = useReactFlow();
   const automationFlowStore = useAutomationFlow()
 
   const CreateNodeAction = useCallback(async (data: CreateNodeRequestDTO) => {
@@ -202,6 +222,25 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
       // success
       toast.success('Success')
       automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers }, initialListFinished: true })
+      
+      if (req.data.nodeList) {
+        const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList })
+        setNodes(buildData.nodes)
+        setEdges(buildData.edges)
+        const node = buildData.nodes.find(n => n.type === nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING);
+        if (node) {
+          console.log('realizar el centrado')
+          setCenter(
+            node.position.x + ((node.measured?.width || 0) / 2),
+            node.position.y + ((node.measured?.height || 0) / 2),
+            {
+              zoom: 1.5,
+              duration: 800,
+            }
+          );
+        }
+      }
+
 
     } catch (ex) {
 
@@ -218,4 +257,8 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
     UpdatePositionNodAction,
     GetAutomationInformationAction
   }
+}
+
+function setCenter(arg0: number, arg1: number, arg2: { zoom: number; duration: number }) {
+  throw new Error("Function not implemented.")
 }

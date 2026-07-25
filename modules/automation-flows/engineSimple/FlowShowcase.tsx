@@ -13,7 +13,7 @@ import {
   Edge,
   useReactFlow,
 } from "@xyflow/react";
-import { ComponentType, useCallback, useEffect, useRef } from "react";
+import { ComponentType, useCallback, useContext, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
 import { edgeTypes } from "./edges.types";
 import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
@@ -23,6 +23,7 @@ import { canOpenEditor } from "../utils/can-open-editor";
 import { FlowEdge, nodesFlow } from "./types";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -36,40 +37,39 @@ type FlowScreenProps = {
 }
 
 export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations, nodesF, edgesF }: FlowScreenProps) {
-  const { setCenter } = useReactFlow();
+  const { setCenter, } = useReactFlow();
 
   const automationFlowStore = useAutomationFlow()
   const flowActions = FlowHookActions({})
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(edgesF);
+  const context = useContext(WorkflowEditorContext);
+  const {
+    nodes,
+    edges,
+    setNodes,
+    setEdges,
+    onNodesChange,
+    onEdgesChange,
+  } = context || {
+    nodes: [],
+    edges: [],
+    setNodes: () => {},
+    setEdges: () => {},
+    onNodesChange: () => {},
+    onEdgesChange: () => {},
+  }
 
-  useEffect(() => {
-    // if (nodesF && edgesF) console.log('actualizacion desde fuera')
-    if (nodesF) setNodes(nodesF)
-    if (edgesF) setEdges(edgesF)
-  }, [nodesF, edgesF])
+  // const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
+  // const [edges, setEdges, onEdgesChange] = useEdgesState(edgesF);
+
+  // useEffect(() => {
+  //   // if (nodesF && edgesF) console.log('actualizacion desde fuera')
+  //   if (nodesF) setNodes(nodesF)
+  //   if (edgesF) setEdges(edgesF)
+  // }, [nodesF, edgesF])
 
   // centrar el nodo trigger al finalizar el listado
-  useEffect(() => {
-    if (automationFlowStore.initialListFinished) {
-      setTimeout(() => {
-        const node = nodes.find(n => n.type === nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING);
-
-        if (!node) return;
-
-        console.log('realizar el centrado')
-        setCenter(
-          node.position.x + ((node.measured?.width || 0) / 2),
-          node.position.y + ((node.measured?.height || 0) / 2),
-          {
-            zoom: 1.5,
-            duration: 800,
-          }
-        );
-      }, 600)
-    }
-  }, [automationFlowStore.initialListFinished])
+  // useEffect(() => {}, [automationFlowStore.initialListFinished])
 
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
