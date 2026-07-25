@@ -41,10 +41,10 @@ export function LandingScreen() {
             >
               Sobre el desarrollador
             </Link>
-            <Button render={<Link href="/login" />} size="sm" variant="outline">
+            <Button nativeButton={false} render={<Link href="/login" />} size="sm" variant="outline">
               Iniciar sesión
             </Button>
-            <Button render={<Link href="/register" />} size="sm">
+            <Button nativeButton={false} render={<Link href="/register" />} size="sm">
               Registrarse
             </Button>
           </nav>
@@ -62,10 +62,10 @@ export function LandingScreen() {
               Este proyecto aún está en desarrollo por lo que no te voy a meter palabras vacías. Flujos conversacionales para redes sociales y llamadas, workflow generales o especializado son las herramientas en desarrollo.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button render={<Link href="/register" />} size="lg">
+              <Button nativeButton={false} render={<Link href="/register" />} size="lg">
                 Empieza gratis <ArrowRight className="ml-2 size-4" />
               </Button>
-              <Button render={<Link href="/me" />} size="lg" variant="outline">
+              <Button nativeButton={false} render={<Link href="/me" />} size="lg" variant="outline">
                 Conoce al desarrollador
               </Button>
             </div>
@@ -130,6 +130,7 @@ export function LandingScreen() {
               Únete a cydo y empieza a automatizar tu negocio hoy mismo.
             </p>
             <Button
+              nativeButton={false}
               render={<Link href="/register" />}
               size="lg"
               variant="secondary"

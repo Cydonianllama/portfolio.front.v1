@@ -46,7 +46,7 @@ export const ListConversationPagesSection = ({ handleOpenManageConversationFilte
   return (<>
     <div className="px-2 flex-1 ">
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold">Conversations</h2>
+        <h2 className="font-semibold text-foreground">Conversations</h2>
         <div>
           {listConvesationFilters.length < QTY_SHOWING && (<>
             <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400 cursor-pointer'} variant={'ghost'} >
@@ -61,7 +61,7 @@ export const ListConversationPagesSection = ({ handleOpenManageConversationFilte
         </div>
       </>)}
       {listConvesationFilters.length == 0 && (<>
-        <div className="h-25 flex items-center justify-center text-xs">
+        <div className="h-25 flex items-center justify-center text-xs text-muted-foreground">
           No hay filtros
         </div>
       </>)}

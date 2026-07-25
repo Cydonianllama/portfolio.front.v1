@@ -54,13 +54,11 @@ export const DialogManageConversationFilters = (config: DialogManageConversation
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Filtros de conversaciones</DialogTitle>
-          <DialogDescription>
-            Creación de filtro de conversaciones.
-          </DialogDescription>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="">
           <div>
-            <Separator />
+            {/* <Separator /> */}
             <div className="flex justify-between py-5">
               <h2 className="font-semibold">Listado de conversaciones</h2>
               <Button onClick={() => { config.onClickCreate() }}>

@@ -73,17 +73,19 @@ export const SuscrciptionCard = ({ }: SuscrciptionCardProps) => {
             {open && (<>
               <div className="bg-white flex flex-col justify-start p-3 border rounded-lg gap-3">
                 <div className="flex justify-between items-start relative">
-                  <h2 className="font-semibold text-xs">Version de prueba</h2>
+                  <h2 className="font-semibold text-xs text-foreground">Version de prueba</h2>
                   <div className="absolute top-[-30%] right-0">
-                    <Button variant="outline" size="xs">
+                    <Button className={'text-foreground'} variant="outline" size="xs">
                       Ver planes
                     </Button>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex flex-col gap-0.5">
-                    <div className="text-xs font-semibold">Estas en Trial</div>
-                    <Progress className={'py-0'} value={33} />
+                    <Progress value={20} className="w-full max-w-sm gap-0.5">
+                      <ProgressLabel className={'text-xs'}>Estas en Trial</ProgressLabel>
+                      <ProgressValue className={'text-xs'} />
+                    </Progress>
                     <div className="text-muted-foreground text-xs">
                       7 días para finalizar trial
                     </div>

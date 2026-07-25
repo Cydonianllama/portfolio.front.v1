@@ -39,10 +39,10 @@ export const ShowcaseId = ({ id, width = 90 }: ShowcaseIdProps) => {
 
   return <>
     <div className='flex gap-1 p-1 rounded-sm bg-gray-100 items-center w-fit'>
-      <div className={`overflow-hidden text-ellipsis`} style={{ width: width }}>
+      <div className={`overflow-hidden text-ellipsis text-foreground text-xs`} style={{ width: width }}>
         {id}
       </div>
-      <Button onClick={copyTextToClipboard} className={'bg-gray-100 text-gray-400 cursor-pointer'} variant={'ghost'} size={'icon-sm'} >
+      <Button onClick={copyTextToClipboard} className={'text-muted-foreground cursor-pointer text-xs'} variant={'ghost'} size={'icon-sm'} >
         {copied && (<FaCheck />)}
         {!copied && (<FaRegCopy />)}
       </Button>

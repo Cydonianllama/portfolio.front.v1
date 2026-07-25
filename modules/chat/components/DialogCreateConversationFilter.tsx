@@ -68,9 +68,7 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Filtros de conversaciones</DialogTitle>
-          <DialogDescription>
-            Creación de filtro de conversaciones.
-          </DialogDescription>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>

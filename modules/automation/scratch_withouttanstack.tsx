@@ -273,13 +273,13 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
 
     {(!isLoading && !isError) && (<>
       {list.length > 0 && (<>
-        <div className="border rounded flex-1">
+        <div className="border rounded-lg overflow-hidden flex-1">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
                 <TableRow key={headerIdx}>
                   {group.headers.map((header, index) => (
-                    <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
+                    <TableHead className={`${(index == group.headers.length - 1) ? 'text-end' : ''} text-foreground bg-mist-50 py-1`} key={index}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -293,7 +293,7 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
               {table.getRowModel().rows.map((row, index) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                    <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} text-muted-foreground py-1`} key={cellIdx}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -393,21 +393,23 @@ export type AutomationFooterTableProps = {
 
 export const AutomationFooterTable = ({ HandleToNextPage, HandleToPrevPage, pagination }: AutomationFooterTableProps) => {
   return (<>
-    <div className='flex justify-between items-center py-4'>
-      <div>{((pagination?.page || 0) - 1) * (pagination?.limit || 0)}-{((pagination?.page || 0) - 1) * (pagination?.limit || 0) + (pagination?.limit || 0)} de <strong>{pagination?.total || 0}</strong></div>
+    <div className='flex justify-between items-center py-4 text-xs'>
+      <div className="text-muted-foreground">{((pagination?.page || 0) - 1) * (pagination?.limit || 0)}-{((pagination?.page || 0) - 1) * (pagination?.limit || 0) + (pagination?.limit || 0)} de <strong>{pagination?.total || 0}</strong></div>
       <div className='flex gap-5 items-center'>
         <Button
-          size={'icon'}
+          className={'text-muted-foreground'}
+          size={'icon-xs'}
           variant="outline"
           onClick={HandleToPrevPage}
           disabled={pagination?.hasPreviousPage ? false : true}
         >
           <FaChevronLeft />
         </Button>
-        <span>{pagination?.page}/{pagination?.totalPages}</span>
+        <span className="text-muted-foreground">{pagination?.page}/{pagination?.totalPages}</span>
         <Button
+          className={'text-muted-foreground'}
           onClick={HandleToNextPage}
-          size={'icon'}
+          size={'icon-xs'}
           variant="outline"
           disabled={pagination?.hasNextPage ? false : true}
         >

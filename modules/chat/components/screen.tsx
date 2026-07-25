@@ -215,7 +215,7 @@ export const ChatScreen = () => {
 
             {/*  */}
             <div className="flex justify-between px-2 h-15 items-center">
-              <h1 className="font-semibold">Inbox</h1>
+              <h1 className="font-semibold text-foreground">Inbox</h1>
               <div>
                 <Button variant={'ghost'} size={'icon'}>
                   <IoSearch />
@@ -252,7 +252,7 @@ export const ChatScreen = () => {
             <Button className={'cursor-pointer'} onClick={HandleToggleAsideListConversations} variant={'ghost'} size={'icon'}>
               <RxHamburgerMenu />
             </Button>
-            {currentFilterData && (<span className="font-semibold">{currentFilterData.name || ''}</span>)}
+            {currentFilterData && (<span className="font-semibold text-foreground">{currentFilterData.name || ''}</span>)}
             
           </div>
           {/*  */}

@@ -41,7 +41,8 @@ export const Settings = () => {
   return <>
     <div className="flex h-full w-full flex-col gap-6 p-0">
       <Tabs defaultValue="projects" orientation="vertical" className="gap-5 h-full">
-        <TabsList variant="line" className="w-48 shrink-0  h-full ">
+        <TabsList variant="line" className="w-48 shrink-0  h-full space-y-2">
+
           <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Personal</div>
             <TabsTrigger value="profile" className="justify-start gap-2">
@@ -49,7 +50,7 @@ export const Settings = () => {
               Perfil
             </TabsTrigger>
           </div>
-          <Separator className="my-2" />
+
           <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Ajustes de Workspace</div>
             <TabsTrigger value="general" className="justify-start gap-2">
@@ -74,7 +75,6 @@ export const Settings = () => {
             </TabsTrigger>
           </div>
 
-          <Separator className="my-2" />
           <div className="flex flex-col gap-2 w-full">
             <div className="font-semibold">Billing settings</div>
             <TabsTrigger value="plans" className="justify-start gap-2">

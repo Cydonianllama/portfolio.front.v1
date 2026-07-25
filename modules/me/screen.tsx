@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { experienceList, proyectList } from "./data";
 
 export function MeScreen() {
   return (
@@ -86,18 +87,14 @@ export function MeScreen() {
               </h2>
             </div>
             <div className="grid gap-4">
-              <ExperienceCard
-                company="Plazbot"
-                role="Desarrollador"
-                period="5 años"
-                description="Desarrollo de soluciones de software para automatización y atención al cliente en negocios."
-              />
-              <ExperienceCard
-                company="Tempus"
-                role="Soporte"
-                period="6 meses"
-                description="Soporte técnico y resolución de incidencias en entornos de software empresarial."
-              />
+              {experienceList.map((el, index) => <ExperienceCard
+                key={index}
+                company={el.company}
+                role={el.rol}
+                period={el.period}
+                tasks={el.tasks}
+                description={""}
+              />)}
             </div>
           </section>
 
@@ -110,7 +107,7 @@ export function MeScreen() {
               </h2>
             </div>
             <Card>
-              <CardContent className="flex flex-wrap gap-2 pt-6">
+              <CardContent className="flex flex-wrap gap-2 pt-2">
                 <TechBadge>Next.js</TechBadge>
                 <TechBadge>React</TechBadge>
                 <TechBadge>HTML</TechBadge>
@@ -134,17 +131,13 @@ export function MeScreen() {
               </h2>
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
-              <ProjectCard
-                title="cydo"
-                description="Aplicación especializada en automatizar negocios de restaurantes en Perú. Conecta Telegram, WhatsApp y widget web."
-                tags={["Next.js", "React", "TypeScript"]}
-                href="/"
-              />
-              <ProjectCard
-                title="Próximo proyecto"
-                description="Aquí se irán agregando nuevos proyectos a medida que se desarrollen."
-                tags={["Por definir"]}
-              />
+              {proyectList.map((el, index) => <ProjectCard
+                key={index}
+                title={el.title}
+                description={el.description}
+                tags={el.tags}
+                href={el.link}
+              />)}
             </div>
           </section>
         </div>
@@ -175,11 +168,13 @@ function ExperienceCard({
   role,
   period,
   description,
+  tasks
 }: {
   company: string;
   role: string;
   period: string;
   description: string;
+  tasks?: string[]
 }) {
   return (
     <Card>
@@ -193,7 +188,11 @@ function ExperienceCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-muted-foreground">{description}</p>
+        <div className="px-4">
+          <ul className="list-disc">
+            {tasks?.map((el, index) => <li key={index}>{el}</li>)}
+          </ul>
+        </div>
       </CardContent>
     </Card>
   );

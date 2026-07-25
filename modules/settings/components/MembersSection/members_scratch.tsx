@@ -215,7 +215,7 @@ export const MembersTable_ = ({ handleDelete, handleEdit, list, isLoading, isErr
       header: "Email",
       cell: (data) => {
         return (<>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-1">
             <span>{data.row.original.email}</span>
             {(data.row.original.invitation?.status != InvitationMemberStatus.acepted && !data.row.original.isOwner) && (<>
               <Badge>
@@ -295,13 +295,13 @@ export const MembersTable_ = ({ handleDelete, handleEdit, list, isLoading, isErr
 
     {(!isLoading && !isError) && (<>
       {list.length > 0 && (<>
-        <div className="border rounded flex-1">
+        <div className="border rounded-lg flex-1 overflow-hidden">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
-                <TableRow key={headerIdx}>
+                <TableRow className="bg-gray-50 *:border-border [&>:not(:last-child)]:border-r" key={headerIdx}>
                   {group.headers.map((header, index) => (
-                    <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
+                    <TableHead className={`${(index == group.headers.length - 1) ? 'text-end' : ''} text-foreground text-sm py-1`} key={index}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -313,9 +313,9 @@ export const MembersTable_ = ({ handleDelete, handleEdit, list, isLoading, isErr
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows.map((row, index) => (
-                <TableRow key={row.id}>
+                <TableRow className="*:border-border [&>:not(:last-child)]:border-r" key={row.id}>
                   {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                    <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} text-muted-foreground text-sm py-1`} key={cellIdx}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

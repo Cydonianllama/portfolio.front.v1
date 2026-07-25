@@ -330,8 +330,8 @@ export const ConctatsScreen = () => {
       {/* start::header */}
       <div className="flex justify-between items-center py-5">
         <div>
-          <h1 className="text-xl font-semibold text-gray-700">Administracion de contactos</h1>
-          <p className="text-md text-gray-400">Pantalla de administración de contactos</p>
+          <h1 className="text-xl font-semibold text-foreground">Administracion de contactos</h1>
+          <p className="text-md text-muted-foreground">Pantalla de administración de contactos</p>
         </div>
         <div className='flex items-center gap-2 '>
 
@@ -355,7 +355,7 @@ export const ConctatsScreen = () => {
           /> */}
         </div>
         <div className="flex gap-2 items-center">
-          <Button variant={'outline'} onClick={HandleToRefresh} size={'icon'} >
+          <Button className={'text-muted-foreground'} variant={'outline'} onClick={HandleToRefresh} size={'icon'} >
             <IoMdRefresh />
           </Button>
           <Button onClick={HandleToOpenAddItem}>Agregar contacto</Button>
