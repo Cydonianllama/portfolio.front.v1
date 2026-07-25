@@ -19,7 +19,7 @@ export function ConditionNode({ data }: NodeProps) {
         Icon={GeneralConfigurationNode[type].icon}
         title={GeneralConfigurationNode[type].title}
         description={GeneralConfigurationNode[type].description}
-        config={{ hasSource: true, hasTarget: false }}
+        config={{ hasSource: false, hasTarget: true }}
       >
         condition-node
       </BaseNode>

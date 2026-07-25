@@ -12,7 +12,9 @@ import axios from 'axios'
 export interface CreateNodeRequestDTO {
   id: string,
   automationId: string,
-  nodeType: NodeTypesType
+  nodeType: NodeTypesType,
+  x: number,
+  y: number,
 }
 
 interface CreateNodeResponseDTO {

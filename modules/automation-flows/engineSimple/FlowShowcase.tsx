@@ -29,14 +29,9 @@ type FlowScreenProps = {
   isLoading?: boolean;
   edgeTypesConfiguration: Record<edgeTypes, ComponentType<any>>
   nodeTypesConfigurations: Record<string, ComponentType<any>>
-  onClickNode: () => void;
-  nodes_: Array<IAutomationNode>
-  //
-  nodesF: Array<nodesFlow>
-  edgesF: FlowEdge[];
 }
 
-export default function FlowScreen({ onClickNode, nodes_, edgeTypesConfiguration, nodeTypesConfigurations, nodesF, edgesF }: FlowScreenProps) {
+export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
   const { setCenter, } = useReactFlow();
 
   const automationFlowStore = useAutomationFlow()

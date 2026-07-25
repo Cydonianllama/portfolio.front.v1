@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateNodeRequestDTO, CreateNode } from "@/api/flow/create.node"
 import { GetAutomationInformation, GetAutomationInformationRequestDTO } from "@/api/flow/get.information"
 import { PublishAutomationRequestDTO, PublishAutomation } from "@/api/flow/publish.automation"
@@ -11,6 +12,8 @@ import { useReactFlow } from "@xyflow/react"
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
 import { BuildNodeAndEdges } from "../utils/build"
 import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type"
+import { nodesFlow } from "../engineSimple/types"
+import { v4 as uuidv4 } from "uuid";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type FlowHookActionsProps = {
@@ -20,6 +23,7 @@ type FlowHookActionsProps = {
 export const FlowHookActions = ({ }: FlowHookActionsProps) => {
 
   const context = useContext(WorkflowEditorContext);
+
   const {
     nodes,
     edges,
@@ -36,12 +40,20 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
     onEdgesChange: () => { },
   }
 
-  // const { screenToFlowPosition } = useReactFlow();
+  const { setCenter, screenToFlowPosition } = useReactFlow();
   const automationFlowStore = useAutomationFlow()
 
-  const CreateNodeAction = useCallback(async (data: CreateNodeRequestDTO) => {
+  const CreateNodeAction = useCallback(async (data: Partial<CreateNodeRequestDTO>) => {
     try {
-      const req = await CreateNode(data)
+      const newId = uuidv4()
+      const x = window.innerWidth / 2
+      const y = window.innerHeight / 2
+      const center = screenToFlowPosition({
+        x: x,
+        y: y
+      });
+
+      const req = await CreateNode({ ...data, x: center.x, y: center.y, id: newId } as CreateNodeRequestDTO)
       if (!req) {
         toast.error('Error 1')
         return;
@@ -64,12 +76,36 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
         automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
       }
 
+      // add node and center
+      // const center = screenToFlowPosition({
+      //   x: x,
+      //   y: y
+      // });
+
+      // const newNodeFlow: nodesFlow = {
+      //   id: newId,
+      //   type: data.nodeType,
+      //   data: {
+      //     id: newId,
+      //     type: data.nodeType || ''
+      //   },
+      //   position: center
+      // }
+
+      // setNodes([...nodes, newNodeFlow])
+
+      if (req.data.node && automationFlowStore.information?.nodeList) {
+        const buildData = BuildNodeAndEdges({ nodes: [...automationFlowStore.information.nodeList, req.data.node] })
+        setNodes(buildData.nodes)
+        setEdges(buildData.edges)
+      }
+
     } catch (ex) {
 
     } finally {
 
     }
-  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState])
+  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState, nodes, setNodes])
 
   const PublishAutomationAction = useCallback(async (data: PublishAutomationRequestDTO) => {
     try {
@@ -222,25 +258,30 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
       // success
       toast.success('Success')
       automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers }, initialListFinished: true })
+
       
       if (req.data.nodeList) {
+        // contruir los nodos del flow
         const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList })
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
+
+        // cnetrar si solo hay un solo nodo y es el trigger node
         const node = buildData.nodes.find(n => n.type === nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING);
-        if (node) {
+        if (node && req.data.nodeList.length == 1) {
           console.log('realizar el centrado')
-          setCenter(
-            node.position.x + ((node.measured?.width || 0) / 2),
-            node.position.y + ((node.measured?.height || 0) / 2),
-            {
-              zoom: 1.5,
-              duration: 800,
-            }
-          );
+          setTimeout(() => {
+            setCenter(
+              node.position.x + ((node.measured?.width || 0) / 2),
+              node.position.y + ((node.measured?.height || 0) / 2),
+              {
+                zoom: 1.5,
+                duration: 800,
+              }
+            );
+          }, 200)
         }
       }
-
 
     } catch (ex) {
 
@@ -257,8 +298,4 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
     UpdatePositionNodAction,
     GetAutomationInformationAction
   }
-}
-
-function setCenter(arg0: number, arg1: number, arg2: { zoom: number; duration: number }) {
-  throw new Error("Function not implemented.")
 }

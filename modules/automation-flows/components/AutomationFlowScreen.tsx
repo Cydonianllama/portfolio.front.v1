@@ -1,5 +1,6 @@
 'use client'
-;
+  ;
+import { ReactFlowProvider } from "@xyflow/react";
 import { WorkflowEditorProvider } from "./provider/WorkflowEditorProvider";
 import { AutomationFlowScreenContent } from "./ScreenContent";
 
@@ -11,10 +12,11 @@ type AutomationFlowScreenProps = {
 export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps) => {
   return (
     <>
-      <WorkflowEditorProvider>
-        <AutomationFlowScreenContent  automationId={automationId} />
-      </WorkflowEditorProvider>
-
+      <ReactFlowProvider>
+        <WorkflowEditorProvider>
+          <AutomationFlowScreenContent automationId={automationId} />
+        </WorkflowEditorProvider>
+      </ReactFlowProvider>
     </>
   )
 }

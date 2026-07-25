@@ -27,7 +27,7 @@ export function FirstSteNode({ data }: NodeProps) {
         Icon={GeneralConfigurationNode[type].icon}
         title={GeneralConfigurationNode[type].title}
         description={GeneralConfigurationNode[type].description}
-        config={{ hasSource: true, hasTarget: true }}
+        config={{ hasSource: false, hasTarget: true }}
       >
         <div className="space-y-2 pt-2">
           <Button

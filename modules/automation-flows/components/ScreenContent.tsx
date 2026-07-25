@@ -44,7 +44,6 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
     }
   }, [automationId])
 
-  const { edges: fEdges, nodes: fNodes } = BuildNodeAndEdges({ nodes: automationFlowStore.information?.nodeList || [] })
 
   return (
     <>
@@ -64,16 +63,10 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
           {automationFlowStore.openEdit && (<EditorFlow />)}
           {/* <ContentLoading /> */}
           {(!automationFlowStore.listing && automationFlowStore.initialListFinished) && (<>
-            <ReactFlowProvider >
               <FlowScreen
                 edgeTypesConfiguration={edgeTypesConfiguration}
                 nodeTypesConfigurations={nodeTypesConfigurations}
-                edgesF={fEdges}
-                nodesF={fNodes}
-                onClickNode={OnClickNode}
-                nodes_={automationFlowStore.information?.nodeList || []}
               />
-            </ReactFlowProvider>
           </>)}
           {automationFlowStore.openSelectNode && <SideSelectorNode />}
           <ButtonAddNodes />
