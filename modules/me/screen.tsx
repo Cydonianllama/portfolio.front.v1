@@ -80,7 +80,7 @@ export function MeScreen() {
           {/* Experiencia */}
           <section className="mb-12">
             <div className="mb-6 flex items-center gap-2">
-              <Briefcase className="size-6 text-red-600" />
+              <Briefcase className="size-6" />
               <h2 className="font-heading text-2xl font-bold tracking-tight">
                 Experiencia laboral
               </h2>

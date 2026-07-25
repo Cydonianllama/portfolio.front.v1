@@ -20,15 +20,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { LuWebhook } from "react-icons/lu";
+import { featureList, integrationList } from "./data";
 
 export function LandingScreen() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className="flex min-h-screen flex-col text-foreground bg-landing">
+      {/* bg-background  */}
       {/* Navbar */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <ChefHat className="size-6 text-red-600" />
+            <LuWebhook className="size-6 text-brand-primary" />
             <span>cydo</span>
           </Link>
           <nav className="flex items-center gap-4">
@@ -53,13 +56,10 @@ export function LandingScreen() {
         <section className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-6xl">
-              Automatiza tu restaurante con{" "}
-              <span className="text-red-600">cydo</span>
+              Automatiza tus flujos con <span className="text-landing-emphasize">Cydomation</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-              Conecta tus redes sociales y centraliza la atención a tus clientes
-              en una sola plataforma diseñada para negocios de restaurantes en
-              Perú.
+              Este proyecto aún está en desarrollo por lo que no te voy a meter palabras vacías. Flujos conversacionales para redes sociales y llamadas, workflow generales o especializado son las herramientas en desarrollo.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button render={<Link href="/register" />} size="lg">
@@ -68,6 +68,30 @@ export function LandingScreen() {
               <Button render={<Link href="/me" />} size="lg" variant="outline">
                 Conoce al desarrollador
               </Button>
+            </div>
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* Módulos */}
+        <section className="px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 text-center">
+              <h2 className="font-heading text-3xl font-bold tracking-tight">
+                Todo lo que necesitas para administrar tu negocio
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                Nuestros módulos base te permitiran contruir la administracion de tu negocio
+              </p>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {featureList.map((el, index) => <ModuleCard
+                key={index}
+                icon={<Users className="size-6 text-red-600" />}
+                title={el.title}
+                description={el.description}
+              />)}
             </div>
           </div>
         </section>
@@ -85,66 +109,19 @@ export function LandingScreen() {
                 Comunícate con tus clientes donde ellos ya están.
               </p>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <IntegrationCard
-                icon={<Send className="size-6 text-sky-500" />}
-                title="Telegram"
-                description="Recibe pedidos, consultas y mensajes directos desde Telegram en tiempo real."
-              />
-              <IntegrationCard
-                icon={<Phone className="size-6 text-green-600" />}
-                title="WhatsApp"
-                description="Atiende a tus clientes por WhatsApp y automatiza respuestas frecuentes."
-              />
-              <IntegrationCard
-                icon={<AppWindow className="size-6 text-violet-500" />}
-                title="Widget web"
-                description="Añade un chat en tu sitio web para capturar leads sin complicaciones."
-              />
-            </div>
-          </div>
-        </section>
-
-        <Separator />
-
-        {/* Módulos */}
-        <section className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <h2 className="font-heading text-3xl font-bold tracking-tight">
-                Todo lo que necesitas para administrar tu negocio
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                Módulos pensados para restaurantes que quieren crecer.
-              </p>
-            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              <ModuleCard
-                icon={<Users className="size-6 text-red-600" />}
-                title="Contactos"
-                description="Gestiona tu base de clientes y segmenta por canal de origen."
-              />
-              <ModuleCard
-                icon={<Building2 className="size-6 text-red-600" />}
-                title="Empresa"
-                description="Configura la información de tu restaurante, horarios y datos clave."
-              />
-              <ModuleCard
-                icon={<MessagesSquare className="size-6 text-red-600" />}
-                title="Chat"
-                description="Centraliza conversaciones de Telegram, WhatsApp y widget en un solo lugar."
-              />
-              <ModuleCard
-                icon={<Route className="size-6 text-red-600" />}
-                title="Seguimiento"
-                description="Visualiza el historial de interacciones y el estado de cada conversación."
-              />
+              {integrationList.map((el, index) => <IntegrationCard
+                key={index}
+                icon={<Send className="size-6 text-sky-500" />}
+                title={el.title}
+                description={el.description}
+              />)}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="bg-red-600 px-4 py-20 text-white sm:px-6 lg:px-8">
+        <section className=" bg-linear-65 from-purple-500 to-pink-500 px-4 py-20 text-white sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
               ¿Listo para transformar la atención de tu restaurante?
@@ -156,7 +133,7 @@ export function LandingScreen() {
               render={<Link href="/register" />}
               size="lg"
               variant="secondary"
-              className="mt-8 bg-white text-red-600 hover:bg-white/90"
+              className="mt-8 bg-white text-brand-primary hover:bg-white/90"
             >
               Crear cuenta gratis <ArrowRight className="ml-2 size-4" />
             </Button>
@@ -168,11 +145,11 @@ export function LandingScreen() {
       <footer className="border-t px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2 font-semibold">
-            <ChefHat className="size-5 text-red-600" />
-            <span>cydo</span>
+            <LuWebhook className="size-5 text-brand-primary" />
+            <span>cydomat</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} cydo. Automatización para restaurantes
+            © {new Date().getFullYear()} cydomat. Automatización
             en Perú.
           </p>
           <div className="flex gap-4">

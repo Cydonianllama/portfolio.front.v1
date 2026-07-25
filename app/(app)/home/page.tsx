@@ -1,8 +1,9 @@
 'use server'
-import { HomeScreenTest } from "@/examples/home/screen"
+
+import { HomeScreen } from "@/modules/home/components/HomeScreen"
 
 export default async function Page() {
   return <>
-    <HomeScreenTest />
+    <HomeScreen />
   </>
 }

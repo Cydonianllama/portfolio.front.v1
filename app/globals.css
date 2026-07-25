@@ -57,6 +57,17 @@
   --color-destructive-foreground: var(--destructive-foreground);
 }
 
+@theme {
+  --color-ui-er-card: var(--color-gray-700);
+
+  /* landing */
+  --color-brand-primary: var(--color-orange-500);
+  --color-landing-emphasize: var(--color-orange-400);
+  --color-landing: var(--color-gray-100);
+  --color-landing-cta-card: var(--color-orange-500);
+}
+
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
