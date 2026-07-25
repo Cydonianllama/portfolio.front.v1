@@ -148,15 +148,20 @@ import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
 import { edgeTypes } from "./engineSimple/edges.types";
 import { RiWebhookFill } from "react-icons/ri";
 import { RequestServiceNode } from "./nodes/request.service.node";
+import { RequestServiceEditor } from "./editors/request.service.editor";
 
 export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null }>> = {
-  [nodeTypes.NODE_TYPE_PRIVATE_MESSAGE]: {
+  [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: {
     hasEditor: true,
     Editor: MessageEditor
   },
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: {
     hasEditor: false,
     Editor: TriggerEditor
+  },
+  [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: {
+    hasEditor: true,
+    Editor: RequestServiceEditor
   },
   [nodeTypes.NODE_TYPE_CONDITION]: {
     hasEditor: true,

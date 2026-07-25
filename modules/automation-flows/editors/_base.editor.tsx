@@ -13,6 +13,8 @@ export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => 
 
   const automationFlowStore = useAutomationFlow()
 
+  const currentNode = automationFlowStore.information?.nodeList?.find(el => el.id == automationFlowStore.currentNodeIdEditing)
+
   const OnClickClose = () => {
     automationFlowStore.clearEdit()
   }
@@ -20,8 +22,8 @@ export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => 
   return (
     <div className='h-full overflow-auto'>
       <div className='flex justify-between items-center px-2 py-3 border-b'>
-        <div>
-          Editor Base
+        <div className='font-semibold'>
+          {currentNode?.title}
         </div>
         <Button onClick={OnClickClose} variant={'outline'} size={'icon'}>
           <TfiClose/>

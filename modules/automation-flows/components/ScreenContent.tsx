@@ -48,7 +48,7 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
   return (
     <>
       <div className="flex flex-col w-full h-full">
-        <div className="h-20 w-full flex items-center justify-between gap-2 border-b border-t px-5">
+        <div className="h-20 w-full flex items-center justify-between gap-2 border-b border-t px-2">
           <div className="flex items-center gap-2">
             <EditorName />
           </div>
