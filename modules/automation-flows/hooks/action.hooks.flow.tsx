@@ -11,9 +11,9 @@ import { useAutomationFlow } from "../store/automation.flow.store"
 import { useReactFlow } from "@xyflow/react"
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
 import { BuildNodeAndEdges } from "../utils/build"
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type"
 import { nodesFlow } from "../engineSimple/types"
 import { v4 as uuidv4 } from "uuid";
+import { nodeTypes } from '@erick/conversationalflow'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type FlowHookActionsProps = {

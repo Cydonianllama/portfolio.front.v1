@@ -16,13 +16,10 @@ import {
 import { ComponentType, useCallback, useContext, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
 import { edgeTypes } from "./edges.types";
-import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation";
-import { BuildNodeAndEdges } from "../utils/build";
 import { useAutomationFlow } from "../store/automation.flow.store";
 import { canOpenEditor } from "../utils/can-open-editor";
 import { FlowEdge, nodesFlow } from "./types";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
 
 type FlowScreenProps = {

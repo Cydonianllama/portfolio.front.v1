@@ -1,7 +1,4 @@
-import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation'
-import { nodeTypes } from '@/flow-engines/simpleAutomation/models/node.automation.type'
-import { ConversationPlatform } from '@/flow-engines/simpleAutomation/models/platform.enum'
-import { IPublishedAutomation } from '@/flow-engines/simpleAutomation/models/published.automation'
+import { ConversationPlatform, IPublishedAutomation, nodeTypes } from '@erick/conversationalflow'
 
 export const publishedAutomation: IPublishedAutomation = {
   automationId: '',
