@@ -24,6 +24,7 @@ export enum NotificationTypes {
   addedMember = 'added:member',
   removedMember = 'removed:member',
   workspaceNameUpdated = 'updated:workspacename',
+  userVerifiedAccount = 'user:verified-account'
 }
 
 export enum NotificationEntityTypes {

@@ -130,6 +130,23 @@ const MessageLine = (data: NotificationDTO): MessageLineResponse => {
         }
       }
 
+      if (entity == NotificationEntityTypes.none) {
+        icon = <><TbUsersPlus className="size-4  font-bold" /></>
+        if (data.type == NotificationTypes.userVerifiedAccount) {
+          title = 'Bienvenido'
+          text.push({
+            text: data.entities[0].name,
+            urlTo: null,
+            strong: true
+          })
+          text.push({
+            text: ' Te damos la bienvenida a esta plataforma.',
+            urlTo: null,
+            strong: false
+          })
+        }
+      }
+
     }
 
   }

@@ -261,38 +261,41 @@ export const SectionTable = (data: SectionTableProps) => {
 
       {/* Hay data */}
       {data.list.length > 0 && (<>
-        <div className="border rounded flex-1 min-w-0 w-full">
+        <div className="r rounded flex-1 min-w-0 w-full">
           {/* <div className='h-12 bg-fuchsia-100 w-950'></div> */}
-          <Table className='min-w-full w-full'>
-            <TableHeader>
-              {table.getHeaderGroups().map((group, headerIdx) => (
-                <TableRow key={headerIdx}>
-                  {group.headers.map((header, index) => (
-                    <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className='overflow-auto'>
-              {table.getRowModel().rows.map((row, index) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <div className='border rounded-lg'>
+            <Table className='min-w-full w-full '>
+              <TableHeader className='bg-gray-50'>
+                {table.getHeaderGroups().map((group, headerIdx) => (
+                  <TableRow className='*:border-border [&>:not(:last-child)]:border-r' key={headerIdx}>
+                    {group.headers.map((header, index) => (
+                      <TableHead className={(index == group.headers.length - 1) ? 'text-end' : ''} key={index}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody className='overflow-auto '>
+                {table.getRowModel().rows.map((row, index) => (
+                  <TableRow className='*:border-border [&>:not(:last-child)]:border-r border-b' key={row.id}>
+                    {row.getVisibleCells().map((cell, cellIdx) => (
+                      <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
         </div>
       </>)}
 

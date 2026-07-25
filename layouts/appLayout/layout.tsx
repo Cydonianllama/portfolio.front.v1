@@ -29,20 +29,12 @@ import { FaArrowUpRightDots } from "react-icons/fa6";
 import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from "@/components/ui/sidebar"
+import { SuscrciptionCard } from './SuscrciptionCard';
 
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
-  const {
-    state,
-    open,
-    setOpen,
-    openMobile,
-    setOpenMobile,
-    isMobile,
-    toggleSidebar,
-  } = useSidebar()
-
+  
   const settingsStore = useSettingsStore()
   const userStore = useAuthCydoStore()
   const router = useRouter()
@@ -79,28 +71,7 @@ function AppSidebar({ pathname }: { pathname: string }) {
           </SidebarMenu>
         </SidebarGroup>
 
-        {/* tarjeta de suscripcion */}
-        <SidebarGroup>
-          <SidebarMenu className="gap-3">
-            <SidebarMenuItem>
-              {!open && (
-                <SidebarMenuButton
-                  // size='lg'
-                  render={<>
-                    <Button variant={'outline'} size={'icon'}>
-                      <FaArrowUpRightDots />
-                    </Button>
-                  </>}
-                />
-              )}
-              {open && (<>
-                <div className='border rounded p-2 flex justify-center items-center bg-white'>
-                  Hola como estas?
-                </div>
-              </>)}
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
+        <SuscrciptionCard />
 
         {/* Módulos collapsible */}
         {/* <SidebarGroup>
