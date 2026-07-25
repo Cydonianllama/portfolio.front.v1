@@ -7,7 +7,7 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button"
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { nodeTypes } from "@erick/conversationalflow";
 import { useAutomationFlow } from "../store/automation.flow.store";
 
 export function TriggerNode({ data }: NodeProps) {

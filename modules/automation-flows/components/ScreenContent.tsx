@@ -5,7 +5,6 @@ import { ButtonPublish } from "./ButtonPublish";
 import { ButtonsViewFlow } from "./ButtonsViewFlow";
 import { ButtonsMemento } from "./ButtonsMemento";
 import { EditorName } from "./EditorName";
-import { ContentLoading } from "./states/Content.loading";
 import FlowScreen from "../engineSimple/FlowShowcase";
 import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
@@ -14,11 +13,7 @@ import { useEffect } from "react";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
-import { BuildNodeAndEdges } from "../utils/build";
 import { ButtonAddNodes } from "./ButtonAddNodes";
-import { ReactFlowProvider } from "@xyflow/react";
-import { WorkflowEditorProvider } from "./provider/WorkflowEditorProvider";
-
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

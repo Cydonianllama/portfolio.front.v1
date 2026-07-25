@@ -9,7 +9,7 @@ import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button";
 import { FlowHookActions } from "../hooks/action.hooks.flow";
 import { useAutomationFlow } from "../store/automation.flow.store";
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { nodeTypes } from "@erick/conversationalflow";
 import { v4 as uuidv4 } from "uuid";
 
 export function FirstSteNode({ data }: NodeProps) {

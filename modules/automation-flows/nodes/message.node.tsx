@@ -6,7 +6,7 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { nodeTypes } from "@erick/conversationalflow";
 
 export function MessageNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE

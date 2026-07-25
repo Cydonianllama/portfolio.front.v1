@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { IAutomationNode } from "@/flow-engines/simpleAutomation/models/node.automation"
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { IAutomationNode, nodeTypes } from "@erick/conversationalflow";
 import { FlowEdge, nodesFlow } from "../engineSimple/types";
 
 

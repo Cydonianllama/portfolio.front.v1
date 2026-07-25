@@ -1,8 +1,6 @@
 import { ReactElement } from "react";
-import { nodeTypes, NodeTypesType } from '@/flow-engines/simpleAutomation/models/node.automation.type'
-import { FaRegMessage } from "react-icons/fa6";
-import { FiFilter } from "react-icons/fi";
 import { bgColor, colorDefaultNode, GeneralConfigurationNode } from "../../_configs";
+import { NodeTypesType, nodeTypes } from "@erick/conversationalflow";
 
 export interface NodeToCreateConfiguration {
   title: string,

@@ -12,8 +12,7 @@ import { TriggerNode } from "./nodes/trigger.node";
 import { FirstSteNode } from "./nodes/firststep.node";
 import { ConditionNode } from "./nodes/condition.node";
 
-import { nodeTypes } from '@/flow-engines/simpleAutomation/models/node.automation.type'
-type NodeTypeValue = (typeof nodeTypes)[keyof typeof nodeTypes]
+export type NodeTypeValue = (typeof nodeTypes)[keyof typeof nodeTypes]
 export const FIRST_STEP_NODE = "first-step-node"
 
 //
@@ -149,6 +148,7 @@ import { edgeTypes } from "./engineSimple/edges.types";
 import { RiWebhookFill } from "react-icons/ri";
 import { RequestServiceNode } from "./nodes/request.service.node";
 import { RequestServiceEditor } from "./editors/request.service.editor";
+import { nodeTypes } from "@erick/conversationalflow";
 
 export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null }>> = {
   [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: {

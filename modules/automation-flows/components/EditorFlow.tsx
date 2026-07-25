@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseAppData } from "@/hooks/app/useAppData";
-import { EditorsConfiguration } from "../_configs";
-import { nodeTypes } from "@/flow-engines/simpleAutomation/models/node.automation.type";
+import { EditorsConfiguration, NodeTypeValue } from "../_configs";
 import { useAutomationFlow } from "../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type EditorFlowProps = {
@@ -15,7 +15,7 @@ export const EditorFlow = ({ }: EditorFlowProps) => {
 
   if (!currentNode) return <></>
 
-  const currentNodeType = currentNode.type
+  const currentNodeType = currentNode.type as NodeTypeValue
   const Editor = currentNodeType ? EditorsConfiguration[currentNodeType]?.Editor : undefined
 
   if (!Editor) return <></>
