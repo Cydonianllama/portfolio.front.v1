@@ -166,3 +166,14 @@
     /* @apply font-sans; */
   }
 }
+
+:root {
+  --space-x-app: 60px;
+}
+
+@layer components {
+  .app-section {
+    padding-left: var(--space-x-app);
+    padding-right: var(--space-x-app);
+  }
+}

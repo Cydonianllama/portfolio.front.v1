@@ -159,7 +159,7 @@ type TextComponentProps = {
 
 const TextComponent = ({ data }: TextComponentProps) => {
   return <>
-    {data.strong && (<strong>{data.text} </strong>)}
+    {data.strong && (<strong className="text-foreground">{data.text} </strong>)}
     {!data.strong && (<>{data.text} </>)}
   </>
 }
@@ -171,8 +171,8 @@ export const ActivityItem = ({ data }: ActivityItemProps) => {
 
   return (
     <>
-      <div className="flex">
-        <div className="mr-0 flex flex-col items-center px-4">
+      <div className="flex text-foreground">
+        <div className="mr-0 flex flex-col items-center pr-4">
           <div>
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-gray-300 border-2">
               {item.icon}
@@ -190,7 +190,7 @@ export const ActivityItem = ({ data }: ActivityItemProps) => {
             {item.text.map((el, index) => (<TextComponent key={index} data={el} />))}
           </p>
           <LuDot />
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             {item.date}
           </div>
         </div>

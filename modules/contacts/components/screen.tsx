@@ -325,7 +325,7 @@ export const ConctatsScreen = () => {
   }, [moduleState.infoCreationConvContact.isOpen])
 
   return (<>
-    <div className="relative w-full h-full px-12 flex flex-col">
+    <div className="relative w-full h-full flex flex-col app-section">
 
       {/* start::header */}
       <div className="flex justify-between items-center py-5">

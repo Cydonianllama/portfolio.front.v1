@@ -43,7 +43,7 @@ export const ListActivitiesComponent = () => {
   }, [useAppData.workspace])
 
   return <>
-    <div className="px-5">
+    <div className="">
       {activitiesStore.listing && (<>
         <SpinnerListing
           title="Items"
