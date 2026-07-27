@@ -261,13 +261,13 @@ export const SectionTable = (data: SectionTableProps) => {
 
       {/* Hay data */}
       {data.list.length > 0 && (<>
-        <div className="r rounded flex-1 min-w-0 w-full">
+        <div className="flex-1 min-w-0 w-full">
           {/* <div className='h-12 bg-fuchsia-100 w-950'></div> */}
-          <div className='border rounded-lg overflow-hidden'>
+          <div className='border'>
             <Table className='min-w-full w-full'>
               <TableHeader className='bg-gray-50'>
                 {table.getHeaderGroups().map((group, headerIdx) => (
-                  <TableRow className='*:border-border [&>:not(:last-child)]:border-r' key={headerIdx}>
+                  <TableRow className='' key={headerIdx}>
                     {group.headers.map((header, index) => (
                       <TableHead className={`${(index == group.headers.length - 1) ? 'text-end' : ''} py-1 text-sm text-foreground`} key={index}>
                         {flexRender(
@@ -281,7 +281,7 @@ export const SectionTable = (data: SectionTableProps) => {
               </TableHeader>
               <TableBody className='overflow-auto '>
                 {table.getRowModel().rows.map((row, index) => (
-                  <TableRow className='*:border-border [&>:not(:last-child)]:border-r border-b' key={row.id}>
+                  <TableRow className=' border-b' key={row.id}>
                     {row.getVisibleCells().map((cell, cellIdx) => (
                       <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''}  py-1 text-foreground`} key={cellIdx}>
                         {flexRender(
@@ -302,3 +302,6 @@ export const SectionTable = (data: SectionTableProps) => {
     </>)}
   </>)
 }
+
+
+// *:border-border [&>:not(:last-child)]:border-r 

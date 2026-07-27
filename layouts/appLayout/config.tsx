@@ -17,9 +17,9 @@ export const SidebarItems: Array<SidebarItemProps> = [
     icon: <FiHome />
   },
   {
-    title: 'Contactos',
-    goto: '/contacts',
-    icon: <LuUsersRound />
+    title: 'Actividades',
+    goto: '/activities',
+    icon: <FiActivity />
   },
   {
     title: 'Chat',
@@ -27,13 +27,13 @@ export const SidebarItems: Array<SidebarItemProps> = [
     icon: <BsChatDots />
   },
   {
+    title: 'Contactos',
+    goto: '/contacts',
+    icon: <LuUsersRound />
+  },
+  {
     title: 'Automatizaciones',
     goto: '/automation',
     icon: <TiFlowMerge />
-  },
-  {
-    title: 'Actividades',
-    goto: '/activities',
-    icon: <FiActivity />
   }
 ]

@@ -6,9 +6,10 @@ import { Button } from "../ui/button"
 type ShowcaseIdProps = {
   id: string
   width?: number
+  nopadding?: boolean,
 }
 
-export const ShowcaseId = ({ id, width = 90 }: ShowcaseIdProps) => {
+export const ShowcaseId = ({ id, width = 90, nopadding = false }: ShowcaseIdProps) => {
   const [copied, setCopied] = useState(false)
 
   const copyTextToClipboard = useCallback(() => {
@@ -38,7 +39,7 @@ export const ShowcaseId = ({ id, width = 90 }: ShowcaseIdProps) => {
   }, [copied])
 
   return <>
-    <div className='flex gap-1 p-1 rounded-sm bg-gray-100 items-center w-fit'>
+    <div className={`flex gap-1 rounded-sm items-center w-fit ${nopadding ? '' : 'p-1  bg-gray-100 '}`}>
       <div className={`overflow-hidden text-ellipsis text-foreground text-xs`} style={{ width: width }}>
         {id}
       </div>

@@ -71,8 +71,12 @@ export const AutomationSection = ({ }: AutomationProps) => {
 
   return <>
     <div className="p-2">
-      <div className="flex justify-end gap-2 items-center mb-2">
-        <Button disabled={AutomationStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
+      <div className="flex justify-between gap-2 items-center mb-4">
+        <div>
+          <h1 className="text-foreground text-lg font-semibold">Automatizaciones</h1>
+        </div>
+        <div className="items-center flex gap-2">
+          <Button disabled={AutomationStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
           Refresar
         </Button>
         <Button variant={'outline'} onClick={() => { automationTestStore.setState({ openChat: true }) }}> 
@@ -82,6 +86,7 @@ export const AutomationSection = ({ }: AutomationProps) => {
         <Button onClick={() => { AutomationStore.setCreateState({ openCreate: true }) }}>
           Crear Item
         </Button>
+        </div>
       </div>
 
       {/* <AutomationList_
@@ -217,7 +222,7 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
       accessorKey: "id",
       header: "Id",
       cell: ({ row }) => (<>
-        <ShowcaseId id={row.original.id || ''}  />
+        <ShowcaseId nopadding id={row.original.id || ''}  />
       </>)
     },
     {
@@ -273,13 +278,13 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
 
     {(!isLoading && !isError) && (<>
       {list.length > 0 && (<>
-        <div className="border rounded-lg overflow-hidden flex-1">
+        <div className="border  flex-1">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((group, headerIdx) => (
                 <TableRow key={headerIdx}>
                   {group.headers.map((header, index) => (
-                    <TableHead className={`${(index == group.headers.length - 1) ? 'text-end' : ''} text-foreground bg-mist-50 py-1`} key={index}>
+                    <TableHead className={`${(index == group.headers.length - 1) ? 'text-end' : ''} text-foreground bg-mist-50 py-1 text-sm`} key={index}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -338,10 +343,10 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
   // const AutomationStore = useAutomationStore();
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center  gap-2">
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-xs'}
         onClick={() => {
           console.log("Editar", item.id)
           // AutomationStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
@@ -353,7 +358,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
 
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-xs'}
         onClick={() => {
           console.log("Editar", item.id)
           router.push(`/automation/${item.id}`)
@@ -364,7 +369,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
 
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-xs'}
         onClick={() => {
           console.log("Eliminar", item.id)
           // AutomationStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })

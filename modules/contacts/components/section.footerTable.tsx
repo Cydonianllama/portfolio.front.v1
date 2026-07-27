@@ -14,11 +14,11 @@ export type SectionFooterTableProps = {
 
 export const SectionFooterTable = ({ HandleToNextPage, HandleToPrevPage, pagination }: SectionFooterTableProps) => {
   return (<>
-    <div className='flex justify-between items-center py-4'>
+    <div className='flex justify-between items-center py-2 text-sm px-2 text-muted-foreground'>
       <div>{((pagination?.page || 0) - 1) * (pagination?.limit || 0)}-{((pagination?.page || 0) - 1) * (pagination?.limit || 0) + (pagination?.limit || 0)} de <strong>{pagination?.total || 0}</strong></div>
       <div className='flex gap-5 items-center'>
         <Button
-          size={'icon'}
+          size={'icon-xs'}
           variant="outline"
           onClick={HandleToPrevPage}
           disabled={pagination?.hasPreviousPage ? false : true}
@@ -28,7 +28,7 @@ export const SectionFooterTable = ({ HandleToNextPage, HandleToPrevPage, paginat
         <span>{pagination?.page}/{pagination?.totalPages}</span>
         <Button
           onClick={HandleToNextPage}
-          size={'icon'}
+          size={'icon-xs'}
           variant="outline"
           disabled={pagination?.hasNextPage ? false : true}
         >

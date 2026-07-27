@@ -44,8 +44,13 @@ export const InputSearchTable = (config: InputSearchTableType) => {
 
   return (<>
     <InputGroup className="max-w-xs">
-      <InputGroupInput value={inputText} onChange={(e) => OnChangeInput(e.target.value)} placeholder={config.placeholder} />
-      <InputGroupAddon>
+      <InputGroupInput
+        className=''
+        value={inputText}
+        onChange={(e) => OnChangeInput(e.target.value)}
+        placeholder={config.placeholder}
+      />
+      <InputGroupAddon >
         <Search />
       </InputGroupAddon>
       {/* <InputGroupAddon align="inline-end">12 results</InputGroupAddon> */}

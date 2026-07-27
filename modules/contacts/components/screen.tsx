@@ -325,58 +325,52 @@ export const ConctatsScreen = () => {
   }, [moduleState.infoCreationConvContact.isOpen])
 
   return (<>
-    <div className="relative w-full h-full flex flex-col app-section">
+    <div className="relative w-full h-full flex flex-col app-section space-y-4">
 
       {/* start::header */}
-      <div className="flex justify-between items-center py-5">
+      <div className="flex justify-between items-center pt-4">
+        <h1 className="text-xl font-semibold text-foreground">Administracion de contactos</h1>
         <div>
-          <h1 className="text-xl font-semibold text-foreground">Administracion de contactos</h1>
-          <p className="text-md text-muted-foreground">Pantalla de administración de contactos</p>
-        </div>
-        <div className='flex items-center gap-2 '>
-
-        </div>
-      </div>
-      {/* end::header */}
-
-      {/* start::header filter  */}
-      <div className="flex justify-between items-center pb-5">
-        <div className="flex gap-2 items-center">
-          <InputSearchTable
-            onSearch={OnSearch}
-            placeholder="Buscar"
-            timeout={600}
-          />
-          {/* <Filter
-            options={filterOptions.map(el => ({ id: el.code, label: el.title, values: [{ id: 'test2', label: 'test2' }, { id: 'test3', label: 'test3' }] }))}
-          />
-          <Sort
-            options={sortOptions.map(el => ({ id: el.code, label: el.title }))}
-          /> */}
-        </div>
-        <div className="flex gap-2 items-center">
-          <Button className={'text-muted-foreground'} variant={'outline'} onClick={HandleToRefresh} size={'icon'} >
-            <IoMdRefresh />
-          </Button>
-          <Button onClick={HandleToOpenAddItem}>Agregar contacto</Button>
-          {/* {((moduleState.itemsSelected?.length || 0) > 0) && (<>
+          <div className="flex gap-2 items-center">
+            <div>
+              <Button className={'text-muted-foreground'} variant={'outline'} onClick={HandleToRefresh} size={'icon-sm'} >
+                <IoMdRefresh />
+              </Button>
+            </div>
+            <div className="flex gap-2 items-center">
+              <InputSearchTable
+                onSearch={OnSearch}
+                placeholder="Buscar"
+                timeout={600}
+              />
+            </div>
+            <Button onClick={HandleToOpenAddItem}>Agregar contacto</Button>
+            {/* {((moduleState.itemsSelected?.length || 0) > 0) && (<>
             <span>{moduleState.itemsSelected?.length}</span> elementos seleccionados.
           </>)} */}
-
+          </div>
         </div>
       </div>
+
       {/* end::header filter  */}
 
-      {/* start::table */}
-      <SectionTable
-        list={data?.data.list || []}
-        loading={isFetching}
-        hasError={(!data?.status || isError) ? true : false}
-        onChangeSelection={OnChangeSelection}
-        OnClickEmptyCreate={OnClickEmptyCreate}
-        OnClickRetry={OnClickRetry}
-      />
-      {/* end::table */}
+      {/*  */}
+      <div className="">
+
+        {/* start::table */}
+        <SectionTable
+          list={data?.data.list || []}
+          loading={isFetching}
+          hasError={(!data?.status || isError) ? true : false}
+          onChangeSelection={OnChangeSelection}
+          OnClickEmptyCreate={OnClickEmptyCreate}
+          OnClickRetry={OnClickRetry}
+        />
+        {/* end::table */}
+
+      </div>
+      {/*  */}
+
 
       {/* start::footer table */}
       <SectionFooterTable
@@ -386,40 +380,46 @@ export const ConctatsScreen = () => {
       />
       {/* end::footer table */}
 
-      {/* start::Dialogs */}
-      <DialogCreateContact
-        open={moduleState.informationCreationItem.isOpen}
-        setOpen={(open) => moduleState.setInformationCreationItem({ isOpen: open })}
-        onCreate={OnCreateItem}
-        creating={moduleState.informationCreationItem.loading}
-      />
 
-      <DialogEditContact
-        open={moduleState.informationIpdateItem.isOpen}
-        setOpen={(open) => moduleState.setInformationUpdateItem({ isOpen: open })}
-        onUpdate={OnUpdateItem}
-        data={moduleState.informationIpdateItem.itemData || null}
-        updating={moduleState.informationIpdateItem.loading}
-      />
-
-      <DialogConfirmDeleteContact
-        open={moduleState.informationDeleteItem.isOpen}
-        setOpen={(open) => moduleState.setInformationDeleteItem({ isOpen: open })}
-        onDelete={OnDeleteItem}
-        deleting={moduleState.informationDeleteItem.loading}
-      />
-
-      <DialogCreateConversationContact
-        open={moduleState.infoCreationConvContact.isOpen}
-        setOpen={(open) => moduleState.setInfoCreationConvContact({ isOpen: open })}
-        onCreate={OnCreateConversationContact}
-        creating={moduleState.infoCreationConvContact.loading}
-        integrations={moduleState.infoCreationConvContact.integrations}
-        data={moduleState.infoCreationConvContact.contact}
-      />
-
-      <DialogManageConversations />
-      {/* end::Dialogs */}
     </div>
+    {/* end::header */}
+
+
+
+
+    {/* start::Dialogs */}
+    <DialogCreateContact
+      open={moduleState.informationCreationItem.isOpen}
+      setOpen={(open) => moduleState.setInformationCreationItem({ isOpen: open })}
+      onCreate={OnCreateItem}
+      creating={moduleState.informationCreationItem.loading}
+    />
+
+    <DialogEditContact
+      open={moduleState.informationIpdateItem.isOpen}
+      setOpen={(open) => moduleState.setInformationUpdateItem({ isOpen: open })}
+      onUpdate={OnUpdateItem}
+      data={moduleState.informationIpdateItem.itemData || null}
+      updating={moduleState.informationIpdateItem.loading}
+    />
+
+    <DialogConfirmDeleteContact
+      open={moduleState.informationDeleteItem.isOpen}
+      setOpen={(open) => moduleState.setInformationDeleteItem({ isOpen: open })}
+      onDelete={OnDeleteItem}
+      deleting={moduleState.informationDeleteItem.loading}
+    />
+
+    <DialogCreateConversationContact
+      open={moduleState.infoCreationConvContact.isOpen}
+      setOpen={(open) => moduleState.setInfoCreationConvContact({ isOpen: open })}
+      onCreate={OnCreateConversationContact}
+      creating={moduleState.infoCreationConvContact.loading}
+      integrations={moduleState.infoCreationConvContact.integrations}
+      data={moduleState.infoCreationConvContact.contact}
+    />
+
+    <DialogManageConversations />
+    {/* end::Dialogs */}
   </>)
 }
