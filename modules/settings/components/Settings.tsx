@@ -36,6 +36,7 @@ import { TbCodeVariable } from "react-icons/tb";
 import { TbUsersGroup } from "react-icons/tb";
 import { MdOutlinePayment } from "react-icons/md";
 import { TagsSection } from "./TagsSection/TagsSection";
+import { ModulesSection } from "./ModulesSection/modulesSection";
 
 export const Settings = () => {
   return <>
@@ -72,6 +73,10 @@ export const Settings = () => {
             <TabsTrigger value="integrations" className="justify-start gap-2">
               <VscDebugDisconnect className="size-4" />
               Integraciones
+            </TabsTrigger>
+            <TabsTrigger value="modules" className="justify-start gap-2">
+              <VscDebugDisconnect className="size-4" />
+              Modulos
             </TabsTrigger>
           </div>
 
@@ -149,6 +154,12 @@ export const Settings = () => {
           <TabHeaderDialogSettings title="Etiquetas" />
           <div>
             <TagsSection />
+          </div>
+        </TabsContent>
+        <TabsContent value="modules">
+          <TabHeaderDialogSettings title="Módulos" />
+          <div>
+            <ModulesSection />
           </div>
         </TabsContent>
       </Tabs>
