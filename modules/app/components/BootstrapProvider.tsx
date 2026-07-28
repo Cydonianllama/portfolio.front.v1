@@ -10,10 +10,15 @@ import { useAuthCydoStore } from "@/modules/auth/store/store";
 import { UserDTO } from "@/api/user/user.dto";
 import { UseWorkspacesAction } from '@/modules/hooks/useWorkspacesActions';
 import { WorkspaceDTO } from '@/api/workspace/workspace.dto';
+import { GeyWorkspaceSettings } from '@/api/settings/get.workspacesettings';
+import { IUserSettings } from '@/api/user/user.settings';
+import { Getentity } from '@/api/dataEngine/entity';
+import { useAside } from '../stores/asideStore';
 
 interface AppCydoProviderProps {
   userData?: UserDTO | null,
   workspaces: Array<WorkspaceDTO>
+  userSettings: IUserSettings | null
 }
 
 export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithChildren<AppCydoProviderProps>) => {
@@ -22,6 +27,7 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
 
   const userStore = useAuthCydoStore()
   const workspaceStore = useWorkspaceSelectionStore();
+  const asideStore = useAside()
   const workspaceActions = UseWorkspacesAction()
 
   const OnInitApplication = async () => {
@@ -66,6 +72,19 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
 
       // establecer el workspace
       if (currentWorkspaceOpened){
+
+        // listar las entidades a mostrar
+        const entities = await Getentity({ page: 1, workspaceId: currentWorkspaceOpened.id })
+        if (entities?.status && entities.data?.list){
+          asideStore.setEntities(entities.data.list || [])
+        }
+
+        // listar configuracion del workpace
+        const reqWorkspaceSettings = await GeyWorkspaceSettings({ workspaceId: currentWorkspaceOpened.id })
+        if (reqWorkspaceSettings?.status && reqWorkspaceSettings.data?.setting){
+          workspaceStore.setWorkspaceSetting(reqWorkspaceSettings.data.setting)
+        }
+
         workspaceActions.OpenWorkspace(currentWorkspaceOpened.id)
       }
       

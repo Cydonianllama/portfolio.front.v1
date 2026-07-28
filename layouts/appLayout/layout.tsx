@@ -30,10 +30,13 @@ import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from "@/components/ui/sidebar"
 import { SuscrciptionCard } from './SuscrciptionCard';
+import { UseAsideSyncHook } from '@/modules/app/hooks/asideHookSync';
 
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
+
+  UseAsideSyncHook({}) // eventos de pataforma que afectan al aside
   
   const settingsStore = useSettingsStore()
   const userStore = useAuthCydoStore()

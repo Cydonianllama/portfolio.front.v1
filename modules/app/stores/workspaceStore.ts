@@ -1,14 +1,19 @@
+import { entityDTO } from "@/api/dataEngine/entity";
 import { WorkspaceDTO } from "@/api/workspace/workspace.dto";
+import { IWorkspaceSettings } from "@/api/workspace/workspace.settings";
 import { create } from "zustand";
 
 type workspaceCreationState = {
   loading: boolean;
-  workspaceCreated: WorkspaceDTO |  null;
+  workspaceCreated: WorkspaceDTO | null;
   hasError: boolean;
   open: boolean;
 }
 
 interface WorkspaceSelectionState {
+  currentWorkspaceSetting: IWorkspaceSettings | null,
+  setWorkspaceSetting: (workspaceSetting: IWorkspaceSettings | null) => void;
+
   workspaces: WorkspaceDTO[];
   selectedWorkspaceId: string | null;
   setWorkspaces: (workspaces: WorkspaceDTO[]) => void;
@@ -19,6 +24,10 @@ interface WorkspaceSelectionState {
 }
 
 export const useWorkspaceSelectionStore = create<WorkspaceSelectionState>((set) => ({
+  currentWorkspaceSetting: null,
+  setWorkspaceSetting: (data) => set((state) => ({ ...state, currentWorkspaceSetting: data })),
+  
+  //
   workspaces: [],
   selectedWorkspaceId: null,
   setWorkspaces: (workspaces) =>

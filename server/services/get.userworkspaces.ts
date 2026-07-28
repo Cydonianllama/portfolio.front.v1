@@ -1,6 +1,6 @@
 'use server'
 
-import { ListWorkspacesUserDto, ListWorkspacesUserResponseDto } from "@/modules/app/dto/dtos";
+import { ListWorkspacesUserDto, ListWorkspacesUserResponseDto } from "@/api/user/user.dto";
 import { ResponseApi } from "@/types/api/response";
 import axios from "axios";
 

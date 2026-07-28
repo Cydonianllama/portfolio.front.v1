@@ -19,7 +19,6 @@ export default async function PageLayout({
   // if (pathname === "/backoffice/login") {
   //   return <>{children}</>;
   // }
-
   // const headersList = await headers();
 
   const cookieStore = await cookies();
@@ -43,7 +42,7 @@ export default async function PageLayout({
   }
 
   return (
-    <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} >
+    <BootstrapProvider userData={bootstrap?.user} workspaces={bootstrap?.workspaces || []} userSettings={bootstrap.userSettings} >
       <LiveAppProvider>
         <AppLayout>
           {children}
