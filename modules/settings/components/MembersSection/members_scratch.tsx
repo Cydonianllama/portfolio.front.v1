@@ -525,15 +525,6 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
           </Field>
           <Field>
             <Label>Rol</Label>
-            {/* <Input
-              placeholder="Rol"
-              {...register("rolId")}
-            />
-            {errors.rolId && (
-              <p className="text-sm text-red-500">
-                {errors.rolId.message}
-              </p>
-            )} */}
             <Select items={roles} onValueChange={(e) => {
               setValue('rolId', String(e), {
                 shouldDirty: true,
@@ -547,6 +538,11 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
                 {roles.map(el => <SelectItem key={el.value} value={el.value}>{el.label}</SelectItem>)}
               </SelectContent>
             </Select>
+            {errors.rolId && (
+              <p className="text-sm text-red-500">
+                {errors.rolId.message}
+              </p>
+            )}
           </Field>
         </FieldGroup>
         <DialogFooter>

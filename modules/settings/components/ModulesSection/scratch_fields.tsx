@@ -18,7 +18,7 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,6 +33,13 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ResponsePagination } from '@/types/api/utils.pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 //___________ ___________ Main
 
@@ -64,7 +71,7 @@ export const FieldSection = ({ }: FieldProps) => {
           Refresar
         </Button>
         <Button variant={'outline'} onClick={() => { FieldStore.setCreateState({ openCreate: true }) }}>
-          Crear Item
+          Agregar Campo
         </Button>
       </div>
 
@@ -409,6 +416,13 @@ export const FieldFooterTable = ({ HandleToNextPage, HandleToPrevPage, paginatio
 // import { Spinner } from "@/components/ui/spinner"
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select"
 
 type DialogCreateFieldProps = {
 
@@ -425,7 +439,8 @@ const DialogCreateField = ({ }: DialogCreateFieldProps) => {
     formState: { errors, isSubmitting },
     reset,
     watch,
-    setValue
+    setValue,
+    control
   } = useForm<CreationFieldSchema>({
     resolver: zodResolver(creationFieldSchema),
     defaultValues: {
@@ -450,13 +465,16 @@ const DialogCreateField = ({ }: DialogCreateFieldProps) => {
     })
   }
 
+  const typesFiedSelect = TypesFieldSelect.map(el => ({ label: el.label, value: el.value }))
+  const colorsSelector = ColorsSelect.map(el => ({ label: el.color, value: el.value }))
+
   return <>
     <Dialog open={FieldStore.openCreate} onOpenChange={(open) => { FieldStore.setCreateState({ openCreate: open }) }} >
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Crear item</DialogTitle>
+          <DialogTitle>Crear campo</DialogTitle>
           <DialogDescription>
-            Creación de item
+            Creación de campo
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -469,6 +487,68 @@ const DialogCreateField = ({ }: DialogCreateFieldProps) => {
             {errors.name && (
               <p className="text-sm text-red-500">
                 {errors.name.message}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <Controller
+              control={control}
+              name='type'
+              render={({ field }) => (
+                <Select
+                  items={typesFiedSelect}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Seleccionar Type" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {typesFiedSelect.map((el) => (
+                      <SelectItem key={el.value} value={el.value}>
+                        {el.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.type && (
+              <p className="text-sm text-red-500">
+                {errors.type.message}
+              </p>
+            )}
+          </Field>
+
+          <Field>
+            <Controller
+              control={control}
+              name="color"
+              render={({ field }) => (
+                <Select
+                  items={colorsSelector}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Seleccionar Type" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {colorsSelector.map((el) => (
+                      <SelectItem key={el.value} value={el.value}>
+                        {el.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.color && (
+              <p className="text-sm text-red-500">
+                {errors.color.message}
               </p>
             )}
           </Field>
@@ -554,9 +634,9 @@ const DialogUpdateField = ({ }: DialogUpdateFieldProps) => {
     <Dialog open={FieldStore.openUpdate} onOpenChange={(open) => { FieldStore.setUpdateState({ openUpdate: open }) }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Actualizar item</DialogTitle>
+          <DialogTitle>Actualizar campo</DialogTitle>
           <DialogDescription>
-            Actualización de item
+            Actualización de campo
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
@@ -646,6 +726,9 @@ import { z } from "zod/v3";
 
 export const creationFieldSchema = z.object({
   name: z.string().min(1, "Mínimo 3 caracteres"),
+  color: z.string().nullish(),
+  icon: z.string().nullish(),
+  type: z.string()
 });
 
 export type CreationFieldSchema = z.infer<typeof creationFieldSchema>;
@@ -818,6 +901,7 @@ import axios from 'axios'
 import { UseAppData } from "@/hooks/app/useAppData"
 import { useFieldStore } from "./store/field.store"
 import { useEntityStore } from './store/entity.store'
+import { ColorsSelect, TypesFieldSelect } from './configs'
 
 export const GetField = async (data: GetFieldsRequestDTO): Promise<ResponseApi<GetFieldsResponseDTO> | null> => {
   try {
@@ -886,6 +970,8 @@ export interface FieldDTO {
   name: string
   type: EntityFieldType,
   entityId: string
+  color?: string | null;
+  icon?: string | null;
 }
 
 // get one
