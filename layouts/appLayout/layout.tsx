@@ -31,13 +31,14 @@ import { Button } from '@/components/ui/button';
 import { useSidebar } from "@/components/ui/sidebar"
 import { SuscrciptionCard } from './SuscrciptionCard';
 import { UseAsideSyncHook } from '@/modules/app/hooks/asideHookSync';
+import { ModulesSection } from './modulesSection';
 
 // ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 function AppSidebar({ pathname }: { pathname: string }) {
 
   UseAsideSyncHook({}) // eventos de pataforma que afectan al aside
-  
+
   const settingsStore = useSettingsStore()
   const userStore = useAuthCydoStore()
   const router = useRouter()
@@ -56,23 +57,27 @@ function AppSidebar({ pathname }: { pathname: string }) {
 
       <SidebarContent>
 
-        {/* Dashboard link standalone */}
-        <SidebarGroup className='flex-1'>
-          <SidebarMenu className="gap-3 ">
-            {SidebarItems.map((el, index) => (
-              <SidebarMenuItem key={index}>
-                <SidebarMenuButton
-                  render={<Link href={el.goto}>
-                    {el.icon}
-                    {el.title}
-                  </Link>}
-                  tooltip="Home"
-                  className={isActive(el.goto) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
-                />
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        <div className='flex-1'>
+          {/* Dashboard link standalone */}
+          <SidebarGroup>
+            <SidebarMenu className="gap-3 ">
+              {SidebarItems.map((el, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton
+                    render={<Link href={el.goto}>
+                      {el.icon}
+                      {el.title}
+                    </Link>}
+                    tooltip="Home"
+                    className={isActive(el.goto) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : ''}
+                  />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+
+          <ModulesSection />
+        </div>
 
         <SuscrciptionCard />
 
