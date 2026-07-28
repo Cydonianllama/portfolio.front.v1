@@ -10,7 +10,8 @@
 // #region Components
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-
+import { FieldSection } from "./scratch_fields"
+import { useEntityStore } from "./store/entity.store"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -667,6 +668,8 @@ export type UpdateEntitySchema = z.infer<typeof updateEntitySchema>;
 //___________ hooks
 // import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
+import { entityDTO, CreateentityRequestDTO, Createentity, UpdateentityRequestDTO, Updateentity, GetentitysRequestDTO, Getentity, DeleteentityRequestDTO, Deleteentity } from "@/api/dataEngine/entity"
+import { UseAppData } from "@/hooks/app/useAppData"
 
 export type UseEntityActionsProps = {
 
@@ -802,147 +805,3 @@ export const UseEntityActions = ({ }: UseEntityActionsProps) => {
   }
 }
 // #endregion Hooks
-
-/*
-  Entity
-*/
-
-
-// Reemplazar por los nombre correctos
-/*
-test_entity
-/api/workspaces/${data.workspaceId}/dataengine/entities
-entity
-entity
-*/
-// #region API
-//___________ api
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { api } from '@/setup/axios'
-import { ResponseApi } from '@/types/api/response';
-import axios from 'axios'
-import { UseAppData } from "@/hooks/app/useAppData"
-import { FieldSection } from "./scratch_fields"
-import { useEntityStore } from "./store/entity.store"
-
-export const Getentity = async (data: GetentitysRequestDTO): Promise<ResponseApi<GetentitysResponseDTO> | null> => {
-  try {
-    const req = await api.get(`/api/workspaces/${data.workspaceId}/dataengine/entities?page=${data.page}`);
-    return req.data;
-  } catch (ex) {
-    if (axios.isAxiosError(ex)) {
-      // console.log(error.response?.status); // 422
-      // console.log(error.response?.data);  
-      return ex.response?.data ?? null;
-    }
-    return null
-  }
-}
-
-
-export const Updateentity = async (id: string, data: UpdateentityRequestDTO): Promise<ResponseApi<UpdateentityResponseDTO> | null> => {
-  try {
-    const req = await api.put(`/api/workspaces/${data.workspaceId}/dataengine/entities/${id}`, data);
-    return req.data;
-  } catch (ex) {
-    if (axios.isAxiosError(ex)) {
-      // console.log(error.response?.status); // 422
-      // console.log(error.response?.data);  
-      return ex.response?.data ?? null;
-    }
-    return null
-  }
-}
-
-export const Createentity = async (data: CreateentityRequestDTO): Promise<ResponseApi<CreateentityResponseDTO> | null> => {
-  try {
-    const req = await api.post(`/api/workspaces/${data.workspaceId}/dataengine/entities`, data);
-    return req.data;
-  } catch (ex) {
-    if (axios.isAxiosError(ex)) {
-      // console.log(error.response?.status); // 422
-      // console.log(error.response?.data);  
-      return ex.response?.data ?? null;
-    }
-    return null
-  }
-}
-
-export const Deleteentity = async (data: DeleteentityRequestDTO): Promise<ResponseApi<DeleteentityResponseDTO> | null> => {
-  try {
-    const req = await api.delete(`/api/workspaces/${data.workspaceId}/dataengine/entities/${data.id}`);
-    return req.data;
-  } catch (ex) {
-    if (axios.isAxiosError(ex)) {
-      // console.log(error.response?.status); // 422
-      // console.log(error.response?.data);  
-      return ex.response?.data ?? null;
-    }
-    return null
-  }
-}
-
-
-///
-/// DTOs
-///
-
-export interface entityDTO {
-  id: string;
-  name: string
-  workspaceId: string
-}
-
-// get one
-export interface GetentityRequestDTO {
-  id: string;
-  workspaceId: string
-}
-
-export interface GetentityResponseDTO {
-  entity: entityDTO | null
-}
-
-// get many
-export interface GetentitysRequestDTO {
-  page: number
-  workspaceId: string;
-}
-
-export interface GetentitysResponseDTO {
-  list: Array<entityDTO>
-}
-
-// update one
-export interface UpdateentityRequestDTO {
-  name: string;
-  workspaceId: string
-}
-
-export interface UpdateentityResponseDTO {
-  entity: entityDTO | null
-}
-
-// delete one
-export interface DeleteentityRequestDTO {
-  id: string
-  workspaceId: string;
-}
-
-export interface DeleteentityResponseDTO {
-  id: string
-}
-
-// create one
-export interface CreateentityRequestDTO {
-  name: string;
-  workspaceId: string;
-  fields: Array<{}>
-}
-
-export interface CreateentityResponseDTO {
-  entity: entityDTO | null
-}
-// #endregion API

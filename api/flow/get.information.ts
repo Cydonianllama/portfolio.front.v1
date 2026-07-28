@@ -1,10 +1,7 @@
 
 // ______________ Service
+import { IAutomation, IAutomationNode, IPublishedAutomation, Trigger } from '@erick/conversationalflow';
 
-import { IAutomation } from '@/flow-engines/simpleAutomation/models/automation';
-import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
-import { IPublishedAutomation } from '@/flow-engines/simpleAutomation/models/published.automation';
-import { Trigger } from '@/flow-engines/simpleAutomation/models/trigger';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ______________ Service
-
-import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
+import { IAutomationNode } from '@erick/conversationalflow';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'

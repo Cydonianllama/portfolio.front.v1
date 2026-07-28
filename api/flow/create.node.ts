@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ______________ Service
-
-import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
-import { NodeTypesType } from '@/flow-engines/simpleAutomation/models/node.automation.type';
-
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
+import { IAutomationNode, NodeTypesType } from '@erick/conversationalflow';
 import axios from 'axios'
 
 export interface CreateNodeRequestDTO {

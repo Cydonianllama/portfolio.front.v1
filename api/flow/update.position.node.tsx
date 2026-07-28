@@ -1,11 +1,10 @@
 
 // ______________ Service
 
-import { IAutomationNode } from '@/flow-engines/simpleAutomation/models/node.automation';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
-
+import { IAutomationNode } from '@erick/conversationalflow';
 
 export interface UpdatePositionNodeRequestDTO {
   nodeId: string,
