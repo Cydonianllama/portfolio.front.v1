@@ -9,6 +9,7 @@ import axios from 'axios'
 export interface UpdateNodeRequestDTO {
   id: string,
   title?: string,
+  type: string
   configuration: any
 }
 

@@ -2,6 +2,9 @@ import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
 import { UseAppData } from "@/hooks/app/useAppData";
 import { ButtonItem } from "./buttonItem";
+import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
+import { useAutomationEditor } from "../../hooks/useAutomationEditor";
+import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ButtonsSectionProps = {
 
@@ -10,22 +13,33 @@ type ButtonsSectionProps = {
 export const ButtonsSection = ({ }: ButtonsSectionProps) => {
   const useAppData = UseAppData()
 
+  const { GetAutomationNodeInformation } = useAutomationEditor()
+  const { UpdateMessageConfiguration } = useMessageEditorActions()
+  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
+
+  const HandleAddButton = () => {
+    UpdateMessageConfiguration('addButton', nodeInformation, {
+      data: {
+        id: `button-${Math.ceil(Math.random() * 100000)}`,
+        nextNode: null,
+        text: ''
+      }
+    })
+  }
+
   return (
     <>
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <div className="text-foreground font-semibold">Botones</div>
           <div>
-            <Button variant={'outline'} size={'icon-sm'}>
+            <Button onClick={HandleAddButton} variant={'outline'} size={'icon-sm'}>
               {IconsCatalog.addPlus.Icon}
             </Button>
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <ButtonItem />
-          <ButtonItem />
-          <ButtonItem />
-          <ButtonItem />
+          {nodeInformation?.configuration?.buttons?.map((el, index) => <ButtonItem index={index} data={el} key={index} />)}
         </div>
       </div>
     </>
