@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react'
 import { UseAppData } from "@/hooks/app/useAppData";
 import { TfiClose } from "react-icons/tfi";
 import { Button } from '@/components/ui/button';
-import { useAutomationFlow } from '../store/automation.flow.store';
+import { automationFlowGenStore } from '../store/automation.flow.store';
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type BaseEditorProps = {
   
@@ -11,7 +11,7 @@ type BaseEditorProps = {
 export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => {
   const useAppData = UseAppData()
 
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   const currentNode = automationFlowStore.information?.nodeList?.find(el => el.id == automationFlowStore.currentNodeIdEditing)
 
@@ -21,7 +21,7 @@ export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => 
 
   return (
     <div className='h-full overflow-auto'>
-      <div className='flex justify-between items-center px-2 py-3 border-b'>
+      <div className='flex justify-between items-center p-3 border-b'>
         <div className='font-semibold'>
           {currentNode?.title}
         </div>
@@ -29,7 +29,9 @@ export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => 
           <TfiClose/>
         </Button>
       </div>
-      {children}
+      <div className='p-3'>
+        {children}
+      </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { UseAppData } from "@/hooks/app/useAppData";
 import { NodeToCreateConfiguration } from "./config";
-import { FlowHookActions } from "../../hooks/action.hooks.flow";
-import { useAutomationFlow } from "../../store/automation.flow.store";
+import { useConversationalFlowGenActions } from "../../hooks/action.hooks.flow";
+import { automationFlowGenStore } from "../../store/automation.flow.store";
 import { bgColor } from "../../_configs";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type SelectorItemProps = {
@@ -11,8 +11,8 @@ type SelectorItemProps = {
 export const SelectorItem = ({ data }: SelectorItemProps) => {
   const useAppData = UseAppData()
 
-  const flowActions = FlowHookActions({})
-  const flowStore = useAutomationFlow()
+  const flowActions = useConversationalFlowGenActions({})
+  const flowStore = automationFlowGenStore()
 
 
   const HandleClick = () => {

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
 import { AddTriggerOptions } from "./AddTriggerOptions"
-import { useAutomationFlow } from "../../store/automation.flow.store"
+import { automationFlowGenStore } from "../../store/automation.flow.store"
 
 type DialogAddTriggerProps = {
 
@@ -20,7 +20,7 @@ type DialogAddTriggerProps = {
 
 export const DialogAddTrigger= ({  } : DialogAddTriggerProps) => {
 
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   const HandleToProcess = () => {
     // onProccessing({})

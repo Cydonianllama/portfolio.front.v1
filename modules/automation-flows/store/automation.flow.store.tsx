@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { InformationAutomationFlow } from "@/api/flow/dto";
 
+export type modeAutomationFlow = 'preview' | 'editor'
 
 interface AutomationFlowStore {
   currentNodeIdEditing: string | null
@@ -21,32 +22,19 @@ interface AutomationFlowStore {
   openSelectNode: boolean
   setSelectNode: (data: Partial<{ openSelectNode: boolean }>) => void
 
-  // currentElementSelected: string | null
-
   // // getall
   information: InformationAutomationFlow | null
   listing: boolean;
   initialListFinished: boolean
   setListState: (data: Partial<{ information: InformationAutomationFlow, listing: boolean, pagination: ResponsePagination | null, initialListFinished: boolean }>) => void
 
-  // // create
-  // openCreate: boolean;
-  // creating: boolean;
-  // setCreateState: (data: Partial<{ openCreate: boolean, creating: boolean, currentElementSelected: string | null }>) => void
-
-  // // update
-  // openUpdate: boolean;
-  // updating: boolean;
-  // setUpdateState: (data: Partial<{ openUpdate: boolean, updating: boolean, currentElementSelected: string | null }>) => void
-
-  // // delete
-  // openDelete: boolean;
-  // deleting: boolean;
-  // setDeleteState: (data: Partial<{ openDelete: boolean, deleting: boolean, currentElementSelected: string | null }>) => void
+  // mode  automationFlow
+  mode: modeAutomationFlow,
+  setMode: (mode: modeAutomationFlow) => void;
 
 }
 
-export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
+export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
   currentNodeIdEditing: null,
   openEdit: false,
   setStartEdit: (data) => set((state) => ({ ...state, ...data })),
@@ -61,27 +49,14 @@ export const useAutomationFlow = create<AutomationFlowStore>((set) => ({
   openSelectNode: false,
   setSelectNode: (data) => set((state) => ({ ...state, ...data })),
 
-  
-  // currentElementSelected: null,
-
   // // getall
   information: null,
   listing: false,
   initialListFinished: false,
   setListState: (data) => set((state) => ({ ...state, ...data })),
 
-  // //create
-  // openCreate: false,
-  // creating: false,
-  // setCreateState: (data) => set((state) => ({ ...state, ...data })),
+  // mode  automationFlow
+  mode: 'editor',
+  setMode: (data) => set((state) => ({ ...state, mode: data })),
 
-  // //update
-  // openUpdate: false,
-  // updating: false,
-  // setUpdateState: (data) => set((state) => ({ ...state, ...data })),
-
-  // //delete
-  // openDelete: false,
-  // deleting: false,
-  // setDeleteState: (data) => set((state) => ({ ...state, ...data })),
 }));

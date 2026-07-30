@@ -7,7 +7,7 @@ import { UpdateNodeRequestDTO, UpdateNode } from "@/api/flow/update.node"
 import { UpdatePositionNode, UpdatePositionNodeRequestDTO } from "@/api/flow/update.position.node"
 import { useCallback, useContext } from "react"
 import { toast } from "sonner"
-import { useAutomationFlow } from "../store/automation.flow.store"
+import { automationFlowGenStore } from "../store/automation.flow.store"
 import { useReactFlow } from "@xyflow/react"
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
 import { BuildNodeAndEdges } from "../utils/build"
@@ -16,11 +16,11 @@ import { v4 as uuidv4 } from "uuid";
 import { nodeTypes } from '@erick/conversationalflow'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type FlowHookActionsProps = {
+type useConversationalFlowGenActionsProps = {
 
 }
 
-export const FlowHookActions = ({ }: FlowHookActionsProps) => {
+export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenActionsProps) => {
 
   const context = useContext(WorkflowEditorContext);
 
@@ -41,7 +41,7 @@ export const FlowHookActions = ({ }: FlowHookActionsProps) => {
   }
 
   const { setCenter, screenToFlowPosition } = useReactFlow();
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   const CreateNodeAction = useCallback(async (data: Partial<CreateNodeRequestDTO>) => {
     try {

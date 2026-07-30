@@ -7,6 +7,8 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { nodeTypes } from "@erick/conversationalflow";
+import { SectionGroupWords } from "./message-node/sectionGroupWords";
+import { SectionButtons } from "./message-node/sectionButtonts";
 
 export function MessageNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE
@@ -21,7 +23,13 @@ export function MessageNode({ data }: NodeProps) {
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: true }}
       >
-        simple message
+        <div className="max-w-[200px] pt-2">
+          <div className="border p-2 rounded text-xs text-muted-foreground">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil harum autem quaerat!
+          </div>
+          <SectionGroupWords />
+          <SectionButtons />
+        </div>
       </BaseNode>
     </>
   );

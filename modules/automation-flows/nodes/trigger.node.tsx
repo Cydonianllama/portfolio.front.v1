@@ -8,12 +8,12 @@ import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button"
 import { nodeTypes } from "@erick/conversationalflow";
-import { useAutomationFlow } from "../store/automation.flow.store";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 
 export function TriggerNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING
 
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   return (
     <>

@@ -69,17 +69,17 @@ export const ModulesScreen = ({ moduleId }: ModulesScreenProps) => {
     {
       id: ID_FIELD_ID,
       name: 'Id',
-      type: 'String'
+      type: 'string'
     },
     {
       id: ID_FIELD_FULLNAE,
       name: 'Fullname',
-      type: 'String'
+      type: 'string'
     },
     {
       id: ID_FIELD_FILE_ORDER,
       name: 'FileOrder',
-      type: 'Number'
+      type: 'number'
     }
   ]
 

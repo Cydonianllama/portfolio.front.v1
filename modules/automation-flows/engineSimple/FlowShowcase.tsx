@@ -16,10 +16,10 @@ import {
 import { ComponentType, useCallback, useContext, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
 import { edgeTypes } from "./edges.types";
-import { useAutomationFlow } from "../store/automation.flow.store";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 import { canOpenEditor } from "../utils/can-open-editor";
 import { FlowEdge, nodesFlow } from "./types";
-import { FlowHookActions } from "../hooks/action.hooks.flow";
+import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
 
 type FlowScreenProps = {
@@ -31,8 +31,8 @@ type FlowScreenProps = {
 export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
   const { setCenter, } = useReactFlow();
 
-  const automationFlowStore = useAutomationFlow()
-  const flowActions = FlowHookActions({})
+  const automationFlowStore = automationFlowGenStore()
+  const flowActions = useConversationalFlowGenActions({})
 
   const context = useContext(WorkflowEditorContext);
   const {

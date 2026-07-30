@@ -8,9 +8,9 @@ import { EditorName } from "./EditorName";
 import FlowScreen from "../engineSimple/FlowShowcase";
 import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
-import { useAutomationFlow } from "../store/automation.flow.store";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 import { useEffect } from "react";
-import { FlowHookActions } from "../hooks/action.hooks.flow";
+import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
 import { ButtonAddNodes } from "./ButtonAddNodes";
@@ -22,11 +22,11 @@ type AutomationFlowScreenProps = {
 }
 
 export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScreenProps) => {
-  const flowActions = FlowHookActions({})
+  const flowActions = useConversationalFlowGenActions({})
 
   const useAppData = UseAppData()
 
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   const OnClickNode = () => {
     automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })

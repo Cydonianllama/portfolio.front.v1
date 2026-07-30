@@ -3,7 +3,7 @@ import { SelectorItem } from "./SelectorItem";
 import { ListSelectors } from "./config";
 import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
-import { useAutomationFlow } from "../../store/automation.flow.store";
+import { automationFlowGenStore } from "../../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type SideSelectorNodeProps = {
 
@@ -12,7 +12,7 @@ type SideSelectorNodeProps = {
 export const SideSelectorNode = ({ }: SideSelectorNodeProps) => {
   const useAppData = UseAppData()
 
-  const automationFlowStore = useAutomationFlow()
+  const automationFlowStore = automationFlowGenStore()
 
   return (
     <>

@@ -7,16 +7,16 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button";
-import { FlowHookActions } from "../hooks/action.hooks.flow";
-import { useAutomationFlow } from "../store/automation.flow.store";
+import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 import { nodeTypes } from "@erick/conversationalflow";
 import { v4 as uuidv4 } from "uuid";
 
 export function FirstSteNode({ data }: NodeProps) {
   const type = 'first-step-node'
 
-  const flowActions = FlowHookActions({})
-  const automationFlowStore = useAutomationFlow()
+  const flowActions = useConversationalFlowGenActions({})
+  const automationFlowStore = automationFlowGenStore()
 
   return (
     <>

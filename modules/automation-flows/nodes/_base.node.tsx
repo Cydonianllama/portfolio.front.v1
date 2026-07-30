@@ -14,7 +14,7 @@ import { bgColor, colorDefaultNode } from "../_configs";
 import { GoPlus } from "react-icons/go";
 import { LuTrash2 } from "react-icons/lu";
 import { HiOutlineDotsHorizontal, HiOutlineDuplicate } from "react-icons/hi";
-import { FlowHookActions } from "../hooks/action.hooks.flow";
+import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 
 type versionTypes = 'v1' | 'v2' | 'v3'
 
@@ -33,7 +33,7 @@ export type BaseNodeProps = {
 
 export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1' }: PropsWithChildren<BaseNodeProps>) => {
 
-  const flowActions = FlowHookActions({})
+  const flowActions = useConversationalFlowGenActions({})
 
   const Factory: Record<versionTypes, FunctionComponent<PropsWithChildren<BaseNodeProps>>> = {
     v1: BaseNodev1,
