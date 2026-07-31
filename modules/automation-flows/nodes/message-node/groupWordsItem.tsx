@@ -20,6 +20,7 @@ export const GroupWordsItem = ({ data, index }: GroupWordsItemProps) => {
       <div className="flex gap-1 relative">
         {data?.words?.map((el, index) => <div className="text-xs p-1 border rounded inline-flex" key={index}>{el.text}</div>)}
         <Handle
+          id={data?.id}
           type="source"
           position={Position.Right}
           style={{

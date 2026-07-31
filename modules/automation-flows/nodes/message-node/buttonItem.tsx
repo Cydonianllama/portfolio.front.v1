@@ -20,6 +20,7 @@ export const ButtonItem = ({ data }: ButtonItemProps) => {
       <div className="p-1 border rounded w-full relative">
         {data.text}
         <Handle
+          id={data?.id}
           type="source"
           position={Position.Right}
           style={{

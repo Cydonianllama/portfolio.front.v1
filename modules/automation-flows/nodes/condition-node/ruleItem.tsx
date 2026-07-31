@@ -30,6 +30,7 @@ export function RuleItem({ id, ruleId }: RuleItemProps) {
           <ConditionItem data={el} key={index} />
         ))}
         <Handle
+          id={id}
           type="source"
           position={Position.Right}
           style={{

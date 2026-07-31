@@ -23,6 +23,7 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
       nodeInformation,
       {
         item: {
+          id: `words-${Math.ceil(Math.random() * 1000000)}-${Math.ceil(Math.random() * 1000000)}`,
           nextNode: null,
           words: []
         }

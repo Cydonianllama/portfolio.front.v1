@@ -45,10 +45,10 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   } = context || {
     nodes: [],
     edges: [],
-    setNodes: () => {},
-    setEdges: () => {},
-    onNodesChange: () => {},
-    onEdgesChange: () => {},
+    setNodes: () => { },
+    setEdges: () => { },
+    onNodesChange: () => { },
+    onEdgesChange: () => { },
   }
 
   // const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
@@ -84,36 +84,46 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   //   [setEdges, automationFlow.startEditingFlow],
   // );
 
-  // const onConnect = useCallback(
-  //   (connection: any) => {
-  //     // Validar que los nodos Tool solo puedan conectarse desde el handle tools del nodo IA
-  //     const targetNode = automationFlow.currentAutomationData?.nodes.find(n => n.id === connection.target);
-
-  //     // Si el nodo target es un Tool (tiene toolType)
-  //     if (targetNode?.configurationGoogleCalendar?.toolType || targetNode?.configurationSaveVariables?.toolType || targetNode?.configurationGoogleSheets?.toolType || targetNode?.configurationGoogleDocs?.toolType) {
-  //       // Solo permitir conexiones desde el handle tools-{id} del nodo IA
-  //       const isFromToolsHandle = connection.sourceHandle?.startsWith('tools-');
-  //       if (!isFromToolsHandle) {
-  //         console.warn('Los nodos Tool solo pueden conectarse desde el handle Tools del nodo IA');
-  //         return; // Bloquear la conexión
-  //       }
-  //     }
-
-  //     dispatch(UpdateconnectionsNode({ connection: connection }))
-  //     const edge = { ...connection, type: 'custom-edge' };
-  //     setEdges((eds) => addEdge(edge, eds))
-  //   },
-  //   [setEdges, automationFlow.currentAutomationData, dispatch],
-  // );
-
   const onConnect = useCallback(
     (connection: any) => {
-      setEdges((eds) =>
-        addEdge(connection, eds)
-      );
+      // // Validar que los nodos Tool solo puedan conectarse desde el handle tools del nodo IA
+      // const targetNode = automationFlow.currentAutomationData?.nodes.find(n => n.id === connection.target);
+
+      // // Si el nodo target es un Tool (tiene toolType)
+      // if (targetNode?.configurationGoogleCalendar?.toolType || targetNode?.configurationSaveVariables?.toolType || targetNode?.configurationGoogleSheets?.toolType || targetNode?.configurationGoogleDocs?.toolType) {
+      //   // Solo permitir conexiones desde el handle tools-{id} del nodo IA
+      //   const isFromToolsHandle = connection.sourceHandle?.startsWith('tools-');
+      //   if (!isFromToolsHandle) {
+      //     console.warn('Los nodos Tool solo pueden conectarse desde el handle Tools del nodo IA');
+      //     return; // Bloquear la conexión
+      //   }
+      // }
+
+      /*
+      interface Connection {
+        source: string | null;
+        target: string | null;
+
+        sourceHandle: string | null;
+        targetHandle: string | null;
+      }
+      */
+
+      // dispatch(UpdateconnectionsNode({ connection: connection }))
+      const edge = { ...connection, type: 'custom-edge' };
+      setEdges((eds) => addEdge(edge, eds))
     },
-    []
+    [],
   );
+
+  // const onConnect = useCallback(
+  //   (connection: any) => {
+  //     setEdges((eds) =>
+  //       addEdge(connection, eds)
+  //     );
+  //   },
+  //   []
+  // );
 
   return (
     <div className="h-full w-full bg-gray-50">

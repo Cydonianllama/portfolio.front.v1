@@ -1,5 +1,5 @@
 import { IAutomationNode, NODE_TYPE_CONDITION } from "@erick/conversationalflow"
-import { addCondition, addRule, removeCondition, removeRule, updateCondition, UpdateConditionConfigurationActions } from "../updaters/condition.uptarer"
+import { addCondition, addRule, removeCondition, removeRule, updateCondition, UpdateConditionConfigurationActions, updateMessageNextNodeConection, updateRuleConection } from "../updaters/condition.updater"
 import { useConversationalFlowGenActions } from "./action.hooks.flow"
 
 export const useConditionEditorActions = () => {
@@ -35,15 +35,24 @@ export const useConditionEditorActions = () => {
       case "updateCondition":
         node_to_update = updateCondition(node, c as UpdateConditionConfigurationActions["updateCondition"])
         break;
+      case "updateRuleConection":
+        node_to_update = updateRuleConection(node, c as UpdateConditionConfigurationActions["updateRuleConection"])
+        break;
+      case "updateMessageNextNodeConection":
+        node_to_update = updateMessageNextNodeConection(node, c as UpdateConditionConfigurationActions["updateMessageNextNodeConection"])
+        break;
     }
 
     // send update to server
-    conversationalFlowGenActions.UpdateNodeAction({
-      id: node_to_update.id,
-      configuration: node_to_update.configuration,
-      title: node_to_update.title,
-      type: node_to_update.type
-    })
+    if (node_to_update){
+      conversationalFlowGenActions.UpdateNodeAction({
+        id: node_to_update.id,
+        configuration: node_to_update.configuration,
+        title: node_to_update.title,
+        type: node_to_update.type,
+        nextNode: node_to_update.nextNode
+      })
+    }
   }
 
   return {

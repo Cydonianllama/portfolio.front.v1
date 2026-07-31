@@ -43,6 +43,20 @@ export interface UpdateMessageConfigurationActions {
   updateMessage: {
     text: string
   }
+  //
+  // conections
+  //
+  updateMessageNext: {
+    nextNode: string | null
+  }
+  updateGroupWordConnection: {
+    groupWordId: string,
+    nextNode: string | null,
+  }
+  updateButtonConnection: {
+    buttonId: string,
+    nextNode: string,
+  }
 }
 
 type MessageUpdateNodeType = IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
@@ -139,6 +153,36 @@ export class MessageUpdater {
     const nodeToUpdate = this.getNode(node)
     const config = nodeToUpdate.configuration
     config.message = c.text;
+    return nodeToUpdate;
+  }
+
+  //
+  // connections
+  //
+  updateMessageNext(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateMessageNext"]) {
+    const nodeToUpdate = this.getNode(node)
+    // const config = nodeToUpdate.configuration
+    nodeToUpdate.nextNode = c.nextNode
+    return nodeToUpdate;
+  }
+
+  updateGroupWordConnection(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateGroupWordConnection"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    const group = config.groupWords.find(el => el.id == c.groupWordId)
+    if (group) {
+      group.nextNode = c.nextNode;
+    }
+    return nodeToUpdate;
+  }
+
+  updateButtonConnection(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateButtonConnection"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    const button = config.buttons.find(el => el.id == c.buttonId)
+    if (button){
+      button.nextNode = c.nextNode;
+    }
     return nodeToUpdate;
   }
 

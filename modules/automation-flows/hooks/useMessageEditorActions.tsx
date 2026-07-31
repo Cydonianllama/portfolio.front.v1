@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { 
-  IAutomationNode, 
-  NODE_TYPE_GENERAL_MESSAGE_SIMPLE, 
+import {
+  IAutomationNode,
+  NODE_TYPE_GENERAL_MESSAGE_SIMPLE,
 } from "@erick/conversationalflow";
 import { MessageUpdater, UpdateMessageConfigurationActions } from "../updaters/message.updater";
 import { useConversationalFlowGenActions } from "./action.hooks.flow";
@@ -67,15 +67,31 @@ export const useMessageEditorActions = () => {
       case "updateMessage":
         node_to_update = messageUpdater.updateMessage(node, c as UpdateMessageConfigurationActions["updateMessage"])
         break;
+
+      //
+      // CONNECTIONS
+      //
+      case "updateMessageNext":
+        node_to_update = messageUpdater.updateMessageNext(node, c as UpdateMessageConfigurationActions["updateMessageNext"])
+        break;
+      case "updateGroupWordConnection":
+        node_to_update = messageUpdater.updateGroupWordConnection(node, c as UpdateMessageConfigurationActions["updateGroupWordConnection"])
+        break;
+      case "updateButtonConnection":
+        node_to_update = messageUpdater.updateButtonConnection(node, c as UpdateMessageConfigurationActions["updateButtonConnection"])
+        break;
     }
 
     // send update to server
-    conversationalFlowGenActions.UpdateNodeAction({
-      id: node_to_update.id,
-      configuration: node_to_update.configuration,
-      title: node_to_update.title,
-      type: node_to_update.type
-    })
+    if (node_to_update) {
+      conversationalFlowGenActions.UpdateNodeAction({
+        id: node_to_update.id,
+        configuration: node_to_update.configuration,
+        title: node_to_update.title,
+        type: node_to_update.type,
+        nextNode: node_to_update.nextNode
+      })
+    }
   }
 
   return {

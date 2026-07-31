@@ -21,6 +21,16 @@ export interface UpdateConditionConfigurationActions {
     conditionId: string
     condition: NodeCondition_Condition
   }
+  //
+  // conection
+  //
+  updateRuleConection: {
+    ruleId: string,
+    nextNode: string | null,
+  }
+  updateMessageNextNodeConection: {
+    nextNode: string | null,
+  }
 }
 
 type MessageUpdateNodeType = IAutomationNode<typeof NODE_TYPE_CONDITION>
@@ -84,5 +94,22 @@ export const updateCondition = (node: MessageUpdateNodeType, c: UpdateConditionC
       } else return el
     }) 
   }
+  return nodeToUpdate;
+}
+
+export const updateRuleConection = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateRuleConection"]) => {
+  const nodeToUpdate = getNode(node);
+  const config = nodeToUpdate.configuration;
+  const rule = config.rules.find(el => el.id == c.ruleId)
+  if (rule){
+    rule.nextNode = c.nextNode;
+  }
+  return nodeToUpdate;
+}
+
+export const updateMessageNextNodeConection = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateMessageNextNodeConection"]) => {
+  const nodeToUpdate = getNode(node);
+  // const config = nodeToUpdate.configuration;
+  nodeToUpdate.nextNode = c.nextNode
   return nodeToUpdate;
 }
