@@ -43,15 +43,15 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
 
   return <>
     <Factory.v1 id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
-      <div className="absolute bottom-[100%] h-[35%] left-1/2 -translate-x-1/2 hidden group-hover:block">
-        <div className="h-[100%]">
+      <div style={{ top: -30 }} className="absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block">
+        <div className="h-full " >
           <ButtonGroup>
             <Button
               variant={'outline'}
               size={'icon-xs'}
               onClick={(e) => {
                 e.stopPropagation()
-                
+
               }}
             >
               <GoPlus />
@@ -61,7 +61,7 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
               size={'icon-xs'}
               onClick={(e) => {
                 e.stopPropagation()
-                
+
               }}
             >
               <HiOutlineDuplicate />
@@ -81,7 +81,7 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
               size={'icon-xs'}
               onClick={(e) => {
                 e.stopPropagation()
-              
+
               }}
             >
               <HiOutlineDotsHorizontal />
@@ -97,7 +97,8 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
 const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', config }: PropsWithChildren<BaseNodeProps>) => {
   return <>
     <div className='border-2 border-gray-200 rounded-xl bg-white flex flex-col shadow-xl p-2 relative group'>
-      <div className='flex items-start '>
+      <div className='flex items-start relative'>
+
         <div className='flex gap-2 justify-between'>
           <span className={`h-10 w-10 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>
             <Icon className='text-white' />
@@ -107,6 +108,37 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
             <p className='text-gray-500 text-xs'>{description}</p>
           </div>
         </div>
+
+        {config.hasSource && (<>
+          <Handle
+            type="source"
+            position={Position.Right}
+            style={{
+              right: -10,
+              width: 12,
+              height: 12,
+              background: "#2563eb",
+              border: "2px solid white",
+              borderRadius: "50%",
+            }}
+          />
+        </>)}
+
+        {config.hasTarget && (<>
+          <Handle
+            type="target"
+            position={Position.Left}
+            style={{
+              left: -10,
+              width: 12,
+              height: 12,
+              background: "#2563eb",
+              border: "2px solid white",
+              borderRadius: "50%",
+            }}
+          />
+        </>)}
+
       </div>
       <div className=''>
         <div>
@@ -115,33 +147,7 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
       </div>
     </div>
 
-    {config.hasSource && (<>
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={{
-          width: 12,
-          height: 12,
-          background: "#2563eb",
-          border: "2px solid white",
-          borderRadius: "50%",
-        }}
-      />
-    </>)}
 
-    {config.hasTarget && (<>
-      <Handle
-        type="target"
-        position={Position.Left}
-        style={{
-          width: 12,
-          height: 12,
-          background: "#2563eb",
-          border: "2px solid white",
-          borderRadius: "50%",
-        }}
-      />
-    </>)}
 
   </>
 }

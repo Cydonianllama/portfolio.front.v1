@@ -7,6 +7,7 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { nodeTypes } from "@erick/conversationalflow";
+import { RuleSection } from "./condition-node/rulesSection";
 
 export function ConditionNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_CONDITION
@@ -21,7 +22,9 @@ export function ConditionNode({ data }: NodeProps) {
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: false, hasTarget: true }}
       >
-        condition-node
+        <div className="pt-2">
+          <RuleSection id={String(data.id)} />
+        </div>
       </BaseNode>
     </>
   );

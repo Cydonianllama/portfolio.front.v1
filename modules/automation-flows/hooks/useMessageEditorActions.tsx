@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { 
-  buttonItemSendMessageConfigNode,
-  groupWordsItemSendMessageConfigNode, 
   IAutomationNode, 
   NODE_TYPE_GENERAL_MESSAGE_SIMPLE, 
-  SendMessageConfigNode, 
-  words_groupWordsItemSendMessageConfigNode 
 } from "@erick/conversationalflow";
 import { MessageUpdater, UpdateMessageConfigurationActions } from "../updaters/message.updater";
 import { useConversationalFlowGenActions } from "./action.hooks.flow";
-
-
 
 export const useMessageEditorActions = () => {
 
@@ -76,9 +70,6 @@ export const useMessageEditorActions = () => {
     }
 
     // send update to server
-
-    console.log(node_to_update)
-
     conversationalFlowGenActions.UpdateNodeAction({
       id: node_to_update.id,
       configuration: node_to_update.configuration,
