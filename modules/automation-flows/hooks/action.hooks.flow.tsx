@@ -14,6 +14,7 @@ import { BuildNodeAndEdges } from "../utils/build"
 import { nodesFlow } from "../engineSimple/types"
 import { v4 as uuidv4 } from "uuid";
 import { nodeTypes } from '@erick/conversationalflow'
+import { useTriggerActions } from "./useTriggerActions"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type useConversationalFlowGenActionsProps = {
@@ -21,6 +22,8 @@ type useConversationalFlowGenActionsProps = {
 }
 
 export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenActionsProps) => {
+
+  const triggerActions = useTriggerActions()
 
   const context = useContext(WorkflowEditorContext);
 
@@ -267,6 +270,8 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
       toast.success('Success')
       automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers }, initialListFinished: true })
 
+      // listar los triggers requeridos en esta automatizacion
+      triggerActions.getTriggersAction({ triggers: req.data.automation?.triggers.map(el => (el.id)) || [] })
 
       if (req.data.nodeList) {
         // contruir los nodos del flow

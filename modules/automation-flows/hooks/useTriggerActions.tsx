@@ -4,6 +4,8 @@ import { UpdateTrigger, UpdateTriggerRequestDTO } from "@/api/flow/update.trigge
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { automationFlowGenStore } from "../store/automation.flow.store";
+import { GetTriggers, GetTriggersRequestDTO } from "@/api/flow/get.triggers";
+import { GetTrigger, GetTriggerRequestDTO } from "@/api/flow/get.trigger";
 
 export const useTriggerActions = () => {
 
@@ -40,6 +42,11 @@ export const useTriggerActions = () => {
               }
             }
           })
+
+          // set trigger information 
+          if (req.data.trigger){
+            automationStore.setTriggersFromAutomation([...automationStore.triggersFromtAutomation, req.data.trigger])
+          }
         }
       }
 
@@ -48,7 +55,7 @@ export const useTriggerActions = () => {
     } finally {
 
     }
-  }, [automationStore.information])
+  }, [automationStore.information, automationStore.triggersFromtAutomation])
 
   const deleteTriggerAction = useCallback(async (data: DeleteTriggerRequestDTO) => {
     try {
@@ -91,18 +98,71 @@ export const useTriggerActions = () => {
       // success
       toast.success('Success')
 
-
-
     } catch (ex) {
 
     } finally {
 
+    }
+  }, [automationStore.information])
+
+
+  const getTriggersAction = useCallback(async (data: GetTriggersRequestDTO) => {
+    try {
+      const req = await GetTriggers(data)
+      if (!req) {
+        toast.error('Error 1')
+        return;
+      }
+  
+      if (!req?.status) {
+        toast.error(req.message || 'Error 2')
+        return;
+      }
+  
+      // success
+      toast.success('Success')
+  
+      if (req.status && req.data.list){
+        automationStore.setTriggersFromAutomation(req.data?.list || [])
+      }
+  
+    } catch (ex) {
+  
+    } finally {
+  
+    }
+  }, [])
+
+  const getTriggerAction = useCallback(async (data: GetTriggerRequestDTO) => {
+    try {
+      const req = await GetTrigger(data)
+      if (!req) {
+        toast.error('Error 1')
+        return;
+      }
+  
+      if (!req?.status) {
+        toast.error(req.message || 'Error 2')
+        return;
+      }
+  
+      // success
+      toast.success('Success')
+  
+      
+  
+    } catch (ex) {
+  
+    } finally {
+  
     }
   }, [])
 
   return {
     createTriggerAction,
     deleteTriggerAction,
-    updateTriggerAction
+    updateTriggerAction,
+    getTriggersAction,
+    getTriggerAction
   }
 }
