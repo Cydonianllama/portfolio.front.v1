@@ -7,13 +7,21 @@ import {
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
 import { Button } from "@/components/ui/button"
-import { nodeTypes } from "@erick/conversationalflow";
+import { IAutomationNode, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING, nodeTypes } from "@erick/conversationalflow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
+import { TriggersSection } from "./trigger-node/triggersSection";
+import { useAutomationNode } from "../hooks/useAutomationNode";
 
-export function TriggerNode({ data }: NodeProps) {
+export function TriggerNode({ data, id }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING
 
   const automationFlowStore = automationFlowGenStore()
+
+  const { getNodeConfiguration } = useAutomationNode(id)
+
+  const nodeInfo = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING>;
+
+  const automationFlowGen = automationFlowGenStore()
 
   return (
     <>
@@ -35,7 +43,7 @@ export function TriggerNode({ data }: NodeProps) {
               automationFlowStore.setTriggerSelector({ openTriggerSelector: true })
             }}
           >
-            Agregar disparador
+            <TriggersSection triggers={automationFlowGen.triggersFromtAutomation || []} />
           </Button>
         </div>
       </BaseNode>

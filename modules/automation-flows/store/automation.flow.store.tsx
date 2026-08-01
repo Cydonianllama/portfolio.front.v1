@@ -4,6 +4,7 @@
 import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { InformationAutomationFlow } from "@/api/flow/dto";
+import { TriggerDTO } from "@/api/flow/trigger.dto";
 
 export type modeAutomationFlow = 'preview' | 'editor'
 
@@ -23,6 +24,8 @@ interface AutomationFlowStore {
   setSelectNode: (data: Partial<{ openSelectNode: boolean }>) => void
 
   // // getall
+  triggersFromtAutomation: Array<TriggerDTO>,
+  setTriggersFromAutomation: (data: Array<TriggerDTO>) => void
   information: InformationAutomationFlow | null
   listing: boolean;
   initialListFinished: boolean
@@ -50,6 +53,8 @@ export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
   setSelectNode: (data) => set((state) => ({ ...state, ...data })),
 
   // // getall
+  triggersFromtAutomation: [],
+  setTriggersFromAutomation: (data) => set((state) => ({ ...state, triggersFromtAutomation: data })),
   information: null,
   listing: false,
   initialListFinished: false,
