@@ -11,7 +11,7 @@ export const TriggersSection = ({ triggers }: TriggersSectionProps) => {
 
   return (
     <>
-      <div className="pt-2">
+      <div className="pt-2 space-y-2">
         {triggers.map((el, index) => (
           <TriggerItem key={index} data={el} />
         ))}

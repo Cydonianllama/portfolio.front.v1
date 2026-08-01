@@ -10,7 +10,7 @@ export const TriggerItem = ({ data }: TriggerItemProps) => {
 
   return (
     <>
-      <div>
+      <div className="border p-1 text-xs">
         {data.id}
       </div>
     </>

@@ -11,6 +11,7 @@ import { IAutomationNode, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING, nodeTypes 
 import { automationFlowGenStore } from "../store/automation.flow.store";
 import { TriggersSection } from "./trigger-node/triggersSection";
 import { useAutomationNode } from "../hooks/useAutomationNode";
+import { IconsCatalog } from "@/catalogs/icons.catalogs";
 
 export function TriggerNode({ data, id }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING
@@ -35,16 +36,19 @@ export function TriggerNode({ data, id }: NodeProps) {
         config={{ hasSource: true, hasTarget: false }}
       >
         <div className="pt-2">
-          <Button
-            className={'w-full'}
-            variant={'outline'}
-            onClick={(e) => {
-              e.stopPropagation()
-              automationFlowStore.setTriggerSelector({ openTriggerSelector: true })
-            }}
-          >
-            <TriggersSection triggers={automationFlowGen.triggersFromtAutomation || []} />
-          </Button>
+          {automationFlowGen.triggersFromtAutomation.length == 0 && (
+            <Button
+              className={'w-full'}
+              variant={'outline'}
+              onClick={(e) => {
+                e.stopPropagation()
+                automationFlowStore.setTriggerSelector({ openTriggerSelector: true })
+              }}
+            >
+              Agregar trigger {IconsCatalog.addPlus.Icon}
+            </Button>
+          )}
+          <TriggersSection triggers={automationFlowGen.triggersFromtAutomation || []} />
         </div>
       </BaseNode>
     </>
