@@ -23,7 +23,8 @@ import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
 import { useConditionEditorActions } from "../hooks/useConditionEditorActions";
 import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
-import { IAutomationNode, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
+import { IAutomationNode, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING } from "@erick/conversationalflow";
+import { useTriggerEditorActions } from "../hooks/useTriggerEditorActions";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -39,6 +40,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
 
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { UpdateMessageConfiguration } = useMessageEditorActions()
+  const { UpdateTriggerConfiguration } = useTriggerEditorActions()
 
   const context = useContext(WorkflowEditorContext);
   const {
@@ -122,7 +124,6 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
 
         if (node) {
           if (node.type == NODE_TYPE_GENERAL_MESSAGE_SIMPLE) {
-
             if (connection.sourceHandle) {
               if (connection.sourceHandle.startsWith('button-')) {
                 UpdateMessageConfiguration('updateButtonConnection', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
@@ -144,9 +145,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
               }
             }
 
-
           } else if (node.type == NODE_TYPE_CONDITION) {
-
             if (connection.sourceHandle) {
               if (connection.sourceHandle.startsWith('rule-')) {
                 UpdatConditionConfiguration('updateRuleConection', node as IAutomationNode<typeof NODE_TYPE_CONDITION>, {
@@ -155,6 +154,16 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
                 })
               } else if (connection.sourceHandle) {
                 UpdatConditionConfiguration('updateMessageNextNodeConection', node as IAutomationNode<typeof NODE_TYPE_CONDITION>, {
+                  nextNode: connection.target
+                })
+              } else {
+                return;
+              }
+            }
+          } else if (node.type == NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING) {
+            if (connection.sourceHandle) {
+              if (connection.sourceHandle) {
+                UpdateTriggerConfiguration('updateTriggerNext', node as IAutomationNode<typeof NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING>, {
                   nextNode: connection.target
                 })
               } else {
