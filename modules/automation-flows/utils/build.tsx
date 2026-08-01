@@ -64,9 +64,9 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
     if (node.nextNode) {
       if (foundeNodeFromId(node.nextNode, nodes)) {
         edgesToSend.push({
-          id: `${node.id}---${node.nextNode}`,
-          source: node.id,
-          target: node.nextNode,
+          id: `edge---next-${node.id}-${node.nextNode}`,
+          source: `${node.id}`,
+          target: `${node.nextNode}`,
         })
       } else {
         console.warn(`node.nextNode ${node.nextNode} not founded`)
@@ -79,22 +79,43 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
       const messageNode = node as IAutomationNode<typeof nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
 
       if (messageNode.configuration) {
+
+        // buttons
         if (messageNode.configuration.buttons) {
+          let idx = 0
           for (const button of messageNode.configuration.buttons) {
             if (button.nextNode) {
               if (foundeNodeFromId(button.nextNode, nodes)) {
                 edgesToSend.push({
-                  id: `${node.id}---${node.nextNode}---${button.nextNode}`,
+                  id: `edge---${button.id}-${node.id}-${idx}`,
                   source: node.id,
-                  sourceHandle: `next-${node.id || ''}`,
+                  sourceHandle: button.id,
                   target: button.nextNode,
                 })
               } else {
                 console.warn(`button.nextNode ${node.nextNode} not founded`)
               }
             }
+            idx++;
           }
         }
+
+        // words
+        if (messageNode.configuration.groupWords) {
+          let idx = 0
+          for (const groupWord of messageNode.configuration.groupWords) {
+            if (groupWord.nextNode) {
+              edgesToSend.push({
+                id: `edge---${groupWord.id}-${node.id}-${idx}`,
+                source: node.id,
+                sourceHandle: groupWord.id,
+                target: groupWord.nextNode,
+              })
+            }
+            idx++;
+          }
+        }
+        
       }
     }
 
@@ -108,19 +129,21 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
           if (messageNode.configuration.list.sections) {
             for (const list of messageNode.configuration.list.sections) {
               if (list.options) {
+                let idx = 0;
                 for (const option of list.options) {
                   if (option.nextNode) {
                     if (foundeNodeFromId(option.nextNode, nodes)) {
                       edgesToSend.push({
-                        id: `${node.id}---${node.nextNode}---${option.nextNode}`,
+                        id: `edge---${node.id}-${node.id}-${idx}`,
                         source: node.id,
-                        sourceHandle: `next-${node.id || ''}`,
+                        sourceHandle: option.id,
                         target: option.nextNode,
                       })
                     } else {
                       console.warn(`option.nextNode ${node.nextNode} not founded`)
                     }
                   }
+                  idx++;
                 }
               }
             }
@@ -142,10 +165,10 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
             if (rule.nextNode) {
               if (foundeNodeFromId(rule.nextNode, nodes)) {
                 edgesToSend.push({
-                  id: `${node.id}---${node.nextNode}---${rule.nextNode}`,
-                  source: node.id,
-                  sourceHandle: `condition-${node.id}-${idx}`,
+                  id: `edge---${node.id}-${rule.id}-${idx}`,
+                  sourceHandle: rule.id,
                   target: rule.nextNode,
+                  source: node.id,
                 })
               } else {
                 console.warn(`rule.nextNode ${node.nextNode} not founded`)

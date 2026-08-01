@@ -17,8 +17,9 @@ export function DefaultEdge(props: EdgeProps) {
     <BaseEdge
       path={path}
       style={{
-        stroke: "#2563eb",
+        stroke: "gray",
         strokeWidth: 3,
+        zIndex: 10001
       }}
     />
 
@@ -32,9 +33,13 @@ export function DefaultEdge(props: EdgeProps) {
           pointerEvents: 'all',
           // zIndex: 10001
         }}
-        className={"nodrag nopan border p-1 rounded-lg text-[12px] bg-white hover:bg-gray-100 "}
+        className={"z-100 nodrag nopan border p-1 rounded-lg text-[12px] bg-white hover:bg-gray-100 "}
         onClick={() => {
-          // setEdges((es) => es.filter((e) => e.id !== id)); -- esto es eliminacion directa
+          console.log(props.sourceHandleId)
+          if (props.sourceHandleId){
+            
+          }
+          //setEdges((es) => es.filter((e) => e.id !== id)); // esto es eliminacion directa
         }}
       >
         <MdDeleteOutline className='text-gray-400 dark:text-zinc-500 hover:text-red-500' />

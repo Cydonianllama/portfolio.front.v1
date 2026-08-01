@@ -94,7 +94,7 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
   </>
 }
 
-const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', config }: PropsWithChildren<BaseNodeProps>) => {
+const BaseNodev1 = ({ id, title, description, color, Icon, children, type = 'v1', config }: PropsWithChildren<BaseNodeProps>) => {
   return <>
     <div className='border-2 border-gray-200 rounded-xl bg-white flex flex-col shadow-xl p-2 relative group'>
       <div className='flex items-start relative'>
@@ -111,6 +111,7 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
 
         {config.hasSource && (<>
           <Handle
+            id={`${id}`}
             type="source"
             position={Position.Right}
             style={{
@@ -126,6 +127,7 @@ const BaseNodev1 = ({ title, description, color, Icon, children, type = 'v1', co
 
         {config.hasTarget && (<>
           <Handle
+            id={`${id}`}
             type="target"
             position={Position.Left}
             style={{

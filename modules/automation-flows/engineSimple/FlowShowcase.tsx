@@ -21,6 +21,9 @@ import { canOpenEditor } from "../utils/can-open-editor";
 import { FlowEdge, nodesFlow } from "./types";
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
+import { useConditionEditorActions } from "../hooks/useConditionEditorActions";
+import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
+import { IAutomationNode, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -33,6 +36,9 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
 
   const automationFlowStore = automationFlowGenStore()
   const flowActions = useConversationalFlowGenActions({})
+
+  const { UpdatConditionConfiguration } = useConditionEditorActions()
+  const { UpdateMessageConfiguration } = useMessageEditorActions()
 
   const context = useContext(WorkflowEditorContext);
   const {
@@ -109,11 +115,62 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
       }
       */
 
+      console.log(connection)
+
+      if (connection.source) {
+        const node = automationFlowStore?.information?.nodeList?.find(el => el.id == connection.source);
+
+        if (node) {
+          if (node.type == NODE_TYPE_GENERAL_MESSAGE_SIMPLE) {
+
+            if (connection.sourceHandle) {
+              if (connection.sourceHandle.startsWith('button-')) {
+                UpdateMessageConfiguration('updateButtonConnection', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
+                  buttonId: connection.sourceHandle,
+                  nextNode: connection.target
+                })
+              } else if (connection.sourceHandle.startsWith('words-')) {
+                UpdateMessageConfiguration('updateGroupWordConnection', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
+                  groupWordId: connection.sourceHandle,
+                  nextNode: connection.target
+                })
+              } else if (connection.sourceHandle) {
+                // next node
+                UpdateMessageConfiguration('updateMessageNext', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
+                  nextNode: connection.target
+                })
+              } else {
+                return;
+              }
+            }
+
+
+          } else if (node.type == NODE_TYPE_CONDITION) {
+
+            if (connection.sourceHandle) {
+              if (connection.sourceHandle.startsWith('rule-')) {
+                UpdatConditionConfiguration('updateRuleConection', node as IAutomationNode<typeof NODE_TYPE_CONDITION>, {
+                  nextNode: connection.target,
+                  ruleId: connection.sourceHandle
+                })
+              } else if (connection.sourceHandle) {
+                UpdatConditionConfiguration('updateMessageNextNodeConection', node as IAutomationNode<typeof NODE_TYPE_CONDITION>, {
+                  nextNode: connection.target
+                })
+              } else {
+                return;
+              }
+            }
+          }
+        }
+
+      }
+
       // dispatch(UpdateconnectionsNode({ connection: connection }))
-      const edge = { ...connection, type: 'custom-edge' };
+      const edge = { ...connection, type: edgeTypes.default };
       setEdges((eds) => addEdge(edge, eds))
     },
-    [],
+    [automationFlowStore.information],
   );
 
   // const onConnect = useCallback(

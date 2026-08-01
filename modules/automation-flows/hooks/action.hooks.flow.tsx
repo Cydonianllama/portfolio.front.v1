@@ -161,8 +161,16 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
             return el
           }
         })
+
+        const buildData = BuildNodeAndEdges({ nodes: [...list] })
+        console.log(buildData)
+        setNodes(buildData.nodes)
+        setEdges(buildData.edges)
+
         automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
+
       }
+
 
     } catch (ex) {
 
@@ -259,7 +267,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
       toast.success('Success')
       automationFlowStore.setListState({ information: { automation: req.data.automation, nodeList: req.data.nodeList, publishedAutomation: req.data.publishedAutomation, triggers: req.data.triggers }, initialListFinished: true })
 
-      
+
       if (req.data.nodeList) {
         // contruir los nodos del flow
         const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList })
