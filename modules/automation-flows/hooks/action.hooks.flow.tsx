@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateNodeRequestDTO, CreateNode } from "@/api/flow/create.node"
 import { GetAutomationInformation, GetAutomationInformationRequestDTO } from "@/api/flow/get.information"
@@ -7,7 +8,7 @@ import { UpdateNodeRequestDTO, UpdateNode } from "@/api/flow/update.node"
 import { UpdatePositionNode, UpdatePositionNodeRequestDTO } from "@/api/flow/update.position.node"
 import { useCallback, useContext } from "react"
 import { toast } from "sonner"
-import { automationFlowGenStore } from "../store/automation.flow.store"
+import { automationFlowGenStore, modeAutomationFlow } from "../store/automation.flow.store"
 import { useReactFlow } from "@xyflow/react"
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
 import { BuildNodeAndEdges } from "../utils/build"
@@ -126,6 +127,16 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
       // success
       toast.success('Success')
 
+      if (req.data.publishedAutomation && req.data.automation){
+        SetModeAction('preview')
+        automationFlowStore.setListState({
+          information: {
+            ...automationFlowStore.information,
+            publishedAutomation: req.data.publishedAutomation,
+            automation: req.data.automation
+          }
+        })
+      }
 
 
     } catch (ex) {
@@ -133,7 +144,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     } finally {
 
     }
-  }, [])
+  }, [automationFlowStore.information])
 
   const UpdateNodeAction = useCallback(async (data: UpdateNodeRequestDTO) => {
     try {
@@ -165,13 +176,16 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
           }
         })
 
+        // update flowchart
         const buildData = BuildNodeAndEdges({ nodes: [...list] })
         console.log(buildData)
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
 
-        automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
-
+        // update states
+        if (req.data.automation){
+          automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list, automation:  req.data.automation} })
+        }
       }
 
 
@@ -303,12 +317,23 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     }
   }, [])
 
+  const SetModeAction = useCallback(async (mode: modeAutomationFlow) => {
+    try {
+      automationFlowStore.setMode(mode)
+    } catch (ex) {
+  
+    } finally {
+      
+    }
+  }, [automationFlowStore.setMode])
+
   return {
     CreateNodeAction,
     UpdateNodeAction,
     PublishAutomationAction,
     RemoveNodeAction,
     UpdatePositionNodAction,
-    GetAutomationInformationAction
+    GetAutomationInformationAction,
+    SetModeAction
   }
 }

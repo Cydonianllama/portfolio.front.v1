@@ -1,16 +1,28 @@
 import { UseAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
+import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ButtonPublishProps = {
   
 }
 
 export const ButtonPublish = ({  }: ButtonPublishProps) => {
-  const useAppData = UseAppData()
+  // const useAppData = UseAppData()
 
+  const information = automationFlowGenStore(state => state.information)
+
+  const conversationFlowActions = useConversationalFlowGenActions({})
+
+  const HandleToClickPublish = () => {
+    conversationFlowActions.PublishAutomationAction({
+      automationId:  information?.automation?.id || '' 
+    })
+  }
+  
   return (
     <>
-      <Button variant={'default'}>
+      <Button onClick={HandleToClickPublish} variant={'default'}>
         Publicar
       </Button>
     </>

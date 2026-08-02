@@ -1,6 +1,6 @@
 
 // ______________ Service
-import { IPublishedAutomation } from '@erick/conversationalflow';
+import { IAutomation, IPublishedAutomation } from '@erick/conversationalflow';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
@@ -11,6 +11,7 @@ export interface PublishAutomationRequestDTO {
 
 interface PublishAutomationResponseDTO {
   publishedAutomation: IPublishedAutomation | null
+  automation: IAutomation | null
 }
 
 export const PublishAutomation= async (data: PublishAutomationRequestDTO): Promise<ResponseApi<PublishAutomationResponseDTO> | null> => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ______________ Service
-import { IAutomationNode } from '@erick/conversationalflow';
+import { IAutomation, IAutomationNode } from '@erick/conversationalflow';
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
@@ -16,6 +16,7 @@ export interface UpdateNodeRequestDTO {
 
 interface UpdateNodeResponseDTO {
   node: IAutomationNode | null
+  automation: IAutomation | null
 }
 
 export const UpdateNode = async (data: UpdateNodeRequestDTO): Promise<ResponseApi<UpdateNodeResponseDTO> | null> => {

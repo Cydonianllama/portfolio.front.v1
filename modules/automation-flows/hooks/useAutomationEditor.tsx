@@ -6,14 +6,25 @@ export const useAutomationEditor = () => {
   const automationFlow =  automationFlowGenStore()
 
   const GetAutomationNodeInformation = useCallback(() => {
-    if (automationFlow.mode == 'editor'){
+    if (
+      automationFlow.mode == 'editor' && 
+      automationFlow.information?.automation?.isPublished
+    ){
       return automationFlow.information?.nodeList?.find(el => el.id == automationFlow.currentNodeIdEditing)
-    } else if (automationFlow.mode == 'preview') {
+    } else if (
+      automationFlow.mode == 'preview' && 
+      !automationFlow.information?.automation?.isPublished
+    ) {
+      return automationFlow.information?.nodeList?.find(el => el.id == automationFlow.currentNodeIdEditing)
+    } else if (
+      automationFlow.mode == 'preview' && 
+      automationFlow.information?.automation?.isPublished
+    ) {
       return automationFlow.information?.publishedAutomation?.nodes.find(el => el.id == automationFlow.currentNodeIdEditing)
     }
-  }, [automationFlow.information])
+  }, [automationFlow.information, automationFlow.mode])
 
   return {
-    GetAutomationNodeInformation
+    GetAutomationNodeInformation,
   }
 }

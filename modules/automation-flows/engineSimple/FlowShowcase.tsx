@@ -12,6 +12,10 @@ import {
   ReactFlowInstance,
   Edge,
   useReactFlow,
+  applyNodeChanges,
+  NodeChange,
+  EdgeChange,
+  applyEdgeChanges,
 } from "@xyflow/react";
 import { ComponentType, useCallback, useContext, useEffect, useRef } from "react";
 import "@xyflow/react/dist/style.css";
@@ -25,6 +29,7 @@ import { useConditionEditorActions } from "../hooks/useConditionEditorActions";
 import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
 import { IAutomationNode, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING } from "@erick/conversationalflow";
 import { useTriggerEditorActions } from "../hooks/useTriggerEditorActions";
+import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -33,10 +38,11 @@ type FlowScreenProps = {
 }
 
 export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurations }: FlowScreenProps) {
-  const { setCenter, } = useReactFlow();
+  // const { setCenter, } = useReactFlow();
 
   const automationFlowStore = automationFlowGenStore()
   const flowActions = useConversationalFlowGenActions({})
+  const { canMoveNodes } = useFlosStateMachineHookActions({})
 
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { UpdateMessageConfiguration } = useMessageEditorActions()
@@ -59,63 +65,26 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
     onEdgesChange: () => { },
   }
 
-  // const [nodes, setNodes, onNodesChange] = useNodesState(nodesF);
-  // const [edges, setEdges, onEdgesChange] = useEdgesState(edgesF);
-
-  // useEffect(() => {
-  //   // if (nodesF && edgesF) console.log('actualizacion desde fuera')
-  //   if (nodesF) setNodes(nodesF)
-  //   if (edgesF) setEdges(edgesF)
-  // }, [nodesF, edgesF])
-
-  // centrar el nodo trigger al finalizar el listado
-  // useEffect(() => {}, [automationFlowStore.initialListFinished])
-
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
-  // const onNodesChange = useCallback(
-  //   (changes: NodeChange<any>[]) => {
-  //     if (!automationFlow.startEditingFlow) return;
-  //     setNodes((nds) => {
-  //       const updatedNodes = applyNodeChanges(changes, nds);
-  //       return updatedNodes
-  //     })
-  //   },
-  //   [setNodes, automationFlow.startEditingFlow],
-  // );
+  const onNodesChange_ = useCallback((changes: NodeChange<any>[]) => {
+    if (!canMoveNodes) return;
+    setNodes((nds) => {
+      const updatedNodes = applyNodeChanges(changes, nds);
+      return updatedNodes
+    })
+  }, [setNodes, canMoveNodes]);
 
-  // const onEdgesChange = useCallback(
-  //   (changes: Array<EdgeChange>) => {
-  //     if (!automationFlow.startEditingFlow) return;
-  //     setEdges((eds) => applyEdgeChanges(changes, eds))
-  //   },
-  //   [setEdges, automationFlow.startEditingFlow],
-  // );
+  const onEdgesChange_ = useCallback(
+    (changes: Array<EdgeChange>) => {
+      if (!canMoveNodes) return;
+      setEdges((eds) => applyEdgeChanges(changes, eds))
+    },
+    [setEdges, canMoveNodes],
+  );
 
   const onConnect = useCallback(
     (connection: any) => {
-      // // Validar que los nodos Tool solo puedan conectarse desde el handle tools del nodo IA
-      // const targetNode = automationFlow.currentAutomationData?.nodes.find(n => n.id === connection.target);
-
-      // // Si el nodo target es un Tool (tiene toolType)
-      // if (targetNode?.configurationGoogleCalendar?.toolType || targetNode?.configurationSaveVariables?.toolType || targetNode?.configurationGoogleSheets?.toolType || targetNode?.configurationGoogleDocs?.toolType) {
-      //   // Solo permitir conexiones desde el handle tools-{id} del nodo IA
-      //   const isFromToolsHandle = connection.sourceHandle?.startsWith('tools-');
-      //   if (!isFromToolsHandle) {
-      //     console.warn('Los nodos Tool solo pueden conectarse desde el handle Tools del nodo IA');
-      //     return; // Bloquear la conexión
-      //   }
-      // }
-
-      /*
-      interface Connection {
-        source: string | null;
-        target: string | null;
-
-        sourceHandle: string | null;
-        targetHandle: string | null;
-      }
-      */
 
       console.log(connection)
 
@@ -182,15 +151,6 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
     [automationFlowStore.information],
   );
 
-  // const onConnect = useCallback(
-  //   (connection: any) => {
-  //     setEdges((eds) =>
-  //       addEdge(connection, eds)
-  //     );
-  //   },
-  //   []
-  // );
-
   return (
     <div className="h-full w-full bg-gray-50">
       <ReactFlow
@@ -199,8 +159,8 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
         edges={edges}
         nodeTypes={nodeTypesConfigurations}
         edgeTypes={edgeTypesConfiguration}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onNodesChange={onNodesChange_}
+        onEdgesChange={onEdgesChange_}
         onConnect={onConnect}
         fitView
         minZoom={0.1}

@@ -61,7 +61,7 @@ export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
   setListState: (data) => set((state) => ({ ...state, ...data })),
 
   // mode  automationFlow
-  mode: 'editor',
+  mode: 'preview',
   setMode: (data) => set((state) => ({ ...state, mode: data })),
 
 }));

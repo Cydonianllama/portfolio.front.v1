@@ -9,8 +9,6 @@ import { GeneralConfigurationNode } from "../_configs";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, nodeTypes } from "@erick/conversationalflow";
 import { SectionGroupWords } from "./message-node/sectionGroupWords";
 import { SectionButtons } from "./message-node/sectionButtonts";
-import { useAutomationEditor } from "../hooks/useAutomationEditor";
-import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
 import { useAutomationNode } from "../hooks/useAutomationNode";
 
 export function MessageNode({ data }: NodeProps) {

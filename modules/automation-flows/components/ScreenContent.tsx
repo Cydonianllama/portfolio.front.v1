@@ -14,6 +14,8 @@ import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
 import { ButtonAddNodes } from "./ButtonAddNodes";
+import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
+import { ButtonSave } from "./buttonSave";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -23,6 +25,8 @@ type AutomationFlowScreenProps = {
 
 export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScreenProps) => {
   const flowActions = useConversationalFlowGenActions({})
+
+  const { showEditButton, showPublishButton, showSaveButton } = useFlosStateMachineHookActions({})
 
   const useAppData = UseAppData()
 
@@ -39,7 +43,6 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
     }
   }, [automationId])
 
-
   return (
     <>
       <div className="flex flex-col w-full h-full">
@@ -50,18 +53,29 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
           <div className="flex gap-2 items-center">
             <ButtonsMemento />
             <ButtonsViewFlow />
-            <ButtonPublish />
-            {/* <ButtonEdit /> */}
+
+            {showSaveButton && (
+              <ButtonSave />
+            )}
+
+            {showPublishButton && (
+              <ButtonPublish />
+            )}
+
+            {showEditButton && (
+              <ButtonEdit />
+            )}
+
           </div>
         </div>
         <div className="flex-1 w-full relative">
           {automationFlowStore.openEdit && (<EditorFlow />)}
           {/* <ContentLoading /> */}
           {(!automationFlowStore.listing && automationFlowStore.initialListFinished) && (<>
-              <FlowScreen
-                edgeTypesConfiguration={edgeTypesConfiguration}
-                nodeTypesConfigurations={nodeTypesConfigurations}
-              />
+            <FlowScreen
+              edgeTypesConfiguration={edgeTypesConfiguration}
+              nodeTypesConfigurations={nodeTypesConfigurations}
+            />
           </>)}
           {automationFlowStore.openSelectNode && <SideSelectorNode />}
           <ButtonAddNodes />
