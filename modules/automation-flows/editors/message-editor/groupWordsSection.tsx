@@ -5,6 +5,7 @@ import { GroupWordItem } from "./groupWordItem";
 import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
+import { EmptyState } from "../../components/states/EmptyState";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type GroupWordsSectionProps = {
 
@@ -43,7 +44,15 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          {nodeInformation.configuration?.groupWords?.map((el, index) => <GroupWordItem index={index} data={el} key={index} />)}
+          {nodeInformation.configuration?.groupWords?.length ? (
+            nodeInformation.configuration?.groupWords?.map((el, index) => <GroupWordItem index={index} data={el} key={index} />)
+          ) : (
+            <EmptyState
+              Icon={IconsCatalog.addPlus.Icon}
+              title="Sin palabras clave"
+              description="Agrupa palabras clave para detectar la intención del usuario."
+            />
+          )}
         </div>
       </div>
     </>

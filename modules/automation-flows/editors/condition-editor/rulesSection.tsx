@@ -4,6 +4,7 @@ import { IAutomationNode, NODE_TYPE_CONDITION } from "@erick/conversationalflow"
 import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { RuleItem } from "./ruleItem";
 import { useConditionEditorActions } from "../../hooks/useConditionEditorActions";
+import { EmptyState } from "../../components/states/EmptyState";
 
 export function RuleSection() {
   const { GetAutomationNodeInformation } = useAutomationEditor()
@@ -30,9 +31,17 @@ export function RuleSection() {
         </Button>
       </div>
       <div className="space-y-2">
-        {nodeInformation?.configuration?.rules?.map((el, index) => (
-          <RuleItem data={el} key={index} />
-        ))}
+        {nodeInformation?.configuration?.rules?.length ? (
+          nodeInformation?.configuration?.rules?.map((el, index) => (
+            <RuleItem data={el} key={index} />
+          ))
+        ) : (
+          <EmptyState
+            Icon={IconsCatalog.addPlus.Icon}
+            title="Sin reglas"
+            description="Define una regla para evaluar condiciones en el flujo."
+          />
+        )}
       </div>
     </div>
   </>)

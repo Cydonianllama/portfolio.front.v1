@@ -2,6 +2,7 @@ import { UseAppData } from "@/hooks/app/useAppData";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 import { GroupWordsItem } from "./groupWordsItem";
 import { useAutomationNode } from "../../hooks/useAutomationNode";
+import { EmptyState } from "../../components/states/EmptyState";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type sectionGroupWordsProps = {
   id: string
@@ -15,9 +16,13 @@ export const SectionGroupWords = ({ id }: sectionGroupWordsProps) => {
   return (
     <>
       <div className="space-y-2">
-        {nodeInformation?.configuration?.groupWords?.map((el, index) => (
-          <GroupWordsItem key={index} data={el} index={index} />
-        ))}
+        {nodeInformation?.configuration?.groupWords?.length ? (
+          nodeInformation?.configuration?.groupWords?.map((el, index) => (
+            <GroupWordsItem key={index} data={el} index={index} />
+          ))
+        ) : (
+          <EmptyState title="Sin palabras clave" />
+        )}
       </div>
     </>
   )

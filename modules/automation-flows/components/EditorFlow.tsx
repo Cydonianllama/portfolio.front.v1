@@ -22,7 +22,7 @@ export const EditorFlow = ({ }: EditorFlowProps) => {
 
   return (
     <>
-      <div className="absolute top-0 bottom-0 w-80 bg-white border-r shadow z-10">
+      <div className="absolute top-0 bottom-0 w-80 bg-white border-r border-gray-200 z-10">
         <Editor />
       </div>
     </>

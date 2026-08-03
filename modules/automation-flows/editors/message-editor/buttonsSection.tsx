@@ -5,6 +5,7 @@ import { ButtonItem } from "./buttonItem";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
+import { EmptyState } from "../../components/states/EmptyState";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ButtonsSectionProps = {
 
@@ -39,7 +40,15 @@ export const ButtonsSection = ({ }: ButtonsSectionProps) => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          {nodeInformation?.configuration?.buttons?.map((el, index) => <ButtonItem index={index} data={el} key={index} />)}
+          {nodeInformation?.configuration?.buttons?.length ? (
+            nodeInformation?.configuration?.buttons?.map((el, index) => <ButtonItem index={index} data={el} key={index} />)
+          ) : (
+            <EmptyState
+              Icon={IconsCatalog.addPlus.Icon}
+              title="Sin botones"
+              description="Agrega un botón para ofrecer opciones rápidas al usuario."
+            />
+          )}
         </div>
       </div>
     </>
