@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
-import { CreateVariableRequestDTO, CreateVariableResponseDTO, DeleteVariableRequestDTO, DeleteVariableResponseDTO, GetVariableRequestDTO, GetVariableResponseDTO, UpdateVariableRequestDTO, UpdateVariableResponseDTO } from './variable.dto';
+import { CreateVariableRequestDTO, CreateVariableResponseDTO, DeleteVariableRequestDTO, DeleteVariableResponseDTO, GetVariableRequestDTO, GetVariableResponseDTO, GetVariablesRequestDTO, GetVariablesResponseDTO, UpdateVariableRequestDTO, UpdateVariableResponseDTO } from './variable.dto';
 
 
 // Reemplazar por los nombre correctos
@@ -14,6 +14,15 @@ Variable
 variable
 
 */
+
+export const GetVariables = async (data: GetVariablesRequestDTO): Promise<ResponseApi<GetVariablesResponseDTO> | null> => {
+  try {
+    const req = await api.get(`/api/variables?workspaceId=${data.workspaceId}&page=${data.page}`);
+    return req.data;
+  } catch (ex) {
+    return null;
+  }
+}
 
 export const GetVariable = async (data: GetVariableRequestDTO): Promise<ResponseApi<GetVariableResponseDTO> | null> => {
   try {

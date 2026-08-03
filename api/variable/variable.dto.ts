@@ -1,6 +1,12 @@
+import { variableType } from "@erick/conversationalflow";
+
 export interface VariableDTO {
   id: string;
-  name: string
+  name: string;
+  code: string;
+  type: variableType;
+  workspaceId: string;
+  creationDate: Date;
 }
 
 // get one

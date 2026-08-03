@@ -28,6 +28,10 @@ export interface UpdateConditionConfigurationActions {
     ruleId: string,
     nextNode: string | null,
   }
+  updateRuleConnectionType: {
+    ruleId: string,
+    connectionType: 'AND' | 'OR',
+  }
   updateMessageNextNodeConection: {
     nextNode: string | null,
   }
@@ -103,6 +107,16 @@ export const updateRuleConection = (node: MessageUpdateNodeType, c: UpdateCondit
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
     rule.nextNode = c.nextNode;
+  }
+  return nodeToUpdate;
+}
+
+export const updateRuleConnectionType = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateRuleConnectionType"]) => {
+  const nodeToUpdate = getNode(node);
+  const config = nodeToUpdate.configuration;
+  const rule = config.rules.find(el => el.id == c.ruleId)
+  if (rule){
+    rule.connectionType = c.connectionType;
   }
   return nodeToUpdate;
 }

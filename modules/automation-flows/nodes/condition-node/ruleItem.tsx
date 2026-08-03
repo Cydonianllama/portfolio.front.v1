@@ -1,5 +1,4 @@
 import { IAutomationNode, NODE_TYPE_CONDITION } from "@erick/conversationalflow";
-import { id } from "date-fns/locale";
 import { useAutomationNode } from "../../hooks/useAutomationNode";
 import { ConditionItem } from "./conditionItem";
 import {
@@ -7,7 +6,6 @@ import {
   Position,
 } from "@xyflow/react";
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 type RuleItemProps = {
   id: string;
   ruleId: string;
@@ -21,7 +19,7 @@ export function RuleItem({ id, ruleId }: RuleItemProps) {
   const rule = nodeInformation?.configuration?.rules?.find(el => el.id == ruleId)
 
   if (!rule) {
-    return (<>Earth bellow us</>)
+    return (<div className="text-[10px] text-muted-foreground">Regla sin configurar</div>)
   }
 
   return (<>

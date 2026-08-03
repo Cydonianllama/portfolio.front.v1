@@ -15,8 +15,8 @@ export function RuleSection() {
     UpdatConditionConfiguration('addRule', nodeInformation, {
       item: {
         conditions: [],
+        connectionType: 'AND',
         id: `rule-${Math.ceil(Math.random() * 1000000)}-${Math.ceil(Math.random() * 1000000)}`,
-        operator: 'AND',
         nextNode: null
       }
     })
