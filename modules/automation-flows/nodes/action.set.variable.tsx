@@ -1,19 +1,20 @@
 import {
   NodeProps,
-  Handle,
-  Position,
-  NodeResizer,
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { nodeTypes } from "@erick/conversationalflow";
+import { IAutomationNode, nodeTypes, NODE_TYPE_SETVAR } from "@erick/conversationalflow";
+import { useAutomationNode } from "../hooks/useAutomationNode";
 
 export function SetVariableNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_SETVAR
+  const { getNodeConfiguration } = useAutomationNode(String(data?.id) || '')
+  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_SETVAR> | undefined;
+
+  const variables = nodeInformation?.configuration?.variables || []
 
   return (
     <>
-      {/* <NodeResizer minWidth={180} minHeight={100} /> */}
       <BaseNode
         id={String(data?.id) || ''}
         color={GeneralConfigurationNode[type].color}
@@ -22,7 +23,18 @@ export function SetVariableNode({ data }: NodeProps) {
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: true }}
       >
-        set-var
+        <div className="pt-2 space-y-0.5">
+          {variables.length ? (
+            variables.map((el, index) => (
+              <div key={index} className="text-[10px] truncate">
+                <span className="font-medium">{el.variableId || '?'}</span>
+                <span className="text-muted-foreground">{' = "'}{el.value}{'"'}</span>
+              </div>
+            ))
+          ) : (
+            <div className="text-[10px] text-muted-foreground">Sin variables</div>
+          )}
+        </div>
       </BaseNode>
     </>
   );

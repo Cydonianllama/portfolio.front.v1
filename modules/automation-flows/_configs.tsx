@@ -11,6 +11,11 @@ import { MessageNode } from "./nodes/message.node";
 import { TriggerNode } from "./nodes/trigger.node";
 import { FirstSteNode } from "./nodes/firststep.node";
 import { ConditionNode } from "./nodes/condition.node";
+import { AddTagNode } from "./nodes/action.add.tag";
+import { RemoveTagNode } from "./nodes/action.remove.tag";
+import { SetVariableNode } from "./nodes/action.set.variable";
+import { CodeNode } from "./nodes/code.note";
+import { NoteNode } from "./nodes/note.node";
 
 export type NodeTypeValue = (typeof nodeTypes)[keyof typeof nodeTypes]
 export const FIRST_STEP_NODE = "first-step-node"
@@ -25,6 +30,11 @@ export const nodeTypesConfigurations: Record<string, ComponentType<any>> = {
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: TriggerNode,
   [nodeTypes.NODE_TYPE_CONDITION]: ConditionNode,
   [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: RequestServiceNode,
+  [nodeTypes.NODE_TYPE_ADDTAG]: AddTagNode,
+  [nodeTypes.NODE_TYPE_REMOVETAG]: RemoveTagNode,
+  [nodeTypes.NODE_TYPE_SETVAR]: SetVariableNode,
+  [nodeTypes.NODE_TYPE_CODE]: CodeNode,
+  [nodeTypes.NODE_TYPE_NOTE]: NoteNode,
 };
 
 //
@@ -112,6 +122,11 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
     title: 'Agregar etiqueta',
     color: 'yellow'
   },
+  [nodeTypes.NODE_TYPE_SETVAR]: {
+    icon: GrTrigger,
+    title: 'Establecer variable',
+    color: 'yellow'
+  },
   [nodeTypes.NODE_TYPE_SEND_NOTIFICATION]: {
     icon: GrTrigger,
     title: 'Enviar notificacion',
@@ -143,7 +158,7 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
 // Editors
 //
 
-import { ConditionEditor, MessageEditor, TriggerEditor } from './editors/_index'
+import { ConditionEditor, MessageEditor, TriggerEditor, AddTagEditor, RemoveTagEditor, SetVariableEditor, CodeEditor, NoteEditor } from './editors/_index'
 import { edgeTypes } from "./engineSimple/edges.types";
 import { RiWebhookFill } from "react-icons/ri";
 import { RequestServiceNode } from "./nodes/request.service.node";
@@ -166,6 +181,26 @@ export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: bo
   [nodeTypes.NODE_TYPE_CONDITION]: {
     hasEditor: true,
     Editor: ConditionEditor
+  },
+  [nodeTypes.NODE_TYPE_ADDTAG]: {
+    hasEditor: true,
+    Editor: AddTagEditor
+  },
+  [nodeTypes.NODE_TYPE_REMOVETAG]: {
+    hasEditor: true,
+    Editor: RemoveTagEditor
+  },
+  [nodeTypes.NODE_TYPE_SETVAR]: {
+    hasEditor: true,
+    Editor: SetVariableEditor
+  },
+  [nodeTypes.NODE_TYPE_CODE]: {
+    hasEditor: true,
+    Editor: CodeEditor
+  },
+  [nodeTypes.NODE_TYPE_NOTE]: {
+    hasEditor: true,
+    Editor: NoteEditor
   }
 }
 

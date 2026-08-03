@@ -27,8 +27,9 @@ import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext";
 import { useConditionEditorActions } from "../hooks/useConditionEditorActions";
 import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
-import { IAutomationNode, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING } from "@erick/conversationalflow";
+import { IAutomationNode, NODE_TYPE_ADDTAG, NODE_TYPE_CODE, NODE_TYPE_CONDITION, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, NODE_TYPE_NOTE, NODE_TYPE_REMOVETAG, NODE_TYPE_SETVAR, NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING } from "@erick/conversationalflow";
 import { useTriggerEditorActions } from "../hooks/useTriggerEditorActions";
+import { useActionEditorActions } from "../hooks/useActionEditorActions";
 import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
 
 type FlowScreenProps = {
@@ -47,6 +48,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { UpdateMessageConfiguration } = useMessageEditorActions()
   const { UpdateTriggerConfiguration } = useTriggerEditorActions()
+  const { UpdateActionConfiguration } = useActionEditorActions()
 
   const context = useContext(WorkflowEditorContext);
   const {
@@ -147,6 +149,16 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
                 return;
               }
             }
+          } else if (
+            node.type == NODE_TYPE_ADDTAG ||
+            node.type == NODE_TYPE_REMOVETAG ||
+            node.type == NODE_TYPE_SETVAR ||
+            node.type == NODE_TYPE_CODE ||
+            node.type == NODE_TYPE_NOTE
+          ) {
+            UpdateActionConfiguration('updateNextNode', node, {
+              nextNode: connection.target
+            })
           }
         }
 
