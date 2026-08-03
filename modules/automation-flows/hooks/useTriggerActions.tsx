@@ -73,14 +73,30 @@ export const useTriggerActions = () => {
       // success
       toast.success('Success')
 
+      // remover del store local
+      const currentAutomation = automationStore.information?.automation
+      if (currentAutomation){
+        automationStore.setListState({
+          information: {
+            ...automationStore.information,
+            automation: {
+              ...currentAutomation,
+              triggers: (currentAutomation?.triggers || []).filter((el) => el.id != data.id)
+            }
+          }
+        })
+      }
 
+      automationStore.setTriggersFromAutomation(
+        automationStore.triggersFromtAutomation.filter((el) => el.id != data.id)
+      )
 
     } catch (ex) {
 
     } finally {
 
     }
-  }, [])
+  }, [automationStore.information, automationStore.triggersFromtAutomation])
 
   const updateTriggerAction = useCallback(async (data: UpdateTriggerRequestDTO) => {
     try {
@@ -98,12 +114,18 @@ export const useTriggerActions = () => {
       // success
       toast.success('Success')
 
+      if (req.data.trigger){
+        automationStore.setTriggersFromAutomation(
+          automationStore.triggersFromtAutomation.map((el) => el.id == req.data.trigger?.id ? req.data.trigger : el)
+        )
+      }
+
     } catch (ex) {
 
     } finally {
 
     }
-  }, [automationStore.information])
+  }, [automationStore.triggersFromtAutomation])
 
 
   const getTriggersAction = useCallback(async (data: GetTriggersRequestDTO) => {

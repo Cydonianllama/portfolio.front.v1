@@ -156,7 +156,7 @@ export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: bo
     Editor: MessageEditor
   },
   [nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING]: {
-    hasEditor: false,
+    hasEditor: true,
     Editor: TriggerEditor
   },
   [nodeTypes.NODE_TYPE_REQUEST_SERVICE]: {

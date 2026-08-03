@@ -1,13 +1,14 @@
 import { TriggerDTO } from "@/api/flow/trigger.dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { Button } from "@/components/ui/button";
+import { IconsCatalog } from "@/catalogs/icons.catalogs";
+import { automationFlowGenStore } from "../../store/automation.flow.store";
 import { TriggerItem } from "./triggerItem";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TriggersSectionProps = {
   triggers: Array<TriggerDTO>
 }
 
 export const TriggersSection = ({ triggers }: TriggersSectionProps) => {
-  const useAppData = UseAppData()
+  const automationFlowStore = automationFlowGenStore()
 
   return (
     <>
@@ -15,6 +16,16 @@ export const TriggersSection = ({ triggers }: TriggersSectionProps) => {
         {triggers.map((el, index) => (
           <TriggerItem key={index} data={el} />
         ))}
+        <Button
+          className={'w-full'}
+          variant={'outline'}
+          onClick={(e) => {
+            e.stopPropagation()
+            automationFlowStore.setTriggerSelector({ openTriggerSelector: true })
+          }}
+        >
+          Agregar trigger {IconsCatalog.addPlus.Icon}
+        </Button>
       </div>
     </>
   )

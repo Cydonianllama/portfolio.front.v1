@@ -11,6 +11,10 @@ export interface CreateTriggerRequestDTO {
   platform: number
   type: number
   automationId: string
+  keyConfiguration?: Array<{
+    criteria?: number | null
+    words?: Array<string> | null
+  }> | null
 }
 
 interface CreateTriggerResponseDTO {

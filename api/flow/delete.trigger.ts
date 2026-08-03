@@ -6,16 +6,16 @@ import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
 
 export interface DeleteTriggerRequestDTO {
-  workspaceId: string
+  id: string
 }
 
 interface DeleteTriggerResponseDTO {
-  list: Array<{ id: string, name: string }>
+  id: string
 }
 
 export const DeleteTrigger = async (data: DeleteTriggerRequestDTO): Promise<ResponseApi<DeleteTriggerResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/triggers`);
+    const req = await api.delete(`/api/triggers/${data.id}`);
     return req.data;
   } catch (ex) {
     if (axios.isAxiosError(ex)) {

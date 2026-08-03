@@ -5,12 +5,15 @@ export interface TriggerDTO {
   isActive: boolean;
   workspaceId: string;
   keyConfiguration?: Array<{
-    operator: string
-    value: string
+    criteria?: number | null;
+    words?: Array<string> | null;
+    operator?: string | null;
+    value?: string | null;
   }> | null;
   intention?: {
     description: string;
     examples?: Array<{ content: string }> | null
   } | null
   creationDate: Date;
+  automationId?: string | null;
 }
