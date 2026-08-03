@@ -6,10 +6,16 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { nodeTypes } from "@erick/conversationalflow";
+import { IAutomationNode, NODE_TYPE_REQUEST_SERVICE, nodeTypes } from "@erick/conversationalflow";
+import { useAutomationNode } from "../hooks/useAutomationNode";
 
 export function RequestServiceNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_REQUEST_SERVICE
+
+  const { getNodeConfiguration } = useAutomationNode(String(data.id))
+  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_REQUEST_SERVICE>;
+
+  const configuration = nodeInformation?.configuration
 
   return (
     <>
@@ -22,7 +28,22 @@ export function RequestServiceNode({ data }: NodeProps) {
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: true }}
       >
-        request
+        <div className="max-w-[200px] pt-2 space-y-2">
+          <div className="flex items-center gap-1.5 p-1.5 border rounded-lg text-xs">
+            <span className="font-semibold text-blue-500 shrink-0">{configuration?.method || 'POST'}</span>
+            <span className="text-muted-foreground truncate">{configuration?.url || 'Sin URL configurada'}</span>
+          </div>
+          {configuration?.headers?.length ? (
+            <div className="text-xs text-muted-foreground">
+              {configuration.headers.length} header{configuration.headers.length === 1 ? '' : 's'}
+            </div>
+          ) : null}
+          {configuration?.mappers?.length ? (
+            <div className="text-xs text-muted-foreground">
+              {configuration.mappers.length} mapper{configuration.mappers.length === 1 ? '' : 's'}
+            </div>
+          ) : null}
+        </div>
       </BaseNode>
     </>
   );

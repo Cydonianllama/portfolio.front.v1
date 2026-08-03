@@ -23,6 +23,9 @@ interface AutomationFlowStore {
   openSelectNode: boolean
   setSelectNode: (data: Partial<{ openSelectNode: boolean }>) => void
 
+  openRequestServiceEditor: boolean
+  setRequestServiceEditor: (data: Partial<{ openRequestServiceEditor: boolean }>) => void
+
   // // getall
   triggersFromtAutomation: Array<TriggerDTO>,
   setTriggersFromAutomation: (data: Array<TriggerDTO>) => void
@@ -51,6 +54,9 @@ export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
 
   openSelectNode: false,
   setSelectNode: (data) => set((state) => ({ ...state, ...data })),
+
+  openRequestServiceEditor: false,
+  setRequestServiceEditor: (data) => set((state) => ({ ...state, ...data })),
 
   // // getall
   triggersFromtAutomation: [],

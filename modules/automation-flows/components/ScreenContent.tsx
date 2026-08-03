@@ -12,6 +12,7 @@ import { automationFlowGenStore } from "../store/automation.flow.store";
 import { useEffect } from "react";
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
+import { RequestServiceDialog } from "./DialogRequestService/RequestServiceDialog";
 import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
 import { ButtonAddNodes } from "./ButtonAddNodes";
 import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
@@ -83,6 +84,7 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
       </div>
 
       <DialogAddTrigger />
+      <RequestServiceDialog />
     </>
   )
 }
