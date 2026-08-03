@@ -3,6 +3,7 @@ import { BaseEditor } from "./_base.editor";
 import { TextareaAutomation } from "../components/EditorUtilities/Texteditor";
 import { ButtonsSection } from "./message-editor/buttonsSection";
 import { ConectorsBottomSection } from "./message-editor/conectorsBottomSection";
+import { ExpectedResponseSection } from "./message-editor/expectedResponseSection";
 import { GroupWordsSection } from "./message-editor/groupWordsSection";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 import { useAutomationEditor } from "../hooks/useAutomationEditor";
@@ -31,6 +32,7 @@ export const MessageEditor = ({ }: MessageEditorProps) => {
             })
           }}
         />
+        <ExpectedResponseSection />
         <GroupWordsSection />
         <ButtonsSection />
         <ConectorsBottomSection />

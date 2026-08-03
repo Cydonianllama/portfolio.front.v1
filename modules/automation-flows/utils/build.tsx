@@ -80,6 +80,29 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
 
       if (messageNode.configuration) {
 
+        // special connections: not response / other response
+        if (messageNode.configuration.notResponseNextNode) {
+          if (foundeNodeFromId(messageNode.configuration.notResponseNextNode, nodes)) {
+            edgesToSend.push({
+              id: `edge---not-response-${node.id}`,
+              source: node.id,
+              sourceHandle: `not-response-${node.id}`,
+              target: messageNode.configuration.notResponseNextNode,
+            })
+          }
+        }
+
+        if (messageNode.configuration.otherResponseNextNode) {
+          if (foundeNodeFromId(messageNode.configuration.otherResponseNextNode, nodes)) {
+            edgesToSend.push({
+              id: `edge---other-response-${node.id}`,
+              source: node.id,
+              sourceHandle: `other-response-${node.id}`,
+              target: messageNode.configuration.otherResponseNextNode,
+            })
+          }
+        }
+
         // buttons
         if (messageNode.configuration.buttons) {
           let idx = 0

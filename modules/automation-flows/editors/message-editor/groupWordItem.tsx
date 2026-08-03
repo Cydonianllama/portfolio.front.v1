@@ -70,9 +70,15 @@ export const GroupWordItem = ({ data, index }: GroupWordItemProps) => {
 
   const [text, setText] = useState('')
 
+  const connected = Boolean(data?.nextNode)
+
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className={`flex justify-between items-center rounded-lg border p-1 ${connected ? 'border-green-400 bg-green-50/50' : 'border-dashed border-gray-300'}`}>
+        <span
+          className={`h-2 w-2 rounded-full shrink-0 ${connected ? 'bg-green-500' : 'bg-amber-400'}`}
+          title={connected ? 'Conectado' : 'Sin conexión'}
+        />
 
         <div className="text-xs flex gap-1">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground p-0.5">

@@ -15,10 +15,16 @@ type ButtonItemProps = {
 export const ButtonItem = ({ data }: ButtonItemProps) => {
   const useAppData = UseAppData()
 
+  const connected = Boolean(data?.nextNode)
+
   return (
     <>
-      <div className="p-1 border rounded w-full relative">
-        {data.text}
+      <div className={`p-1 border rounded w-full relative flex items-center gap-1.5 ${connected ? 'border-green-400 bg-green-50/50' : 'border-dashed border-gray-300'}`}>
+        {/* <span
+          className={`h-2 w-2 rounded-full shrink-0 ${connected ? 'bg-green-500' : 'bg-amber-400'}`}
+          title={connected ? 'Conectado' : 'Sin conexión'}
+        /> */}
+        <span className="truncate flex-1">{data.text}</span>
         <Handle
           id={data?.id}
           type="source"

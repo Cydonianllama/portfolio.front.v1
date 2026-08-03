@@ -69,10 +69,27 @@ export const useMessageEditorActions = () => {
         break;
 
       //
+      // EXPECTED RESPONSE
+      //
+      case "updateExpectedResponse":
+        node_to_update = messageUpdater.updateExpectedResponse(node, c as UpdateMessageConfigurationActions["updateExpectedResponse"])
+        break;
+
+      case "updateTimeout":
+        node_to_update = messageUpdater.updateTimeout(node, c as UpdateMessageConfigurationActions["updateTimeout"])
+        break;
+
+      //
       // CONNECTIONS
       //
       case "updateMessageNext":
         node_to_update = messageUpdater.updateMessageNext(node, c as UpdateMessageConfigurationActions["updateMessageNext"])
+        break;
+      case "updateNotResponseNextNode":
+        node_to_update = messageUpdater.updateNotResponseNextNode(node, c as UpdateMessageConfigurationActions["updateNotResponseNextNode"])
+        break;
+      case "updateOtherResponseNextNode":
+        node_to_update = messageUpdater.updateOtherResponseNextNode(node, c as UpdateMessageConfigurationActions["updateOtherResponseNextNode"])
         break;
       case "updateGroupWordConnection":
         node_to_update = messageUpdater.updateGroupWordConnection(node, c as UpdateMessageConfigurationActions["updateGroupWordConnection"])

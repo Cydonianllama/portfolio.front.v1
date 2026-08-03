@@ -15,9 +15,15 @@ type GroupWordsItemProps = {
 export const GroupWordsItem = ({ data, index }: GroupWordsItemProps) => {
   const useAppData = UseAppData()
 
+  const connected = Boolean(data?.nextNode)
+
   return (
     <>
-      <div className="flex gap-1 relative">
+      <div className={`flex gap-1 relative items-center ${connected ? 'rounded border border-green-400 bg-green-50/50 p-1' : ''}`}>
+        {/* <span
+          className={`h-2 w-2 rounded-full shrink-0 ${connected ? 'bg-green-500' : 'bg-amber-400'}`}
+          title={connected ? 'Conectado' : 'Sin conexión'}
+        /> */}
         {data?.words?.map((el, index) => <div className="text-xs p-1 border rounded inline-flex" key={index}>{el.text}</div>)}
         <Handle
           id={data?.id}

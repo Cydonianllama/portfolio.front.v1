@@ -1,4 +1,4 @@
-import { buttonItemSendMessageConfigNode, groupWordsItemSendMessageConfigNode, IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, words_groupWordsItemSendMessageConfigNode } from "@erick/conversationalflow";
+import { buttonItemSendMessageConfigNode, defaultSendMessageConfig, ExpectedResponseConfig, ExpectedResponseType, groupWordsItemSendMessageConfigNode, IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, words_groupWordsItemSendMessageConfigNode } from "@erick/conversationalflow";
 
 export interface UpdateMessageConfigurationActions {
   //
@@ -44,9 +44,25 @@ export interface UpdateMessageConfigurationActions {
     text: string
   }
   //
+  // expected response
+  //
+  updateExpectedResponse: {
+    expectedResponse: ExpectedResponseType,
+    expectedResponseConfig?: ExpectedResponseConfig
+  }
+  updateTimeout: {
+    noResponseTimeoutSeconds: number
+  }
+  //
   // conections
   //
   updateMessageNext: {
+    nextNode: string | null
+  }
+  updateNotResponseNextNode: {
+    nextNode: string | null
+  }
+  updateOtherResponseNextNode: {
     nextNode: string | null
   }
   updateGroupWordConnection: {
@@ -64,9 +80,11 @@ type MessageUpdateNodeType = IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SI
 export class MessageUpdater {
 
   private getNode(node: MessageUpdateNodeType) {
+    const defaults = defaultSendMessageConfig()
     const nodeToUpdate = {
       ...node,
       configuration: {
+        ...defaults,
         ...node.configuration,
         buttons: node?.configuration?.buttons ? [...node?.configuration?.buttons] : [],
         groupWords: node?.configuration?.groupWords?.map(g => ({
@@ -157,12 +175,47 @@ export class MessageUpdater {
   }
 
   //
+  // expected response
+  //
+
+  updateExpectedResponse(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateExpectedResponse"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    config.expectedResponse = c.expectedResponse
+    if (c.expectedResponseConfig) {
+      config.expectedResponseConfig = c.expectedResponseConfig
+    }
+    return nodeToUpdate;
+  }
+
+  updateTimeout(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateTimeout"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    config.noResponseTimeoutSeconds = c.noResponseTimeoutSeconds
+    return nodeToUpdate;
+  }
+
+  //
   // connections
   //
   updateMessageNext(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateMessageNext"]) {
     const nodeToUpdate = this.getNode(node)
     // const config = nodeToUpdate.configuration
     nodeToUpdate.nextNode = c.nextNode
+    return nodeToUpdate;
+  }
+
+  updateNotResponseNextNode(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateNotResponseNextNode"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    config.notResponseNextNode = c.nextNode
+    return nodeToUpdate;
+  }
+
+  updateOtherResponseNextNode(node: MessageUpdateNodeType, c: UpdateMessageConfigurationActions["updateOtherResponseNextNode"]) {
+    const nodeToUpdate = this.getNode(node)
+    const config = nodeToUpdate.configuration
+    config.otherResponseNextNode = c.nextNode
     return nodeToUpdate;
   }
 

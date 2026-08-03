@@ -32,6 +32,13 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
     )
   }
 
+  const groupWords = nodeInformation.configuration?.groupWords || []
+
+  const allWords = groupWords.flatMap((group) => group.words?.map((word) => word.text) || [])
+
+  const duplicatedWords = allWords
+    .filter((text, index, arr) => text && arr.indexOf(text) !== index)
+
   return (
     <>
       <div className="space-y-2">
@@ -43,9 +50,14 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
             </Button>
           </div>
         </div>
+        {duplicatedWords.length > 0 && (
+          <p className="text-xs text-amber-600">
+            Palabras repetidas entre grupos: {[...new Set(duplicatedWords)].join(', ')}
+          </p>
+        )}
         <div className="flex flex-col gap-2">
-          {nodeInformation.configuration?.groupWords?.length ? (
-            nodeInformation.configuration?.groupWords?.map((el, index) => <GroupWordItem index={index} data={el} key={index} />)
+          {groupWords.length ? (
+            groupWords.map((el, index) => <GroupWordItem index={index} data={el} key={index} />)
           ) : (
             <EmptyState
               Icon={IconsCatalog.addPlus.Icon}

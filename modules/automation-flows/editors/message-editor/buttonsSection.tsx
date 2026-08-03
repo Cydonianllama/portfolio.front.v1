@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
 import { UseAppData } from "@/hooks/app/useAppData";
@@ -28,6 +29,12 @@ export const ButtonsSection = ({ }: ButtonsSectionProps) => {
     })
   }
 
+  const buttons = nodeInformation?.configuration?.buttons || []
+
+  const duplicatedTexts = buttons
+    .map((button) => button.text)
+    .filter((text, index, arr) => text && arr.indexOf(text) !== index)
+
   return (
     <>
       <div className="space-y-2">
@@ -39,9 +46,14 @@ export const ButtonsSection = ({ }: ButtonsSectionProps) => {
             </Button>
           </div>
         </div>
+        {duplicatedTexts.length > 0 && (
+          <p className="text-xs text-amber-600">
+            Hay botones con el mismo texto: {[...new Set(duplicatedTexts)].join(', ')}
+          </p>
+        )}
         <div className="flex flex-col gap-2">
-          {nodeInformation?.configuration?.buttons?.length ? (
-            nodeInformation?.configuration?.buttons?.map((el, index) => <ButtonItem index={index} data={el} key={index} />)
+          {buttons.length ? (
+            buttons.map((el, index) => <ButtonItem index={index} data={el} key={index} />)
           ) : (
             <EmptyState
               Icon={IconsCatalog.addPlus.Icon}

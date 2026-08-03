@@ -104,6 +104,14 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
                   groupWordId: connection.sourceHandle,
                   nextNode: connection.target
                 })
+              } else if (connection.sourceHandle.startsWith('not-response')) {
+                UpdateMessageConfiguration('updateNotResponseNextNode', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
+                  nextNode: connection.target
+                })
+              } else if (connection.sourceHandle.startsWith('other-response')) {
+                UpdateMessageConfiguration('updateOtherResponseNextNode', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
+                  nextNode: connection.target
+                })
               } else if (connection.sourceHandle) {
                 // next node
                 UpdateMessageConfiguration('updateMessageNext', node as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>, {
