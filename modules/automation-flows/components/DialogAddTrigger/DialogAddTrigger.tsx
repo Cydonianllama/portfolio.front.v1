@@ -39,14 +39,13 @@ export const DialogAddTrigger = ({  } : DialogAddTriggerProps) => {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         
-        <AddTriggerOptions onSelect={setSelectedOption} selectedOption={selectedOption} />
+        <div className="max-h-90 overflow-auto space-y-2">
+          <AddTriggerOptions onSelect={setSelectedOption} selectedOption={selectedOption} />
+        </div>
 
         <DialogFooter>
           <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
-          {/* <Button disabled={proccesing ? true : false} onClick={HandleToProcess}>
-            {proccesing && <Spinner data-icon="inline-start" />}
-            Procces
-          </Button> */}
+        
         </DialogFooter>
       </DialogContent>
     </Dialog>

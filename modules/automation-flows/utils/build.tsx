@@ -2,16 +2,12 @@
 import { IAutomationNode, nodeTypes } from "@erick/conversationalflow";
 import { FlowEdge, nodesFlow } from "../engineSimple/types";
 
-
-
-
 const foundeNodeFromId = (id: string, nodes: Array<IAutomationNode>): IAutomationNode | null => {
   return nodes.find(el => el.id == id) || null
 }
 
 export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }): { nodes: Array<nodesFlow>, edges: FlowEdge[]; } => {
   console.log('BuildNodeAndEdges')
-
   const nodesToSend: nodesFlow[] = []
   const edgesToSend: FlowEdge[] = []
 

@@ -15,6 +15,8 @@ import { GoPlus } from "react-icons/go";
 import { LuTrash2 } from "react-icons/lu";
 import { HiOutlineDotsHorizontal, HiOutlineDuplicate } from "react-icons/hi";
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
+import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
+import { automationFlowGenStore } from "../store/automation.flow.store";
 
 type versionTypes = 'v1' | 'v2' | 'v3'
 
@@ -29,12 +31,13 @@ export type BaseNodeProps = {
     hasSource: boolean,
     hasTarget: boolean
   }
+  showActionsPopover?: boolean
 }
 
-export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1' }: PropsWithChildren<BaseNodeProps>) => {
-
+export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1', showActionsPopover = true }: PropsWithChildren<BaseNodeProps>) => {
+  const { canMoveNodes } = useFlosStateMachineHookActions({})
   const flowActions = useConversationalFlowGenActions({})
-
+  const automationStore = automationFlowGenStore()
   const Factory: Record<versionTypes, FunctionComponent<PropsWithChildren<BaseNodeProps>>> = {
     v1: BaseNodev1,
     v2: BaseNodev1,
@@ -43,52 +46,54 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
 
   return <>
     <Factory.v1 id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
-      <div style={{ top: -30 }} className="absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block">
-        <div className="h-full " >
-          <ButtonGroup>
-            <Button
-              variant={'outline'}
-              size={'icon-xs'}
-              onClick={(e) => {
-                e.stopPropagation()
+      {(canMoveNodes && showActionsPopover) && (
+        <div style={{ top: -30 }} className="absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block">
+          <div className="h-full " >
+            <ButtonGroup>
+              <Button
+                variant={'outline'}
+                size={'icon-xs'}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  automationStore.setSelectNode({ openSelectNode: true })
+                }}
+              >
+                <GoPlus />
+              </Button>
+              {/* <Button
+                variant={'outline'}
+                size={'icon-xs'}
+                onClick={(e) => {
+                  e.stopPropagation()
 
-              }}
-            >
-              <GoPlus />
-            </Button>
-            <Button
-              variant={'outline'}
-              size={'icon-xs'}
-              onClick={(e) => {
-                e.stopPropagation()
+                }}
+              >
+                <HiOutlineDuplicate />
+              </Button> */}
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  flowActions.RemoveNodeAction({ id: id })
+                }}
+                variant={'outline'}
+                size={'icon-xs'}
+              >
+                <LuTrash2 />
+              </Button>
+              {/* <Button
+                variant={'outline'}
+                size={'icon-xs'}
+                onClick={(e) => {
+                  e.stopPropagation()
 
-              }}
-            >
-              <HiOutlineDuplicate />
-            </Button>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation()
-                flowActions.RemoveNodeAction({ id: id })
-              }}
-              variant={'outline'}
-              size={'icon-xs'}
-            >
-              <LuTrash2 />
-            </Button>
-            <Button
-              variant={'outline'}
-              size={'icon-xs'}
-              onClick={(e) => {
-                e.stopPropagation()
-
-              }}
-            >
-              <HiOutlineDotsHorizontal />
-            </Button>
-          </ButtonGroup>
+                }}
+              >
+                <HiOutlineDotsHorizontal />
+              </Button> */}
+            </ButtonGroup>
+          </div>
         </div>
-      </div>
+      )}
       {children}
     </Factory.v1>
   </>
@@ -96,7 +101,7 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
 
 const BaseNodev1 = ({ id, title, description, color, Icon, children, type = 'v1', config }: PropsWithChildren<BaseNodeProps>) => {
   return <>
-    <div className='border border-gray-300 rounded-xl bg-white flex flex-col p-2 relative group transition-colors hover:border-gray-400 focus-within:border-blue-500'>
+    <div className='border border-gray-300 rounded-xl bg-white flex flex-col p-2 relative group transition-colors hover:border-gray-400 focus-within:border-blue-500 w-[200px] max-w-[200px]'>
       <div className='flex items-start relative'>
 
         <div className='flex gap-2 justify-between'>
@@ -104,7 +109,7 @@ const BaseNodev1 = ({ id, title, description, color, Icon, children, type = 'v1'
             <Icon className='text-white' />
           </span>
           <div className="pr-2 flex flex-col justify-center">
-            <h2 className='font-semibold leading-4'>{title}</h2>
+            <h2 className='font-semibold leading-4 text-foreground'>{title}</h2>
             <p className='text-gray-500 text-xs'>{description}</p>
           </div>
         </div>

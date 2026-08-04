@@ -21,6 +21,7 @@ export function TriggerNode({ data, id }: NodeProps) {
         title={GeneralConfigurationNode[type].title}
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: true, hasTarget: false }}
+        showActionsPopover={false}
       >
         <div className="pt-2">
           <TriggersSection triggers={automationFlowGen.triggersFromtAutomation || []} />

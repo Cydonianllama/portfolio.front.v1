@@ -17,6 +17,7 @@ import { SideSelectorNode } from "./SideSelectorNode/SideSelectorNode";
 import { ButtonAddNodes } from "./ButtonAddNodes";
 import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
 import { ButtonSave } from "./buttonSave";
+import { ButtonBack } from "./ButtonBack";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -49,11 +50,12 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
       <div className="flex flex-col w-full h-full">
         <div className="h-12 w-full flex items-center justify-between gap-2 border-b border-t px-2">
           <div className="flex items-center gap-2">
+            <ButtonBack />
             <EditorName />
           </div>
           <div className="flex gap-2 items-center">
-            <ButtonsMemento />
-            <ButtonsViewFlow />
+            {/* <ButtonsMemento /> */}
+            {/* <ButtonsViewFlow /> */}
 
             {showSaveButton && (
               <ButtonSave />

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
 import { UseAppData } from "@/hooks/app/useAppData";

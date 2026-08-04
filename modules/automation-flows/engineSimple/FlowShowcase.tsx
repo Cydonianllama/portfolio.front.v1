@@ -88,7 +88,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   const onConnect = useCallback(
     (connection: any) => {
 
-      console.log(connection)
+      // console.log(connection)
 
       if (connection.source) {
         const node = automationFlowStore?.information?.nodeList?.find(el => el.id == connection.source);
@@ -194,6 +194,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // if (!automationFlow.startEditingFlow) return;
           const currentNode = b
           // onClickNode()
+          if (!canMoveNodes) return; 
 
           if (!canOpenEditor(currentNode)) {
             console.log('Cant open for this node')
@@ -212,6 +213,8 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // } catch (error: any) {
           //   console.log(error.message)
           // }
+          if (!canMoveNodes) return; 
+
           const currentNode = b
           flowActions.UpdatePositionNodAction({ nodeId: currentNode.id || '', x: currentNode.position.x, y: currentNode.position.y })
         }}

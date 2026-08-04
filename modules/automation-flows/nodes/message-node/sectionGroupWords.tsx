@@ -13,6 +13,7 @@ export const SectionGroupWords = ({ id }: sectionGroupWordsProps) => {
   const { getNodeConfiguration } = useAutomationNode(String(id))
   const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
 
+  // <EmptyState title="Sin palabras clave" />
   return (
     <>
       <div className="space-y-2">
@@ -21,7 +22,7 @@ export const SectionGroupWords = ({ id }: sectionGroupWordsProps) => {
             <GroupWordsItem key={index} data={el} index={index} />
           ))
         ) : (
-          <EmptyState title="Sin palabras clave" />
+          <></>
         )}
       </div>
     </>

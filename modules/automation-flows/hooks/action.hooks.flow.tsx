@@ -218,6 +218,12 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
 
         list = list.filter((el, index) => el.id != req.data.id)
         automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
+      
+        // update flowchart
+        const buildData = BuildNodeAndEdges({ nodes: [...list] })
+        console.log(buildData)
+        setNodes(buildData.nodes)
+        setEdges(buildData.edges)
       }
 
     } catch (ex) {

@@ -22,7 +22,7 @@ export const useAutomationEditor = () => {
     ) {
       return automationFlow.information?.publishedAutomation?.nodes.find(el => el.id == automationFlow.currentNodeIdEditing)
     }
-  }, [automationFlow.information, automationFlow.mode])
+  }, [automationFlow.information, automationFlow.mode, automationFlow.currentNodeIdEditing])
 
   return {
     GetAutomationNodeInformation,

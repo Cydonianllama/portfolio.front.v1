@@ -79,7 +79,7 @@ type MessageUpdateNodeType = IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SI
 
 export class MessageUpdater {
 
-  private getNode(node: MessageUpdateNodeType) {
+  getNode(node: MessageUpdateNodeType) {
     const defaults = defaultSendMessageConfig()
     const nodeToUpdate = {
       ...node,

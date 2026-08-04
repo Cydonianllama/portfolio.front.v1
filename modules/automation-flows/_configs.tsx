@@ -4,7 +4,7 @@ import { GrTrigger } from "react-icons/gr";
 import { LuMessageSquareText } from "react-icons/lu";
 import { IoPlayOutline } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
-import { FiFilter } from "react-icons/fi";
+import { FiFilter, FiTag } from "react-icons/fi";
 
 import { Component, ComponentType, FunctionComponent, ReactElement } from "react";
 import { MessageNode } from "./nodes/message.node";
@@ -98,12 +98,12 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
     color: 'yellow'
   },
   [nodeTypes.NODE_TYPE_CODE]: {
-    icon: GrTrigger,
+    icon: FaCode,
     title: 'Codigo',
-    color: 'yellow'
+    color: 'gray'
   },
   [nodeTypes.NODE_TYPE_NOTE]: {
-    icon: GrTrigger,
+    icon: FaRegNoteSticky,
     title: 'Nota',
     color: 'yellow'
   },
@@ -113,22 +113,22 @@ export const GeneralConfigurationNode: Record<string, generalConfigurationNode> 
     color: 'yellow'
   },
   [nodeTypes.NODE_TYPE_REMOVETAG]: {
-    icon: GrTrigger,
+    icon: FiTag,
     title: 'Remover etiqueta',
-    color: 'yellow'
+    color: 'red'
   },
   [nodeTypes.NODE_TYPE_ADDTAG]: {
-    icon: GrTrigger,
+    icon: FiTag,
     title: 'Agregar etiqueta',
-    color: 'yellow'
+    color: 'gray'
   },
   [nodeTypes.NODE_TYPE_SETVAR]: {
-    icon: GrTrigger,
+    icon: TbCodeVariable,
     title: 'Establecer variable',
-    color: 'yellow'
+    color: 'gray'
   },
   [nodeTypes.NODE_TYPE_SEND_NOTIFICATION]: {
-    icon: GrTrigger,
+    icon: IoIosNotificationsOutline,
     title: 'Enviar notificacion',
     color: 'yellow'
   },
@@ -164,6 +164,10 @@ import { RiWebhookFill } from "react-icons/ri";
 import { RequestServiceNode } from "./nodes/request.service.node";
 import { RequestServiceEditor } from "./editors/request.service.editor";
 import { nodeTypes } from "@erick/conversationalflow";
+import { FaCode } from "react-icons/fa";
+import { FaRegNoteSticky } from "react-icons/fa6";
+import { IoIosNotificationsOutline } from "react-icons/io";
+import { TbCodeVariable } from "react-icons/tb";
 
 export const EditorsConfiguration: Partial<Record<NodeTypeValue, { hasEditor: boolean, Editor: ComponentType | null }>> = {
   [nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE]: {

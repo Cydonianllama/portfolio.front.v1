@@ -1,4 +1,4 @@
-import { IAutomationNode, NODE_TYPE_CONDITION, NodeCondition_Condition, NodeCondition_Rule, operators } from "@erick/conversationalflow"
+import { DefaultVariableConfiguration, IAutomationNode, NODE_TYPE_CONDITION, NodeCondition_Condition, NodeCondition_Rule, operators, personalizedVariableConfig, variableType } from "@erick/conversationalflow"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -19,6 +19,8 @@ type ConditionItemProps = {
   rule: NodeCondition_Rule
   data: NodeCondition_Condition
 }
+
+
 
 const operatorLabels: Record<string, string> = {
   [operators.OPERATOR_EXIST]: 'Existe',
@@ -62,7 +64,7 @@ const operatorsWithoutValue: Array<string> = [
   operators.OPERATOR_ISFALSE,
 ]
 
-export function ConditionItem({ data, rule } : ConditionItemProps){
+export function ConditionItem({ data, rule }: ConditionItemProps) {
   const { GetAutomationNodeInformation } = useAutomationEditor()
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { options } = useVariablesList()
@@ -106,23 +108,27 @@ export function ConditionItem({ data, rule } : ConditionItemProps){
     })
   }
 
-  const selectedVariable = options.find(el => el.id == variableId)
+  const selectedVariable = options.find(el => el.code == variableId)
 
   const needsValue = operator && !operatorsWithoutValue.includes(operator)
 
-  return(<>
+  // const name= [{ label: 'Test', value: 'test'}]
+
+  // console.log(selectedVariable)
+
+  return (<>
     <div className="border rounded-lg p-2 space-y-2">
       {editing ? (
         <div className="space-y-2">
           <div className="space-y-1">
             <Label className="text-xs">Variable</Label>
-            <Select value={variableId} onValueChange={(val) => setVariableId(val || '')}>
+            <Select items={options.map(el => ({ label: el.name, value: el.code }))} value={variableId} onValueChange={(val) => setVariableId(val || '')}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una variable" />
               </SelectTrigger>
               <SelectContent>
                 {options.map((el) => (
-                  <SelectItem key={el.id} value={el.id}>{el.name} ({el.code})</SelectItem>
+                  <SelectItem key={el.id} value={el.code}>{el.name} ({el.code})</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -130,14 +136,31 @@ export function ConditionItem({ data, rule } : ConditionItemProps){
 
           <div className="space-y-1">
             <Label className="text-xs">Operador</Label>
-            <Select value={operator} onValueChange={(val) => setOperator(val || '')}>
+            <Select items={DefaultVariableConfiguration[selectedVariable?.type || variableType.ARRAY]?.operators.map(el => ({ label: operatorLabels[el], value: el }))} value={operator} onValueChange={(val) => setOperator(val || '')}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona un operador" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(operatorLabels).map(([value, label]) => (
-                  <SelectItem key={value} value={value}>{label}</SelectItem>
-                ))}
+
+                {selectedVariable && (<>
+                  {personalizedVariableConfig.find(el => el.code == selectedVariable?.code) && (
+                    <>
+                      {personalizedVariableConfig.find(el => el.code == selectedVariable?.code)?.operators.map((el) => (
+                        <SelectItem key={el} value={el}>{operatorLabels[el]}</SelectItem>
+                      ))}
+                    </>
+                  )}
+
+                  {!personalizedVariableConfig.find(el => el.code == selectedVariable?.code) && (<>
+                    {DefaultVariableConfiguration[selectedVariable?.type || variableType.ARRAY]?.operators.map((el, index) => (
+                      <SelectItem key={el} value={el}>{operatorLabels[el]}</SelectItem>
+                    ))}
+                  </>)}
+                </>)}
+
+
+
+
               </SelectContent>
             </Select>
           </div>
@@ -154,6 +177,7 @@ export function ConditionItem({ data, rule } : ConditionItemProps){
             </div>
           )}
 
+
           <div className="flex justify-end gap-2">
             <Button variant={'outline'} size={'sm'} onClick={HandleCancelEdit}>Cancelar</Button>
             <Button size={'sm'} onClick={HandleSave}>Guardar</Button>
@@ -164,7 +188,7 @@ export function ConditionItem({ data, rule } : ConditionItemProps){
           <div className="min-w-0">
             {data.variableId && data.operator ? (
               <div className="text-xs space-y-0.5">
-                <div className="font-semibold truncate">{selectedVariable?.name || data.variableId}</div>
+                <div className="font-semibold truncate">{selectedVariable?.name || data.id}</div>
                 <div className="text-muted-foreground">
                   {operatorLabels[data.operator] || data.operator}
                   {needsValue && data.value ? ` "${data.value}"` : ''}

@@ -39,7 +39,7 @@ export interface UpdateConditionConfigurationActions {
 
 type MessageUpdateNodeType = IAutomationNode<typeof NODE_TYPE_CONDITION>
 
-function getNode(node: MessageUpdateNodeType) {
+export function getNodeAction(node: MessageUpdateNodeType) {
   const nodeToUpdate = {
     ...node,
     configuration: {
@@ -54,21 +54,21 @@ function getNode(node: MessageUpdateNodeType) {
 }
 
 export const addRule = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["addRule"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   config.rules.push(c.item)
   return nodeToUpdate;
 }
 
 export const removeRule = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["removeRule"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   config.rules = config.rules.filter(el => el.id != c.ruleId)
   return nodeToUpdate;
 }
 
 export const addCondition = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["addCondition"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
@@ -78,7 +78,7 @@ export const addCondition = (node: MessageUpdateNodeType, c: UpdateConditionConf
 }
 
 export const removeCondition = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["removeCondition"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
@@ -88,7 +88,7 @@ export const removeCondition = (node: MessageUpdateNodeType, c: UpdateConditionC
 }
 
 export const updateCondition = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateCondition"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
@@ -102,7 +102,7 @@ export const updateCondition = (node: MessageUpdateNodeType, c: UpdateConditionC
 }
 
 export const updateRuleConection = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateRuleConection"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
@@ -112,7 +112,7 @@ export const updateRuleConection = (node: MessageUpdateNodeType, c: UpdateCondit
 }
 
 export const updateRuleConnectionType = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateRuleConnectionType"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   const config = nodeToUpdate.configuration;
   const rule = config.rules.find(el => el.id == c.ruleId)
   if (rule){
@@ -122,7 +122,7 @@ export const updateRuleConnectionType = (node: MessageUpdateNodeType, c: UpdateC
 }
 
 export const updateMessageNextNodeConection = (node: MessageUpdateNodeType, c: UpdateConditionConfigurationActions["updateMessageNextNodeConection"]) => {
-  const nodeToUpdate = getNode(node);
+  const nodeToUpdate = getNodeAction(node);
   // const config = nodeToUpdate.configuration;
   nodeToUpdate.nextNode = c.nextNode
   return nodeToUpdate;

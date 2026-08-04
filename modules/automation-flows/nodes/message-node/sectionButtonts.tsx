@@ -12,7 +12,7 @@ export const SectionButtons = ({ id }: SectionButtonsProps) => {
   const useAppData = UseAppData()
   const { getNodeConfiguration } = useAutomationNode(String(id))
   const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
-
+  // <EmptyState title="Sin botones" />
   return (
     <>
       <div className="space-y-2">
@@ -21,7 +21,7 @@ export const SectionButtons = ({ id }: SectionButtonsProps) => {
             <ButtonItem key={index} index={index} data={el} />
           ))
         ) : (
-          <EmptyState title="Sin botones" />
+          <></>
         )}
       </div>
     </>

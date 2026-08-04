@@ -16,7 +16,7 @@ export const ButtonEdit = ({  }: ButtonEditProps) => {
 
   return (
     <>
-      <Button onClick={HandleToEdit}>
+      <Button variant={'outline'} onClick={HandleToEdit}>
         Editar
       </Button>
     </>
