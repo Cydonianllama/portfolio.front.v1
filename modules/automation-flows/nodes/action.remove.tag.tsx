@@ -3,17 +3,19 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { IAutomationNode, nodeTypes, NODE_TYPE_REMOVETAG } from "@erick/conversationalflow";
+import { nodeTypes } from "@erick/conversationalflow";
 import { useAutomationNode } from "../hooks/useAutomationNode";
 import { useTagsList } from "../hooks/useTagsList";
+import { isRemoveTagNode } from "../utils/node.guards";
 
 export function RemoveTagNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_REMOVETAG
   const { getNodeConfiguration } = useAutomationNode(String(data?.id) || '')
-  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_REMOVETAG> | undefined;
+  const nodeInformation = getNodeConfiguration()
   const { tags } = useTagsList()
 
-  const selectedIds = nodeInformation?.configuration?.toRemove?.map(el => el.tagId) || []
+  const isNode = isRemoveTagNode(nodeInformation)
+  const selectedIds = isNode ? nodeInformation.configuration?.toRemove?.map(el => el.tagId) || [] : []
   const selectedNames = tags.filter(el => selectedIds.includes(el.id)).map(el => el.name)
 
   return (

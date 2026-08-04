@@ -1,9 +1,9 @@
-import { IAutomationNode, NODE_TYPE_NOTE } from "@erick/conversationalflow"
 import { BaseEditor } from "./_base.editor"
 import { Label } from "@/components/ui/label"
 import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { TextareaAutomation } from "../components/EditorUtilities/Texteditor"
+import { isNoteNode } from "../utils/node.guards"
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 type NoteEditorProps = {
@@ -25,16 +25,19 @@ export const NoteEditor = ({ }: NoteEditorProps) => {
   const { GetAutomationNodeInformation } = useAutomationEditor()
   const { UpdateActionConfiguration } = useActionEditorActions()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_NOTE>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isNoteNode(nodeInformation)
 
-  const content = nodeInformation?.configuration?.content || ''
-  const color = nodeInformation?.configuration?.color || 'yellow'
+  const content = isNode ? nodeInformation.configuration?.content || '' : ''
+  const color = isNode ? nodeInformation.configuration?.color || 'yellow' : 'yellow'
 
   const HandleChangeColor = (nextColor: string) => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateNote', nodeInformation, { content, color: nextColor })
   }
 
   const HandleChangeContent = (nextContent: string) => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateNote', nodeInformation, { content: nextContent, color })
   }
 

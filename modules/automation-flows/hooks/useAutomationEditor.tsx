@@ -1,28 +1,12 @@
 import { useCallback } from "react"
-import { automationFlowGenStore } from "../store/automation.flow.store"
+import { useAutomationNode } from "./useAutomationNode"
 
 export const useAutomationEditor = () => {
-
-  const automationFlow =  automationFlowGenStore()
+  const { getNodeConfiguration } = useAutomationNode()
 
   const GetAutomationNodeInformation = useCallback(() => {
-    if (
-      automationFlow.mode == 'editor' && 
-      automationFlow.information?.automation?.isPublished
-    ){
-      return automationFlow.information?.nodeList?.find(el => el.id == automationFlow.currentNodeIdEditing)
-    } else if (
-      automationFlow.mode == 'preview' && 
-      !automationFlow.information?.automation?.isPublished
-    ) {
-      return automationFlow.information?.nodeList?.find(el => el.id == automationFlow.currentNodeIdEditing)
-    } else if (
-      automationFlow.mode == 'preview' && 
-      automationFlow.information?.automation?.isPublished
-    ) {
-      return automationFlow.information?.publishedAutomation?.nodes.find(el => el.id == automationFlow.currentNodeIdEditing)
-    }
-  }, [automationFlow.information, automationFlow.mode, automationFlow.currentNodeIdEditing])
+    return getNodeConfiguration()
+  }, [getNodeConfiguration])
 
   return {
     GetAutomationNodeInformation,

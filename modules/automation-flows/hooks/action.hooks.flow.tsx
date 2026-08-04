@@ -293,6 +293,11 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
       // listar los triggers requeridos en esta automatizacion
       triggerActions.getTriggersAction({ triggers: req.data.automation?.triggers.map(el => (el.id)) || [] })
 
+      // si no tiene publicado el modo del flowchart será editor
+      SetModeAction(!req.data.automation?.isPublished ? 'editor' : 'preview')
+
+
+
       if (req.data.nodeList) {
         // contruir los nodos del flow
         const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList })

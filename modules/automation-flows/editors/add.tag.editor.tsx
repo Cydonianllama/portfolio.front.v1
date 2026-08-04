@@ -1,10 +1,10 @@
-import { IAutomationNode, NODE_TYPE_ADDTAG } from "@erick/conversationalflow"
 import { BaseEditor } from "./_base.editor"
 import { Label } from "@/components/ui/label"
 import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { useTagsList } from "../hooks/useTagsList"
 import { MultiSelect } from "../components/MultiSelect"
+import { isAddTagNode } from "../utils/node.guards"
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 type AddTagEditorProps = {
@@ -16,12 +16,13 @@ export const AddTagEditor = ({ }: AddTagEditorProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
   const { tags } = useTagsList()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_ADDTAG>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isAddTagNode(nodeInformation)
 
-  const selectedIds = nodeInformation?.configuration?.toAdd?.map(el => el.tagId) || []
+  const selectedIds = isNode ? nodeInformation.configuration?.toAdd?.map(el => el.tagId) || [] : []
 
   const HandleChange = (tagIds: Array<string>) => {
-    UpdateActionConfiguration('updateAddTags', nodeInformation, { tagIds })
+    if (isNode) UpdateActionConfiguration('updateAddTags', nodeInformation, { tagIds })
   }
 
   return (

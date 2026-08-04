@@ -1,4 +1,3 @@
-import { IAutomationNode, NODE_TYPE_SETVAR } from "@erick/conversationalflow"
 import { BaseEditor } from "./_base.editor"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,6 +13,7 @@ import { IconsCatalog } from "@/catalogs/icons.catalogs"
 import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { useVariablesList } from "../hooks/useVariablesList"
+import { isSetVariableNode } from "../utils/node.guards"
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 type SetVariableEditorProps = {
@@ -25,22 +25,26 @@ export const SetVariableEditor = ({ }: SetVariableEditorProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
   const { options } = useVariablesList()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_SETVAR>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isSetVariableNode(nodeInformation)
 
-  const variables = nodeInformation?.configuration?.variables || []
+  const variables = isNode ? nodeInformation.configuration?.variables || [] : []
 
   const HandleUpdateVariable = (index: number, field: 'variableId' | 'value', val: string) => {
+    if (!isNode) return;
     const next = variables.map((el, idx) => idx === index ? { ...el, [field]: val } : el)
     UpdateActionConfiguration('updateSetVariables', nodeInformation, { variables: next })
   }
 
   const HandleAddVariable = () => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateSetVariables', nodeInformation, {
       variables: [...variables, { variableId: '', value: '' }]
     })
   }
 
   const HandleRemoveVariable = (index: number) => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateSetVariables', nodeInformation, {
       variables: variables.filter((_, idx) => idx !== index)
     })

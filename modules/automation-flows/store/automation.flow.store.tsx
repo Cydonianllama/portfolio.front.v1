@@ -38,6 +38,9 @@ interface AutomationFlowStore {
   mode: modeAutomationFlow,
   setMode: (mode: modeAutomationFlow) => void;
 
+  // clear States:
+  clearAllStates: () => void
+
 }
 
 export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
@@ -69,5 +72,7 @@ export const automationFlowGenStore = create<AutomationFlowStore>((set) => ({
   // mode  automationFlow
   mode: 'preview',
   setMode: (data) => set((state) => ({ ...state, mode: data })),
+
+  clearAllStates: () => set((state) => ({...state, mode: 'preview', automationId: null }))
 
 }));

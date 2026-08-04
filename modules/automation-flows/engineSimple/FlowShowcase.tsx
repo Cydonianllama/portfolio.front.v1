@@ -31,6 +31,7 @@ import { IAutomationNode, NODE_TYPE_ADDTAG, NODE_TYPE_CODE, NODE_TYPE_CONDITION,
 import { useTriggerEditorActions } from "../hooks/useTriggerEditorActions";
 import { useActionEditorActions } from "../hooks/useActionEditorActions";
 import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
+import { idFirstStep } from "../_configs";
 
 type FlowScreenProps = {
   isLoading?: boolean;
@@ -43,7 +44,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
 
   const automationFlowStore = automationFlowGenStore()
   const flowActions = useConversationalFlowGenActions({})
-  const { canMoveNodes } = useFlosStateMachineHookActions({})
+  const { canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
 
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { UpdateMessageConfiguration } = useMessageEditorActions()
@@ -70,19 +71,19 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
   const reactFlowRef = useRef<ReactFlowInstance<any, any> | null>(null)
 
   const onNodesChange_ = useCallback((changes: NodeChange<any>[]) => {
-    if (!canMoveNodes) return;
+    if (!canEditGeneralFlowchart) return;
     setNodes((nds) => {
       const updatedNodes = applyNodeChanges(changes, nds);
       return updatedNodes
     })
-  }, [setNodes, canMoveNodes]);
+  }, [setNodes, canEditGeneralFlowchart]);
 
   const onEdgesChange_ = useCallback(
     (changes: Array<EdgeChange>) => {
-      if (!canMoveNodes) return;
+      if (!canEditGeneralFlowchart) return;
       setEdges((eds) => applyEdgeChanges(changes, eds))
     },
-    [setEdges, canMoveNodes],
+    [setEdges, canEditGeneralFlowchart],
   );
 
   const onConnect = useCallback(
@@ -194,7 +195,7 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // if (!automationFlow.startEditingFlow) return;
           const currentNode = b
           // onClickNode()
-          if (!canMoveNodes) return; 
+          if (!canEditGeneralFlowchart) return; 
 
           if (!canOpenEditor(currentNode)) {
             console.log('Cant open for this node')
@@ -213,9 +214,11 @@ export default function FlowScreen({ edgeTypesConfiguration, nodeTypesConfigurat
           // } catch (error: any) {
           //   console.log(error.message)
           // }
-          if (!canMoveNodes) return; 
+          if (!canEditGeneralFlowchart) return; 
 
           const currentNode = b
+          if (currentNode.id == idFirstStep) return
+
           flowActions.UpdatePositionNodAction({ nodeId: currentNode.id || '', x: currentNode.position.x, y: currentNode.position.y })
         }}
         onMoveEnd={(event, viewport) => {

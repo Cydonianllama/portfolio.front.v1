@@ -53,7 +53,8 @@ export const useTriggerActions = () => {
     } catch (ex) {
 
     } finally {
-
+      // cerrar modal
+      automationStore.setTriggerSelector({ openTriggerSelector: false })
     }
   }, [automationStore.information, automationStore.triggersFromtAutomation])
 

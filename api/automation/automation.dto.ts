@@ -1,13 +1,17 @@
-export interface AutomationDTO {
+import { AutomationState } from "@erick/conversationalflow";
+import { ITriggerDTO } from "./trigger.dto";
+
+export interface IAutomationDTO {
   id: string;
-  title: string;
+  title?: string | null;
+  state?: AutomationState | null;
+  creationDate?: Date;
+  workspaceId: string;
+  triggers: Array<ITriggerDTO>;
+  hasChanges?: boolean | null;
+  isPublished?: boolean | null;
 }
 
-// update one
-export interface UpdateAutomationRequestDTO {
-  title: string;
-}
-
-export interface UpdateAutomationResponseDTO {
-  automation: AutomationDTO | null
+export interface IAutomationShowcaseDTO extends IAutomationDTO {
+  executions: number;
 }

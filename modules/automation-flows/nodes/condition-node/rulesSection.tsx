@@ -1,26 +1,21 @@
 import { IAutomationNode, NODE_TYPE_CONDITION } from "@erick/conversationalflow";
-import { useAutomationNode } from "../../hooks/useAutomationNode";
 import { RuleItem } from "./ruleItem";
-import { EmptyState } from "../../components/states/EmptyState";
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 type RuleSectionProps = {
-  id: string
+  node: IAutomationNode<typeof NODE_TYPE_CONDITION>
 }
 
-export function RuleSection({ id }: RuleSectionProps) {
-
-  const { getNodeConfiguration } = useAutomationNode(String(id))
-  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_CONDITION>;
+export function RuleSection({ node }: RuleSectionProps) {
 
   return (<>
     <div className="space-y-2">
-      {nodeInformation?.configuration?.rules?.length ? (
-        nodeInformation?.configuration?.rules?.map((el, index) => (
-          <RuleItem key={index} id={id} ruleId={el.id} />
+      {node.configuration?.rules?.length ? (
+        node.configuration?.rules?.map((el) => (
+          <RuleItem key={el.id || el.nextNode} node={node} ruleId={el.id} />
         ))
       ) : (
-        <EmptyState title="Sin reglas" />
+        <></>
       )}
     </div>
   </>)

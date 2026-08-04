@@ -1,9 +1,9 @@
 
-import { UseAppData } from "@/hooks/app/useAppData";
+// import { UseAppData } from "@/hooks/app/useAppData";
 import { ButtonEdit } from "./ButtonEdit";
 import { ButtonPublish } from "./ButtonPublish";
-import { ButtonsViewFlow } from "./ButtonsViewFlow";
-import { ButtonsMemento } from "./ButtonsMemento";
+// import { ButtonsViewFlow } from "./ButtonsViewFlow";
+// import { ButtonsMemento } from "./ButtonsMemento";
 import { EditorName } from "./EditorName";
 import FlowScreen from "../engineSimple/FlowShowcase";
 import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
@@ -28,15 +28,15 @@ type AutomationFlowScreenProps = {
 export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScreenProps) => {
   const flowActions = useConversationalFlowGenActions({})
 
-  const { showEditButton, showPublishButton, showSaveButton } = useFlosStateMachineHookActions({})
+  const { showEditButton, disabledSaveButton, showPublishButton, showSaveButton, canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
 
-  const useAppData = UseAppData()
+  // const useAppData = UseAppData()
 
   const automationFlowStore = automationFlowGenStore()
 
-  const OnClickNode = () => {
-    automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
-  }
+  // const OnClickNode = () => {
+  //   automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
+  // }
 
   useEffect(() => {
     if (automationId) {
@@ -44,6 +44,13 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
       flowActions.GetAutomationInformationAction({ automationId: automationId })
     }
   }, [automationId])
+
+  useEffect(() => {
+    return () => {
+      // console.log('killing states')
+      automationFlowStore.clearAllStates()
+    }
+  }, [])
 
   return (
     <>
@@ -58,7 +65,9 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
             {/* <ButtonsViewFlow /> */}
 
             {showSaveButton && (
-              <ButtonSave />
+              <ButtonSave
+                disabled={disabledSaveButton}
+              />
             )}
 
             {showPublishButton && (
@@ -72,7 +81,7 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
           </div>
         </div>
         <div className="flex-1 w-full relative">
-          {automationFlowStore.openEdit && (<EditorFlow />)}
+          {(automationFlowStore.openEdit && automationFlowStore.mode == 'editor') && (<EditorFlow />)}
           {/* <ContentLoading /> */}
           {(!automationFlowStore.listing && automationFlowStore.initialListFinished) && (<>
             <FlowScreen
@@ -80,7 +89,20 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
               nodeTypesConfigurations={nodeTypesConfigurations}
             />
           </>)}
-          {automationFlowStore.openSelectNode && <SideSelectorNode />}
+
+          {(!canEditGeneralFlowchart && !automationFlowStore.listing && automationFlowStore.initialListFinished) && (
+            <div className="absolute inset-x-0 bottom-4 z-20 flex justify-center pointer-events-none">
+              <div className="pointer-events-auto flex items-center gap-3 rounded-lg border-2 border-amber-400 bg-amber-50 px-4 py-2.5 shadow-md">
+                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                <div className="text-xs">
+                  <span className="font-semibold text-amber-700">Estás en modo previsualización</span>
+                  <span className="text-amber-600/90"> — presiona el botón <strong className="text-amber-700 underline decoration-amber-400 underline-offset-2">Editar</strong> para poder modificar el flujo.</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(automationFlowStore.openSelectNode && automationFlowStore.mode == 'editor') && <SideSelectorNode />}
           <ButtonAddNodes />
         </div>
       </div>

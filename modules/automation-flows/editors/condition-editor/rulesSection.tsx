@@ -1,18 +1,15 @@
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
 import { IAutomationNode, NODE_TYPE_CONDITION } from "@erick/conversationalflow";
-import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { RuleItem } from "./ruleItem";
 import { useConditionEditorActions } from "../../hooks/useConditionEditorActions";
 import { EmptyState } from "../../components/states/EmptyState";
 
-export function RuleSection() {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export function RuleSection({ node }: { node: IAutomationNode<typeof NODE_TYPE_CONDITION> }) {
   const { UpdatConditionConfiguration } = useConditionEditorActions()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_CONDITION>;
 
   const HandleAddRule = () => {
-    UpdatConditionConfiguration('addRule', nodeInformation, {
+    UpdatConditionConfiguration('addRule', node, {
       item: {
         conditions: [],
         connectionType: 'AND',
@@ -23,17 +20,22 @@ export function RuleSection() {
   }
 
   return (<>
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <div className="font-semibold text-foreground">Reglas</div>
-        <Button onClick={HandleAddRule} variant={'outline'} size={'icon-sm'}>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <div className="font-semibold text-foreground">Reglas</div>
+          <p className="text-xs text-muted-foreground">
+            Define las condiciones que evaluará el flujo.
+          </p>
+        </div>
+        <Button onClick={HandleAddRule} variant={'outline'} size={'icon-sm'} title="Agregar regla">
           {IconsCatalog.addPlus.Icon}
         </Button>
       </div>
       <div className="space-y-2">
-        {nodeInformation?.configuration?.rules?.length ? (
-          nodeInformation?.configuration?.rules?.map((el, index) => (
-            <RuleItem data={el} key={index} />
+        {node.configuration?.rules?.length ? (
+          node.configuration?.rules?.map((el, index) => (
+            <RuleItem data={el} key={el.id || index} node={node} />
           ))
         ) : (
           <EmptyState

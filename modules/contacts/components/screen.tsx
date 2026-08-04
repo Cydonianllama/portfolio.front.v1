@@ -54,6 +54,8 @@ import { ListIntegrations } from "@/api/integration/integration.api";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
 import { UseConversacionHookActions } from "../hooks/hook.actions.conversation";
 import { DialogManageConversations } from "./whatchconversations/dialog.manage.conversations";
+import { SectionGrid } from "./section.grid";
+import { MdOutlineGridView, MdOutlineTableRows } from 'react-icons/md';
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
@@ -344,6 +346,16 @@ export const ConctatsScreen = () => {
                 timeout={600}
               />
             </div>
+            <Button
+              variant={'outline'}
+              size={'icon-sm'}
+              title={moduleState.viewMode == 'table' ? 'Ver como tarjetas' : 'Ver como tabla'}
+              onClick={() => {
+                moduleState.setViewMode(moduleState.viewMode == 'table' ? 'grid' : 'table')
+              }}
+            >
+              {moduleState.viewMode == 'table' ? <MdOutlineGridView /> : <MdOutlineTableRows />}
+            </Button>
             <Button onClick={HandleToOpenAddItem}>Agregar contacto</Button>
             {/* {((moduleState.itemsSelected?.length || 0) > 0) && (<>
             <span>{moduleState.itemsSelected?.length}</span> elementos seleccionados.
@@ -358,14 +370,25 @@ export const ConctatsScreen = () => {
       <div className="">
 
         {/* start::table */}
-        <SectionTable
-          list={data?.data.list || []}
-          loading={isFetching}
-          hasError={(!data?.status || isError) ? true : false}
-          onChangeSelection={OnChangeSelection}
-          OnClickEmptyCreate={OnClickEmptyCreate}
-          OnClickRetry={OnClickRetry}
-        />
+        {moduleState.viewMode == 'table' && (<>
+          <SectionTable
+            list={data?.data.list || []}
+            loading={isFetching}
+            hasError={(!data?.status || isError) ? true : false}
+            onChangeSelection={OnChangeSelection}
+            OnClickEmptyCreate={OnClickEmptyCreate}
+            OnClickRetry={OnClickRetry}
+          />
+        </>)}
+        {moduleState.viewMode == 'grid' && (<>
+          <SectionGrid
+            list={data?.data.list || []}
+            loading={isFetching}
+            hasError={(!data?.status || isError) ? true : false}
+            OnClickEmptyCreate={OnClickEmptyCreate}
+            OnClickRetry={OnClickRetry}
+          />
+        </>)}
         {/* end::table */}
 
       </div>

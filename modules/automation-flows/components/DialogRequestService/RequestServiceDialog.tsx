@@ -23,6 +23,7 @@ import { IAutomationNode, NODE_TYPE_REQUEST_SERVICE, NodeRequestServiceConfig } 
 import { useAutomationEditor } from "../../hooks/useAutomationEditor"
 import { useRequestServiceEditorActions } from "../../hooks/useRequestServiceEditorActions"
 import { automationFlowGenStore } from "../../store/automation.flow.store"
+import { isRequestServiceNode } from "../../utils/node.guards"
 import { useEffect, useState } from "react"
 
 type RequestServiceDialogProps = {
@@ -45,12 +46,13 @@ export const RequestServiceDialog = ({ }: RequestServiceDialogProps) => {
   const { GetAutomationNodeInformation } = useAutomationEditor()
   const { UpdateRequestServiceConfiguration } = useRequestServiceEditorActions()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_REQUEST_SERVICE>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isRequestServiceNode(nodeInformation)
 
   const [configuration, setConfiguration] = useState<NodeRequestServiceConfig>(defaultConfiguration)
 
   useEffect(() => {
-    if (nodeInformation?.configuration) {
+    if (isNode && nodeInformation.configuration) {
       setConfiguration({
         ...defaultConfiguration,
         ...nodeInformation.configuration,
@@ -103,7 +105,7 @@ export const RequestServiceDialog = ({ }: RequestServiceDialogProps) => {
   }
 
   const HandleToSave = () => {
-    if (!nodeInformation) return;
+    if (!isNode) return;
     UpdateRequestServiceConfiguration('updateConfiguration', nodeInformation, {
       configuration
     })

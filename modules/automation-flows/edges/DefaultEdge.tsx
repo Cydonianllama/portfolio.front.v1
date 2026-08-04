@@ -15,7 +15,7 @@ import { userEdgeActions } from "../hooks/useEdgeActions";
 
 export function DefaultEdge(props: EdgeProps) {
   const { removeConection } = userEdgeActions()
-  const { canMoveNodes } = useFlosStateMachineHookActions({})
+  const { canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
   const [path, labelX, labelY] = getBezierPath(props);
   return (<>
     <BaseEdge
@@ -27,7 +27,7 @@ export function DefaultEdge(props: EdgeProps) {
       }}
     />
 
-    {canMoveNodes && (
+    {canEditGeneralFlowchart && (
       <EdgeLabelRenderer>
         <Button
           variant={'outline'}

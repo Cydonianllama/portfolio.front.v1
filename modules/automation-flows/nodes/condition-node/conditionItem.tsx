@@ -53,12 +53,14 @@ export function ConditionItem({ data } : ConditionItemProps){
   const needsValue = !operatorsWithoutValue.includes(data.operator)
 
   return (<>
-    <div className="text-[10px] truncate">
-      <span className="font-medium">{data.variableId}</span>{' '}
-      <span className="text-muted-foreground">
+    <div className="rounded border border-gray-200 bg-mist-50/60 px-1.5 py-1 text-[10px] leading-snug">
+      <div className="truncate">
+        <span className="font-medium text-foreground">{data.variableId}</span>
+      </div>
+      <div className="text-muted-foreground truncate">
         {operatorLabels[data.operator] || data.operator}
         {needsValue && data.value ? ` "${data.value}"` : ''}
-      </span>
+      </div>
     </div>
   </>)
 }

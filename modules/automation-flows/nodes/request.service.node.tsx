@@ -6,16 +6,18 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { IAutomationNode, NODE_TYPE_REQUEST_SERVICE, nodeTypes } from "@erick/conversationalflow";
+import { nodeTypes } from "@erick/conversationalflow";
 import { useAutomationNode } from "../hooks/useAutomationNode";
+import { isRequestServiceNode } from "../utils/node.guards";
 
 export function RequestServiceNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_REQUEST_SERVICE
 
   const { getNodeConfiguration } = useAutomationNode(String(data.id))
-  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_REQUEST_SERVICE>;
+  const nodeInformation = getNodeConfiguration()
 
-  const configuration = nodeInformation?.configuration
+  const isNode = isRequestServiceNode(nodeInformation)
+  const configuration = isNode ? nodeInformation.configuration : undefined
 
   return (
     <>

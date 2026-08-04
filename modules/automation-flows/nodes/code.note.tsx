@@ -3,16 +3,18 @@ import {
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
 import { GeneralConfigurationNode } from "../_configs";
-import { IAutomationNode, nodeTypes, NODE_TYPE_CODE } from "@erick/conversationalflow";
+import { nodeTypes } from "@erick/conversationalflow";
 import { useAutomationNode } from "../hooks/useAutomationNode";
+import { isCodeNode } from "../utils/node.guards";
 
 export function CodeNode({ data }: NodeProps) {
   const type = nodeTypes.NODE_TYPE_CODE
   const { getNodeConfiguration } = useAutomationNode(String(data?.id) || '')
-  const nodeInformation = getNodeConfiguration() as IAutomationNode<typeof NODE_TYPE_CODE> | undefined;
+  const nodeInformation = getNodeConfiguration()
 
-  const content = nodeInformation?.configuration?.content || ''
-  const scriptL = nodeInformation?.configuration?.scriptL || 'js'
+  const isNode = isCodeNode(nodeInformation)
+  const content = isNode ? nodeInformation.configuration?.content || '' : ''
+  const scriptL = isNode ? nodeInformation.configuration?.scriptL || 'js' : 'js'
   const firstLines = content.split('\n').filter(el => el.trim().length > 0).slice(0, 3)
 
   return (

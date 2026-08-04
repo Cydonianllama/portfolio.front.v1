@@ -1,4 +1,3 @@
-import { UseAppData } from "@/hooks/app/useAppData";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -9,11 +8,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ExpectedResponseConfig, ExpectedResponseType, IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
-import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ExpectedResponseSectionProps = {
-
+  node: IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
 }
 
 const EXPECTED_RESPONSE_OPTIONS: Array<{ value: ExpectedResponseType; label: string }> = [
@@ -50,21 +48,17 @@ const buildConfigForType = (type: ExpectedResponseType, current?: ExpectedRespon
   }
 }
 
-export const ExpectedResponseSection = ({ }: ExpectedResponseSectionProps) => {
-  const useAppData = UseAppData()
-
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const ExpectedResponseSection = ({ node }: ExpectedResponseSectionProps) => {
   const { UpdateMessageConfiguration } = useMessageEditorActions()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
 
-  const configuration = nodeInformation?.configuration
+  const configuration = node.configuration
 
   const currentType: ExpectedResponseType = configuration?.expectedResponse || 'none'
   const currentConfig = configuration?.expectedResponseConfig
 
   const HandleChangeType = (value: ExpectedResponseType | null) => {
     if (!value) return;
-    UpdateMessageConfiguration('updateExpectedResponse', nodeInformation, {
+    UpdateMessageConfiguration('updateExpectedResponse', node, {
       expectedResponse: value,
       expectedResponseConfig: buildConfigForType(value, currentConfig)
     })
@@ -72,7 +66,7 @@ export const ExpectedResponseSection = ({ }: ExpectedResponseSectionProps) => {
 
   const HandleChangeConfig = (field: 'placeholder' | 'fileId', value: string) => {
     if (!currentConfig) return;
-    UpdateMessageConfiguration('updateExpectedResponse', nodeInformation, {
+    UpdateMessageConfiguration('updateExpectedResponse', node, {
       expectedResponse: currentType,
       expectedResponseConfig: { ...currentConfig, [field]: value } as ExpectedResponseConfig
     })

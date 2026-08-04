@@ -85,7 +85,7 @@ export class MessageUpdater {
       ...node,
       configuration: {
         ...defaults,
-        ...node.configuration,
+        ...node?.configuration,
         buttons: node?.configuration?.buttons ? [...node?.configuration?.buttons] : [],
         groupWords: node?.configuration?.groupWords?.map(g => ({
           ...g,

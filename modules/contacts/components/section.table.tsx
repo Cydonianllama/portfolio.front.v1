@@ -45,7 +45,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useContactStore } from '../store/store';
 
 // icons
-import { MdOutlineChat, MdOutlineEdit } from 'react-icons/md';
+import { MdOutlineChat, MdOutlineEdit, MdOutlineMessage } from 'react-icons/md';
 import { FiTrash2 } from 'react-icons/fi';
 import { EmptyStateComponent } from '../shared/Empty';
 import { SpinnerListing } from '../shared/Listing';
@@ -57,6 +57,57 @@ import { FaCheck, FaRegCopy } from 'react-icons/fa';
 import { ShowcaseId } from '@/components/cydocompos';
 import { RiChatSearchLine } from 'react-icons/ri';
 import { useWatchConversations } from '../store/store.watch.conversations';
+import { IntegrationDesignConfiguration } from '@/configs/integration.design';
+import { ReactElement } from 'react';
+
+const MAX_VISIBLE_CHATS = 3;
+
+const PlatformChipIcon = ({ platformId }: { platformId: string }) => {
+  const icon: ReactElement | undefined = IntegrationDesignConfiguration[platformId as 'whatsapp' | 'telegram']?.icon;
+  return icon || <MdOutlineMessage />;
+}
+
+export const ContactChatsBadges = ({ contact }: { contact: ContactDTO }) => {
+  const watchConversationStore = useWatchConversations();
+  const chats = contact.conversations || [];
+
+  const HandleOpenChats = () => {
+    watchConversationStore.setGeneral({ open: true, contactOpened: contact.id })
+  }
+
+  if (chats.length == 0) return null;
+
+  const visible = chats.slice(0, MAX_VISIBLE_CHATS);
+  const overflow = chats.length - visible.length;
+
+  return (
+    <div className="flex items-center gap-1.5 flex-wrap">
+      {visible.map((chat) => (
+        <span
+          key={chat.id}
+          title={chat.name}
+          className="inline-flex items-center gap-1 rounded-md border bg-mist-50 px-2 py-1 text-xs text-muted-foreground"
+        >
+          <span className="flex items-center justify-center text-xs shrink-0">
+            <PlatformChipIcon platformId={chat.platformId} />
+          </span>
+          <span className="max-w-[120px] truncate">{chat.name}</span>
+        </span>
+      ))}
+      {overflow > 0 && (
+        <Button
+          variant={'outline'}
+          size={'sm'}
+          className="h-6 rounded-md px-2 text-xs"
+          onClick={HandleOpenChats}
+          title="Ver todos los chats"
+        >
+          +{overflow}
+        </Button>
+      )}
+    </div>
+  )
+}
 
 
 
@@ -105,6 +156,13 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
     header: "Correo electrónico"
   },
   {
+    id: "chats",
+    header: "Chats",
+    cell: ({ row }) => (
+      <ContactChatsBadges contact={row.original} />
+    )
+  },
+  {
     accessorKey: "mainDirection",
     header: "Dirección"
   },
@@ -138,7 +196,7 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
 ];
 
 // ActionsRow
-const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
+export const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> }) => {
   const user = data.row.original;
   const moduleState = useContactStore();
   const watchConversationStore = useWatchConversations()

@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
+import { RoomDTO } from "../chat/chat.dto";
+
 export interface ContactDTO {
   id: string;
   fullname: string;
@@ -7,6 +9,7 @@ export interface ContactDTO {
   mainEmail: string;
   mainDirection: string;
   creationDate: Date;
+  conversations?: Array<RoomDTO>;
 }
 
 // get one

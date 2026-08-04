@@ -35,7 +35,7 @@ export type BaseNodeProps = {
 }
 
 export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1', showActionsPopover = true }: PropsWithChildren<BaseNodeProps>) => {
-  const { canMoveNodes } = useFlosStateMachineHookActions({})
+  const { canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
   const flowActions = useConversationalFlowGenActions({})
   const automationStore = automationFlowGenStore()
   const Factory: Record<versionTypes, FunctionComponent<PropsWithChildren<BaseNodeProps>>> = {
@@ -46,7 +46,7 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
 
   return <>
     <Factory.v1 id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
-      {(canMoveNodes && showActionsPopover) && (
+      {(canEditGeneralFlowchart && showActionsPopover) && (
         <div style={{ top: -30 }} className="absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block">
           <div className="h-full " >
             <ButtonGroup>

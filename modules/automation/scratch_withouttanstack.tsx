@@ -77,15 +77,15 @@ export const AutomationSection = ({ }: AutomationProps) => {
         </div>
         <div className="items-center flex gap-2">
           <Button disabled={AutomationStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
-          Refresar
-        </Button>
-        <Button variant={'outline'} onClick={() => { automationTestStore.setState({ openChat: true }) }}> 
-          <RiChatSettingsLine />
-          Chat de test
-        </Button>
-        <Button onClick={() => { AutomationStore.setCreateState({ openCreate: true }) }}>
-          Crear Item
-        </Button>
+            Refresar
+          </Button>
+          <Button variant={'outline'} onClick={() => { automationTestStore.setState({ openChat: true }) }}>
+            <RiChatSettingsLine />
+            Chat de test
+          </Button>
+          <Button onClick={() => { AutomationStore.setCreateState({ openCreate: true }) }}>
+            Crear Item
+          </Button>
         </div>
       </div>
 
@@ -176,14 +176,81 @@ import {
 } from "@tanstack/react-table";
 // configuracion de columna
 import { ColumnDef } from '@tanstack/react-table';
+import { Switch } from "@/components/ui/switch";
+import { TriggersCatalog, PlatformIcon } from "@/modules/automation-flows/catalogs/catalogTriggers";
+import { ConversationPlatform } from "@erick/conversationalflow";
 
 type AutomationTableProps = {
-  handleEdit: (id: string, data: AutomationDTO) => void
-  handleDelete: (id: string, data: AutomationDTO) => void
-  list: Array<AutomationDTO>
+  handleEdit: (id: string, data: IAutomationShowcaseDTO) => void
+  handleDelete: (id: string, data: IAutomationShowcaseDTO) => void
+  list: Array<IAutomationShowcaseDTO>
   isLoading: boolean
   isError: boolean
 }
+
+const TriggersSwitchList = ({ triggers }: { triggers?: Array<ITriggerDTO> }) => {
+  const AutomationStore = useAutomationStore();
+  const [updatingIds, setUpdatingIds] = useState<Record<string, boolean>>({});
+
+  const handleToggle = async (trigger: ITriggerDTO, checked: boolean) => {
+    if (updatingIds[trigger.id]) return;
+
+    setUpdatingIds(prev => ({ ...prev, [trigger.id]: true }));
+
+    const req = await UpdateTrigger({
+      id: trigger.id,
+      isActive: checked,
+    });
+
+    if (req?.status && req.data.trigger) {
+      const list = AutomationStore.list.map(automation => ({
+        ...automation,
+        triggers: (automation.triggers || []).map(t =>
+          t.id === trigger.id ? req.data.trigger! : t
+        )
+      }));
+      AutomationStore.setListState({ list });
+      toast.success('Trigger actualizado');
+    } else {
+      toast.error(req?.message || 'Error al actualizar trigger');
+    }
+
+    setUpdatingIds(prev => ({ ...prev, [trigger.id]: false }));
+  };
+
+  if (!triggers || triggers.length === 0) {
+    return <span className="text-xs text-muted-foreground">Sin triggers</span>;
+  }
+
+  const availableTriggerTypes = new Set(triggers.map(t => t.type));
+
+  return (
+    <div className="flex flex-col gap-2 min-w-[280px]">
+      {TriggersCatalog.filter(trigger => availableTriggerTypes.has(trigger.type)).map((trigger) => {
+        const triggerData = triggers.find(t => t.type === trigger.type);
+
+        return (
+          <div key={trigger.type} className="flex items-center justify-between gap-2 rounded-md border bg-mist-50 px-2 py-1.5 hover:bg-mist-100">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="h-5 w-5 rounded border flex items-center justify-center text-xs shrink-0">
+                {trigger.Icon}
+              </span>
+              <span className="text-xs truncate">{trigger.title}</span>
+            </div>
+            <Switch
+              size={'sm'}
+              checked={triggerData?.isActive ?? false}
+              disabled={updatingIds[triggerData?.id || '']}
+              onCheckedChange={(checked) => {
+                if (triggerData) handleToggle(triggerData, !!checked)
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, isError }: AutomationTableProps) => {
   // const AutomationStore = useAutomationStore();
@@ -194,7 +261,7 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
   }, [rowSelection])
 
   // configuracion de columna
-  const columnsUsersTable: ColumnDef<AutomationDTO>[] = [
+  const columnsUsersTable: ColumnDef<IAutomationShowcaseDTO>[] = [
     // {
     //   id: "select",
     //   header: ({ table }) => (
@@ -218,26 +285,68 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
     //   enableSorting: false,
     //   enableHiding: false,
     // },
-    {
-      accessorKey: "id",
-      header: "Id",
-      cell: ({ row }) => (<>
-        <ShowcaseId nopadding id={row.original.id || ''}  />
-      </>)
-    },
+    // {
+    //   accessorKey: "id",
+    //   header: "Id",
+    //   cell: ({ row }) => (<>
+    //     <ShowcaseId nopadding id={row.original.id || ''}  />
+    //   </>)
+    // },
     {
       accessorKey: "title",
-      header: "Nombre"
+      header: "Nombre",
+      cell: ({ row }) => {
+        const triggerPlatforms = Array.from(
+          new Set((row.original.triggers || []).map(t => t.platform).filter((p): p is number => p !== null && p !== undefined))
+        );
+
+        return (
+          <div className="flex items-center gap-2 min-w-0">
+            <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide shrink-0 ${
+              row.original.isPublished
+                ? 'border-green-200 bg-green-50 text-green-700'
+                : 'border-amber-200 bg-amber-50 text-amber-700'
+            }`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${row.original.isPublished ? 'bg-green-500' : 'bg-amber-500'}`} />
+              {row.original.isPublished ? 'Publicado' : 'Borrador'}
+            </span>
+            <div className="flex items-center gap-1 shrink-0">
+              {triggerPlatforms.map(platform => (
+                <span key={platform} className="h-6 w-6 rounded-md border bg-mist-50 flex items-center justify-center text-xs text-muted-foreground">
+                  {PlatformIcon[platform as ConversationPlatform]}
+                </span>
+              ))}
+            </div>
+            <span className="truncate">{row.original.title}</span>
+          </div>
+        )
+      }
     },
-    // {
-    //   id: 'date',
-    //   header: 'Fecha de creación',
-    //   cell: (data) => {
-    //     return (<>
-    //       {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
-    //     </>)
-    //   }
-    // },
+    {
+      id: "executions",
+      header: "Ejecuciones",
+      cell: ({ row }) => (
+        <span className="inline-flex items-center justify-center rounded-full bg-mist-50 border px-2.5 py-0.5 text-xs font-medium text-foreground tabular-nums">
+          {row.original.executions ?? 0}
+        </span>
+      )
+    },
+    {
+      id: "triggers",
+      header: "Triggers disponibles",
+      cell: ({ row }) => (
+        <TriggersSwitchList triggers={row.original.triggers} />
+      )
+    },
+    {
+      id: 'date',
+      header: 'Fecha de creación',
+      cell: (data) => {
+        return (<>
+          {data.row.original.creationDate && (<>{format(data.row.original.creationDate, 'dd/MM/yyyy')}</>)}
+        </>)
+      }
+    },
     {
       id: "actions",
       header: "Acciones",
@@ -332,9 +441,9 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
 // ActionsRow
 import { useRouter } from 'next/navigation'
 type ActionsRowProps = {
-  data: CellContext<AutomationDTO, unknown>
-  handleEdit: (id: string, data: AutomationDTO) => void
-  handleDelete: (id: string, data: AutomationDTO) => void
+  data: CellContext<IAutomationShowcaseDTO, unknown>
+  handleEdit: (id: string, data: IAutomationShowcaseDTO) => void
+  handleDelete: (id: string, data: IAutomationShowcaseDTO) => void
 }
 
 const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
@@ -568,7 +677,7 @@ const DialogUpdateAutomation = ({ }: DialogUpdateAutomationProps) => {
 
     if (currentOpened) {
       reset({
-        title: currentOpened.title,
+        title: currentOpened.title || '',
       })
     }
 
@@ -862,9 +971,9 @@ interface AutomationStore {
   setDeleteState: (data: Partial<{ openDelete: boolean, deleting: boolean, currentElementSelected: string | null }>) => void
 
   // getall
-  list: Array<AutomationDTO>
+  list: Array<IAutomationShowcaseDTO>
   listing: boolean;
-  setListState: (data: Partial<{ list: Array<AutomationDTO>, listing: boolean, pagination: ResponsePagination | null }>) => void
+  setListState: (data: Partial<{ list: Array<IAutomationShowcaseDTO>, listing: boolean, pagination: ResponsePagination | null }>) => void
 }
 
 export const useAutomationStore = create<AutomationStore>((set) => ({
@@ -910,6 +1019,11 @@ import axios from 'axios'
 import { ShowcaseId } from "@/components/cydocompos";
 import { RiChatSettingsLine } from "react-icons/ri";
 import { useAutomationTest } from "../automation-test/store/automation.test.store";
+import { CreateAutomationRequestDTO, CreateAutomationResponseDTO, DeleteAutomationRequestDTO, DeleteAutomationResponseDTO, GetAutomationsRequestDTO, GetAutomationsResponseDTO, UpdateAutomationRequestDTO, UpdateAutomationResponseDTO } from "@/api/automation/dto";
+import { IAutomationShowcaseDTO } from "@/api/automation/automation.dto";
+import { ITriggerDTO } from "@/api/automation/trigger.dto";
+import { UpdateTrigger } from "@/api/flow/update.trigger";
+import { format } from "date-fns";
 
 export const GetAutomation = async (data: GetAutomationsRequestDTO): Promise<ResponseApi<GetAutomationsResponseDTO> | null> => {
   try {
@@ -966,68 +1080,4 @@ export const DeleteAutomation = async (data: DeleteAutomationRequestDTO): Promis
     }
     return null
   }
-}
-
-
-///
-/// DTOs
-///
-
-export interface AutomationDTO {
-  id: string;
-  title: string;
-}
-
-// get one
-export interface GetAutomationRequestDTO {
-  id: string;
-}
-
-export interface GetAutomationResponseDTO {
-  automation: AutomationDTO | null
-}
-
-// get many
-export interface GetAutomationsRequestDTO {
-  workspaceId: string;
-  page: number
-}
-
-export interface GetAutomationsResponseDTO {
-  list: Array<AutomationDTO>
-}
-
-// update one
-export interface UpdateAutomationRequestDTO {
-  title: string;
-  id: string
-}
-
-export interface UpdateAutomationResponseDTO {
-  automation: AutomationDTO | null
-}
-
-// delete one
-export interface DeleteAutomationRequestDTO {
-  id: string
-}
-
-export interface DeleteAutomationResponseDTO {
-  id: string
-}
-
-// create one
-export interface CreateAutomationRequestDTO {
-  title: string;
-  workspaceId: string
-}
-
-export interface CreateAutomationResponseDTO {
-  automation: AutomationDTO | null
-}
-// #endregion API
-
-
-type scratch_withouttanstackProps = {
-  
 }

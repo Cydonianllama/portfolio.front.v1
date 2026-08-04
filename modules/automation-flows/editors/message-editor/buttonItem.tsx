@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
-import { UseAppData } from "@/hooks/app/useAppData";
 import { buttonItemSendMessageConfigNode, IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
-import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -11,17 +9,14 @@ import { Input } from "@/components/ui/input";
 type ButtonItemProps = {
   data: buttonItemSendMessageConfigNode
   index: number
+  node: IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
 }
 
-export const ButtonItem = ({ data, index }: ButtonItemProps) => {
-  const useAppData = UseAppData()
-
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const ButtonItem = ({ data, index, node }: ButtonItemProps) => {
   const { UpdateMessageConfiguration } = useMessageEditorActions()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
 
   const HandleRemoveButton = () => {
-    UpdateMessageConfiguration('removeButton', nodeInformation, {
+    UpdateMessageConfiguration('removeButton', node, {
       index: index
     })
   }
@@ -30,7 +25,7 @@ export const ButtonItem = ({ data, index }: ButtonItemProps) => {
     if (id) clearTimeout(id)
     settext(text)
     const newId = setTimeout(() => {
-      UpdateMessageConfiguration('updateButton', nodeInformation, {
+      UpdateMessageConfiguration('updateButton', node, {
         index: index,
         data: {
           ...data,

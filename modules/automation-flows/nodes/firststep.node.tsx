@@ -28,6 +28,7 @@ export function FirstSteNode({ data }: NodeProps) {
         title={GeneralConfigurationNode[type].title}
         description={GeneralConfigurationNode[type].description}
         config={{ hasSource: false, hasTarget: true }}
+        showActionsPopover={false}
       >
         <div className="space-y-2 pt-2">
           <Button

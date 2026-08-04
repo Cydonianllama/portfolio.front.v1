@@ -61,6 +61,9 @@ interface Managerv1Store {
   // informacion creation conversation
   infoCreationConvContact: infoCreationConvContactType,
   setInfoCreationConvContact: (data: Partial<infoCreationConvContactType>) => void;
+  // view mode
+  viewMode: 'table' | 'grid',
+  setViewMode: (data: 'table' | 'grid') => void;
 }
 
 export const useContactStore = create<Managerv1Store>((set) => ({
@@ -143,6 +146,14 @@ export const useContactStore = create<Managerv1Store>((set) => ({
     return {
       ...state,
       itemsSelected: data
+    }
+  }),
+  // view mode
+  viewMode: 'table',
+  setViewMode: (data: 'table' | 'grid') => set((state) => {
+    return {
+      ...state,
+      viewMode: data
     }
   })
 }));

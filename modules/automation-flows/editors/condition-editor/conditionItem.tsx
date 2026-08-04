@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { IconsCatalog } from "@/catalogs/icons.catalogs"
-import { useAutomationEditor } from "../../hooks/useAutomationEditor"
 import { useConditionEditorActions } from "../../hooks/useConditionEditorActions"
 import { useVariablesList } from "../../hooks/useVariablesList"
 import { useState } from "react"
@@ -18,6 +17,7 @@ import { useState } from "react"
 type ConditionItemProps = {
   rule: NodeCondition_Rule
   data: NodeCondition_Condition
+  node: IAutomationNode<typeof NODE_TYPE_CONDITION>
 }
 
 
@@ -64,11 +64,9 @@ const operatorsWithoutValue: Array<string> = [
   operators.OPERATOR_ISFALSE,
 ]
 
-export function ConditionItem({ data, rule }: ConditionItemProps) {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export function ConditionItem({ data, rule, node }: ConditionItemProps) {
   const { UpdatConditionConfiguration } = useConditionEditorActions()
   const { options } = useVariablesList()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_CONDITION>;
 
   const [editing, setEditing] = useState(false)
   const [variableId, setVariableId] = useState(data.variableId || '')
@@ -87,7 +85,7 @@ export function ConditionItem({ data, rule }: ConditionItemProps) {
   }
 
   const HandleSave = () => {
-    UpdatConditionConfiguration('updateCondition', nodeInformation, {
+    UpdatConditionConfiguration('updateCondition', node, {
       conditionId: data.id,
       ruleId: rule.id,
       condition: {
@@ -102,7 +100,7 @@ export function ConditionItem({ data, rule }: ConditionItemProps) {
   }
 
   const HandleRemoveCondition = () => {
-    UpdatConditionConfiguration('removeCondition', nodeInformation, {
+    UpdatConditionConfiguration('removeCondition', node, {
       conditionId: data.id,
       ruleId: rule.id
     })
@@ -117,7 +115,7 @@ export function ConditionItem({ data, rule }: ConditionItemProps) {
   // console.log(selectedVariable)
 
   return (<>
-    <div className="border rounded-lg p-2 space-y-2">
+    <div className="rounded-lg border border-gray-200 bg-mist-50/50 p-2 space-y-2">
       {editing ? (
         <div className="space-y-2">
           <div className="space-y-1">
@@ -178,7 +176,7 @@ export function ConditionItem({ data, rule }: ConditionItemProps) {
           )}
 
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 pt-1">
             <Button variant={'outline'} size={'sm'} onClick={HandleCancelEdit}>Cancelar</Button>
             <Button size={'sm'} onClick={HandleSave}>Guardar</Button>
           </div>
@@ -188,7 +186,7 @@ export function ConditionItem({ data, rule }: ConditionItemProps) {
           <div className="min-w-0">
             {data.variableId && data.operator ? (
               <div className="text-xs space-y-0.5">
-                <div className="font-semibold truncate">{selectedVariable?.name || data.id}</div>
+                <div className="font-semibold truncate text-foreground">{selectedVariable?.name || data.id}</div>
                 <div className="text-muted-foreground">
                   {operatorLabels[data.operator] || data.operator}
                   {needsValue && data.value ? ` "${data.value}"` : ''}

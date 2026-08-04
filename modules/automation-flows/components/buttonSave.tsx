@@ -4,10 +4,10 @@ import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ButtonSaveProps = {
-  
+  disabled: boolean
 }
 
-export const ButtonSave = ({  }: ButtonSaveProps) => {
+export const ButtonSave = ({ disabled }: ButtonSaveProps) => {
   // const useAppData = UseAppData()
 
   const conversarionalFlowActions = useConversationalFlowGenActions({})
@@ -21,7 +21,7 @@ const information = automationFlowGenStore(state => state.information)
 
   return (
     <>
-      <Button onClick={HandleSave} >
+      <Button disabled={disabled} onClick={HandleSave} >
         Guardar
       </Button>
     </>

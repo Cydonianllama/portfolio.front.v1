@@ -1,4 +1,3 @@
-import { IAutomationNode, NODE_TYPE_CODE } from "@erick/conversationalflow"
 import { BaseEditor } from "./_base.editor"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -20,6 +19,7 @@ import {
 import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { executeCode } from "../utils/codeSandbox"
+import { isCodeNode } from "../utils/node.guards"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 
@@ -37,15 +37,16 @@ export const CodeEditor = ({ }: CodeEditorProps) => {
   const { GetAutomationNodeInformation } = useAutomationEditor()
   const { UpdateActionConfiguration } = useActionEditorActions()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_CODE>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isCodeNode(nodeInformation)
 
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState('')
   const [logs, setLogs] = useState<Array<string>>([])
   const [error, setError] = useState<string | null>(null)
 
-  const scriptL = nodeInformation?.configuration?.scriptL || 'js'
-  const content = nodeInformation?.configuration?.content || ''
+  const scriptL = isNode ? (nodeInformation.configuration?.scriptL || 'js') : 'js'
+  const content = isNode ? (nodeInformation.configuration?.content || '') : ''
 
   const HandleOpenEditor = () => {
     setDraft(content)
@@ -53,11 +54,13 @@ export const CodeEditor = ({ }: CodeEditorProps) => {
   }
 
   const HandleSave = () => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateCode', nodeInformation, { scriptL, content: draft })
     setOpen(false)
   }
 
   const HandleChangeLanguage = (next: 'js' | 'python') => {
+    if (!isNode) return;
     UpdateActionConfiguration('updateCode', nodeInformation, { scriptL: next, content })
   }
 

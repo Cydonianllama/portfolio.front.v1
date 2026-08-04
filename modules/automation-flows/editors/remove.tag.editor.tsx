@@ -1,10 +1,10 @@
-import { IAutomationNode, NODE_TYPE_REMOVETAG } from "@erick/conversationalflow"
 import { BaseEditor } from "./_base.editor"
 import { Label } from "@/components/ui/label"
 import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { useTagsList } from "../hooks/useTagsList"
 import { MultiSelect } from "../components/MultiSelect"
+import { isRemoveTagNode } from "../utils/node.guards"
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 type RemoveTagEditorProps = {
@@ -16,12 +16,13 @@ export const RemoveTagEditor = ({ }: RemoveTagEditorProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
   const { tags } = useTagsList()
 
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_REMOVETAG>;
+  const nodeInformation = GetAutomationNodeInformation()
+  const isNode = isRemoveTagNode(nodeInformation)
 
-  const selectedIds = nodeInformation?.configuration?.toRemove?.map(el => el.tagId) || []
+  const selectedIds = isNode ? nodeInformation.configuration?.toRemove?.map(el => el.tagId) || [] : []
 
   const HandleChange = (tagIds: Array<string>) => {
-    UpdateActionConfiguration('updateRemoveTags', nodeInformation, { tagIds })
+    if (isNode) UpdateActionConfiguration('updateRemoveTags', nodeInformation, { tagIds })
   }
 
   return (

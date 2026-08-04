@@ -1,4 +1,3 @@
-import { UseAppData } from "@/hooks/app/useAppData";
 import { groupWordsItemSendMessageConfigNode } from "@erick/conversationalflow";
 
 import {
@@ -9,12 +8,9 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type GroupWordsItemProps = {
   data: groupWordsItemSendMessageConfigNode
-  index: number
 }
 
-export const GroupWordsItem = ({ data, index }: GroupWordsItemProps) => {
-  const useAppData = UseAppData()
-
+export const GroupWordsItem = ({ data }: GroupWordsItemProps) => {
   const connected = Boolean(data?.nextNode)
 
   return (
@@ -24,7 +20,9 @@ export const GroupWordsItem = ({ data, index }: GroupWordsItemProps) => {
           className={`h-2 w-2 rounded-full shrink-0 ${connected ? 'bg-green-500' : 'bg-amber-400'}`}
           title={connected ? 'Conectado' : 'Sin conexión'}
         /> */}
-        {data?.words?.map((el, index) => <div className="text-xs p-1 border rounded inline-flex" key={index}>{el.text}</div>)}
+        <div className="flex flex-wrap gap-1">
+          {data?.words?.map((el, index) => <div className="text-xs p-1 border rounded-lg inline-flex" key={index}>{el.text}</div>)}
+        </div>
         <Handle
           id={data?.id}
           type="source"

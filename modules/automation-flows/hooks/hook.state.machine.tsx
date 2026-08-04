@@ -10,7 +10,7 @@ type FlosStateMachineHookProps = {
 
 import { useMemo } from "react";
 
-export const useFlosStateMachineHookActions = ({}: FlosStateMachineHookProps) => {
+export const useFlosStateMachineHookActions = ({ }: FlosStateMachineHookProps) => {
   const automationFlowStore = automationFlowGenStore();
 
   return useMemo(() => {
@@ -18,23 +18,18 @@ export const useFlosStateMachineHookActions = ({}: FlosStateMachineHookProps) =>
 
     return {
       showSaveButton:
-        automationFlowStore.mode !== "preview" &&
-        !!(
-          automationFlowStore.information?.automation?.hasChanges &&
-          automationFlowStore.information?.automation?.isPublished
-        ),
+        automationFlowStore.information?.automation?.isPublished && (automationFlowStore.mode !== "preview" ),
+      disabledSaveButton:
+        automationFlowStore.information?.automation?.hasChanges ? false : true,
 
       showPublishButton:
-        automationFlowStore.mode !== "editor" &&
         !automationFlowStore.information?.automation?.isPublished,
 
+      
       showEditButton:
-        automationFlowStore.mode !== "editor" &&
-        !!(
-          automationFlowStore.information?.automation?.isPublished
-        ),
+        automationFlowStore.mode == "preview" && automationFlowStore.information?.automation?.isPublished,
 
-      canMoveNodes: !!(automationFlowStore.mode == "editor"),
+      canEditGeneralFlowchart: !!(automationFlowStore.mode == "editor"),
 
       isInitialFlow:
         automationFlowStore.information?.nodeList?.length === 1 &&

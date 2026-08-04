@@ -1,9 +1,9 @@
 import { BaseEditor } from "./_base.editor";
 import { Button } from "@/components/ui/button";
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
-import { IAutomationNode, NODE_TYPE_REQUEST_SERVICE } from "@erick/conversationalflow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
 import { useAutomationEditor } from "../hooks/useAutomationEditor";
+import { isRequestServiceNode } from "../utils/node.guards";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type MessageEditorProps = {
 
@@ -13,9 +13,10 @@ export const RequestServiceEditor = ({ }: MessageEditorProps) => {
   const automationFlow = automationFlowGenStore()
 
   const { GetAutomationNodeInformation } = useAutomationEditor()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_REQUEST_SERVICE>;
+  const nodeInformation = GetAutomationNodeInformation()
 
-  const configuration = nodeInformation?.configuration
+  const isNode = isRequestServiceNode(nodeInformation)
+  const configuration = isNode ? nodeInformation.configuration : undefined
 
   return (
     <BaseEditor>

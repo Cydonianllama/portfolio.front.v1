@@ -1,19 +1,12 @@
-import { UseAppData } from "@/hooks/app/useAppData";
 import { EmptyState } from "../../components/states/EmptyState";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
-import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ConectorsBottomSectionProps = {
-
+  node: IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
 }
 
-export const ConectorsBottomSection = ({ }: ConectorsBottomSectionProps) => {
-  const useAppData = UseAppData()
-
-  const { GetAutomationNodeInformation } = useAutomationEditor()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
-
-  const configuration = nodeInformation?.configuration
+export const ConectorsBottomSection = ({ node }: ConectorsBottomSectionProps) => {
+  const configuration = node.configuration
 
   const notResponseConnected = Boolean(configuration?.notResponseNextNode)
   const otherResponseConnected = Boolean(configuration?.otherResponseNextNode)

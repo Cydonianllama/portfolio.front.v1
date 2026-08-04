@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { IAutomationNode, nodeTypes } from "@erick/conversationalflow";
 import { FlowEdge, nodesFlow } from "../engineSimple/types";
+import { idFirstStep } from "../_configs";
 
 const foundeNodeFromId = (id: string, nodes: Array<IAutomationNode>): IAutomationNode | null => {
   return nodes.find(el => el.id == id) || null
@@ -18,7 +19,7 @@ export const BuildNodeAndEdges = ({ nodes }: { nodes: Array<IAutomationNode> }):
     if (nodes[0].type == nodeTypes.NODE_TYPE_TRIGGER_GENERAL_MESSAGE_INCOMING) {
 
       const triggerNode = nodes[0]
-      const idFirstStep = 'first-step-node'
+      
 
       nodesToSend.push({
         id: idFirstStep,

@@ -246,3 +246,7 @@ export const bgColor: Record<colorDefaultNode, { classColor: string, textColor: 
     textColor: "text-white"
   }
 }
+
+// id de nodo primer paso
+
+export const idFirstStep = 'first-step-node'

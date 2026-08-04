@@ -1,28 +1,21 @@
-/* eslint-disable react-hooks/purity */
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { Button } from "@/components/ui/button";
-import { UseAppData } from "@/hooks/app/useAppData";
 import { GroupWordItem } from "./groupWordItem";
-import { useAutomationEditor } from "../../hooks/useAutomationEditor";
 import { IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE } from "@erick/conversationalflow";
 import { useMessageEditorActions } from "../../hooks/useMessageEditorActions";
 import { EmptyState } from "../../components/states/EmptyState";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type GroupWordsSectionProps = {
-
+  node: IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>
 }
 
-export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
-  const useAppData = UseAppData()
-
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const GroupWordsSection = ({ node }: GroupWordsSectionProps) => {
   const { UpdateMessageConfiguration } = useMessageEditorActions()
-  const nodeInformation = GetAutomationNodeInformation() as IAutomationNode<typeof NODE_TYPE_GENERAL_MESSAGE_SIMPLE>;
 
   const HandleAddGroupWord = () => {
     UpdateMessageConfiguration(
       'addgroupword',
-      nodeInformation,
+      node,
       {
         item: {
           id: `words-${Math.ceil(Math.random() * 1000000)}-${Math.ceil(Math.random() * 1000000)}`,
@@ -33,7 +26,7 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
     )
   }
 
-  const groupWords = nodeInformation.configuration?.groupWords || []
+  const groupWords = node.configuration?.groupWords || []
 
   const allWords = groupWords.flatMap((group) => group.words?.map((word) => word.text) || [])
 
@@ -46,7 +39,7 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
         <div className="flex justify-between items-center">
           <div className="text-foreground font-semibold">Palabras</div>
           <div>
-            <Button onClick={HandleAddGroupWord} variant={'outline'} size={'icon-sm'}>
+            <Button onClick={HandleAddGroupWord} variant={'outline'} size={'icon-sm'} title="Agregar grupo de palabras">
               {IconsCatalog.addPlus.Icon}
             </Button>
           </div>
@@ -58,7 +51,7 @@ export const GroupWordsSection = ({ }: GroupWordsSectionProps) => {
         )}
         <div className="flex flex-col gap-2">
           {groupWords.length ? (
-            groupWords.map((el, index) => <GroupWordItem index={index} data={el} key={index} />)
+            groupWords.map((el, index) => <GroupWordItem data={el} index={index} node={node} key={el.id} />)
           ) : (
             <EmptyState
               Icon={IconsCatalog.addPlus.Icon}
