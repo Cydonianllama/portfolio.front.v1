@@ -38,6 +38,15 @@ interface ChatStore {
   // individual contact room information
   contactIndividualOpenedInformation: ContactDTO | null
   setIndividualContact: (data: Partial<{ contactIndividualOpenedInformation: ContactDTO | null }>) => void
+
+  // room variables (edición en aside)
+  roomVariables: Array<{
+    codeVariable: string;
+    value: string;
+    addedAt?: Date;
+    updatedAt?: Date;
+  }>
+  setRoomVariables: (variables: Array<{ codeVariable: string; value: string; addedAt?: Date; updatedAt?: Date }>) => void
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -96,4 +105,8 @@ export const useChatStore = create<ChatStore>((set) => ({
   // individual:
   contactIndividualOpenedInformation: null,
   setIndividualContact: (data: Partial<{ contactIndividualOpenedInformation: ContactDTO | null }>) => set((state) => ({ ...state, ...data })),
+
+  // room variables
+  roomVariables: [],
+  setRoomVariables: (variables) => set((state) => ({ ...state, roomVariables: variables })),
 }));

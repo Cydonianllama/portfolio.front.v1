@@ -1,38 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Spinner } from "@/components/ui/spinner"
-import { Separator } from "@/components/ui/separator"
 import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto"
 import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
-  ItemMedia,
   ItemTitle,
 } from "@/components/ui/item"
-import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react"
-import { LuSquareDot } from "react-icons/lu"
-import { RxDragHandleDots2 } from "react-icons/rx"
-import { FiEdit2 } from "react-icons/fi"
+import { FiInbox } from "react-icons/fi"
 import { MdOutlineEdit } from "react-icons/md"
 import { BsTrash } from "react-icons/bs"
+import { GoPlus } from "react-icons/go"
 
 export interface DialogManageConversationFiltersConfig {
   open: boolean
@@ -54,43 +41,52 @@ export const DialogManageConversationFilters = (config: DialogManageConversation
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Filtros de conversaciones</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogDescription>
+            Administra los filtros que organizan tus conversaciones.
+          </DialogDescription>
         </DialogHeader>
-        <div className="">
-          <div>
-            {/* <Separator /> */}
-            <div className="flex justify-between py-5">
-              <h2 className="font-semibold">Listado de conversaciones</h2>
-              <Button onClick={() => { config.onClickCreate() }}>
-                Crear
-              </Button>
-            </div>
-          </div>
-          <div className="space-y-2 max-h-100 overflow-auto">
-            {config.conversationsFilter.map((el, index) => <Item key={index} variant="outline" size="sm" render={<div>
-              <ItemMedia>
-                <RxDragHandleDots2 />
-              </ItemMedia>
+
+        <div className="flex items-center justify-between py-2">
+          <h2 className="font-semibold text-foreground text-sm">Listado de conversaciones</h2>
+          <Button onClick={() => { config.onClickCreate() }} size={'sm'}>
+            <GoPlus />
+            Crear
+          </Button>
+        </div>
+
+        <div className="space-y-2 max-h-100 overflow-auto">
+          {config.conversationsFilter.length > 0 ? (
+            config.conversationsFilter.map((el, index) => <Item key={el.id || index} variant="outline" size="sm" render={<div>
               <ItemContent>
-                <ItemTitle>{el.name}</ItemTitle>
+                <ItemTitle className="flex items-center gap-2">
+                  <FiInbox className="text-gray-400" />
+                  {el.name}
+                </ItemTitle>
               </ItemContent>
               <ItemActions>
-                <Button onClick={() => { config.onClickEdit(el) }} variant={'ghost'} size={'icon-xs'} >
+                <Button onClick={() => { config.onClickEdit(el) }} variant={'ghost'} size={'icon-xs'} title="Editar">
                   <MdOutlineEdit />
                 </Button>
-                <Button onClick={() => { config.onClickDelete(el) }} variant={'ghost'} size={'icon-xs'}>
+                <Button onClick={() => { config.onClickDelete(el) }} variant={'ghost'} size={'icon-xs'} title="Eliminar">
                   <BsTrash />
                 </Button>
               </ItemActions>
-            </div>} />)}
-          </div>
+            </div>} />)
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-2 border border-dashed rounded-lg py-10 text-center">
+              <FiInbox className="text-gray-300 text-3xl" />
+              <p className="text-sm font-medium text-muted-foreground">No hay filtros creados</p>
+              <p className="text-xs text-muted-foreground">Crea tu primer filtro para organizar las conversaciones.</p>
+              <Button onClick={() => { config.onClickCreate() }} size={'sm'} variant={'outline'} className="mt-1">
+                <GoPlus />
+                Crear filtro
+              </Button>
+            </div>
+          )}
         </div>
+
         <DialogFooter>
-          <Button variant={'outline'} onClick={HandleToCancel}>Cancelar</Button>
-          {/* <Button disabled={config.creating ? true : false} onClick={() => {}}>
-            {config.creating && <Spinner data-icon="inline-start" />}
-            Crear convesation filter
-          </Button> */}
+          <Button variant={'outline'} onClick={HandleToCancel}>Cerrar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

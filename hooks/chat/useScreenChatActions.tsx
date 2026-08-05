@@ -14,19 +14,10 @@ export const UseScreenChatAction = () => {
   const OnInit = useCallback(async () => {
     try {
       // . listar los filtros
-      const filters = await conversationFilterActions.ListConversationFiltersAction({ page: 1, workspaceId: workspaceSelection.selectedWorkspaceId || '' })
+      await conversationFilterActions.ListConversationFiltersAction({ page: 1, workspaceId: workspaceSelection.selectedWorkspaceId || '' })
 
-      // . si no hay filtros listar all default
-      if (!filters?.data.list || filters?.data.list.length == 0){
-        chatAction.ListChatsAction({ page: 1, workspaceId: workspaceSelection.selectedWorkspaceId || '' })
-      }
-
-      // . si hay filtros listar con el primer filtro
-      if (filters?.data.list){
-        if (filters?.data.list.length > 0){
-          chatAction.ListChatsAction({ page: 1, workspaceId: workspaceSelection.selectedWorkspaceId || '', filter: filters?.data.list[0].id })
-        }
-      }
+      // . por defecto listar "todos los chats" (sin filtro)
+      chatAction.ListChatsAction({ page: 1, workspaceId: workspaceSelection.selectedWorkspaceId || '' })
     } catch (error: any) {
 
     } finally {

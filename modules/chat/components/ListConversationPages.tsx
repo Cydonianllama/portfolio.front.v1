@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-no-undef */
 import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto";
 import { Button } from "@/components/ui/button"
-import { FaRegUser } from "react-icons/fa"
 import { GoPlus } from "react-icons/go";
+import { FiInbox } from "react-icons/fi";
 import { useChatStore } from "../store/store.chat";
+import { EmptyState } from "@/modules/automation-flows/components/states/EmptyState";
 
-
+// Filtro virtual "todos los chats" (no existe en BD)
+export const ALL_CHATS_FILTER_ID = 'all-chats'
 
 type ConversationPageItemProps = {
   active?: boolean;
@@ -19,10 +21,10 @@ type ConversationPageItemProps = {
 
 const ConversationPageItem = ({ data, active, onClick }: ConversationPageItemProps) => {
   return (<>
-    <div onClick={() => { onClick(data.id) }} className={`flex p-2 items-center justify-between cursor-pointer select-none hover:bg-gray-100 rounded-md ${!active ? '' : 'text-blue-600'}`}>
-      <div className="flex gap-2 items-center">
-        {/* <FaRegUser /> */}
-        <span className="font-semibold">{data.title}</span>
+    <div onClick={() => { onClick(data.id) }} className={`flex p-2 items-center justify-between cursor-pointer select-none hover:bg-gray-100 rounded-md ${!active ? '' : 'text-blue-600 bg-blue-50/60'}`}>
+      <div className="flex gap-2 items-center min-w-0">
+        {data.id === ALL_CHATS_FILTER_ID && <FiInbox className="text-gray-400 shrink-0" />}
+        <span className="font-semibold truncate">{data.title}</span>
       </div>
       <div className={` ${!active ? 'text-gray-400' : 'text-blue-600'} `}>
         {data.qty}
@@ -44,35 +46,43 @@ export const ListConversationPagesSection = ({ handleOpenManageConversationFilte
   const chatStore = useChatStore()
 
   return (<>
-    <div className="px-2 flex-1 ">
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-foreground">Conversations</h2>
+    <div className="px-2 flex-1 flex flex-col min-h-0">
+      <div className="flex justify-between items-center py-2">
+        <h2 className="font-semibold text-foreground text-sm">Conversations</h2>
         <div>
-          {listConvesationFilters.length < QTY_SHOWING && (<>
-            <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400 cursor-pointer'} variant={'ghost'} >
-              <GoPlus />
-            </Button>
-          </>)}
-        </div>
-      </div>
-      {listConvesationFilters.length > 0 && (<>
-        <div className="">
-          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <ConversationPageItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={index} data={{ qty: 19, title: el.name, id: el.id }} />)}
-        </div>
-      </>)}
-      {listConvesationFilters.length == 0 && (<>
-        <div className="h-25 flex items-center justify-center text-xs text-muted-foreground">
-          No hay filtros
-        </div>
-      </>)}
-      {listConvesationFilters.length > QTY_SHOWING && (<>
-        <div>
-          <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400'} variant={'ghost'} >
-            {listConvesationFilters.length > QTY_SHOWING && <span>Mostrar <strong>{listConvesationFilters.length - QTY_SHOWING}</strong> ocultos</span>}
-            {listConvesationFilters.length < QTY_SHOWING && <GoPlus />}
+          <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400 cursor-pointer'} variant={'ghost'} size={'icon-sm'}>
+            <GoPlus />
           </Button>
         </div>
-      </>)}
+      </div>
+
+      <div className="flex-1 overflow-y-auto min-h-0 space-y-0.5">
+        {/* Item virtual "todos los chats" */}
+        <ConversationPageItem
+          onClick={onClickOpenConversationFilter}
+          active={chatStore.filter == ALL_CHATS_FILTER_ID}
+          data={{ id: ALL_CHATS_FILTER_ID, title: 'Todos los chats' }}
+        />
+
+        {listConvesationFilters.length > 0 && (<>
+          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <ConversationPageItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={el.id || index} data={{ qty: 19, title: el.name, id: el.id }} />)}
+        </>)}
+
+        {listConvesationFilters.length == 0 && (<>
+          <EmptyState
+            title="Sin filtros"
+            description="Crea filtros para organizar tus conversaciones."
+          />
+        </>)}
+
+        {listConvesationFilters.length > QTY_SHOWING && (<>
+          <div>
+            <Button onClick={handleOpenManageConversationFilter} className={'text-gray-400 w-full'} variant={'ghost'} size={'sm'}>
+              Mostrar <strong>{listConvesationFilters.length - QTY_SHOWING}</strong> ocultos
+            </Button>
+          </div>
+        </>)}
+      </div>
     </div>
   </>)
 }

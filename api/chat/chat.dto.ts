@@ -20,6 +20,12 @@ export interface RoomDTO {
   creationDate: Date;
   lastMessage: string;
   typeRoom: 'individual' | 'group'
+  variables?: Array<{
+    codeVariable: string;
+    value: string;
+    addedAt?: Date;
+    updatedAt?: Date;
+  }>
 }
 
 
@@ -77,4 +83,19 @@ export interface ListMessagesRequestDTO {
 
 export interface ListMessagesResponseDTO {
   list: Array<MessageDTO>
+}
+
+// update room variables
+export interface UpdateRoomVariablesRequestDTO {
+  roomId: string;
+  variables: Array<{
+    codeVariable: string;
+    value: string;
+    addedAt?: Date;
+    updatedAt?: Date;
+  }>
+}
+
+export interface UpdateRoomVariablesResponseDTO {
+  room: RoomDTO | null
 }

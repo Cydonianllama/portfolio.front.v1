@@ -70,8 +70,8 @@ export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
   }, [handleLoadMoreContacts]);
 
   return (<>
-    <ScrollArea ref={wrapperContacts} className="h-full px-2 py-2">
-      <div className="flex flex-col gap-2" >
+    <ScrollArea ref={wrapperContacts} className="h-full">
+      <div className="flex flex-col" >
         {contacts.map((item, index) => (
           <ContactCard
             handleOpenChat={HandleOpenChat}
@@ -83,7 +83,7 @@ export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
               time: item.creationDate ? formatChatDate(item.creationDate) : '',
               icon: item.platformId == 'whatsapp' ? <FaWhatsapp className='inline' /> : <RiTelegram2Line className='inline' />
             }}
-            key={index}
+            key={item.id || index}
           />
         ))}
         <div ref={downRefContacts} ></div>

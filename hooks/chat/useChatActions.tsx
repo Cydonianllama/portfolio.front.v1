@@ -3,8 +3,8 @@
 import { useCallback } from 'react'
 import { useContactStore } from '@/modules/contacts/store/store'
 import { useChatStore } from '../../modules/chat/store/store.chat'
-import { CreateChat, ListChats, ListMessages, OpenChat, SendMessage } from '@/api/chat/chat.api'
-import { CreateChatRequestDTO, ListChatRequestDTO, ListMessagesRequestDTO, MessageDTO } from '@/api/chat/chat.dto'
+import { CreateChat, ListChats, ListMessages, OpenChat, SendMessage, UpdateRoomVariables } from '@/api/chat/chat.api'
+import { CreateChatRequestDTO, ListChatRequestDTO, ListMessagesRequestDTO, MessageDTO, UpdateRoomVariablesRequestDTO } from '@/api/chat/chat.dto'
 import { toast } from 'sonner'
 import { GetContactRequestDTO } from '@/api/contacts/contacts.dto'
 import { GetContact } from '@/api/contacts/contacts.api'
@@ -85,6 +85,9 @@ export const UseChatActions = () => {
         paginationMessages: req.data.paginationMessage,
         hasSuccessOpeningChat: true,
       })
+
+      // cargar variables de la room
+      chatStore.setRoomVariables(req.data.room?.variables || [])
 
       // room de un participante
       if (req.data.room?.typeRoom == 'individual') {
@@ -177,12 +180,39 @@ export const UseChatActions = () => {
 
     }
   }, [chatStore.messages])
-  
+
+  const UpdateRoomVariablesAction = useCallback(async (data: UpdateRoomVariablesRequestDTO) => {
+    try {
+      const req = await UpdateRoomVariables(data)
+
+      if (!req) {
+        toast.error('Error al actualizar variables')
+        return;
+      }
+
+      if (!req.status) {
+        toast.error('Error al actualizar variables')
+        return;
+      }
+
+      if (req.data?.room) {
+        chatStore.setRoomVariables(req.data.room.variables || [])
+        toast.success('Variables actualizadas')
+      }
+
+    } catch (error) {
+      toast.error('Error inesperado (UpdateRoomVariablesAction)')
+    } finally {
+
+    }
+  }, [])
+
   return {
     ListChatsAction,
     OpenChatAction,
     SendMessageAction,
     ListMessagesAction,
     ListContactInformation,
+    UpdateRoomVariablesAction,
   }
 }

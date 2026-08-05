@@ -22,14 +22,14 @@ export const SidebarItems: Array<SidebarItemProps> = [
     icon: <FiActivity />
   },
   {
-    title: 'Chat',
-    goto: '/chat',
-    icon: <BsChatDots />
-  },
-  {
     title: 'Contactos',
     goto: '/contacts',
     icon: <LuUsersRound />
+  },
+  {
+    title: 'Chat',
+    goto: '/chat',
+    icon: <BsChatDots />
   },
   {
     title: 'Automatizaciones',

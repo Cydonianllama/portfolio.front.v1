@@ -2,14 +2,6 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { PropsWithChildren, ReactElement } from 'react'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item"
 import { FaWhatsapp } from 'react-icons/fa';
 import { useChatStore } from '../store/store.chat';
 
@@ -17,7 +9,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -42,24 +33,24 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
   const chatStore = useChatStore()
   return <>
     <div
-      className={`${chatStore.roomIdOpened == data.id ? 'bg-gray-50' : ''} cursor-pointer flex gap-2 p-2 rounded-lg`}
+      className={`${chatStore.roomIdOpened == data.id ? 'bg-gray-50' : ''} cursor-pointer flex gap-2 border-b border-gray-100 py-2`}
       onClick={() => {
         if (handleOpenChat) handleOpenChat(data.id)
       }}
     >
-      <div className='flex items-center'>
-        <div className='h-7 w-7 bg-gray-300 rounded-full flex items-center justify-center font-semibold'>
+      <div className='flex items-center px-2'>
+        <div className='h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center font-semibold text-xs'>
           {data.name.charAt(0)}
         </div>
       </div>
-      <div className='flex-1 flex flex-col gap-1.5'>
+      <div className='flex-1 flex flex-col min-w-0 pr-2'>
 
-        <div className='flex  justify-between'>
-          <div className='text-xs  font-semibold'>
+        <div className='flex justify-between items-center'>
+          <div className='text-xs font-semibold truncate'>
             {data.name}
           </div>
-          <div className='flex gap-1.5 items-center'>
-            <div className='text-xs text-gray-400 '>
+          <div className='flex gap-1.5 items-center shrink-0'>
+            <div className='text-[10px] text-gray-400'>
               {data.time}
             </div>
             <div>
@@ -67,27 +58,20 @@ export const ContactCard = ({ data, handleOpenChat }: PropsWithChildren<ContactC
                 <DropdownMenuTrigger render={<Button variant={'ghost'} size={'icon-xs'}><HiDotsHorizontal /></Button>} ></DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuSeparator /> 
-                  {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem> */}
+                  <DropdownMenuSeparator />
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </div>
         </div>
 
-        <div className='text-xs flex gap-1'>
-          <div className='flex-1'>
+        <div className='text-[11px] flex gap-1 min-w-0'>
+          <div className='flex-1 truncate text-gray-500'>
             {data.lastMessage}
           </div>
-          <div className='flex flex-col'>
+          <div className='flex flex-col shrink-0 text-gray-400'>
             {data.icon && (<>{data.icon}</>)}
           </div>
-
         </div>
       </div>
 
