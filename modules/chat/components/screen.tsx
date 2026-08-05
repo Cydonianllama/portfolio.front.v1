@@ -4,15 +4,11 @@
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import {
-  ItemGroup,
-} from "@/components/ui/item"
 import { Button } from "@/components/ui/button";
 import { IoSearch } from "react-icons/io5";
 
-import { RiWhatsappLine } from "react-icons/ri";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { UseChatActions } from "../../../hooks/chat/useChatActions";
+import { useEffect, useState } from "react";
+import { useChatActions } from "../actions/useChatActions";
 import { useChatStore } from "../store/store.chat";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 import { HandleToSendMessageProp, TextAreaChat } from "./TextAreaChat";
@@ -24,10 +20,7 @@ import { NotRoomOpenedState } from "./states/NotRoomOpenedState";
 import { InitConversationChat } from "./states/InitConversationChat";
 import { ListingMessages } from "./states/ListingMessages";
 import { ChatList } from "./ChatList";
-import { RoomVariablesSection } from "./RoomVariablesSection";
 import { ALL_CHATS_FILTER_ID } from "./ListConversationPages";
-import { Separator } from "@/components/ui/separator";
-import { MdOutlineAlternateEmail, MdOutlineMapsHomeWork, MdOutlinePhone } from "react-icons/md";
 import { DialogManageConversationFilters } from "./DialogManageConversationFilters";
 import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter";
 import { useCoversationFiltersStore } from "../store/store.conversationFilters";
@@ -35,166 +28,71 @@ import { CreationConversationFilterSchema } from "../schemas/createConversationF
 import { DialogEditConversationFilter } from "./DialogEditConversationFilter";
 import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion";
 import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
-import { UseConversationFiltersActions } from "@/hooks/chat/useConversationFilters";
+import { useConversationFiltersActions } from "@/modules/chat/actions/useConversationFilters";
+import { ChatAside } from "./chat-aside/chatAside";
+import { useMessagesInfiniteScroll } from "../hooks/useMessagesInfiniteScroll";
+import { useMessageRefs } from "../hooks/useMessageRefs";
+import { useScrollToEndChat } from "../hooks/useChatScrollToEnd";
+import { useMessageActions } from "../actions/useMessageActions";
+import { useAsideChat } from "../hooks/useAsideChat";
+import { useTextareaManager } from "../hooks/TextareaChat/useTextareaManager";
+import { useTextareaResetter } from "../hooks/TextareaChat/useResetTextareaChat";
+import { useChatManagerActions } from "../actions/useChatManagerActions";
 
 export const ChatScreen = () => {
   // configuracion general de chat
   UseAppInitializer({ moduleName: 'chat' })
-
-  const conversationFilterActions = UseConversationFiltersActions()
-  const conversationFilterStore = useCoversationFiltersStore()
-  const chatStore = useChatStore()
-  const chatActions = UseChatActions()
   const workspaceSelectionStore = useWorkspaceSelectionStore()
 
+  const { HandleToggleAsideListConversations, openedAside } = useAsideChat()
+  const { topRef, wrapperListMessagesRef } = useMessageRefs()
+
+  // stores
+  const conversationFilterStore = useCoversationFiltersStore()
+  const chatStore = useChatStore()
+
+  // actions
+  const conversationFilterActions = useConversationFiltersActions()
+  const chatActions = useChatActions()
+  const messageActions = useMessageActions()
+  const chatManagerActions = useChatManagerActions(chatStore)
+
+  useMessagesInfiniteScroll({
+    handleLoadMore: messageActions.LoadMoreMessages,
+    topRef: topRef,
+    wrapperListMessagesRef: wrapperListMessagesRef,
+  })
+
+  useScrollToEndChat({
+    wrapperListMessagesRef
+  })
+
+  // textarea chat
+  const { message, reset, setMessage } = useTextareaManager()
+  useTextareaResetter(reset, chatStore)
+
   const currentFilterData = conversationFilterStore.listConvesationFilters.find(el => el.id == chatStore.filter)
-
-  const [resetSignal, setResetSignal] = useState(0);
-
-  const handleResetAll = () => {
-    // limpiar textarea
-    handleResetTextarea()
-
-    // contact
-    chatStore.setStates({ paginationChat: null })
-
-    // limpiar mensajes y estado de room opened
-    chatStore.setChatSelectedStates({ messages: [], roomIdOpened: null, paginationMessages: null })
-
-    // limpiar informacion de contacto
-    chatStore.setIndividualContact({ contactIndividualOpenedInformation: null })
-
-  }
-
-  const handleResetTextarea = () => {
-    setResetSignal((prev) => prev + 1);
-  };
-
 
   const HandleOpenChat = (roomId: string) => {
     chatActions.OpenChatAction({ roomId: roomId })
   }
 
   const HandleToSendMessage = (data: HandleToSendMessageProp) => {
-    chatActions.SendMessageAction({
+    messageActions.SendMessageAction({
       message: data.message,
       roomId: chatStore.roomIdOpened || ''
     })
   }
 
-  //
-  // LISTADO DE MENSAJES
-  //
-
-  // si el envío del mensaje es exitoso
-  useEffect(() => {
-    if (!chatStore.sendingMessage && chatStore.successSendingMessage) {
-      handleResetTextarea()
-    }
-  }, [chatStore.sendingMessage, chatStore.successSendingMessage])
-
-  // si el usuario cambia de session abierta
-  useEffect(() => {
-    if (chatStore.roomIdOpened) {
-      handleResetTextarea()
-    }
-  }, [chatStore.roomIdOpened])
-
-  // Listar más mensajes
-  const handleLoadMore = useCallback(() => {
-    if (chatStore.listingMessages) {
-      console.log("[INTERSECTION OBSERVER] not running is listing messages");
-      return;
-    }
-
-    if (chatStore.openingChat) {
-      console.log("[INTERSECTION OBSERVER] not running is opening chat");
-      return;
-    }
-
-    let page = 1;
-
-    if (chatStore.paginationMessages) {
-      if (chatStore.paginationMessages.hasNextPage) {
-        page = (chatStore?.paginationMessages?.page || 0) + 1;
-      } else {
-        console.log('No hay más paginas que listar')
-        return;
-      }
-    }
-    console.log("Cargar más mensajes");
-    chatActions.ListMessagesAction({ page: page, roomId: chatStore.roomIdOpened || '' })
-  }, [chatStore.listingMessages, chatStore.openingChat, chatStore.paginationMessages, chatStore.roomIdOpened]);
-
-  // referencias de la seccion del listado de mensajes
-  const topRef = useRef<HTMLDivElement>(null);
-  const wrapperListMessagesRef = useRef<HTMLDivElement>(null)
-
-  const scrollToEndChat = () => {
-    requestAnimationFrame(() => {
-      if (wrapperListMessagesRef.current) {
-        wrapperListMessagesRef.current.scrollTo({
-          top: wrapperListMessagesRef.current.scrollHeight,
-          behavior: "instant",
-        });
-      }
-    });
-  }
-
-  // cuando termina de listar los mensajes ()
-  useEffect(() => {
-    if (chatStore.successListingMessages) {
-      // scrollToEndChat()
-    }
-  }, [chatStore.successListingMessages])
-
-  // cuando termina de abrir el chat (scrollear al final)
-  useEffect(() => {
-    if (chatStore.hasSuccessOpeningChat) {
-      console.log('terminó de abrir el chat - scrolear hacia abajo')
-      scrollToEndChat()
-    }
-  }, [chatStore.hasSuccessOpeningChat])
-
   // cuando cambia de workspace
   useEffect(() => {
     if (workspaceSelectionStore.selectedWorkspaceId) {
-      handleResetAll()
+      chatActions.ResetChat()
+      messageActions.ResetMessages()
+      reset() // reset del textarea de chat
+      chatManagerActions.resetChatManager()
     }
   }, [workspaceSelectionStore.selectedWorkspaceId])
-
-  //
-  // logica para el aside
-  //
-  const [openedAside, setOpenAside] = useState(true)
-  const HandleToggleAsideListConversations = () => {
-    setOpenAside(!openedAside)
-  }
-
-  //
-  // listado de contactos
-  //
-
-  // Listar más contactos
-  const handleLoadMoreContacts = useCallback(() => {
-    if (chatStore.loadingChats) {
-      console.log("[INTERSECTION OBSERVER] not running is listing rooms");
-      return;
-    }
-
-    let page = 1;
-
-    if (chatStore.paginationChat) {
-      if (chatStore.paginationChat.hasNextPage) {
-        page = (chatStore?.paginationChat?.page || 0) + 1;
-      } else {
-        console.log('No hay más paginas que listar')
-        return;
-      }
-    }
-    console.log("Cargar más rooms", { page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' });
-    chatActions.ListChatsAction({ page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
-  }, [chatStore.loadingChats, chatStore.paginationChat]);
 
   //
   // Dialog create conversation filter
@@ -268,13 +166,6 @@ export const ChatScreen = () => {
           {/*  */}
 
           {/*  */}
-          {/* <div className="border-b h-12 w-full flex px-2 justify-between items-center">
-            <div>Open(100)</div>
-            <div>Newest</div>
-          </div> */}
-          {/*  */}
-
-          {/*  */}
           <div className="flex flex-1 flex-col overflow-auto min-h-0  w-full gap-6 ">
             {(chatStore.loadingChats && !chatStore.paginationChat) && (<ListingSectionListContacts />)}
             {(chatStore.paginationChat) && (<>
@@ -283,7 +174,7 @@ export const ChatScreen = () => {
                 <ChatList
                   HandleOpenChat={HandleOpenChat}
                   contacts={chatStore.listChats || []}
-                  handleLoadMoreContacts={handleLoadMoreContacts}
+                  handleLoadMoreContacts={chatActions.LoadMoreChats}
                 />
               )}
             </>)}
@@ -310,22 +201,32 @@ export const ChatScreen = () => {
               {/* end:Header content */}
 
               {/* start:message content */}
-              {(chatStore.listingMessages) && (<ListingMessages />)}
+              {(chatStore.listingMessages) && (
+                <ListingMessages />
+              )}
               {!chatStore.listingMessages && (<>
-                {chatStore.messages.length == 0 && <InitConversationChat />}
-                {chatStore.messages.length > 0 && <MessagesShowcase
-                  handleLoadMore={handleLoadMore}
-                  topRef={topRef}
-                  wrapperListMessagesRef={wrapperListMessagesRef}
-                  messages={chatStore.messages || []}
-                  loading={false}
-                />}
+                {chatStore.messages.length == 0 && (
+                  <InitConversationChat />
+                )}
+                {chatStore.messages.length > 0 && (
+                  <MessagesShowcase
+                    topRef={topRef}
+                    wrapperListMessagesRef={wrapperListMessagesRef}
+                    messages={chatStore.messages || []}
+                    loading={false}
+                  />
+                )}
               </>)}
               {/* end:message content */}
 
               {/* start:footer */}
               <div className="min-h-40 max-h-70 px-2 bottom-0 py-2 ">
-                <TextAreaChat sending={chatStore.sendingMessage} resetSignal={resetSignal} HandleToSendMessage={HandleToSendMessage} />
+                <TextAreaChat
+                  message={message}
+                  setMessage={setMessage}
+                  sending={chatStore.sendingMessage}
+                  HandleToSendMessage={HandleToSendMessage}
+                />
               </div>
               {/* end:footer */}
             </div>
@@ -333,41 +234,7 @@ export const ChatScreen = () => {
 
             {/* aside-room-start */}
             <div className="w-65 flex-col min-h-0 overflow-y-auto">
-              {/*  */}
-              <div className="px-2 pt-2 flex justify-center flex-col items-center gap-1 border-b pb-3">
-                <div className="h-14 w-14 rounded-full bg-gray-100 flex justify-center items-center font-semibold text-gray-500 text-2xl"> {chatStore.contactIndividualOpenedInformation?.fullname.charAt(0)}</div>
-                <div className="font-semibold text-sm text-foreground">
-                  {chatStore.contactIndividualOpenedInformation?.fullname}
-                </div>
-                <div className="text-gray-400">
-                  <RiWhatsappLine />
-                </div>
-              </div>
-              {/*  */}
-              <div className="px-2 py-2 border-b">
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2 text-gray-400 text-xs">
-                    <MdOutlineMapsHomeWork />
-                    <span className="text-muted-foreground">Dirección</span>
-                    <span className="ml-auto text-foreground text-xs truncate">{chatStore.contactIndividualOpenedInformation?.mainDirection || '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-400 text-xs">
-                    <MdOutlineAlternateEmail />
-                    <span className="text-muted-foreground">Email</span>
-                    <span className="ml-auto text-foreground text-xs truncate">{chatStore.contactIndividualOpenedInformation?.mainEmail || '-'}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-400 text-xs">
-                    <MdOutlinePhone />
-                    <span className="text-muted-foreground">Número celular</span>
-                    <span className="ml-auto text-foreground text-xs truncate">{chatStore.contactIndividualOpenedInformation?.mainPhone || '-'}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Variables editables */}
-              <div className="px-2 py-2">
-                <RoomVariablesSection />
-              </div>
+              <ChatAside />
             </div>
             {/*  */}
           </div>
@@ -404,14 +271,14 @@ export const ChatScreen = () => {
     <DialogEditConversationFilter
       open={conversationFilterStore.updateDialogOpen}
       setOpen={(open) => conversationFilterStore.setDialogs({ updateDialogOpen: open })}
-      onUpdate={(data) => { 
-        conversationFilterActions.UdpateConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '', name: data.name || '' }) 
+      onUpdate={(data) => {
+        conversationFilterActions.UdpateConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '', name: data.name || '' })
       }}
       updating={conversationFilterStore.updating}
       data={conversationFilterStore.currentItemInAction || null}
     />
 
-    <DialogConfirmDeleteConversationFilter 
+    <DialogConfirmDeleteConversationFilter
       open={conversationFilterStore.deleteDialogOpen}
       deleting={conversationFilterStore.deleting}
       onDelete={() => {

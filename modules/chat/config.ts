@@ -1,0 +1,1 @@
+export const ID_REFERENCE_TOP_LIST_MESSAGES_SECTION = 'chat-section-top-section'

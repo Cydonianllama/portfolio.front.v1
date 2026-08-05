@@ -6,42 +6,19 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   format,
 } from "date-fns";
+import { ID_REFERENCE_TOP_LIST_MESSAGES_SECTION } from "../config";
 
 type MessagesShowcaseProps = {
   messages: MessageDTO[]
   loading: boolean;
-  handleLoadMore: () => void;
   topRef: RefObject<HTMLDivElement | null>;
   wrapperListMessagesRef: RefObject<HTMLDivElement | null>;
 }
 
-export const MessagesShowcase = memo(({ messages, handleLoadMore, topRef, wrapperListMessagesRef }: MessagesShowcaseProps) => {
-
-  //
-  // Paginacion: al scrollear hacia elúltimo elemento se volvera a listar más elementos
-  //
-  useEffect(() => {
-    const target = topRef?.current;
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          handleLoadMore()
-        }
-      },
-      {
-        root: wrapperListMessagesRef?.current,
-        threshold: 0.1,
-      }
-    );
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, [handleLoadMore, topRef, wrapperListMessagesRef]);
-
+export const MessagesShowcase = memo(({ messages, topRef, wrapperListMessagesRef }: MessagesShowcaseProps) => {
   return (<>
     <div ref={wrapperListMessagesRef} className='flex flex-col min-h-0 gap-5 py-2 flex-1 overflow-auto '>
-      <div ref={topRef} />
+      <div id={ID_REFERENCE_TOP_LIST_MESSAGES_SECTION} ref={topRef} />
       {messages.map((el, index) => <ChatMessage
         key={index}
         type="me"

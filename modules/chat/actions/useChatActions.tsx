@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback } from 'react'
-import { useContactStore } from '@/modules/contacts/store/store'
-import { useChatStore } from '../../modules/chat/store/store.chat'
-import { CreateChat, ListChats, ListMessages, OpenChat, SendMessage, UpdateRoomVariables } from '@/api/chat/chat.api'
-import { CreateChatRequestDTO, ListChatRequestDTO, ListMessagesRequestDTO, MessageDTO, UpdateRoomVariablesRequestDTO } from '@/api/chat/chat.dto'
+import { useChatStore } from '../store/store.chat'
+import { ListChats, OpenChat, UpdateRoomVariables } from '@/api/chat/chat.api'
+import { ListChatRequestDTO, UpdateRoomVariablesRequestDTO } from '@/api/chat/chat.dto'
 import { toast } from 'sonner'
 import { GetContactRequestDTO } from '@/api/contacts/contacts.dto'
 import { GetContact } from '@/api/contacts/contacts.api'
+import { useWorkspaceSelectionStore } from '@/modules/app/stores/workspaceStore'
 
-export const UseChatActions = () => {
-
+export const useChatActions = () => {
+  const workspaceSelectionStore = useWorkspaceSelectionStore()
+  
   const chatStore = useChatStore()
-  const contactStore = useContactStore()
 
   const ListChatsAction = useCallback(async (data: ListChatRequestDTO) => {
     try {
@@ -101,61 +101,6 @@ export const UseChatActions = () => {
     }
   }, [])
 
-  const SendMessageAction = useCallback(async (data: { roomId: string, message: string }) => {
-    try {
-      chatStore.setSendingMessageState({ sendingMessage: true, successSendingMessage: false })
-
-      const req = await SendMessage({
-        roomId: data.roomId,
-        message: data.message
-      })
-
-      if (!req) {
-        return;
-      }
-
-      if (!req.status) {
-        return;
-      }
-
-      chatStore.setSendingMessageState({ successSendingMessage: true })
-
-    } catch (error) {
-
-    } finally {
-      chatStore.setSendingMessageState({ sendingMessage: false })
-    }
-  }, [])
-
-  const ListMessagesAction = useCallback(async (data: ListMessagesRequestDTO) => {
-    try {
-      // contactStore.setInfoCreationConvContact({ loading: true })
-      const req = await ListMessages(data)
-
-      if (!req) {
-        toast.error('Error 1')
-        return;
-      }
-
-      if (!req.status) {
-        toast.error('Error 2')
-        return;
-      }
-
-      // console.log([...chatStore.messages, ...req.data.list], chatStore.messages, req.data.list)
-
-      chatStore.setChatSelectedStates({
-        messages: [...req.data.list, ...chatStore.messages],
-        paginationMessages: req.pagination
-      })
-
-    } catch (error) {
-      toast.error('Error inseperado')
-    } finally {
-
-    }
-  }, [chatStore.messages])
-
   const ListContactInformation = useCallback(async (data: GetContactRequestDTO) => {
     try {
       const req = await GetContact(data)
@@ -207,12 +152,38 @@ export const UseChatActions = () => {
     }
   }, [])
 
+  // Listar más contactos
+  const LoadMoreChats = useCallback(() => {
+    if (chatStore.loadingChats) {
+      console.log("[INTERSECTION OBSERVER] not running is listing rooms");
+      return;
+    }
+
+    let page = 1;
+
+    if (chatStore.paginationChat) {
+      if (chatStore.paginationChat.hasNextPage) {
+        page = (chatStore?.paginationChat?.page || 0) + 1;
+      } else {
+        console.log('No hay más paginas que listar')
+        return;
+      }
+    }
+    console.log("Cargar más rooms", { page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' });
+    ListChatsAction({ page: page, workspaceId: workspaceSelectionStore.selectedWorkspaceId || '' })
+  }, [chatStore.loadingChats, chatStore.paginationChat]);
+
+
+  const ResetChat = () => {
+    chatStore.setStates({ paginationChat: null })
+  }
+
   return {
     ListChatsAction,
     OpenChatAction,
-    SendMessageAction,
-    ListMessagesAction,
     ListContactInformation,
     UpdateRoomVariablesAction,
+    LoadMoreChats,
+    ResetChat
   }
 }

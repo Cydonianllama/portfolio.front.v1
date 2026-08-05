@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from "react"
-import { UseChatActions } from "./useChatActions"
 
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
-import { UseConversationFiltersActions } from "./useConversationFilters"
+import { useConversationFiltersActions } from "../../modules/chat/actions/useConversationFilters"
+import { useChatActions } from "@/modules/chat/actions/useChatActions"
 
 export const UseScreenChatAction = () => {
 
   const workspaceSelection = useWorkspaceSelectionStore()
-  const chatAction = UseChatActions()
-  const conversationFilterActions = UseConversationFiltersActions()
+  const chatAction = useChatActions()
+  const conversationFilterActions = useConversationFiltersActions()
   
   const OnInit = useCallback(async () => {
     try {

@@ -4,7 +4,7 @@ import { ResponsePagination } from "@/types/api/utils.pagination";
 import { MessageDTO, RoomDTO } from "@/api/chat/chat.dto";
 import { ContactDTO } from "@/api/contacts/contacts.dto";
 
-interface ChatStore {
+export interface ChatStore {
   // chats
   loadingChats: boolean
   errorListMessage: string;

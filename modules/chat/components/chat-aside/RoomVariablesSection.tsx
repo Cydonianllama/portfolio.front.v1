@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
-import { useChatStore } from "../store/store.chat";
-import { UseChatActions } from "@/hooks/chat/useChatActions";
+import { useChatStore } from "../../store/store.chat";
+import { useChatActions } from "../../actions/useChatActions";
 
 type RoomVariableItem = {
   codeVariable: string;
@@ -15,7 +15,7 @@ type RoomVariableItem = {
 
 export const RoomVariablesSection = () => {
   const chatStore = useChatStore()
-  const chatActions = UseChatActions()
+  const chatActions = useChatActions()
 
   const [variables, setVariables] = useState<Array<RoomVariableItem>>([])
   const [saving, setSaving] = useState(false)

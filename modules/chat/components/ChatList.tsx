@@ -17,6 +17,8 @@ import {
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useChatStore } from "../store/store.chat";
 import { RiTelegram2Line } from "react-icons/ri";
+import { useChatRefs } from "../hooks/useChatRefs";
+import { useChatScrollInfinite } from "../hooks/useChatScrollInfinite";
 
 function formatChatDate(date: Date | string) {
   const creationDate = new Date(date);
@@ -44,31 +46,17 @@ export type ChatListProps = {
 
 export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts }: ChatListProps) => {
   // referencias de la seccion del listado de contactos
-  const downRefContacts = useRef<HTMLDivElement>(null);
-  const wrapperContacts = useRef<HTMLDivElement>(null)
+  const { downRefContacts, wrapperContacts } = useChatRefs()
 
   //
   // Paginacion: al scrollear hacia elúltimo elemento se volvera a listar más elementos
   //
-  useEffect(() => {
-    const target = downRefContacts?.current;
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          handleLoadMoreContacts()
-        }
-      },
-      {
-        root: wrapperContacts?.current,
-        threshold: 0.1,
-      }
-    );
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, [handleLoadMoreContacts]);
-
+  useChatScrollInfinite({
+    downRefContacts,
+    handleLoadMoreContacts,
+    wrapperContacts
+  })
+  
   return (<>
     <ScrollArea ref={wrapperContacts} className="h-full">
       <div className="flex flex-col" >

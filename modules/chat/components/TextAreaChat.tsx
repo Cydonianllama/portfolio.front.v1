@@ -14,19 +14,17 @@ export type HandleToSendMessageProp = {
 export type TextAreaChatProps = {
   HandleToSendMessage: (data: HandleToSendMessageProp) => void;
   sending: boolean;
-  resetSignal: number;
+  message: string,
+  setMessage: (message: string) => void
 };
 
 export const TextAreaChat = ({
   HandleToSendMessage,
   sending,
-  resetSignal,
+  message,
+  setMessage
 }: TextAreaChatProps) => {
-  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    setMessage("");
-  }, [resetSignal]);
 
   return (
     <InputGroup className="h-full">
