@@ -3,10 +3,10 @@ import { useAppData } from "@/hooks/app/useAppData";
 import { useEffect } from "react";
 import { UseAutomationTestHookActions } from "../hooks/hook.action.automationtest";
 import { useAutomationTest } from "../store/automation.test.store";
-import { ContactCardTest } from "./ContactCard";
 import { Button } from "@/components/ui/button";
 import { TextareaMessage } from "./TextareaMessage";
 import { MessagesCard } from "./MessagesCard";
+import { RoomCardTest } from "./ContactCard";
 
 
 type TestAutomationChatProps = {
@@ -41,7 +41,7 @@ export const TestAutomationChat = ({ }: TestAutomationChatProps) => {
             <Button variant={'outline'} onClick={OnClickAddContact}>Agregar</Button>
           </div>
           <div className="space-y-2">
-            {automationTestStore.list.map((el, index) => <ContactCardTest data={el} key={index} />)}
+            {automationTestStore.list.map((el, index) => <RoomCardTest data={el} key={index} />)}
           </div>
         </div>
         <div className="flex-1 h-full flex flex-col pl-2">

@@ -21,7 +21,7 @@ const ActionsRowCell = ({ contact }: { contact: ContactDTO }) => {
   return <ActionsRow data={cell} />;
 }
 
-const ContactCard = ({ contact }: { contact: ContactDTO }) => {
+const RoomCard = ({ contact }: { contact: ContactDTO }) => {
   return (
     <div className="border rounded-lg p-3 flex flex-col gap-2.5">
       <div className="flex items-start justify-between gap-2">
@@ -95,7 +95,7 @@ export const SectionGrid = ({ list, loading, hasError, OnClickEmptyCreate, OnCli
       {list.length > 0 && (<>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {list.map((contact) => (
-            <ContactCard key={contact.id} contact={contact} />
+            <RoomCard key={contact.id} contact={contact} />
           ))}
         </div>
       </>)}

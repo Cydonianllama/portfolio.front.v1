@@ -10,7 +10,7 @@ type EventsHookActionsProps = {
 
 }
 
-export const UseEventsHookActions = ({ }: EventsHookActionsProps) => {
+export const useEventsHookActions = ({ }: EventsHookActionsProps) => {
   const { OnWorkspaceNotificationReceived } = UseNotificationWorkspacesHookActions({})
   const { OnGeneralNotificationReceived } = UseNotificationGeneralHookActions({})
   const { OnGlobalMessageNotificationReceived } = UseGlobalNotificationsHookActions({})

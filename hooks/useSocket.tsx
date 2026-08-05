@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { socket } from "@/setup/socket";
 import { useChatStore } from "@/modules/chat/store/store.chat";
-import { UseEventsHookActions } from "@/liveapp/hooksEventsAction";
+import { useEventsHookActions } from "@/liveapp/hooksEventsAction";
 import { EVENT_CHAT_NEW_MESSAGE, EVENT_NEW_USER_NOTIFICATION, EVENT_NEW_WORKSPACE_NOTIFICATION } from "@/liveapp/constants";
 import { useAppData } from "@/hooks/app/useAppData";
 
 export function useSocket() {
   const chatStore = useChatStore()
-  const liveEvents = UseEventsHookActions({})
+  const liveEvents = useEventsHookActions({})
   const appData = useAppData()
 
   useEffect(() => {

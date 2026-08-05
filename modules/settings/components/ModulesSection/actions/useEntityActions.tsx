@@ -10,11 +10,11 @@ import { useEntityStore } from "../store/entity.store"
 import { useCallback } from "react"
 import { eventBus } from "@/utils/eventBus"
 
-export type UseEntityActionsProps = {
+export type useEntityActionsProps = {
 
 }
 
-export const UseEntityActions = ({ }: UseEntityActionsProps) => {
+export const useEntityActions = ({ }: useEntityActionsProps) => {
   const EntityStore = useEntityStore();
 
   const createEntityAction = useCallback(async (data: CreateentityRequestDTO) => {

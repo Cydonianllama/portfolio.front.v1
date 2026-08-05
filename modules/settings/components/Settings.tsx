@@ -16,7 +16,7 @@ import { BuildingIcon, CheckSquareIcon, FileTextIcon, FolderIcon, UserIcon, User
 import { TiUserOutline } from "react-icons/ti";
 import { RiAccountCircle2Line } from "react-icons/ri";
 import { FaRegBell } from "react-icons/fa";
-import { LuBriefcaseBusiness, LuSettings2 } from "react-icons/lu";
+import { LuBoxes, LuBriefcaseBusiness, LuSettings2 } from "react-icons/lu";
 import { FaCode } from "react-icons/fa6";
 import { FaPowerOff } from "react-icons/fa";
 import { TiCreditCard } from "react-icons/ti";
@@ -37,6 +37,7 @@ import { TbUsersGroup } from "react-icons/tb";
 import { MdOutlinePayment } from "react-icons/md";
 import { TagsSection } from "./TagsSection/TagsSection";
 import { ModulesSection } from "./ModulesSection/modulesSection";
+import { GoDatabase } from "react-icons/go";
 
 export const Settings = () => {
   return <>
@@ -63,7 +64,7 @@ export const Settings = () => {
               Miembros
             </TabsTrigger>
             <TabsTrigger value="tags" className="justify-start gap-2">
-              <AiOutlineTags className="size-4"  />
+              <AiOutlineTags className="size-4" />
               Etiquetas
             </TabsTrigger>
             <TabsTrigger value="variables" className="justify-start gap-2">
@@ -75,8 +76,8 @@ export const Settings = () => {
               Integraciones
             </TabsTrigger>
             <TabsTrigger value="modules" className="justify-start gap-2">
-              <VscDebugDisconnect className="size-4" />
-              Modulos
+              <GoDatabase className="size-4" />
+              Bases de datos
             </TabsTrigger>
           </div>
 
@@ -87,7 +88,7 @@ export const Settings = () => {
               Plans
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="justify-start gap-2">
-              <MdOutlinePayment  className="size-4" />
+              <MdOutlinePayment className="size-4" />
               Subscriptions
             </TabsTrigger>
           </div>
@@ -157,7 +158,7 @@ export const Settings = () => {
           </div>
         </TabsContent>
         <TabsContent value="modules">
-          <TabHeaderDialogSettings title="Módulos" />
+          <TabHeaderDialogSettings title="Bases de datos" />
           <div>
             <ModulesSection />
           </div>

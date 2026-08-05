@@ -1,0 +1,14 @@
+* {
+  --chat-header-height: 50px;
+
+
+  /* aside */
+  --chat-aside-width: 230px;
+
+  /* section list cards */
+  --chat-listsection-width: 230px;
+  
+  /* details showcase room */
+  --chat-room-detail-width: 230px; 
+
+}

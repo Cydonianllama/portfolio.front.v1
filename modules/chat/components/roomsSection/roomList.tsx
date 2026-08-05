@@ -2,7 +2,7 @@
 import {
   ItemGroup,
 } from "@/components/ui/item"
-import { ContactCard } from "./contact.card"
+import { RoomCard } from "./roomCard"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { RoomDTO } from "@/api/chat/chat.dto"
 import { FaWhatsapp } from 'react-icons/fa';
@@ -15,10 +15,10 @@ import {
   isThisWeek,
 } from "date-fns";
 import { memo, useCallback, useEffect, useRef } from "react";
-import { useChatStore } from "../store/store.chat";
+import { useChatStore } from "../../store/store.chat";
 import { RiTelegram2Line } from "react-icons/ri";
-import { useChatRefs } from "../hooks/useChatRefs";
-import { useChatScrollInfinite } from "../hooks/useChatScrollInfinite";
+import { useChatRefs } from "../../hooks/useChatRefs";
+import { useChatScrollInfinite } from "../../hooks/useChatScrollInfinite";
 
 function formatChatDate(date: Date | string) {
   const creationDate = new Date(date);
@@ -44,7 +44,7 @@ export type ChatListProps = {
   handleLoadMoreContacts: () => void
 }
 
-export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts }: ChatListProps) => {
+export const RoomList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts }: ChatListProps) => {
   // referencias de la seccion del listado de contactos
   const { downRefContacts, wrapperContacts } = useChatRefs()
 
@@ -61,7 +61,7 @@ export const ChatList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
     <ScrollArea ref={wrapperContacts} className="h-full">
       <div className="flex flex-col" >
         {contacts.map((item, index) => (
-          <ContactCard
+          <RoomCard
             handleOpenChat={HandleOpenChat}
             data={{
               id: item.id,

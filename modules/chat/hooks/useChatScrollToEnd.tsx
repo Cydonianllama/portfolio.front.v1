@@ -2,7 +2,7 @@
 import { RefObject, useEffect } from "react";
 import { useChatStore } from "../store/store.chat";
 
-export const useScrollToEndChat = ({
+export const useScrollMessagesToEnd = ({
   wrapperListMessagesRef
 }:{
   wrapperListMessagesRef: RefObject<HTMLDivElement | null>

@@ -32,7 +32,7 @@ export const SidebarItems: Array<SidebarItemProps> = [
     icon: <BsChatDots />
   },
   {
-    title: 'Automatizaciones',
+    title: 'Flujos conversacionales',
     goto: '/automation',
     icon: <TiFlowMerge />
   }

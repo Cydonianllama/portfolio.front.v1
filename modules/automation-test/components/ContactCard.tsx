@@ -2,11 +2,11 @@ import { useAppData } from "@/hooks/app/useAppData";
 import { UseAutomationTestHookActions } from "../hooks/hook.action.automationtest";
 import { RoomDTO } from "@/api/chat/chat.dto";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type ContactCardTestProps = {
+type RoomCardTestProps = {
   data: RoomDTO
 }
 
-export const ContactCardTest = ({ data }: ContactCardTestProps) => {
+export const RoomCardTest = ({ data }: RoomCardTestProps) => {
   const automationTestActions = UseAutomationTestHookActions({});
   const appData = useAppData()
 

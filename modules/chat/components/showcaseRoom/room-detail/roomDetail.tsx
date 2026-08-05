@@ -1,5 +1,5 @@
 import { useAppData } from "@/hooks/app/useAppData";
-import { useChatStore } from "../../store/store.chat";
+import { useChatStore } from "../../../store/store.chat";
 import { MdOutlineMapsHomeWork, MdOutlineAlternateEmail, MdOutlinePhone } from "react-icons/md";
 import { RiWhatsappLine } from "react-icons/ri";
 import { RoomVariablesSection } from "./RoomVariablesSection";
@@ -8,7 +8,7 @@ type ChatAsideProps = {
 
 }
 
-export const ChatAside = ({ }: ChatAsideProps) => {
+export const RoomDetail = ({ }: ChatAsideProps) => {
   const appData = useAppData()
   const chatStore = useChatStore()
 

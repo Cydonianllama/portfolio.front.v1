@@ -6,7 +6,17 @@ import { ListMessages, SendMessage } from '@/api/chat/chat.api'
 import { ListMessagesRequestDTO } from '@/api/chat/chat.dto'
 import { toast } from 'sonner'
 
-export const useMessageActions = () => {
+export type useMessageActionsType = {
+    SendMessageAction: (data: {
+        roomId: string;
+        message: string;
+    }) => Promise<void>;
+    ListMessagesAction: (data: ListMessagesRequestDTO) => Promise<void>;
+    LoadMoreMessages: () => void;
+    ResetMessages: () => void;
+}
+
+export const useMessageActions = () : useMessageActionsType => {
   const chatStore = useChatStore()
 
   const SendMessageAction = useCallback(async (data: { roomId: string, message: string }) => {
@@ -19,10 +29,12 @@ export const useMessageActions = () => {
       })
 
       if (!req) {
+        toast.error('Error inesperado')
         return;
       }
 
       if (!req.status) {
+        toast.error(req.message || 'Error inesperado')
         return;
       }
 

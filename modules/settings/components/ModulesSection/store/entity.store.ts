@@ -3,8 +3,8 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import { entityDTO } from "../scratch_entity";
 import { ResponsePagination } from '@/types/api/utils.pagination';
+import { entityDTO } from "@/api/dataEngine/entity";
 
 interface EntityStore {
   // state: string | null,

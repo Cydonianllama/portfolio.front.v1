@@ -1,6 +1,7 @@
 import { ResponseApi } from '@/types/api/response';
 import { api } from '@/setup/axios'
 import { CreateChatRequestDTO, CreateChatResponseDTO, ListChatRequestDTO, ListChatResponseDTO, ListMessagesRequestDTO, ListMessagesResponseDTO, OpenChatRequestDTO, OpenChatResponseDTO, SendMessageRequestDTO, SendMessageResponseDTO, UpdateRoomVariablesRequestDTO, UpdateRoomVariablesResponseDTO } from './chat.dto';
+import axios from 'axios';
 
 
 export const CreateChat = async (config: CreateChatRequestDTO): Promise<ResponseApi<CreateChatResponseDTO> | null> => {
@@ -8,7 +9,12 @@ export const CreateChat = async (config: CreateChatRequestDTO): Promise<Response
     const req = await api.post(`/api/chats/`, config);
     return req.data
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -17,7 +23,12 @@ export const OpenChat = async (config: OpenChatRequestDTO): Promise<ResponseApi<
     const req = await api.post(`/api/chats/open/${config.roomId}`, config);
     return req.data
   } catch (ex) {
-    return null;
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
   }
 }
 
@@ -26,6 +37,11 @@ export const ListChats = async (data: ListChatRequestDTO): Promise<ResponseApi<L
     const req = await api.get(`/api/chats?page=${data.page}&workspaceId=${data.workspaceId}${data.filter ? `&filter=${data.filter}` : ''}`)
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null
   }
 }
@@ -35,6 +51,11 @@ export const SendMessage = async (data: SendMessageRequestDTO): Promise<Response
     const req = await api.post(`/api/chats/${data.roomId}/send-message`, data)
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null
   }
 }
@@ -44,6 +65,11 @@ export const ListMessages = async (data: ListMessagesRequestDTO): Promise<Respon
     const req = await api.get(`/api/chats/${data.roomId}/messages?page=${data.page}`)
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null
   }
 }
@@ -53,6 +79,11 @@ export const UpdateRoomVariables = async (data: UpdateRoomVariablesRequestDTO): 
     const req = await api.put(`/api/chats/${data.roomId}/variables`, { variables: data.variables })
     return req.data;
   } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      // console.log(error.response?.status); // 422
+      // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
     return null
   }
 }

@@ -3,7 +3,7 @@ import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.fil
 import { Button } from "@/components/ui/button"
 import { GoPlus } from "react-icons/go";
 import { FiInbox } from "react-icons/fi";
-import { useChatStore } from "../store/store.chat";
+import { useChatStore } from "../../store/store.chat";
 import { EmptyState } from "@/modules/automation-flows/components/states/EmptyState";
 
 // Filtro virtual "todos los chats" (no existe en BD)

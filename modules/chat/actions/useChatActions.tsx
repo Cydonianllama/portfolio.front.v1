@@ -9,9 +9,20 @@ import { GetContactRequestDTO } from '@/api/contacts/contacts.dto'
 import { GetContact } from '@/api/contacts/contacts.api'
 import { useWorkspaceSelectionStore } from '@/modules/app/stores/workspaceStore'
 
-export const useChatActions = () => {
+export type useChatActionsType = {
+  ListChatsAction: (data: ListChatRequestDTO) => Promise<void>;
+  OpenChatAction: (data: {
+    roomId: string;
+  }) => Promise<void>;
+  ListContactInformation: (data: GetContactRequestDTO) => Promise<void>;
+  UpdateRoomVariablesAction: (data: UpdateRoomVariablesRequestDTO) => Promise<void>;
+  LoadMoreChats: () => void;
+  ResetChat: () => void;
+}
+
+export const useChatActions = (): useChatActionsType => {
   const workspaceSelectionStore = useWorkspaceSelectionStore()
-  
+
   const chatStore = useChatStore()
 
   const ListChatsAction = useCallback(async (data: ListChatRequestDTO) => {
