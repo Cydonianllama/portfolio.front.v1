@@ -8,6 +8,7 @@ import { ActivityDTO } from './dto';
 
 export interface ListActivitiesRequestDTO {
   workspaceId: string
+  showAll: boolean
 }
 
 interface ListActivitiesResponseDTO {
@@ -16,7 +17,7 @@ interface ListActivitiesResponseDTO {
 
 export const ListActivities= async (data: ListActivitiesRequestDTO): Promise<ResponseApi<ListActivitiesResponseDTO> | null> => {
   try {
-    const req = await api.get(`/api/activities?workspaceId=${data.workspaceId}`);
+    const req = await api.get(`/api/activities?workspaceId=${data.workspaceId}${data.showAll ? `&showAll=true`: ''}`);
     return req.data;
   } catch (ex) {
     if (axios.isAxiosError(ex)) {

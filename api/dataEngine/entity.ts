@@ -72,6 +72,7 @@ export interface entityDTO {
   id: string;
   name: string
   workspaceId: string
+  codeIcon?: string
 }
 
 // get one
@@ -98,6 +99,7 @@ export interface GetentitysResponseDTO {
 export interface UpdateentityRequestDTO {
   name: string;
   workspaceId: string
+  codeIcon?: string
 }
 
 export interface UpdateentityResponseDTO {
@@ -118,6 +120,7 @@ export interface DeleteentityResponseDTO {
 export interface CreateentityRequestDTO {
   name: string;
   workspaceId: string;
+  codeIcon?: string;
   fields: Array<{}>
 }
 

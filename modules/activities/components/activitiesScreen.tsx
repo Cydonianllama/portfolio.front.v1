@@ -2,13 +2,14 @@
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { useAppData } from "@/hooks/app/useAppData";
-import { UseActivitiesHookActions } from "../hooks/activities.actions.hooks";
+import { UseActivitiesHookActions } from "../actions/useActivityActions";
 import { useEffect } from "react";
-import { ListActivitiesComponent } from "./ActivitiesList";
+import { ListActivitiesComponent } from "./activitiesList";
 import { Switch } from "@/components/ui/switch";
 import { Filter } from "@/modules/contacts/components/filter";
 import { ActivityEntityType } from "@/api/activity/dto";
 import { useActivities } from "../store/activitiesStore";
+import { useShowAllActivities } from "../hooks/useShowAllActivities";
 
 const entityFilterOptions = [
   { id: 'all', label: 'Todas' },
@@ -27,11 +28,13 @@ export const ActivitiesScreen = ({ }: ActivitiesScreenProps) => {
   const activitiesAction = UseActivitiesHookActions({})
   const activitiesStore = useActivities()
 
+  const { setShow, show } = useShowAllActivities()
+
   useEffect(() => {
     if (appData.workspace?.id) {
-      activitiesAction.GetActivitiesAction({ workspaceId: appData.workspace?.id })
+      activitiesAction.GetActivitiesAction({ workspaceId: appData.workspace?.id, showAll: show })
     }
-  }, [appData.workspace])
+  }, [appData.workspace, show])
 
   return (
     <>
@@ -45,17 +48,17 @@ export const ActivitiesScreen = ({ }: ActivitiesScreenProps) => {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-cente gap-2">
-              <Switch id="switch-show-all-activity" />
+              <Switch onCheckedChange={() => { setShow(!show)  }} checked={show} id="switch-show-all-activity" />
               <label htmlFor="switch-show-all-activity" className="text-xs text-muted-foreground cursor-pointer select-none">
                 Show all activity
               </label>
             </div>
-            <Filter
+            {/* <Filter
               options={entityFilterOptions}
               onSelect={(filterId, valueId) => {
                 activitiesStore.setEntityFilter(valueId as ActivityEntityType | 'all')
               }}
-            />
+            /> */}
           </div>
         </div>
         <div>

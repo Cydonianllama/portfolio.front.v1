@@ -1,7 +1,7 @@
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
-import { UpdateAutomationRequestDTO, UpdateAutomationResponseDTO } from './automation.dto';
+import { UpdateAutomationRequestDTO, UpdateAutomationResponseDTO } from './dto';
 
 export const UpdateAutomation = async (id: string, data: UpdateAutomationRequestDTO): Promise<ResponseApi<UpdateAutomationResponseDTO> | null> => {
   try {

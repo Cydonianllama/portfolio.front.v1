@@ -21,6 +21,7 @@ import { useEntityActions } from "../../actions/useEntityActions"
 import { UpdateEntitySchema, updateEntitySchema } from "../../schemas/updateEntitySchema"
 import { useEntityStore } from "../../store/entity.store"
 import { FieldSection } from "../field/fieldScreen"
+import { IconSelector } from "./IconSelector"
 
 type DialogUpdateEntityProps = {
 
@@ -42,7 +43,8 @@ export const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
   } = useForm<UpdateEntitySchema>({
     resolver: zodResolver(updateEntitySchema),
     defaultValues: {
-      name: ""
+      name: "",
+      codeIcon: "",
     }
   });
 
@@ -50,12 +52,14 @@ export const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
     if (!EntityStore.openUpdate) {
       reset({
         name: '',
+        codeIcon: '',
       });
     }
 
     if (currentOpened) {
       reset({
         name: currentOpened.name,
+        codeIcon: currentOpened.codeIcon || '',
       })
     }
 
@@ -66,6 +70,7 @@ export const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
     if (!currentOpened) return;
     await entityActions.updateEntityAction(currentOpened.id, {
       name: data.name,
+      codeIcon: data.codeIcon || '',
       workspaceId: appData.workspace?.id || ''
     })
   }
@@ -84,6 +89,13 @@ export const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
             <Input
               placeholder="name"
               {...register("name")}
+            />
+          </Field>
+          <Field>
+            <Label>Icono</Label>
+            <IconSelector
+              value={watch('codeIcon') || ''}
+              onChange={(code) => setValue('codeIcon', code, { shouldValidate: true })}
             />
           </Field>
         </FieldGroup>

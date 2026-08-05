@@ -5,6 +5,7 @@ import {
 import Link from "next/link";
 import { entityDTO } from "@/api/dataEngine/entity";
 import { LuBox } from "react-icons/lu";
+import { catalogEntityIcons } from "@/modules/settings/components/ModulesSection/catalog/icons.catalog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ModuleItemProps = {
@@ -18,7 +19,7 @@ export const ModuleItem = ({ data }: ModuleItemProps) => {
       <SidebarMenuItem >
         <SidebarMenuButton
           render={<Link href={`/modules/${data.id}`}>
-            <LuBox />
+            {catalogEntityIcons.find(el => el.code == data.codeIcon) ? catalogEntityIcons.find(el => el.code == data.codeIcon)?.Icon : <LuBox />}
             {data.name}
           </Link>}
           tooltip="Home"

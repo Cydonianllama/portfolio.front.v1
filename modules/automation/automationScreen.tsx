@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { useAppData } from "@/hooks/app/useAppData";
-import { AutomationSection } from "./scratch_withouttanstack";
+import { AutomationSection } from "./content";
 import { DialogAutomationTest } from "../automation-test/components/DialogAutomationTest";
 type AutomationScreenProps = {
 

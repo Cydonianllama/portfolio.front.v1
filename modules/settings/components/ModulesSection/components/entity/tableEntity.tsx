@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { entityDTO } from "@/api/dataEngine/entity"
+import { catalogEntityIcons } from "../../catalog/icons.catalog"
 
 import {
   useReactTable,
@@ -74,6 +75,18 @@ export const EntityTable_ = ({ handleDelete, handleEdit, list, isLoading, isErro
     //   accessorKey: "id",
     //   header: "Id"
     // },
+    {
+      id: "icon",
+      header: "Icono",
+      cell: (data) => {
+        const icon = catalogEntityIcons.find(el => el.code == data.row.original.codeIcon)
+        return (<>
+          <div className="flex items-center justify-center text-lg">
+            {icon ? icon.Icon : <span className="text-muted-foreground">-</span>}
+          </div>
+        </>)
+      }
+    },
     {
       accessorKey: "name",
       header: "Nombre"

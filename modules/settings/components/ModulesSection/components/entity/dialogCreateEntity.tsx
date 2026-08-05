@@ -12,6 +12,7 @@ import { CreationEntitySchema, creationEntitySchema } from "../../schemas/create
 import { useEntityStore } from "../../store/entity.store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { IconSelector } from "./IconSelector";
 
 type DialogCreateEntityProps = {
 
@@ -31,7 +32,8 @@ export const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
   } = useForm<CreationEntitySchema>({
     resolver: zodResolver(creationEntitySchema),
     defaultValues: {
-      name: ""
+      name: "",
+      codeIcon: "",
     }
   });
 
@@ -39,6 +41,7 @@ export const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
     if (!EntityStore.openCreate) {
       reset({
         name: '',
+        codeIcon: '',
       });
     }
   }, [EntityStore.openCreate, reset]);
@@ -46,6 +49,7 @@ export const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
   const HandleToCreate = async (data: CreationEntitySchema) => {
     await entityActions.createEntityAction({
       name: data.name,
+      codeIcon: data.codeIcon || '',
       workspaceId: appData.workspace?.id || '',
       fields: []
     })
@@ -72,6 +76,13 @@ export const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
                 {errors.name.message}
               </p>
             )}
+          </Field>
+          <Field>
+            <Label>Icono</Label>
+            <IconSelector
+              value={watch('codeIcon') || ''}
+              onChange={(code) => setValue('codeIcon', code, { shouldValidate: true })}
+            />
           </Field>
         </FieldGroup>
         <DialogFooter>

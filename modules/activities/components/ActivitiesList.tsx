@@ -10,15 +10,14 @@ import { useEffect, useMemo } from "react";
 import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { useActivities } from "../store/activitiesStore";
-import { UseActivitiesHookActions } from "../hooks/activities.actions.hooks";
+import { UseActivitiesHookActions } from "../actions/useActivityActions";
 import { ErrorStateComponent } from "@/components/Error";
 import { SpinnerListing } from "@/components/Listing";
 import { EmptyStateComponent } from "@/components/Empty";
 import { MdOutlineLabel } from "react-icons/md";
-import { ActivityItem } from "./ActivityItem";
+import { ActivityItem } from "./activityItem";
 import { ActivityDTO, ActivityEntityType } from "@/api/activity/dto";
 import { isToday, isYesterday, startOfWeek, endOfWeek } from "date-fns";
-
 
 type TimeGroup = 'today' | 'yesterday' | 'thisWeek' | 'lastWeek' | 'earlier'
 
@@ -71,22 +70,10 @@ const matchesEntityFilter = (item: ActivityDTO, filter: ActivityEntityType | 'al
 
 export const ListActivitiesComponent = () => {
 
-  const activitiesActions = UseActivitiesHookActions({})
-
   const activitiesStore = useActivities()
 
-  const appData = useAppData()
-
-  const OnInit = () => {
-    activitiesActions.GetActivitiesAction({ workspaceId: appData.workspace?.id || '' })
-  }
-
   const isError = false;
-
-  useEffect(() => {
-    if (appData.workspace) OnInit()
-  }, [appData.workspace])
-
+  
   const grouped = useMemo(() => {
     const filtered = activitiesStore.list.filter((el) => matchesEntityFilter(el, activitiesStore.entityFilter))
     return groupActivitiesByTime(filtered)

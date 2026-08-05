@@ -12,7 +12,7 @@ type IconEntityItem = {
   code: string,
 } 
 
-export const icons: Array<IconEntityItem> = [
+export const catalogEntityIcons: Array<IconEntityItem> = [
   {
     Icon: <VscFileSubmodule />,
     code: 'v1-module'
