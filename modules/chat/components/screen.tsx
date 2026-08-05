@@ -7,7 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Button } from "@/components/ui/button";
 import { IoSearch } from "react-icons/io5";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChatActions } from "../actions/useChatActions";
 import { useChatStore } from "../store/store.chat";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";

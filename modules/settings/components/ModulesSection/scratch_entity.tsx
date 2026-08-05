@@ -51,7 +51,7 @@ type EntityProps = {
 export const EntitySection = ({ }: EntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   
   const InitialList = () => {
     useEntityActions.listEntityAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
@@ -425,7 +425,7 @@ type DialogCreateEntityProps = {
 const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const {
     register,
     handleSubmit,
@@ -516,7 +516,7 @@ type DialogUpdateEntityProps = {
 const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const currentOpened = EntityStore.list.find(el => EntityStore.currentElementSelected == el.id)
 
   const {
@@ -612,7 +612,7 @@ type DialogConfirmDelete = {
 const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const HandleToDelete = () => {
     if (!EntityStore.currentElementSelected) return;
     useEntityActions.deleteEntityAction({ id: EntityStore.currentElementSelected || '', workspaceId: useAppData.workspace?.id || '' })
@@ -647,7 +647,7 @@ const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
 
 import { z } from "zod/v3";
 import { entityDTO } from "@/api/dataEngine/entity"
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { UseEntityActions } from "./hooks/hook.actions.entity"
 
 // creation schema

@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { NodeToCreateConfiguration } from "./config";
 import { useConversationalFlowGenActions } from "../../hooks/action.hooks.flow";
 import { automationFlowGenStore } from "../../store/automation.flow.store";
@@ -9,7 +9,7 @@ type SelectorItemProps = {
 }
 
 export const SelectorItem = ({ data }: SelectorItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const flowActions = useConversationalFlowGenActions({})
   const flowStore = automationFlowGenStore()

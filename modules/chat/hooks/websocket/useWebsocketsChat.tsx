@@ -1,5 +1,5 @@
 import { useChatStore } from "@/modules/chat/store/store.chat";
-import { useSocket } from "../useSocket";
+import { useSocket } from "../../../../hooks/useSocket";
 import { useEffect } from "react";
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
 

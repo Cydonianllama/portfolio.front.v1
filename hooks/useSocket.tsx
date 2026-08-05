@@ -3,12 +3,12 @@ import { socket } from "@/setup/socket";
 import { useChatStore } from "@/modules/chat/store/store.chat";
 import { UseEventsHookActions } from "@/liveapp/hooksEventsAction";
 import { EVENT_CHAT_NEW_MESSAGE, EVENT_NEW_USER_NOTIFICATION, EVENT_NEW_WORKSPACE_NOTIFICATION } from "@/liveapp/constants";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 export function useSocket() {
   const chatStore = useChatStore()
   const liveEvents = UseEventsHookActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   useEffect(() => {
     console.log("useSocket hook called, socket connected:", socket.connected);

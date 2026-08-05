@@ -1,5 +1,5 @@
 import { ActivityActionType, ActivityDTO, ActivityEntityType } from "@/api/activity/dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { VscDebugDisconnect } from "react-icons/vsc";
 
 import {
@@ -226,7 +226,7 @@ const TextComponent = ({ data }: TextComponentProps) => {
 }
 
 export const ActivityItem = ({ data, isLast }: ActivityItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const item = MessageLine(data)
 

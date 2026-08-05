@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react'
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { TfiClose } from "react-icons/tfi";
 import { Button } from '@/components/ui/button';
 import { automationFlowGenStore } from '../store/automation.flow.store';
@@ -9,7 +9,7 @@ type BaseEditorProps = {
 }
 
 export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

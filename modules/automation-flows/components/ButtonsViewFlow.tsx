@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { TiFlowMerge } from "react-icons/ti";
@@ -10,7 +10,7 @@ type ButtonsViewFlowProps = {
 }
 
 export const ButtonsViewFlow = ({ }: ButtonsViewFlowProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

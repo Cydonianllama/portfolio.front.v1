@@ -1,6 +1,6 @@
 'use client'
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { useOnboarding } from "./store";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner"
@@ -26,7 +26,7 @@ const fade = {
 };
 
 export const Finalizing = ({ }: FinalizingProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const onboarding = useOnboarding()
 
   return (

@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { RiArrowGoForwardFill } from "react-icons/ri";
@@ -9,7 +9,7 @@ type ButtonsMementoProps = {
 }
 
 export const ButtonsMemento = ({ }: ButtonsMementoProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

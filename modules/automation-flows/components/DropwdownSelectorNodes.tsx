@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 import {
   DropdownMenu,
@@ -15,7 +15,7 @@ type DropdownSelectorNodesProps = {
 }
 
 export const DropdownSelectorNodes = ({  }: DropdownSelectorNodesProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

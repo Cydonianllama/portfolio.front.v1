@@ -10,7 +10,7 @@
 // #region Components
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -50,7 +50,7 @@ type AutomationProps = {
 export const AutomationSection = ({ }: AutomationProps) => {
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const automationTestStore = useAutomationTest()
 
   const InitialList = () => {
@@ -563,7 +563,7 @@ type DialogCreateAutomationProps = {
 }
 
 const DialogCreateAutomation = ({ }: DialogCreateAutomationProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})

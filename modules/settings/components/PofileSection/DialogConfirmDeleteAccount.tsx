@@ -12,7 +12,7 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { useProfileSettings } from "./profileStore"
 import { UseUserSettingsHookActions } from "../_hooks/hook.actions.user"
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type DialogConfirmDeleteAccountProps = {
@@ -20,7 +20,7 @@ type DialogConfirmDeleteAccountProps = {
 }
 
 export const DialogConfirmDeleteAccount = ({ }: DialogConfirmDeleteAccountProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const profileActions = UseUserSettingsHookActions({})
 

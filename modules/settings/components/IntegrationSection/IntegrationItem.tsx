@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import {
   Item,
@@ -22,7 +22,7 @@ type IntegrationItemProps = {
 }
 
 export const IntegrationItem = ({ data }: IntegrationItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const whatsappStore = useWhatsappIntegration()
   const telegramStore = useTelegramIntegrations()

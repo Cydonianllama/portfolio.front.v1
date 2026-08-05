@@ -1,5 +1,5 @@
 import { IntegrationDTO } from "@/api/integration/integration.dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { UseTelgramIntegrationsHookActions } from "./hooks/hook.telegram.actions";
 import { useTelegramIntegrations } from "./store/store";
@@ -10,7 +10,7 @@ type TelegramItemProps = {
 }
 
 export const TelegramItem = ({ data }: TelegramItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const telegramActions = UseTelgramIntegrationsHookActions({})
   const store = useTelegramIntegrations()
 

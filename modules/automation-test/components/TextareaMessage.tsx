@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import TextareaAutosize from "react-textarea-autosize"
 import {
   InputGroup,
@@ -15,7 +15,7 @@ type TextareaMessageProps = {
 }
 
 export const TextareaMessage = ({ }: TextareaMessageProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const automationTestActions = UseAutomationTestHookActions({})
   const automationTestStore = useAutomationTest()
 

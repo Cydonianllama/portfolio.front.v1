@@ -1,12 +1,12 @@
 import { MessageDTO } from "@/api/chat/chat.dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type MessagesCardProps = {
   data: MessageDTO
 }
 
 export const MessagesCard = ({ data }: MessagesCardProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

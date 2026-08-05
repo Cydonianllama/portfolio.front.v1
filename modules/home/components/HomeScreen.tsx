@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/card"
 
 import { BookOpenIcon, LinkIcon } from 'lucide-react'
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { UXCardSteptVariantDefault } from "./CardStepVariantDefault/UXCardSteptVariantDefault"
 import { stepsUX } from "./configurations/data"
 
@@ -34,7 +34,7 @@ type HomeScreenProps = {
 }
 
 export const HomeScreen = ({ }: HomeScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

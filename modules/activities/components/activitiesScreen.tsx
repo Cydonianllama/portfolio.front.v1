@@ -1,7 +1,7 @@
 'use client'
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { UseActivitiesHookActions } from "../hooks/activities.actions.hooks";
 import { useEffect } from "react";
 import { ListActivitiesComponent } from "./ActivitiesList";
@@ -23,7 +23,7 @@ type ActivitiesScreenProps = {
 }
 
 export const ActivitiesScreen = ({ }: ActivitiesScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const activitiesAction = UseActivitiesHookActions({})
   const activitiesStore = useActivities()
 

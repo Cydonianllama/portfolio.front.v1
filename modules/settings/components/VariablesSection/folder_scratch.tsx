@@ -11,7 +11,7 @@
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -49,7 +49,7 @@ type FolderProps = {
 }
 
 export const FolderSection = ({ }: FolderProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 
@@ -498,7 +498,7 @@ type DialogCreateFolderProps = {
 }
 
 const DialogCreateFolder = ({ }: DialogCreateFolderProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 
@@ -590,7 +590,7 @@ type DialogUpdateFolderProps = {
 }
 
 const DialogUpdateFolder = ({ }: DialogUpdateFolderProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 

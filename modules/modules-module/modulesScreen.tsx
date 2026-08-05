@@ -5,7 +5,7 @@ import { DataEngine } from '@erick/testcompos'
 import type { DataEngineConfiguration, EntityPresenterField, RecordPresenter, ViewPresenterItem } from '@erick/testcompos'
 
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ModulesScreenProps = {
   moduleId: string
@@ -16,7 +16,7 @@ const ID_FIELD_FULLNAE = '312e213'
 const ID_FIELD_FILE_ORDER = '8aysbd9as'
 
 export const ModulesScreen = ({ moduleId }: ModulesScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const views: ViewPresenterItem[] = [
     {
       configuration: {

@@ -2,7 +2,7 @@
 import { useCallback } from "react"
 
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
-import { useConversationFiltersActions } from "../../modules/chat/actions/useConversationFilters"
+import { useConversationFiltersActions } from "./useConversationFilters"
 import { useChatActions } from "@/modules/chat/actions/useChatActions"
 
 export const UseScreenChatAction = () => {

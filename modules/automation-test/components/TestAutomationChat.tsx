@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { useEffect } from "react";
 import { UseAutomationTestHookActions } from "../hooks/hook.action.automationtest";
 import { useAutomationTest } from "../store/automation.test.store";
@@ -14,7 +14,7 @@ type TestAutomationChatProps = {
 }
 
 export const TestAutomationChat = ({ }: TestAutomationChatProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const testAutomationActions = UseAutomationTestHookActions({})
   const automationTestStore = useAutomationTest()
 

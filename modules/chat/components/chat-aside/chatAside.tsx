@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { useChatStore } from "../../store/store.chat";
 import { MdOutlineMapsHomeWork, MdOutlineAlternateEmail, MdOutlinePhone } from "react-icons/md";
 import { RiWhatsappLine } from "react-icons/ri";
@@ -9,7 +9,7 @@ type ChatAsideProps = {
 }
 
 export const ChatAside = ({ }: ChatAsideProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const chatStore = useChatStore()
 
   return (

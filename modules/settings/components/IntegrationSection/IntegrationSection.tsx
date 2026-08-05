@@ -11,7 +11,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { api } from '@/setup/axios'
 import { UseIntegrationHookActions } from "./hook.actions.integration"
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { useWhatsappIntegration } from "./Whatsapp/store/store"
 import { DialogWhatsappIntegration } from "./Whatsapp/DialogManageWhatsapp"
 import { useTelegramIntegrations } from "./Telegram/store/store"
@@ -21,7 +21,7 @@ import { IntegrationItem } from "./IntegrationItem"
 export const IntegrationSection = () => {
   const whatsappStore = useWhatsappIntegration()
   const telegramStore = useTelegramIntegrations()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const integrationActions = UseIntegrationHookActions({})
 
   const [integrationsJson, setIntegrationsJson] = useState<Array<{ code: string, title: string }>>([])

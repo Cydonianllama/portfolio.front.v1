@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { GetVariables } from "@/api/variable/variable.api";
 import { VariableDTO } from "@/api/variable/variable.dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { systemVariables, variableType } from "@erick/conversationalflow";
 
 //
@@ -40,7 +40,7 @@ export const RoomVariableOptions: Array<VariableOption> = [
 ]
 
 export const useVariablesList = () => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const workspaceId = useAppData.workspace?.id || ''
 
   const [variables, setVariables] = useState<Array<VariableDTO>>([])

@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { CatalogTrigger, TriggersCatalog } from "../../catalogs/catalogTriggers";
 import { AddTriggerOption } from "./addTriggerOption";
 import { TriggerWordConfigForm } from "./TriggerWordConfigForm";
@@ -11,7 +11,7 @@ type AddTriggerOptionsProps = {
 }
 
 export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOptionsProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const triggerActions = useTriggerActions()
 

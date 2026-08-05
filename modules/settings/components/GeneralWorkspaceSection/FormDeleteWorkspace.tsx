@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { DeleteWorkspace } from "@/api/workspace/workspace.api"
 import { toast } from "sonner"
 import { useGeneralWorkspaceSection } from "./store"
@@ -21,7 +21,7 @@ type FormConfirmDeleteWorkspaceProps = {
 }
 
 export const FormConfirmDeleteWorkspace = ({ }: FormConfirmDeleteWorkspaceProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const settingsStore = useSettingsStore()
   const generalWorkspaceStore = useGeneralWorkspaceSection()
   const workspaceSelectionStore = useWorkspaceSelectionStore()

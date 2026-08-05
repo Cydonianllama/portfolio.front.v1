@@ -3,13 +3,13 @@
 import { PropsWithChildren, useEffect } from 'react'
 import { useChatStore } from '@/modules/chat/store/store.chat';
 import { useSocket } from '@/hooks/useSocket';
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { JOIN_CHAT_ROOM, JOIN_GENERAL_ROOM, JOIN_WORKSPACE_ROOM } from './constants';
 
 export const LiveAppProvider = ({ children }: PropsWithChildren) => {
   const socket = useSocket();
   const chatStore = useChatStore()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   //
   // Cuando cambia room hacemos conexion

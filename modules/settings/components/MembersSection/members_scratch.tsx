@@ -10,7 +10,7 @@
 // #region Components
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -56,7 +56,7 @@ type MembersProps = {
 }
 
 export const MembersSection_ = ({ }: MembersProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
@@ -463,7 +463,7 @@ type DialogCreateMembersProps = {
 }
 
 const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
@@ -580,7 +580,7 @@ type DialogUpdateMembersProps = {
 }
 
 const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 

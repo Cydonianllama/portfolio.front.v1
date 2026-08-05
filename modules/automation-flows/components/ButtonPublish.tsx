@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
@@ -8,7 +8,7 @@ type ButtonPublishProps = {
 }
 
 export const ButtonPublish = ({  }: ButtonPublishProps) => {
-  // const useAppData = UseAppData()
+  // const useAppData = useAppData()
 
   const information = automationFlowGenStore(state => state.information)
 

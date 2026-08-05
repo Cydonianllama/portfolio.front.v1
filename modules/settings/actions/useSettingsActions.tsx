@@ -3,13 +3,13 @@ import { UpdateWorkspace } from "@/api/workspace/workspace.api"
 import { UpdateWorkspaceRequestDTO } from "@/api/workspace/workspace.dto"
 import { FieldToArray } from "@/types/types"
 import { useCallback } from "react"
-import { UseAppData } from "../app/useAppData"
+import { useAppData } from "../../../hooks/app/useAppData"
 import { UpdateUser } from "@/api/user/user.api"
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
 import { useAuthCydoStore } from "@/modules/auth/store/store"
 
-export const UseSettingsActions = () => {
-  const { user, workspace } = UseAppData()
+export const useSettingsActions = () => {
+  const { user, workspace } = useAppData()
   const workspaceSelection = useWorkspaceSelectionStore()
   const authStore = useAuthCydoStore()
 

@@ -5,7 +5,7 @@ import { useAuthCydoStore } from "@/modules/auth/store/store"
 // Cuando requiera la data compartida desde la aplicación
 //
 
-export const UseAppData = () => {
+export const useAppData = () => {
   const authStore = useAuthCydoStore()
   const workspaceSelectionStore = useWorkspaceSelectionStore()
 

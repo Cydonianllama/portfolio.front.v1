@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Skeleton } from "@/components/ui/skeleton"
 
 
@@ -8,7 +8,7 @@ type ContentLoadingProps = {
 }
 
 export const ContentLoading = ({ }: ContentLoadingProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

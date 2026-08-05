@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { InboxIcon } from "lucide-react"
 import {
   endOfMonth,
@@ -33,7 +33,7 @@ type NotificationItemProps = {
 }
 
 export const NotificationItem = ({ data }: NotificationItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const info = MessageLine(data)
 
   return (

@@ -2,7 +2,7 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { useWhatsappIntegration } from "../store/store"
 import { ListIntegrations } from "@/api/integration/integration.api"
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { DeleteIntegrationItem, DeleteIntegrationItemRequestDTO } from "@/api/integration/delete.integration"
 import { IntegrationCodes } from "@/configs/integration.codes"
 
@@ -13,7 +13,7 @@ type WhatsappIntegrationHookActionsProps = {
 }
 
 export const UseWhatsappIntegrationHookActions = ({ }: WhatsappIntegrationHookActionsProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const store = useWhatsappIntegration()
 
 

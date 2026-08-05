@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { UseWhatsappIntegrationHookActions } from "./hooks/hooks.actions.whatsapp.integration";
 import { IntegrationDTO } from "@/api/integration/integration.dto";
@@ -11,7 +11,7 @@ type ItemWhatsappIntegrationProps = {
 }
 
 export const ItemWhatsappIntegration = ({ data }: ItemWhatsappIntegrationProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const whatsappIntegrationActions = UseWhatsappIntegrationHookActions({})
   const store = useWhatsappIntegration()
 

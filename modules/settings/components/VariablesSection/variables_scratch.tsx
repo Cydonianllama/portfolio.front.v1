@@ -11,7 +11,7 @@
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -51,7 +51,7 @@ type VariableProps = {
 export const VariableSection = ({ }: VariableProps) => {
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const InitialList = () => {
     useVariablesActions.listVariablesAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
@@ -491,7 +491,7 @@ type DialogCreateVariableProps = {
 }
 
 const DialogCreateVariable = ({ }: DialogCreateVariableProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
 
@@ -582,7 +582,7 @@ type DialogUpdateVariableProps = {
 }
 
 const DialogUpdateVariable = ({ }: DialogUpdateVariableProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
 

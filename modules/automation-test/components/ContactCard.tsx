@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { UseAutomationTestHookActions } from "../hooks/hook.action.automationtest";
 import { RoomDTO } from "@/api/chat/chat.dto";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -8,7 +8,7 @@ type ContactCardTestProps = {
 
 export const ContactCardTest = ({ data }: ContactCardTestProps) => {
   const automationTestActions = UseAutomationTestHookActions({});
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const HandleToClick = () => {
     automationTestActions.OpenChatAction(data.id || '')

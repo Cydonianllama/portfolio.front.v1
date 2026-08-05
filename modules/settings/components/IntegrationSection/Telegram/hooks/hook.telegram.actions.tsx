@@ -1,5 +1,5 @@
 import { ListIntegrations } from "@/api/integration/integration.api"
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { useCallback } from "react"
 import { toast } from "sonner"
 import { useTelegramIntegrations } from "../store/store"
@@ -13,7 +13,7 @@ type TelgramIntegrationsHookActionsProps = {
 
 export const UseTelgramIntegrationsHookActions = ({ }: TelgramIntegrationsHookActionsProps) => {
   const store = useTelegramIntegrations()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const GetIntegrationsTelegramAction = useCallback(async () => {
 

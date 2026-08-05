@@ -1,6 +1,6 @@
 'use client'
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { InviteCard } from "./InviteCard";
 import { GetInvitationInformation } from "./service.getinvitationinfo";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ type InviteScreenProps = {
 }
 
 export const InviteScreen = ({ invitationId }: InviteScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const invitationStore = useInvite()
   const router = useRouter()
 

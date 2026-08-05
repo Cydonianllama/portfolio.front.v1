@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { GetTags } from "@/api/tags/tags.api";
 import { TagDTO } from "@/api/tags/tags.dto";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 export const useTagsList = () => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const workspaceId = useAppData.workspace?.id || ''
 
   const [tags, setTags] = useState<Array<TagDTO>>([])

@@ -11,16 +11,16 @@ import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import { FieldSettingConfigurationInput } from "../FieldSettingsConfigurationInput"
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
-import { UseAppData } from "@/hooks/app/useAppData"
-import { UseSettingsActions } from "@/hooks/settings/useSettingsActions"
+import { useAppData } from "@/hooks/app/useAppData"
+import { useSettingsActions } from "@/modules/settings/actions/useSettingsActions"
 import { Button } from "@/components/ui/button"
 import { useGeneralWorkspaceSection } from "./store"
 import { DialogDeleteWorkspace } from "./DialogDeleteWorkspace"
 
 export const GeneralWorkspaceSection = () => {
-  const { workspace } = UseAppData()
+  const { workspace } = useAppData()
   const generalWorkspaceStore = useGeneralWorkspaceSection()
-  const settingsActions = UseSettingsActions();
+  const settingsActions = useSettingsActions();
   return <>
     <div className="h-full flex-1 flex flex-col">
       <div className="flex-1">

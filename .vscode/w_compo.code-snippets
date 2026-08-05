@@ -1,15 +1,15 @@
 {
-  "initial Component with (UseAppData)": {
+  "initial Component with (useAppData)": {
     "prefix": "w_compo",
     "body": [
-      "import { UseAppData } from \"@/hooks/app/useAppData\";",
+      "import { useAppData } from \"@/hooks/app/useAppData\";",
       "// eslint-disable-next-line @typescript-eslint/no-empty-object-type",
       "type ${1:${TM_FILENAME_BASE}}Props = {",
       "  $2",
       "}",
       "",
       "export const ${1:${TM_FILENAME_BASE}} = ({ $3 }: ${1:${TM_FILENAME_BASE}}Props) => {",
-      "  const useAppData = UseAppData()",
+      "  const useAppData = useAppData()",
       "",
       "  return (",
       "    <>",
@@ -18,7 +18,7 @@
       "  )",
       "}"
     ],
-    "description": "React component with UseAppData"
+    "description": "React component with useAppData"
   },
   "List - block structure": {
     "prefix": "w_blocklist",
@@ -32,7 +32,7 @@
       "import { ResponseApi } from '@/types/api/response';",
       "import { ResponsePagination } from \"@/types/api/utils.pagination\"",
       "import { useEffect } from \"react\";",
-      "import { UseAppData } from \"@/hooks/app/useAppData\";",
+      "import { useAppData } from \"@/hooks/app/useAppData\";",
       "import { toast } from \"sonner\";",
       "",
       "// -------- a cambiar",
@@ -45,7 +45,7 @@
       "",
       "  const store = use${3:example}()",
       "",
-      "  const useAppData = UseAppData()",
+      "  const useAppData = useAppData()",
       "",
       "  const ListItems = async () => {",
       "    try {",

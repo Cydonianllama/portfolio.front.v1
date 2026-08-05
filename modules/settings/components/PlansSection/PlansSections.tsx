@@ -7,7 +7,7 @@ import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { useEffect } from "react";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { GetPlans } from "./service.getplans";
 import { Button } from "@/components/ui/button"
@@ -30,7 +30,7 @@ export const PlansSection = () => {
 
   const store = usePlans()
 
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const ListItems = async () => {
     try {

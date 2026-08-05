@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { StepItem } from "./StepItem";
 import { StepsInitItem } from "./steps.init";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -7,7 +7,7 @@ type UXCardSteptVariantDefaultProps = {
 }
 
 export const UXCardSteptVariantDefault = ({ list }: UXCardSteptVariantDefaultProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

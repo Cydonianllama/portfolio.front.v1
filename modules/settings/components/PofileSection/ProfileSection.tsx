@@ -10,15 +10,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react";
 import { FieldSettingConfigurationInput } from "../FieldSettingsConfigurationInput";
-import { UseAppData } from "@/hooks/app/useAppData";
-import { UseSettingsActions } from "@/hooks/settings/useSettingsActions";
+import { useAppData } from "@/hooks/app/useAppData";
+import { useSettingsActions } from "@/modules/settings/actions/useSettingsActions";
 import { Button } from "@/components/ui/button"
 import { useProfileSettings } from "./profileStore";
 import { DialogConfirmDeleteAccount } from "./DialogConfirmDeleteAccount";
 
 export const ProfileSection = () => {
-  const { user } = UseAppData()
-  const settingsActions = UseSettingsActions();
+  const { user } = useAppData()
+  const settingsActions = useSettingsActions();
   const profileSettingsStore = useProfileSettings()
 
   return (<>

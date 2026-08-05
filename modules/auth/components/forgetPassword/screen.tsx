@@ -1,5 +1,5 @@
 'use client'
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { FormChangePass } from "./FormChangePass";
 import { useEffect } from "react";
 import { useForgetPass } from "./store";
@@ -10,7 +10,7 @@ type ForgetPasswordScreenProps = {
 }
 
 export const ForgetPasswordScreen = ({ validationCode }: ForgetPasswordScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const forgetPasswordStore = useForgetPass()
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { EditorsConfiguration, NodeTypeValue } from "../_configs";
 import { automationFlowGenStore } from "../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -8,7 +8,7 @@ type EditorFlowProps = {
 }
 
 export const EditorFlow = ({ }: EditorFlowProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const automationFlowStore = automationFlowGenStore()
 
   const currentNode = automationFlowStore?.information?.nodeList?.find(el => el.id == automationFlowStore.currentNodeIdEditing)

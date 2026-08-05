@@ -1,5 +1,5 @@
 
-// import { UseAppData } from "@/hooks/app/useAppData";
+// import { useAppData } from "@/hooks/app/useAppData";
 import { ButtonEdit } from "./ButtonEdit";
 import { ButtonPublish } from "./ButtonPublish";
 // import { ButtonsViewFlow } from "./ButtonsViewFlow";
@@ -30,7 +30,7 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
 
   const { showEditButton, disabledSaveButton, showPublishButton, showSaveButton, canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
 
-  // const useAppData = UseAppData()
+  // const useAppData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

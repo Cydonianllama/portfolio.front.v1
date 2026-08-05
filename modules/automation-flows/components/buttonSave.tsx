@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -8,7 +8,7 @@ type ButtonSaveProps = {
 }
 
 export const ButtonSave = ({ disabled }: ButtonSaveProps) => {
-  // const useAppData = UseAppData()
+  // const useAppData = useAppData()
 
   const conversarionalFlowActions = useConversationalFlowGenActions({})
 const information = automationFlowGenStore(state => state.information)

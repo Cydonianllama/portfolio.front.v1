@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import {
   Card,
   CardContent,
@@ -38,7 +38,7 @@ type invitationCommands = 'accept' | 'decline'
 
 export const InviteCard = ({ }: InviteCardProps) => {
   const router = useRouter()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const invitationStore = useInvite()
 
   const HandleCommandActioned = async (command: invitationCommands) => {

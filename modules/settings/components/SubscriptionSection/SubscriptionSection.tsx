@@ -4,10 +4,10 @@ import {
   ShowcaseSubscription
 } from "./showcaseSubscription"
 import { UseSubscriptionHookActions } from "./hooks.action.subscriptions"
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 export const SubscriptionSection = () => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const subscipritonActions = UseSubscriptionHookActions({})
 
   const OnInit = async () => {

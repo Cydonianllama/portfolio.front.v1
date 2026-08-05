@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { SelectorItem } from "./SelectorItem";
 import { ListSelectors } from "./config";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ type SideSelectorNodeProps = {
 }
 
 export const SideSelectorNode = ({ }: SideSelectorNodeProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

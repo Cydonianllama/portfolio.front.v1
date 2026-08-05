@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import {
   Card,
   CardContent,
@@ -20,7 +20,7 @@ type showcaseSubscriptionProps = {
 }
 
 export const ShowcaseSubscription = ({ }: showcaseSubscriptionProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   return (
     <>
       <Card>

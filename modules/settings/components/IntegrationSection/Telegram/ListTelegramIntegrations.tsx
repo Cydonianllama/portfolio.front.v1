@@ -7,7 +7,7 @@ import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { useEffect } from "react";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { useTelegramIntegrations } from "./store/store";
 import { UseTelgramIntegrationsHookActions } from "./hooks/hook.telegram.actions";
@@ -21,7 +21,7 @@ import { TelegramItem } from "./TelegramItem";
 
 export const ListTelegramIntegrations = () => {
   const store = useTelegramIntegrations()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const telegramActions = UseTelgramIntegrationsHookActions({})
 
 

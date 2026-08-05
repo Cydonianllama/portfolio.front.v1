@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { TableInvoices } from "./TableInvoices";
 
 type ShowcaseInvoicesProps = {
@@ -7,7 +7,7 @@ type ShowcaseInvoicesProps = {
 }
 
 export const ShowcaseInvoices = ({ }: ShowcaseInvoicesProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   return (
     <>
       <div className="flex justify-between items-center py-2">

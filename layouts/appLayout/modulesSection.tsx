@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 
 import {
   Sidebar,
@@ -20,7 +20,7 @@ type ModulesSectionProps = {
 }
 
 export const ModulesSection = ({ }: ModulesSectionProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const asideStore = useAside()
 
   return (

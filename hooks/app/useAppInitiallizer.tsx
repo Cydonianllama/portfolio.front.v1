@@ -1,8 +1,8 @@
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
 import { useEffect } from "react"
-import { UseScreenChatAction } from "../chat/useScreenChatActions"
-import { UserBreadCrumb } from "../layout/useBreadcrumb"
+import { UseScreenChatAction } from "../../modules/chat/actions/useScreenChatActions"
 import { useSocket } from "../useSocket"
+import { useBreadCrumb } from "@/layouts/appLayout/hooks/useBreadcrumb"
 
 export type StaticModulesApp = 'chat' | 'contacts' | 'home'
 
@@ -16,7 +16,7 @@ type UseAppInitializerPops = {
 
 export const UseAppInitializer = ({ moduleName } : UseAppInitializerPops) => {
 
-  UserBreadCrumb({ module: moduleName })
+  useBreadCrumb({ module: moduleName })
 
   const workspaceSelector = useWorkspaceSelectionStore()
   

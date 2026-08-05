@@ -1,12 +1,12 @@
 import { useEffect } from "react"
-import { StaticModulesApp } from "../app/useAppInitiallizer"
 import { useAppStore } from "@/modules/app/stores/appStore"
+import { StaticModulesApp } from "@/hooks/app/useAppInitiallizer"
 
 type UserBreadCrumbProps = {
   module: StaticModulesApp
 }
 
-export const UserBreadCrumb = ({ module } : UserBreadCrumbProps) => { 
+export const useBreadCrumb = ({ module } : UserBreadCrumbProps) => { 
 
   const appStore = useAppStore()
 

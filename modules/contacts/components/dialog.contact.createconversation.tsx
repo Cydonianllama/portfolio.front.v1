@@ -47,7 +47,7 @@ import { PiTelegramLogo } from "react-icons/pi"
 import { IntegrationDTO } from "@/api/integration/integration.dto"
 import { error } from "console"
 import { ContactDTO } from "@/api/contacts/contacts.dto"
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { IntegrationCodes } from "@/configs/integration.codes"
 
 //
@@ -61,7 +61,7 @@ export interface DialogCreateConversationContactConfig {
 }
 
 export const DialogCreateConversationContact = (config: DialogCreateConversationContactConfig) => {
-const useAppData = UseAppData()
+const useAppData = useAppData()
   const {
     register,
     handleSubmit,

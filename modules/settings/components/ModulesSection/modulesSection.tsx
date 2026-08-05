@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { EntitySection } from "./scratch_entity";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ModulesSectionProps = {
@@ -6,7 +6,7 @@ type ModulesSectionProps = {
 }
 
 export const ModulesSection = ({  }: ModulesSectionProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

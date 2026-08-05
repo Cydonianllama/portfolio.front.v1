@@ -7,7 +7,7 @@ import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { useEffect } from "react";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { UseManageConversationsHookActions } from "../../hooks/hook.actions.manage.conversations";
 import { useWatchConversations } from "../../store/store.watch.conversations";
@@ -23,7 +23,7 @@ export const ListConversations = () => {
   const manageConversationsActions = UseManageConversationsHookActions({})
   const watchConversationStore =  useWatchConversations();
 
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const ListItems = async () => {
     manageConversationsActions.GetContactConversationsAction({ contactId: watchConversationStore.contactOpened || '' })

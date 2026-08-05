@@ -3,7 +3,7 @@
 //
 
 import { useEffect } from "react";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { ListIntegrations } from "@/api/integration/integration.api";
 import { useWhatsappIntegration } from "./store/store";
@@ -19,7 +19,7 @@ import { ItemWhatsappIntegration } from "./ItemWhatsappIntegration";
 export const ListWhatsappIntegrations = () => {
   const store = useWhatsappIntegration()
 
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const whatsappIntegrationActions = UseWhatsappIntegrationHookActions({})
 

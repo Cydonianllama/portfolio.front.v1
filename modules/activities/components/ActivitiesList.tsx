@@ -7,7 +7,7 @@ import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { useEffect, useMemo } from "react";
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { toast } from "sonner";
 import { useActivities } from "../store/activitiesStore";
 import { UseActivitiesHookActions } from "../hooks/activities.actions.hooks";
@@ -75,7 +75,7 @@ export const ListActivitiesComponent = () => {
 
   const activitiesStore = useActivities()
 
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const OnInit = () => {
     activitiesActions.GetActivitiesAction({ workspaceId: useAppData.workspace?.id || '' })

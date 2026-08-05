@@ -1,6 +1,6 @@
 'use client'
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { SignupForm } from "./register-form";
 import { RegisterSchema } from "../../schemas/register-form.schema";
 import { RegisterUser } from "../../services/auth.service";
@@ -17,7 +17,7 @@ type RegisterScreenProps = {
 
 export const RegisterScreen = ({ }: RegisterScreenProps) => {
   const inviteStore = useInvite()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const router = useRouter()
   const authStore = useAuthCydoStore()
 

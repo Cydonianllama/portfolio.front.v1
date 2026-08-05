@@ -10,7 +10,7 @@
 // #region Components
 //___________ components
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -48,7 +48,7 @@ type TagProps = {
 }
 
 export const TagSection = ({ }: TagProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
@@ -478,7 +478,7 @@ const DialogCreateTag = ({ }: DialogCreateTagProps) => {
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   const {
     register,
@@ -567,7 +567,7 @@ type DialogUpdateTagProps = {
 }
 
 const DialogUpdateTag = ({ }: DialogUpdateTagProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
@@ -663,7 +663,7 @@ type DialogConfirmDelete = {
 }
 
 const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 

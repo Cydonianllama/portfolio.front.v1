@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { IoChevronBack } from "react-icons/io5";
 import Link from 'next/link'
@@ -8,7 +8,7 @@ type ButtonBackProps = {
 }
 
 export const ButtonBack = ({  }: ButtonBackProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

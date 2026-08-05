@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { StepsInitItem } from "./steps.init";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type StepItemProps = {
@@ -7,7 +7,7 @@ type StepItemProps = {
 }
 
 export const StepItem = ({ data, step }: StepItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   return (
     <>
       <div>

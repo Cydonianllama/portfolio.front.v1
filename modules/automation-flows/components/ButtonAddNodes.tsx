@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Button } from "@/components/ui/button"
 import { FaPlus } from "react-icons/fa";
 import { automationFlowGenStore } from "../store/automation.flow.store";
@@ -9,7 +9,7 @@ type ButtonAddNodesProps = {
 }
 
 export const ButtonAddNodes = ({ }: ButtonAddNodesProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const automationStore = automationFlowGenStore()
 
   return (

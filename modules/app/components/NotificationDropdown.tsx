@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import {
   Popover,
   PopoverContent,
@@ -19,7 +19,7 @@ type NotificationDropdownProps = {
 export const NotificationDropdown = ({ }: NotificationDropdownProps) => {
   const notificationHooksAction = UseNotificationHookActions({})
   const notificationStore = useNotification()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   useEffect(() => {
     if (useAppData.user?.id) {

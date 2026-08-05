@@ -24,13 +24,13 @@ import Cookies from "js-cookie";
 import { Spinner } from "@/components/ui/spinner"
 import { useRouter } from "next/navigation";
 import { sleep } from "@/backoffice/automation/utils/sleep"
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { VerifyAccount } from "../../services/auth.service"
 import { useInvite } from "@/modules/invite/store";
 
 export const OPTSection = () => {
   const inviteStore = useInvite()
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const router = useRouter()
 
   const [verifying, setVerifying] = useState(false)

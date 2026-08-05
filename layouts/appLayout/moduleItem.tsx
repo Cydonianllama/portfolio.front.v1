@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import {
   Sidebar,
   SidebarContent,
@@ -20,7 +20,7 @@ type ModuleItemProps = {
 }
 
 export const ModuleItem = ({ data }: ModuleItemProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
 
   return (
     <>

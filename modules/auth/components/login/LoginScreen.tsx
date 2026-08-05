@@ -1,6 +1,6 @@
 'use client'
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { LoginForm } from "./login-form";
 import { DialogForgetPassword } from "./DialogForgetPassword";
 import { RequestForgetPasswordSchema } from "./FormForgetPassword";
@@ -14,7 +14,7 @@ type LoginScreenProps = {
 }
 
 export const LoginScreen = ({ }: LoginScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const loginStore = useLogin()
 
   const ForgetPasswordAction = async (data: RequestForgetPasswordSchema) => {

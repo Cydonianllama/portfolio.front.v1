@@ -5,7 +5,7 @@
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { EntityFieldType } from '@erick/dataengine';
 
 

@@ -1,4 +1,4 @@
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import {
   Sidebar,
   SidebarContent,
@@ -43,7 +43,7 @@ type SuscrciptionCardProps = {
 }
 
 export const SuscrciptionCard = ({ }: SuscrciptionCardProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const {
     state,
     open,

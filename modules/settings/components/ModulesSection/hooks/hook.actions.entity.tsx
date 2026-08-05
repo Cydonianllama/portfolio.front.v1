@@ -5,7 +5,7 @@
 // import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { entityDTO, CreateentityRequestDTO, Createentity, UpdateentityRequestDTO, Updateentity, GetentitysRequestDTO, Getentity, DeleteentityRequestDTO, Deleteentity } from "@/api/dataEngine/entity"
-import { UseAppData } from "@/hooks/app/useAppData"
+import { useAppData } from "@/hooks/app/useAppData"
 import { useEntityStore } from "../store/entity.store"
 import { useCallback } from "react"
 import { eventBus } from "@/utils/eventBus"

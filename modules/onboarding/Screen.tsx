@@ -1,6 +1,6 @@
 'use client'
 
-import { UseAppData } from "@/hooks/app/useAppData";
+import { useAppData } from "@/hooks/app/useAppData";
 import { Step1 } from "./formStep1";
 import { Step2 } from "./formStep2";
 import { useOnboarding } from "./store";
@@ -30,7 +30,7 @@ const fade = {
 };
 
 export const OnboardingScreen = ({ }: OnboardingScreenProps) => {
-  const useAppData = UseAppData()
+  const useAppData = useAppData()
   const onboarding = useOnboarding()
   const router = useRouter()
 
