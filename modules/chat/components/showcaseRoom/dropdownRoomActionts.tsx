@@ -11,7 +11,7 @@ import { HiDotsVertical } from "react-icons/hi"
 export const DropdownRoomActions = () => {
   return (<>
     <DropdownMenu>
-      <DropdownMenuTrigger render={(
+      <DropdownMenuTrigger nativeButton={false} render={(
         <HiDotsVertical />
       )}></DropdownMenuTrigger>
       <DropdownMenuContent>

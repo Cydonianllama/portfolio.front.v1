@@ -5,32 +5,14 @@ import { GoPlus } from "react-icons/go";
 import { FiInbox } from "react-icons/fi";
 import { useChatStore } from "../../store/store.chat";
 import { EmptyState } from "@/modules/automation-flows/components/states/EmptyState";
+import { FilterItem } from "./filterItem";
 
 // Filtro virtual "todos los chats" (no existe en BD)
 export const ALL_CHATS_FILTER_ID = 'all-chats'
 
-type ConversationPageItemProps = {
-  active?: boolean;
-  data: {
-    id: string,
-    title?: string
-    qty?: number
-  }
-  onClick: (id: string) => void
-}
 
-const ConversationPageItem = ({ data, active, onClick }: ConversationPageItemProps) => {
-  return (<>
-    <div onClick={() => { onClick(data.id) }} className={`flex p-2 items-center justify-between cursor-pointer select-none hover:bg-gray-100 rounded-md ${!active ? '' : 'text-blue-600 bg-blue-50/60'}`}>
-      <div className="flex gap-2 items-center min-w-0">
-        {data.id === ALL_CHATS_FILTER_ID && <FiInbox className="text-gray-400 shrink-0" />}
-        <span className="font-semibold truncate">{data.title}</span>
-      </div>
-      <div className={` ${!active ? 'text-gray-400' : 'text-blue-600'} `}>
-        {data.qty}
-      </div>
-    </div>
-  </>)
+const ConversationPageItem = () => {
+  
 }
 
 type ListConversationPagesSection = {
@@ -58,14 +40,14 @@ export const ListConversationPagesSection = ({ handleOpenManageConversationFilte
 
       <div className="flex-1 overflow-y-auto min-h-0 space-y-0.5">
         {/* Item virtual "todos los chats" */}
-        <ConversationPageItem
+        <FilterItem
           onClick={onClickOpenConversationFilter}
           active={chatStore.filter == ALL_CHATS_FILTER_ID}
           data={{ id: ALL_CHATS_FILTER_ID, title: 'Todos los chats' }}
         />
 
         {listConvesationFilters.length > 0 && (<>
-          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <ConversationPageItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={el.id || index} data={{ qty: 19, title: el.name, id: el.id }} />)}
+          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <FilterItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={el.id || index} data={{ qty: 19, title: el.name, id: el.id }} />)}
         </>)}
 
         {listConvesationFilters.length == 0 && (<>

@@ -1,32 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import '../styles/layout.css'
+import './styles/layout.css'
 
-import { useEffect } from "react";
-import { useChatActions } from "../actions/useChatActions";
-import { useChatStore } from "../store/store.chat";
-import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
-import { useCoversationFiltersStore } from "../store/store.conversationFilters";
-import { UseAppInitializer } from "@/hooks/app/useAppInitiallizer";
-import { useMessageActions } from "../actions/useMessageActions";
-import { useAsideChat } from "../hooks/useAsideChat";
-import { useChatManagerActions } from "../actions/useChatManagerActions";
-import { RoomsSection } from "./roomSections";
-import { ButtonToggleAside } from "./ButtonToggleAside";
-import { useTextareaResetter } from "../hooks/TextareaChat/useResetTextareaChat";
-import { useTextareaManager } from "../hooks/TextareaChat/useTextareaManager";
-import { useScrollMessagesToEnd } from "../hooks/useChatScrollToEnd";
-import { useMessageRefs } from "../hooks/useMessageRefs";
-import { useMessagesInfiniteScroll } from "../hooks/useMessagesInfiniteScroll";
-import { ShowcaseRoom } from "./showcaseRoom/showcaseRoom";
-import { ChatAside } from './chatAside/chatAside';
+import { useChatActions } from "./actions/useChatActions";
+import { useChatStore } from "./store/store.chat";
+import { useCoversationFiltersStore } from "./store/store.conversationFilters";
+import { useMessageActions } from "./actions/useMessageActions";
+import { useAsideChat } from "./hooks/useAsideChat";
+import { useChatModuleInit } from "./hooks/useChatModuleInit";
+import { useChatEvents } from "./hooks/useChatEvents";
+import { useChatWorkspaceWatcher } from "./hooks/useChatWorkspaceWatcher";
+import { useChatBreadcrumb } from "./hooks/useChatBreadcrumb";
+import { RoomsSection } from "./components/roomSections";
+import { ButtonToggleAside } from "./components/ButtonToggleAside";
+import { useTextareaResetter } from "./hooks/TextareaChat/useResetTextareaChat";
+import { useTextareaManager } from "./hooks/TextareaChat/useTextareaManager";
+import { useScrollMessagesToEnd } from "./hooks/useChatScrollToEnd";
+import { useMessageRefs } from "./hooks/useMessageRefs";
+import { useMessagesInfiniteScroll } from "./hooks/useMessagesInfiniteScroll";
+import { ChatAside } from './components/chatAside';
+import { ShowcaseRoom } from './components/showcaseRoom';
 
 export const ChatScreen = () => {
-  // configuracion general de chat
-  UseAppInitializer({ moduleName: 'chat' })
-  const workspaceSelectionStore = useWorkspaceSelectionStore()
+  // ciclo de vida del módulo
+  useChatModuleInit()
+  useChatEvents()
+  useChatBreadcrumb()
 
   const { HandleToggleAsideListConversations, openedAside } = useAsideChat()
 
@@ -37,23 +36,15 @@ export const ChatScreen = () => {
   // actions
   const chatActions = useChatActions()
   const messageActions = useMessageActions()
-  const chatManagerActions = useChatManagerActions(chatStore)
 
   const currentFilterData = conversationFilterStore.listConvesationFilters.find(el => el.id == chatStore.filter)
-
-  // cuando cambia de workspace
-  useEffect(() => {
-    if (workspaceSelectionStore.selectedWorkspaceId) {
-      chatActions.ResetChat()
-      messageActions.ResetMessages()
-      //TODO:reset() // reset del textarea de chat
-      chatManagerActions.resetChatManager()
-    }
-  }, [workspaceSelectionStore.selectedWorkspaceId])
 
   // textarea chat (envio de mensaje)
   const { message, reset, setMessage } = useTextareaManager()
   useTextareaResetter(reset, chatStore)
+
+  // cuando cambia de workspace
+  useChatWorkspaceWatcher({ reset })
 
   // messages hooks and props (manager de mensajes)
   const { topRef, wrapperListMessagesRef } = useMessageRefs()

@@ -25,6 +25,10 @@ export interface RoomDTO {
     value: string;
     addedAt?: Date;
     updatedAt?: Date;
+  }>,
+  tags?: Array<{
+    id: string;
+    name: string;
   }>
 }
 
@@ -97,5 +101,15 @@ export interface UpdateRoomVariablesRequestDTO {
 }
 
 export interface UpdateRoomVariablesResponseDTO {
+  room: RoomDTO | null
+}
+
+// update room tags
+export interface UpdateRoomTagsRequestDTO {
+  roomId: string;
+  tags: Array<string>;
+}
+
+export interface UpdateRoomTagsResponseDTO {
   room: RoomDTO | null
 }

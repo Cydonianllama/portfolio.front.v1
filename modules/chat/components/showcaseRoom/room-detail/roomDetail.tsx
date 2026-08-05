@@ -1,15 +1,14 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import { useChatStore } from "../../../store/store.chat";
 import { MdOutlineMapsHomeWork, MdOutlineAlternateEmail, MdOutlinePhone } from "react-icons/md";
 import { RiWhatsappLine } from "react-icons/ri";
 import { RoomVariablesSection } from "./RoomVariablesSection";
+import { RoomTagsSection } from "./RoomTagsSection";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type ChatAsideProps = {
 
 }
 
 export const RoomDetail = ({ }: ChatAsideProps) => {
-  const appData = useAppData()
   const chatStore = useChatStore()
 
   return (
@@ -43,6 +42,11 @@ export const RoomDetail = ({ }: ChatAsideProps) => {
             <span className="ml-auto text-foreground text-xs truncate">{chatStore.contactIndividualOpenedInformation?.mainPhone || '-'}</span>
           </div>
         </div>
+      </div>
+
+      {/* Etiquetas editables */}
+      <div className="px-2 py-2 border-b">
+        <RoomTagsSection />
       </div>
 
       {/* Variables editables */}

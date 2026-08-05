@@ -1,13 +1,13 @@
-import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore";
-import { useConversationFiltersActions } from "../../actions/useConversationFilters";
-import { useCoversationFiltersStore } from "../../store/store.conversationFilters";
-import { ButtonSearchChat } from "../ButtonSearchChat";
-import { DialogConfirmDeleteConversationFilter } from "../DialogConfirmConversationFilterDeletion";
-import { DialogCreateConversationFilter } from "../DialogCreateConversationFilter";
-import { DialogEditConversationFilter } from "../DialogEditConversationFilter";
-import { DialogManageConversationFilters } from "../DialogManageConversationFilters";
-import { ALL_CHATS_FILTER_ID, ListConversationPagesSection } from "./ListConversationPages";
-import { useChatActions } from "../../actions/useChatActions";
+import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
+import { useChatActions } from "../actions/useChatActions"
+import { useConversationFiltersActions } from "../actions/useConversationFilters"
+import { useCoversationFiltersStore } from "../store/store.conversationFilters"
+import { ButtonSearchChat } from "./ButtonSearchChat"
+import { ListConversationPagesSection, ALL_CHATS_FILTER_ID } from "./chatAside/ListConversationPages"
+import { DialogConfirmDeleteConversationFilter } from "./DialogConfirmConversationFilterDeletion"
+import { DialogCreateConversationFilter } from "./DialogCreateConversationFilter"
+import { DialogEditConversationFilter } from "./DialogEditConversationFilter"
+import { DialogManageConversationFilters } from "./DialogManageConversationFilters"
 
 export function ChatAside() {
   const workspaceSelectionStore = useWorkspaceSelectionStore()

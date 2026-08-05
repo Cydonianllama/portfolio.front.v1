@@ -1,6 +1,6 @@
 import { ResponseApi } from '@/types/api/response';
 import { api } from '@/setup/axios'
-import { CreateChatRequestDTO, CreateChatResponseDTO, ListChatRequestDTO, ListChatResponseDTO, ListMessagesRequestDTO, ListMessagesResponseDTO, OpenChatRequestDTO, OpenChatResponseDTO, SendMessageRequestDTO, SendMessageResponseDTO, UpdateRoomVariablesRequestDTO, UpdateRoomVariablesResponseDTO } from './chat.dto';
+import { CreateChatRequestDTO, CreateChatResponseDTO, ListChatRequestDTO, ListChatResponseDTO, ListMessagesRequestDTO, ListMessagesResponseDTO, OpenChatRequestDTO, OpenChatResponseDTO, SendMessageRequestDTO, SendMessageResponseDTO, UpdateRoomTagsRequestDTO, UpdateRoomTagsResponseDTO, UpdateRoomVariablesRequestDTO, UpdateRoomVariablesResponseDTO } from './chat.dto';
 import axios from 'axios';
 
 
@@ -82,6 +82,18 @@ export const UpdateRoomVariables = async (data: UpdateRoomVariablesRequestDTO): 
     if (axios.isAxiosError(ex)) {
       // console.log(error.response?.status); // 422
       // console.log(error.response?.data);  
+      return ex.response?.data ?? null;
+    }
+    return null
+  }
+}
+
+export const UpdateRoomTags = async (data: UpdateRoomTagsRequestDTO): Promise<ResponseApi<UpdateRoomTagsResponseDTO> | null> => {
+  try {
+    const req = await api.put(`/api/chats/${data.roomId}/tags`, { tags: data.tags })
+    return req.data;
+  } catch (ex) {
+    if (axios.isAxiosError(ex)) {
       return ex.response?.data ?? null;
     }
     return null

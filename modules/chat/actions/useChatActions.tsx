@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback } from 'react'
 import { useChatStore } from '../store/store.chat'
+import { chatUtilitiesStore } from '../store/store.utilities'
 import { ListChats, OpenChat, UpdateRoomVariables } from '@/api/chat/chat.api'
 import { ListChatRequestDTO, UpdateRoomVariablesRequestDTO } from '@/api/chat/chat.dto'
 import { toast } from 'sonner'
@@ -24,6 +25,7 @@ export const useChatActions = (): useChatActionsType => {
   const workspaceSelectionStore = useWorkspaceSelectionStore()
 
   const chatStore = useChatStore()
+  const chatUtilities = chatUtilitiesStore()
 
   const ListChatsAction = useCallback(async (data: ListChatRequestDTO) => {
     try {
@@ -99,6 +101,9 @@ export const useChatActions = (): useChatActionsType => {
 
       // cargar variables de la room
       chatStore.setRoomVariables(req.data.room?.variables || [])
+
+      // cargar etiquetas de la room
+      chatUtilities.setRoomTags(req.data.room?.tags || [])
 
       // room de un participante
       if (req.data.room?.typeRoom == 'individual') {

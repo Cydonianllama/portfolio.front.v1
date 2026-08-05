@@ -1,22 +1,23 @@
-import { MessageDTO } from "@/api/chat/chat.dto";
-import { NotRoomOpenedState } from "../states/NotRoomOpenedState";
-import { RoomDetail } from "./room-detail/roomDetail";
-import { InitConversationChat } from "../states/InitConversationChat";
-import { ListingMessages } from "../states/ListingMessages";
 
-import { ContactDTO } from "@/api/contacts/contacts.dto";
-import { ChatStore } from "../../store/store.chat";
-import { useMessageActionsType } from "../../actions/useMessageActions";
-import { RefObject } from "react";
-import { HandleToSendMessageProp, TextAreaChat } from "./textAreaChat";
-import { DropdownRoomActions } from "./dropdownRoomActionts";
-import { MessagesShowcase } from "./messagesShowcase";
 
 // import { useScrollMessagesToEnd } from "../../hooks/useChatScrollToEnd";
 // import { useMessageRefs } from "../../hooks/useMessageRefs";
 // import { useMessagesInfiniteScroll } from "../../hooks/useMessagesInfiniteScroll";
 // import { useTextareaResetter } from "../../hooks/TextareaChat/useResetTextareaChat";
 // import { useTextareaManager } from "../../hooks/TextareaChat/useTextareaManager";
+
+import { MessageDTO } from "@/api/chat/chat.dto";
+import { ContactDTO } from "@/api/contacts/contacts.dto";
+import { RefObject } from "react";
+import { useMessageActionsType } from "../actions/useMessageActions";
+import { ChatStore } from "../store/store.chat";
+import { DropdownRoomActions } from "./showcaseRoom/dropdownRoomActionts";
+import { MessagesShowcase } from "./showcaseRoom/messagesShowcase";
+import { RoomDetail } from "./showcaseRoom/room-detail/roomDetail";
+import { HandleToSendMessageProp, TextAreaChat } from "./showcaseRoom/textAreaChat";
+import { InitConversationChat } from "./states/InitConversationChat";
+import { ListingMessages } from "./states/ListingMessages";
+import { NotRoomOpenedState } from "./states/NotRoomOpenedState";
 
 type ShowcaseRoomProps = {
   // room
