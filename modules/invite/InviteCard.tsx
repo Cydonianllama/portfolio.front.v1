@@ -38,7 +38,7 @@ type invitationCommands = 'accept' | 'decline'
 
 export const InviteCard = ({ }: InviteCardProps) => {
   const router = useRouter()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const invitationStore = useInvite()
 
   const HandleCommandActioned = async (command: invitationCommands) => {

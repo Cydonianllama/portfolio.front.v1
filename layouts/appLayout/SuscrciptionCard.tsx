@@ -1,4 +1,3 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import {
   Sidebar,
   SidebarContent,
@@ -13,23 +12,6 @@ import {
 } from "@/components/ui/sidebar"
 import { FaArrowUpRightDots } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemSeparator,
-  ItemTitle,
-} from "@/components/ui/item"
 
 import {
   Progress,
@@ -43,7 +25,6 @@ type SuscrciptionCardProps = {
 }
 
 export const SuscrciptionCard = ({ }: SuscrciptionCardProps) => {
-  const useAppData = useAppData()
   const {
     state,
     open,

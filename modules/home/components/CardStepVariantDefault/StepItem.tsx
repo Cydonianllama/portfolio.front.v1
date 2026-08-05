@@ -7,7 +7,7 @@ type StepItemProps = {
 }
 
 export const StepItem = ({ data, step }: StepItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   return (
     <>
       <div>

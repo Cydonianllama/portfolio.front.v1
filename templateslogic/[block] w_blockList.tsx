@@ -20,14 +20,14 @@ export const ComponentName = () => {
 
   const store = use_NAME_STORE_()
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const ListItems = async () => {
     try {
       
       store.setList({ list: [], listing: true })
       
-      const items = await ServiceName({ workspaceId: useAppData.workspace?.id || '' })
+      const items = await ServiceName({ workspaceId: appData.workspace?.id || '' })
       if (!items?.status){
         toast.error('[Error 1]')
         return;

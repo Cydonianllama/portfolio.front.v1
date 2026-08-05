@@ -21,7 +21,7 @@ type FormConfirmDeleteWorkspaceProps = {
 }
 
 export const FormConfirmDeleteWorkspace = ({ }: FormConfirmDeleteWorkspaceProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const settingsStore = useSettingsStore()
   const generalWorkspaceStore = useGeneralWorkspaceSection()
   const workspaceSelectionStore = useWorkspaceSelectionStore()
@@ -51,7 +51,7 @@ export const FormConfirmDeleteWorkspace = ({ }: FormConfirmDeleteWorkspaceProps)
       generalWorkspaceStore.setDeleteState({ deleting: true })
 
       const req = await DeleteWorkspace({
-        workspaceId: useAppData.workspace?.id || ''
+        workspaceId: appData.workspace?.id || ''
       })
 
       if (!req) {
@@ -67,7 +67,7 @@ export const FormConfirmDeleteWorkspace = ({ }: FormConfirmDeleteWorkspaceProps)
       //TODO: refactorizacion de esta webada
       let workspaces = [...workspaceSelectionStore.workspaces]
       if (workspaces){
-        workspaces = workspaces.filter(el => el.id != useAppData.workspace?.id)
+        workspaces = workspaces.filter(el => el.id != appData.workspace?.id)
         if (workspaces.length > 0){
           workspaceSelectionStore.setSelectedWorkspaceId(workspaces[0].id)
         } else {

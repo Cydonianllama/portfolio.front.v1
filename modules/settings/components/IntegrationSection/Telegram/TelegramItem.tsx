@@ -10,13 +10,13 @@ type TelegramItemProps = {
 }
 
 export const TelegramItem = ({ data }: TelegramItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const telegramActions = UseTelgramIntegrationsHookActions({})
   const store = useTelegramIntegrations()
 
   const HandleDelete = () => {
     try {
-      telegramActions.DeleteTelgramIntegrationAction({ id: data.id, workspaceId: useAppData.workspace?.id || '' })
+      telegramActions.DeleteTelgramIntegrationAction({ id: data.id, workspaceId: appData.workspace?.id || '' })
     } catch (error) {
       
     }

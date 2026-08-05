@@ -23,15 +23,15 @@ type ActivitiesScreenProps = {
 }
 
 export const ActivitiesScreen = ({ }: ActivitiesScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const activitiesAction = UseActivitiesHookActions({})
   const activitiesStore = useActivities()
 
   useEffect(() => {
-    if (useAppData.workspace?.id) {
-      activitiesAction.GetActivitiesAction({ workspaceId: useAppData.workspace?.id })
+    if (appData.workspace?.id) {
+      activitiesAction.GetActivitiesAction({ workspaceId: appData.workspace?.id })
     }
-  }, [useAppData.workspace])
+  }, [appData.workspace])
 
   return (
     <>

@@ -14,7 +14,7 @@ type LoginScreenProps = {
 }
 
 export const LoginScreen = ({ }: LoginScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const loginStore = useLogin()
 
   const ForgetPasswordAction = async (data: RequestForgetPasswordSchema) => {

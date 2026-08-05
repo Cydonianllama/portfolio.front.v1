@@ -17,7 +17,7 @@ type RegisterScreenProps = {
 
 export const RegisterScreen = ({ }: RegisterScreenProps) => {
   const inviteStore = useInvite()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const router = useRouter()
   const authStore = useAuthCydoStore()
 

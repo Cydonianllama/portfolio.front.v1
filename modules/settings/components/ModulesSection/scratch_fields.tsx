@@ -54,9 +54,9 @@ export const FieldSection = ({ }: FieldProps) => {
   const FieldStore = useFieldStore();
   const useFieldActions = UseFieldActions({})
   const entityStore = useEntityStore()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const InitialList = () => {
-    useFieldActions.listFieldAction({ page: 1, workspaceId: useAppData.workspace?.id || '', entityId: entityStore.currentElementSelected || '' })
+    useFieldActions.listFieldAction({ page: 1, workspaceId: appData.workspace?.id || '', entityId: entityStore.currentElementSelected || '' })
   }
 
   const OnInit = () => {
@@ -64,8 +64,8 @@ export const FieldSection = ({ }: FieldProps) => {
   }
 
   useEffect(() => {
-    if (useAppData.workspace?.id && entityStore.currentElementSelected) OnInit()
-  }, [useAppData.workspace?.id, entityStore.currentElementSelected])
+    if (appData.workspace?.id && entityStore.currentElementSelected) OnInit()
+  }, [appData.workspace?.id, entityStore.currentElementSelected])
 
   return <>
     <div className="p-2">
@@ -434,7 +434,7 @@ type DialogCreateFieldProps = {
 const DialogCreateField = ({ }: DialogCreateFieldProps) => {
   const FieldStore = useFieldStore();
   const useFieldActions = UseFieldActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const entityStore = useEntityStore()
   const {
     register,
@@ -462,7 +462,7 @@ const DialogCreateField = ({ }: DialogCreateFieldProps) => {
   const HandleToCreate = async (data: CreationFieldSchema) => {
     await useFieldActions.createFieldAction({
       name: data.name,
-      workspaceId: useAppData.workspace?.id || '',
+      workspaceId: appData.workspace?.id || '',
       entityId: entityStore.currentElementSelected || '',
       type: EntityFieldType.string
     })
@@ -593,7 +593,7 @@ type DialogUpdateFieldProps = {
 const DialogUpdateField = ({ }: DialogUpdateFieldProps) => {
   const FieldStore = useFieldStore();
   const useFieldActions = UseFieldActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const currentOpened = FieldStore.list.find(el => FieldStore.currentElementSelected == el.id)
 
   const {
@@ -630,7 +630,7 @@ const DialogUpdateField = ({ }: DialogUpdateFieldProps) => {
     if (!currentOpened) return;
     await useFieldActions.updateFieldAction(currentOpened.id, {
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
   return <>
@@ -689,11 +689,11 @@ const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
   const FieldStore = useFieldStore();
   const useFieldActions = UseFieldActions({})
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const HandleToDelete = () => {
     if (!FieldStore.currentElementSelected) return;
-    useFieldActions.deleteFieldAction({ id: FieldStore.currentElementSelected || '', workspaceId: useAppData.workspace?.id || '' })
+    useFieldActions.deleteFieldAction({ id: FieldStore.currentElementSelected || '', workspaceId: appData.workspace?.id || '' })
   }
 
   return <>

@@ -8,7 +8,7 @@ type ButtonBackProps = {
 }
 
 export const ButtonBack = ({  }: ButtonBackProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

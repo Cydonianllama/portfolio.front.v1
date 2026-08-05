@@ -75,17 +75,17 @@ export const ListActivitiesComponent = () => {
 
   const activitiesStore = useActivities()
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const OnInit = () => {
-    activitiesActions.GetActivitiesAction({ workspaceId: useAppData.workspace?.id || '' })
+    activitiesActions.GetActivitiesAction({ workspaceId: appData.workspace?.id || '' })
   }
 
   const isError = false;
 
   useEffect(() => {
-    if (useAppData.workspace) OnInit()
-  }, [useAppData.workspace])
+    if (appData.workspace) OnInit()
+  }, [appData.workspace])
 
   const grouped = useMemo(() => {
     const filtered = activitiesStore.list.filter((el) => matchesEntityFilter(el, activitiesStore.entityFilter))

@@ -7,16 +7,16 @@ import { UseSubscriptionHookActions } from "./hooks.action.subscriptions"
 import { useAppData } from "@/hooks/app/useAppData";
 
 export const SubscriptionSection = () => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const subscipritonActions = UseSubscriptionHookActions({})
 
   const OnInit = async () => {
-    subscipritonActions.GetInvoicesAction({ workspaceId: useAppData.workspace?.id || '', page: 1 })
-    subscipritonActions.GetSubcriptionAction({ workspaceId: useAppData.workspace?.id || '' })
+    subscipritonActions.GetInvoicesAction({ workspaceId: appData.workspace?.id || '', page: 1 })
+    subscipritonActions.GetSubcriptionAction({ workspaceId: appData.workspace?.id || '' })
   }
 
   useEffect(() => {
-    if (useAppData.workspace) {
+    if (appData.workspace) {
       OnInit()
     }
   }, [useAppData])

@@ -8,7 +8,7 @@ type ContentLoadingProps = {
 }
 
 export const ContentLoading = ({ }: ContentLoadingProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

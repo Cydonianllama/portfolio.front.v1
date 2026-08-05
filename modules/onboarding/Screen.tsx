@@ -30,7 +30,7 @@ const fade = {
 };
 
 export const OnboardingScreen = ({ }: OnboardingScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const onboarding = useOnboarding()
   const router = useRouter()
 

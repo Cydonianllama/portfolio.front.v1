@@ -48,12 +48,12 @@ type TagProps = {
 }
 
 export const TagSection = ({ }: TagProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
   const InitialList = () => {
-    useTagActions.listTagAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useTagActions.listTagAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -65,8 +65,8 @@ export const TagSection = ({ }: TagProps) => {
   }, [])
 
   useEffect(() => {
-    if (useAppData.workspace) OnInit()
-  }, [useAppData.workspace])
+    if (appData.workspace) OnInit()
+  }, [appData.workspace])
 
   return <>
     <div className="p-2">
@@ -478,7 +478,7 @@ const DialogCreateTag = ({ }: DialogCreateTagProps) => {
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const {
     register,
@@ -505,7 +505,7 @@ const DialogCreateTag = ({ }: DialogCreateTagProps) => {
   const HandleToCreate = async (data: CreationTagSchema) => {
     await useTagActions.createTagAction({
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
 
@@ -567,7 +567,7 @@ type DialogUpdateTagProps = {
 }
 
 const DialogUpdateTag = ({ }: DialogUpdateTagProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
@@ -607,7 +607,7 @@ const DialogUpdateTag = ({ }: DialogUpdateTagProps) => {
     if (!currentOpened) return;
     await useTagActions.updateTagAction(currentOpened.id, {
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
   return <>
@@ -663,13 +663,13 @@ type DialogConfirmDelete = {
 }
 
 const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const TagStore = useTagStore();
   const useTagActions = UseTagActions({})
 
   const HandleToDelete = () => {
     if (!TagStore.currentElementSelected) return;
-    useTagActions.deleteTagAction({ id: TagStore.currentElementSelected || '', workspaceId: useAppData.workspace?.id || '' })
+    useTagActions.deleteTagAction({ id: TagStore.currentElementSelected || '', workspaceId: appData.workspace?.id || '' })
   }
 
   return <>

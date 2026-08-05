@@ -22,7 +22,7 @@ type IntegrationItemProps = {
 }
 
 export const IntegrationItem = ({ data }: IntegrationItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const whatsappStore = useWhatsappIntegration()
   const telegramStore = useTelegramIntegrations()
@@ -55,7 +55,7 @@ export const IntegrationItem = ({ data }: IntegrationItemProps) => {
           <Button
             onClick={() => {
               integrationActions.AddIngrationTestAction({
-                workspaceId: useAppData.workspace?.id || '',
+                workspaceId: appData.workspace?.id || '',
                 code: data.code
               })
             }}

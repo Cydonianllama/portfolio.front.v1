@@ -15,7 +15,7 @@ type TextareaMessageProps = {
 }
 
 export const TextareaMessage = ({ }: TextareaMessageProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const automationTestActions = UseAutomationTestHookActions({})
   const automationTestStore = useAutomationTest()
 

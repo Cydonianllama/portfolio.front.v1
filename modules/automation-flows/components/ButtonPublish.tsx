@@ -8,7 +8,7 @@ type ButtonPublishProps = {
 }
 
 export const ButtonPublish = ({  }: ButtonPublishProps) => {
-  // const useAppData = useAppData()
+  // const appData = useAppData()
 
   const information = automationFlowGenStore(state => state.information)
 

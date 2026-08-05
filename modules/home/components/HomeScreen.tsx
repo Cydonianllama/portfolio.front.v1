@@ -34,7 +34,7 @@ type HomeScreenProps = {
 }
 
 export const HomeScreen = ({ }: HomeScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

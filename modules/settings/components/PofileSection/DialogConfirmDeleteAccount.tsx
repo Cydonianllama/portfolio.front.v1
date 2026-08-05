@@ -20,7 +20,7 @@ type DialogConfirmDeleteAccountProps = {
 }
 
 export const DialogConfirmDeleteAccount = ({ }: DialogConfirmDeleteAccountProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const profileActions = UseUserSettingsHookActions({})
 
@@ -46,7 +46,7 @@ export const DialogConfirmDeleteAccount = ({ }: DialogConfirmDeleteAccountProps)
             variant={'destructive'}
             disabled={profileSettingsStore.deleting ? true : false}
             onClick={() => {
-              profileActions.DeleteUserAction({ userId: useAppData.user?.id || '' })
+              profileActions.DeleteUserAction({ userId: appData.user?.id || '' })
             }}
           >
             {profileSettingsStore.deleting && <Spinner data-icon="inline-start" />}

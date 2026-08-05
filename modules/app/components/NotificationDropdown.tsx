@@ -19,13 +19,13 @@ type NotificationDropdownProps = {
 export const NotificationDropdown = ({ }: NotificationDropdownProps) => {
   const notificationHooksAction = UseNotificationHookActions({})
   const notificationStore = useNotification()
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   useEffect(() => {
-    if (useAppData.user?.id) {
-      notificationHooksAction.GetNotificationsAction({ userId: useAppData.user?.id })
+    if (appData.user?.id) {
+      notificationHooksAction.GetNotificationsAction({ userId: appData.user?.id })
     }
-  }, [useAppData.user])
+  }, [appData.user])
 
   return (
     <>

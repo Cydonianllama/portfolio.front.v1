@@ -10,7 +10,7 @@ type ButtonsViewFlowProps = {
 }
 
 export const ButtonsViewFlow = ({ }: ButtonsViewFlowProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

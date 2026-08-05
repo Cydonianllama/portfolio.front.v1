@@ -14,7 +14,7 @@ type InviteScreenProps = {
 }
 
 export const InviteScreen = ({ invitationId }: InviteScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const invitationStore = useInvite()
   const router = useRouter()
 

@@ -50,11 +50,11 @@ type AutomationProps = {
 export const AutomationSection = ({ }: AutomationProps) => {
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const automationTestStore = useAutomationTest()
 
   const InitialList = () => {
-    useEntityNameActions.listEntityNameAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useEntityNameActions.listEntityNameAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -66,8 +66,8 @@ export const AutomationSection = ({ }: AutomationProps) => {
   }, [])
 
   useEffect(() => {
-    if (useAppData.workspace?.id) OnInit()
-  }, [useAppData.workspace?.id])
+    if (appData.workspace?.id) OnInit()
+  }, [appData.workspace?.id])
 
   return <>
     <div className="p-2">
@@ -563,7 +563,7 @@ type DialogCreateAutomationProps = {
 }
 
 const DialogCreateAutomation = ({ }: DialogCreateAutomationProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const AutomationStore = useAutomationStore();
   const useEntityNameActions = UseEntityNameActions({})
@@ -590,7 +590,7 @@ const DialogCreateAutomation = ({ }: DialogCreateAutomationProps) => {
   const HandleToCreate = async (data: CreationEntityNameSchema) => {
     await useEntityNameActions.createEntityNameAction({
       title: data.title,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
 

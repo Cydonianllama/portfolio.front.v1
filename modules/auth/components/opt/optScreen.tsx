@@ -30,7 +30,7 @@ import { useInvite } from "@/modules/invite/store";
 
 export const OPTSection = () => {
   const inviteStore = useInvite()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const router = useRouter()
 
   const [verifying, setVerifying] = useState(false)
@@ -81,7 +81,7 @@ export const OPTSection = () => {
         <CardHeader>
           <CardTitle>Verificando cuenta</CardTitle>
           <CardDescription>Te hemos enviado un correo con un código de verificación, cópialo y pegalo aquí</CardDescription>
-          <CardAction>Reenviar a {useAppData.user?.email}</CardAction>
+          <CardAction>Reenviar a {appData.user?.email}</CardAction>
         </CardHeader>
         <CardContent className="flex justify-start w-md ">
           <Field className="w-fit">

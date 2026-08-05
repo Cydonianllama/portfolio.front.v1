@@ -8,7 +8,7 @@ type ContactCardTestProps = {
 
 export const ContactCardTest = ({ data }: ContactCardTestProps) => {
   const automationTestActions = UseAutomationTestHookActions({});
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const HandleToClick = () => {
     automationTestActions.OpenChatAction(data.id || '')

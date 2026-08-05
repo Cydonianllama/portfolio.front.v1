@@ -9,7 +9,7 @@ type BaseEditorProps = {
 }
 
 export const BaseEditor = ({ children }: PropsWithChildren<BaseEditorProps>) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

@@ -40,8 +40,8 @@ export const RoomVariableOptions: Array<VariableOption> = [
 ]
 
 export const useVariablesList = () => {
-  const useAppData = useAppData()
-  const workspaceId = useAppData.workspace?.id || ''
+  const appData = useAppData()
+  const workspaceId = appData.workspace?.id || ''
 
   const [variables, setVariables] = useState<Array<VariableDTO>>([])
   const [loading, setLoading] = useState(false)

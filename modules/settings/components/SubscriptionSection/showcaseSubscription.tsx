@@ -20,7 +20,7 @@ type showcaseSubscriptionProps = {
 }
 
 export const ShowcaseSubscription = ({ }: showcaseSubscriptionProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   return (
     <>
       <Card>

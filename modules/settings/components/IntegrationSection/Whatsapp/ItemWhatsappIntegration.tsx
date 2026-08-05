@@ -11,12 +11,12 @@ type ItemWhatsappIntegrationProps = {
 }
 
 export const ItemWhatsappIntegration = ({ data }: ItemWhatsappIntegrationProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const whatsappIntegrationActions = UseWhatsappIntegrationHookActions({})
   const store = useWhatsappIntegration()
 
   const HandleDelete = () => {
-    whatsappIntegrationActions.DeleteIntegrationAction({ id: data.id, workspaceId: useAppData.workspace?.id || '' })
+    whatsappIntegrationActions.DeleteIntegrationAction({ id: data.id, workspaceId: appData.workspace?.id || '' })
   }
 
   return (

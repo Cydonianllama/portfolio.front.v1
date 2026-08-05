@@ -8,7 +8,7 @@ type AutomationScreenProps = {
 }
 
 export const AutomationScreen = ({ }: AutomationScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

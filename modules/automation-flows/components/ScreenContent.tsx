@@ -30,7 +30,7 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
 
   const { showEditButton, disabledSaveButton, showPublishButton, showSaveButton, canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
 
-  // const useAppData = useAppData()
+  // const appData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

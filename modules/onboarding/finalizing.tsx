@@ -26,7 +26,7 @@ const fade = {
 };
 
 export const Finalizing = ({ }: FinalizingProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const onboarding = useOnboarding()
 
   return (

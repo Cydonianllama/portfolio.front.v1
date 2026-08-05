@@ -9,7 +9,7 @@ type ChatAsideProps = {
 }
 
 export const ChatAside = ({ }: ChatAsideProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const chatStore = useChatStore()
 
   return (

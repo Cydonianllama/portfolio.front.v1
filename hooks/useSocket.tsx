@@ -8,7 +8,7 @@ import { useAppData } from "@/hooks/app/useAppData";
 export function useSocket() {
   const chatStore = useChatStore()
   const liveEvents = UseEventsHookActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   useEffect(() => {
     console.log("useSocket hook called, socket connected:", socket.connected);
@@ -40,13 +40,13 @@ export function useSocket() {
   }, [chatStore.roomIdOpened, liveEvents.OnMessageReceived])
 
   useEffect(() => {
-    if (useAppData.workspace){
+    if (appData.workspace){
       if (socket) {
         console.log(`instanace of [${EVENT_NEW_WORKSPACE_NOTIFICATION}]`)
         socket.on(EVENT_NEW_WORKSPACE_NOTIFICATION, liveEvents.OnWorkspaceNotificationReceived);
       }
     }
-  }, [useAppData.workspace])
+  }, [appData.workspace])
 
   return socket;
 }

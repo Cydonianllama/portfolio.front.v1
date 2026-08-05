@@ -10,7 +10,7 @@ type ForgetPasswordScreenProps = {
 }
 
 export const ForgetPasswordScreen = ({ validationCode }: ForgetPasswordScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const forgetPasswordStore = useForgetPass()
 
   useEffect(() => {

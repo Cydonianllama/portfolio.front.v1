@@ -226,7 +226,7 @@ const TextComponent = ({ data }: TextComponentProps) => {
 }
 
 export const ActivityItem = ({ data, isLast }: ActivityItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const item = MessageLine(data)
 

@@ -11,7 +11,7 @@ type AddTriggerOptionsProps = {
 }
 
 export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOptionsProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const triggerActions = useTriggerActions()
 
@@ -27,7 +27,7 @@ export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOption
     triggerActions.createTriggerAction({
       platform: data.platform,
       type: data.type,
-      workspaceId: useAppData.workspace?.id || '',
+      workspaceId: appData.workspace?.id || '',
       automationId: automationStore.automationId || '',
     })
   }
@@ -38,7 +38,7 @@ export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOption
     triggerActions.createTriggerAction({
       platform: selectedOption.platform,
       type: selectedOption.type,
-      workspaceId: useAppData.workspace?.id || '',
+      workspaceId: appData.workspace?.id || '',
       automationId: automationStore.automationId || '',
       keyConfiguration: [{
         criteria: config.criteria,

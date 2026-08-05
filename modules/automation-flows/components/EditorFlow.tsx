@@ -8,7 +8,7 @@ type EditorFlowProps = {
 }
 
 export const EditorFlow = ({ }: EditorFlowProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const automationFlowStore = automationFlowGenStore()
 
   const currentNode = automationFlowStore?.information?.nodeList?.find(el => el.id == automationFlowStore.currentNodeIdEditing)

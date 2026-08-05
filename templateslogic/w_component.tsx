@@ -6,7 +6,7 @@ type MyComponentProp = {
 }
 
 export const MyComponent = ({  } : MyComponentProp) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return(<>
 

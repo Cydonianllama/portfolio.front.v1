@@ -3,13 +3,13 @@
 import { PropsWithChildren, useEffect } from 'react'
 import { useChatStore } from '@/modules/chat/store/store.chat';
 import { useSocket } from '@/hooks/useSocket';
-import { useAppData } from "@/hooks/app/useAppData";
 import { JOIN_CHAT_ROOM, JOIN_GENERAL_ROOM, JOIN_WORKSPACE_ROOM } from './constants';
+import { useAppData } from '@/hooks/app/useAppData';
 
 export const LiveAppProvider = ({ children }: PropsWithChildren) => {
   const socket = useSocket();
   const chatStore = useChatStore()
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   //
   // Cuando cambia room hacemos conexion
@@ -32,29 +32,29 @@ export const LiveAppProvider = ({ children }: PropsWithChildren) => {
   // para los eventos de workspace
   //
   useEffect(() => {
-    if (useAppData.workspace) {
+    if (appData.workspace) {
       if (socket) {
-        console.log('joining workspace room : ', useAppData.workspace.id)
-        socket.emit(JOIN_WORKSPACE_ROOM, useAppData.workspace.id);
+        console.log('joining workspace room : ', appData.workspace.id)
+        socket.emit(JOIN_WORKSPACE_ROOM, appData.workspace.id);
       } else {
-        console.log('socket not available to join workspace room : ', useAppData.workspace.id)
+        console.log('socket not available to join workspace room : ', appData.workspace.id)
       }
     }
-  }, [useAppData.workspace])
+  }, [appData.workspace])
 
   //
   // para los eventos del usuario
   //
   useEffect(() => {
-    if (useAppData.user?.id) {
+    if (appData.user?.id) {
       if (socket) {
-        console.log('joining general room : ', useAppData.user.id)
-        socket.emit(JOIN_GENERAL_ROOM, useAppData.user.id);
+        console.log('joining general room : ', appData.user.id)
+        socket.emit(JOIN_GENERAL_ROOM, appData.user.id);
       } else {
-        console.log('socket not available to join general room : ', useAppData.user.id)
+        console.log('socket not available to join general room : ', appData.user.id)
       }
     }
-  }, [useAppData.user])
+  }, [appData.user])
 
   // //
   // // Realizar la primera conexion

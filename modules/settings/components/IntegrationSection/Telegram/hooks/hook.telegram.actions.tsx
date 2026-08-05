@@ -13,12 +13,12 @@ type TelgramIntegrationsHookActionsProps = {
 
 export const UseTelgramIntegrationsHookActions = ({ }: TelgramIntegrationsHookActionsProps) => {
   const store = useTelegramIntegrations()
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const GetIntegrationsTelegramAction = useCallback(async () => {
 
     try {
-      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: IntegrationCodes.telegram.code })
+      const items = await ListIntegrations({ workspaceId: appData.workspace?.id || '', code: IntegrationCodes.telegram.code })
       if (!items?.status) {
         toast.error('[Error 1]')
         return;

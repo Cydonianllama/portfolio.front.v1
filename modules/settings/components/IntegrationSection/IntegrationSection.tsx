@@ -21,7 +21,7 @@ import { IntegrationItem } from "./IntegrationItem"
 export const IntegrationSection = () => {
   const whatsappStore = useWhatsappIntegration()
   const telegramStore = useTelegramIntegrations()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const integrationActions = UseIntegrationHookActions({})
 
   const [integrationsJson, setIntegrationsJson] = useState<Array<{ code: string, title: string }>>([])

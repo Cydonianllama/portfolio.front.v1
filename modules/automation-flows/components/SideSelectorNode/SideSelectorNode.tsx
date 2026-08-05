@@ -10,7 +10,7 @@ type SideSelectorNodeProps = {
 }
 
 export const SideSelectorNode = ({ }: SideSelectorNodeProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const automationFlowStore = automationFlowGenStore()
 

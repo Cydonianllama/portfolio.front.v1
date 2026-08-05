@@ -8,7 +8,7 @@ type ButtonSaveProps = {
 }
 
 export const ButtonSave = ({ disabled }: ButtonSaveProps) => {
-  // const useAppData = useAppData()
+  // const appData = useAppData()
 
   const conversarionalFlowActions = useConversationalFlowGenActions({})
 const information = automationFlowGenStore(state => state.information)

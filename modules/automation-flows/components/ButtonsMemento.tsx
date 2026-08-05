@@ -9,7 +9,7 @@ type ButtonsMementoProps = {
 }
 
 export const ButtonsMemento = ({ }: ButtonsMementoProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

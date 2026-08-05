@@ -20,7 +20,7 @@ type ModulesSectionProps = {
 }
 
 export const ModulesSection = ({ }: ModulesSectionProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const asideStore = useAside()
 
   return (

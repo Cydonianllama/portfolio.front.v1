@@ -7,7 +7,7 @@ type ShowcaseInvoicesProps = {
 }
 
 export const ShowcaseInvoices = ({ }: ShowcaseInvoicesProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   return (
     <>
       <div className="flex justify-between items-center py-2">

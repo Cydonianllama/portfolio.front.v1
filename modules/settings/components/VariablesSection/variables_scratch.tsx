@@ -51,10 +51,10 @@ type VariableProps = {
 export const VariableSection = ({ }: VariableProps) => {
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const InitialList = () => {
-    useVariablesActions.listVariablesAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useVariablesActions.listVariablesAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -491,7 +491,7 @@ type DialogCreateVariableProps = {
 }
 
 const DialogCreateVariable = ({ }: DialogCreateVariableProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
 
@@ -520,7 +520,7 @@ const DialogCreateVariable = ({ }: DialogCreateVariableProps) => {
   const HandleToCreate = async (data: CreationVariablesSchema) => {
     await useVariablesActions.createVariablesAction({
       name: data.name,
-      workspaceId: useAppData.workspace?.id || '',
+      workspaceId: appData.workspace?.id || '',
     })
   }
 
@@ -582,7 +582,7 @@ type DialogUpdateVariableProps = {
 }
 
 const DialogUpdateVariable = ({ }: DialogUpdateVariableProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const VariableStore = useVariableStore();
   const useVariablesActions = UseVariablesActions({})
 
@@ -622,7 +622,7 @@ const DialogUpdateVariable = ({ }: DialogUpdateVariableProps) => {
     if (!currentOpened) return;
     await useVariablesActions.updateVariablesAction(currentOpened.id, {
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
   return <>

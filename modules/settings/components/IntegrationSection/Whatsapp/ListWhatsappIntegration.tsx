@@ -19,7 +19,7 @@ import { ItemWhatsappIntegration } from "./ItemWhatsappIntegration";
 export const ListWhatsappIntegrations = () => {
   const store = useWhatsappIntegration()
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const whatsappIntegrationActions = UseWhatsappIntegrationHookActions({})
 

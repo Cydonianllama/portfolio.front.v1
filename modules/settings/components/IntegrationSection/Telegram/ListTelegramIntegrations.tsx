@@ -21,7 +21,7 @@ import { TelegramItem } from "./TelegramItem";
 
 export const ListTelegramIntegrations = () => {
   const store = useTelegramIntegrations()
-  const useAppData = useAppData()
+  const appData = useAppData()
   const telegramActions = UseTelgramIntegrationsHookActions({})
 
 

@@ -6,7 +6,7 @@ type TagsSectionProps = {
 }
 
 export const TagsSection = ({  }: TagsSectionProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

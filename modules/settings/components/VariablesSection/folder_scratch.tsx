@@ -49,12 +49,12 @@ type FolderProps = {
 }
 
 export const FolderSection = ({ }: FolderProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 
   const InitialList = () => {
-    useFolderActions.listFolderAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useFolderActions.listFolderAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -66,8 +66,8 @@ export const FolderSection = ({ }: FolderProps) => {
   }, [])
 
   useEffect(() => {
-    if (useAppData.workspace) OnInit()
-  }, [useAppData.workspace])
+    if (appData.workspace) OnInit()
+  }, [appData.workspace])
 
   return <>
     <div className="p-2">
@@ -498,7 +498,7 @@ type DialogCreateFolderProps = {
 }
 
 const DialogCreateFolder = ({ }: DialogCreateFolderProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 
@@ -528,7 +528,7 @@ const DialogCreateFolder = ({ }: DialogCreateFolderProps) => {
     await useFolderActions.createFolderAction({
       name: data.name,
       module: 'variables',
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
 
@@ -590,7 +590,7 @@ type DialogUpdateFolderProps = {
 }
 
 const DialogUpdateFolder = ({ }: DialogUpdateFolderProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const FolderStore = useFolderStore();
   const useFolderActions = UseFolderActions({})
 
@@ -630,7 +630,7 @@ const DialogUpdateFolder = ({ }: DialogUpdateFolderProps) => {
     if (!currentOpened) return;
     await useFolderActions.updateFolderAction(currentOpened.id, {
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
   return <>

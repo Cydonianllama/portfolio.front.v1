@@ -23,7 +23,7 @@ export const ListConversations = () => {
   const manageConversationsActions = UseManageConversationsHookActions({})
   const watchConversationStore =  useWatchConversations();
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const ListItems = async () => {
     manageConversationsActions.GetContactConversationsAction({ contactId: watchConversationStore.contactOpened || '' })

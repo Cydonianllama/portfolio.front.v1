@@ -4,8 +4,8 @@ import { TagDTO } from "@/api/tags/tags.dto";
 import { useAppData } from "@/hooks/app/useAppData";
 
 export const useTagsList = () => {
-  const useAppData = useAppData()
-  const workspaceId = useAppData.workspace?.id || ''
+  const appData = useAppData()
+  const workspaceId = appData.workspace?.id || ''
 
   const [tags, setTags] = useState<Array<TagDTO>>([])
   const [loading, setLoading] = useState(false)

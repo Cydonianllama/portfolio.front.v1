@@ -51,10 +51,10 @@ type EntityProps = {
 export const EntitySection = ({ }: EntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   
   const InitialList = () => {
-    useEntityActions.listEntityAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useEntityActions.listEntityAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -62,8 +62,8 @@ export const EntitySection = ({ }: EntityProps) => {
   }
 
   useEffect(() => {
-    if (useAppData.workspace?.id) OnInit()
-  }, [useAppData.workspace?.id])
+    if (appData.workspace?.id) OnInit()
+  }, [appData.workspace?.id])
 
   return <>
     <div className="p-2">
@@ -425,7 +425,7 @@ type DialogCreateEntityProps = {
 const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const {
     register,
     handleSubmit,
@@ -451,7 +451,7 @@ const DialogCreateEntity = ({ }: DialogCreateEntityProps) => {
   const HandleToCreate = async (data: CreationEntitySchema) => {
     await useEntityActions.createEntityAction({
       name: data.name,
-      workspaceId: useAppData.workspace?.id || '',
+      workspaceId: appData.workspace?.id || '',
       fields: []
     })
   }
@@ -516,7 +516,7 @@ type DialogUpdateEntityProps = {
 const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const currentOpened = EntityStore.list.find(el => EntityStore.currentElementSelected == el.id)
 
   const {
@@ -553,7 +553,7 @@ const DialogUpdateEntity = ({ }: DialogUpdateEntityProps) => {
     if (!currentOpened) return;
     await useEntityActions.updateEntityAction(currentOpened.id, {
       name: data.name,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
   return <>
@@ -612,10 +612,10 @@ type DialogConfirmDelete = {
 const DialogConfirmDelete = ({ }: DialogConfirmDelete) => {
   const EntityStore = useEntityStore();
   const useEntityActions = UseEntityActions({})
-  const useAppData = useAppData()
+  const appData = useAppData()
   const HandleToDelete = () => {
     if (!EntityStore.currentElementSelected) return;
-    useEntityActions.deleteEntityAction({ id: EntityStore.currentElementSelected || '', workspaceId: useAppData.workspace?.id || '' })
+    useEntityActions.deleteEntityAction({ id: EntityStore.currentElementSelected || '', workspaceId: appData.workspace?.id || '' })
   }
 
   return <>

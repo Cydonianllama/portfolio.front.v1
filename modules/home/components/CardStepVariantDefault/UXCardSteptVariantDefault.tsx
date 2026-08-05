@@ -7,7 +7,7 @@ type UXCardSteptVariantDefaultProps = {
 }
 
 export const UXCardSteptVariantDefault = ({ list }: UXCardSteptVariantDefaultProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

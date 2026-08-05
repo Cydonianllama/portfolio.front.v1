@@ -9,7 +9,7 @@ type ButtonAddNodesProps = {
 }
 
 export const ButtonAddNodes = ({ }: ButtonAddNodesProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const automationStore = automationFlowGenStore()
 
   return (

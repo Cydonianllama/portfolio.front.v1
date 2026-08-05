@@ -15,7 +15,7 @@ type DropdownSelectorNodesProps = {
 }
 
 export const DropdownSelectorNodes = ({  }: DropdownSelectorNodesProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

@@ -14,18 +14,18 @@ type TestAutomationChatProps = {
 }
 
 export const TestAutomationChat = ({ }: TestAutomationChatProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const testAutomationActions = UseAutomationTestHookActions({})
   const automationTestStore = useAutomationTest()
 
   useEffect(() => {
-    if (useAppData.workspace) {
-      testAutomationActions.GetTestContactsAction({ workspaceId: useAppData.workspace.id || '' })
+    if (appData.workspace) {
+      testAutomationActions.GetTestContactsAction({ workspaceId: appData.workspace.id || '' })
     }
-  }, [useAppData.workspace])
+  }, [appData.workspace])
 
   const OnClickAddContact = () => {
-    testAutomationActions.CreateTestContactAction({ name: 'Test contact', workspaceId: useAppData.workspace?.id || '' })
+    testAutomationActions.CreateTestContactAction({ name: 'Test contact', workspaceId: appData.workspace?.id || '' })
   }
 
   const HandleCloseChat = () => {

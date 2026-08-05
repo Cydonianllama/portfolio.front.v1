@@ -9,7 +9,7 @@ type SelectorItemProps = {
 }
 
 export const SelectorItem = ({ data }: SelectorItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const flowActions = useConversationalFlowGenActions({})
   const flowStore = automationFlowGenStore()

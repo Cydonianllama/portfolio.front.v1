@@ -16,7 +16,7 @@ const ID_FIELD_FULLNAE = '312e213'
 const ID_FIELD_FILE_ORDER = '8aysbd9as'
 
 export const ModulesScreen = ({ moduleId }: ModulesScreenProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const views: ViewPresenterItem[] = [
     {
       configuration: {

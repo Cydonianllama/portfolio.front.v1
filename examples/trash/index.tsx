@@ -20,14 +20,14 @@ export const SectionPlans= () => {
 
   const store = usePlans()
 
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   const ListItems = async () => {
     try {
       
       store.setList({ list: [], listing: true })
       
-      const items = await PlansSection({ workspaceId: useAppData.workspace?.id || '' })
+      const items = await PlansSection({ workspaceId: appData.workspace?.id || '' })
       if (!items?.status){
         toast.error('[Error 1]')
         return;

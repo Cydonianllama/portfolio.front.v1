@@ -61,7 +61,7 @@ export interface DialogCreateConversationContactConfig {
 }
 
 export const DialogCreateConversationContact = (config: DialogCreateConversationContactConfig) => {
-const useAppData = useAppData()
+const appData = useAppData()
   const {
     register,
     handleSubmit,
@@ -89,7 +89,7 @@ const useAppData = useAppData()
       reset({
         integrationId: '',
         participants: [{ contactId: config.data.id }],
-        workspaceId: useAppData.workspace?.id || ''
+        workspaceId: appData.workspace?.id || ''
       })
     }
   }, [config.open, config.data, reset]);

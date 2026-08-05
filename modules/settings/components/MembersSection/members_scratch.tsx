@@ -56,12 +56,12 @@ type MembersProps = {
 }
 
 export const MembersSection_ = ({ }: MembersProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
   const InitialList = () => {
-    useMembersActions.listMembersAction({ page: 1, workspaceId: useAppData.workspace?.id || '' })
+    useMembersActions.listMembersAction({ page: 1, workspaceId: appData.workspace?.id || '' })
   }
 
   const OnInit = () => {
@@ -463,7 +463,7 @@ type DialogCreateMembersProps = {
 }
 
 const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
@@ -491,7 +491,7 @@ const DialogCreateMembers = ({ }: DialogCreateMembersProps) => {
     await useMembersActions.createMembersAction({
       email: data.email || '',
       rolId: data.rolId || '',
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
 
@@ -580,7 +580,7 @@ type DialogUpdateMembersProps = {
 }
 
 const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const MembersStore = useMembersStore();
   const useMembersActions = UseMembersActions({})
 
@@ -619,7 +619,7 @@ const DialogUpdateMembers = ({ }: DialogUpdateMembersProps) => {
     await useMembersActions.updateMembersAction(currentOpened.id, {
       rolId: data.rolId || '',
       status: data.status || 0,
-      workspaceId: useAppData.workspace?.id || ''
+      workspaceId: appData.workspace?.id || ''
     })
   }
 

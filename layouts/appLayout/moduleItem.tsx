@@ -1,12 +1,4 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar"
@@ -20,7 +12,6 @@ type ModuleItemProps = {
 }
 
 export const ModuleItem = ({ data }: ModuleItemProps) => {
-  const useAppData = useAppData()
 
   return (
     <>

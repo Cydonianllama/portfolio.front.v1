@@ -5,7 +5,7 @@ type HeaderLoadingProps = {
 }
 
 export const HeaderLoading = ({  }: HeaderLoadingProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

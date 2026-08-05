@@ -6,7 +6,7 @@ type MessagesCardProps = {
 }
 
 export const MessagesCard = ({ data }: MessagesCardProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
 
   return (
     <>

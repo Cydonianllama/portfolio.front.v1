@@ -13,7 +13,7 @@ type WhatsappIntegrationHookActionsProps = {
 }
 
 export const UseWhatsappIntegrationHookActions = ({ }: WhatsappIntegrationHookActionsProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const store = useWhatsappIntegration()
 
 
@@ -41,7 +41,7 @@ export const UseWhatsappIntegrationHookActions = ({ }: WhatsappIntegrationHookAc
 
       store.setList({ list: [], listing: true })
 
-      const items = await ListIntegrations({ workspaceId: useAppData.workspace?.id || '', code: IntegrationCodes.whatsapp.code })
+      const items = await ListIntegrations({ workspaceId: appData.workspace?.id || '', code: IntegrationCodes.whatsapp.code })
       if (!items?.status) {
         toast.error('[Error 1]')
         return;

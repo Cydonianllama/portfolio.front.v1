@@ -33,7 +33,7 @@ type NotificationItemProps = {
 }
 
 export const NotificationItem = ({ data }: NotificationItemProps) => {
-  const useAppData = useAppData()
+  const appData = useAppData()
   const info = MessageLine(data)
 
   return (
