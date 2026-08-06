@@ -1,0 +1,1 @@
+export type moreSections = 'main' | 'layout'

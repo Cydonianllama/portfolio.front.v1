@@ -1,26 +1,14 @@
-'use client'
-
-import { 
-  ViewPresenterItem, 
-  RecordPresenter, 
-  EntityPresenterField, 
-  DataEngineConfiguration, 
-  DataEngineProvider, 
-  DataEngine 
-} from "@/components/data-engine-presenter";
-
-import { useAppData } from "@/hooks/app/useAppData";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type ModulesScreenProps = {
-  moduleId: string
-}
+import { Button } from "../../components/ui/button"
+import { DataEngineProvider } from "."
+import { DataEngine } from "./components/DataEngine"
+import type { DataEngineConfiguration, EntityPresenterField, RecordPresenter, ViewPresenterItem } from "./types"
 
 const ID_FIELD_ID = '3b2dg23'
 const ID_FIELD_FULLNAE = '312e213'
 const ID_FIELD_FILE_ORDER = '8aysbd9as'
 
-export const ModulesScreen = ({ moduleId }: ModulesScreenProps) => {
-  const appData = useAppData()
+export function TestSreen() {
+
   const views: ViewPresenterItem[] = [
     {
       configuration: {
@@ -133,9 +121,24 @@ export const ModulesScreen = ({ moduleId }: ModulesScreenProps) => {
   }
 
   return (
-    <div className='h-full w-full px-5'>
+    <div className='h-screen w-screen'>
       <DataEngineProvider>
-        <DataEngine configuration={configuration} />
+        <div className="flex items-center h-12 justify-between px-4">
+          <div></div>
+          <Button onClick={() => {
+
+          }}>
+            Agregar record
+          </Button>
+        </div>
+        <div>
+          <DataEngine
+          configuration={configuration}
+          onModeChange={() => {
+
+          }}
+        />
+        </div>
       </DataEngineProvider>
     </div>
   )
