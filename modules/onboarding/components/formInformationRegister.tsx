@@ -46,23 +46,6 @@ export const Step2 = ({ finishStep2, handleBack }: Step2Props) => {
     finishStep2(data)
   }
 
-  const industries = [
-    { value: 'industry::dev', label: 'Desarrollo' },
-    { value: 'industry::marketing', label: 'Marketing' },
-  ]
-
-  const roles = [
-    { value: 'rol:management', label: 'Gerente' },
-    { value: 'rol:dev', label: 'Desarrollador' },
-  ]
-
-  const teamSizes = [
-    { value: 'qty:0-5', label: '0-5' },
-    { value: 'qty:5-20', label: '5-20' },
-    { value: 'qty:20-100', label: '20-100' },
-    { value: 'qty:100-1000', label: '100-1000' },
-    { value: 'qty:1000-x', label: '10000-más' },
-  ]
 
   return <>
 
@@ -190,6 +173,7 @@ export const Step2 = ({ finishStep2, handleBack }: Step2Props) => {
 }
 
 import { z } from "zod/v3";
+import { industries, roles, teamSizes } from "../catalog"
 
 export const stepTwoSchema = z.object({
   rol: z.string().trim(),

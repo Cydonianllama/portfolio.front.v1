@@ -6,7 +6,7 @@ interface VerifyAccountRequestDTO {
   opt: string
 }
 
-interface VerifyAccountResponseDTO {
+export interface VerifyAccountResponseDTO {
   token: string
 }
 

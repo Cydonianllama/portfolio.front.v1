@@ -1,9 +1,6 @@
 'use server'
-
-import { OnboardingScreen } from "@/modules/onboarding/Screen"
+import { OnboardingScreen } from "@/modules/onboarding/components/Screen"
 
 export default async function Page() {
-  return <>
-    <OnboardingScreen />
-  </>
+  return <OnboardingScreen />
 }

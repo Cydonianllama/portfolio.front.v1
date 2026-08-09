@@ -1,6 +1,3 @@
-
-// ______________ Service
-
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'
@@ -12,8 +9,8 @@ interface FinishOnboardingRequestDTO {
   qtyTeam: string
 }
 
-interface FinishOnboardingResponseDTO {
-  list: Array<{ id: string, name: string }>
+export interface FinishOnboardingResponseDTO {
+  
 }
 
 export const FinishOnboarding = async (data: FinishOnboardingRequestDTO): Promise<ResponseApi<FinishOnboardingResponseDTO> | null> => {

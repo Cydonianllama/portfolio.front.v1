@@ -1,19 +1,12 @@
 'use client'
 
-import { useAppData } from "@/hooks/app/useAppData";
-import { Step1 } from "./formStep1";
-import { Step2 } from "./formStep2";
-import { useOnboarding } from "./store";
+import { Step1 } from "./firstWorkspacConfiguration";
+import { Step2 } from "./formInformationRegister";
+import { useOnboarding } from "../store";
 import { useEffect } from "react";
 import { Finalizing } from "./finalizing";
 import { motion } from "motion/react";
-import { useRouter } from "next/navigation";
-import { FinishOnboarding } from "./finish-onboarding.service";
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type OnboardingScreenProps = {
-
-}
+import { useOnboardingActions } from "../useOnboardingActions";
 
 const fade = {
   initial: {
@@ -29,37 +22,19 @@ const fade = {
   },
 };
 
-export const OnboardingScreen = ({ }: OnboardingScreenProps) => {
-  const appData = useAppData()
-  const onboarding = useOnboarding()
-  const router = useRouter()
+type OnboardingScreenProps = {}
 
-  const FinishOnboardginAction = async () => {
-    console.log('FinishOnboardginAction')
-    try {
-      onboarding.setStep({ finalizing: true })
-      await FinishOnboarding({
+export const OnboardingScreen = ({ }: OnboardingScreenProps) => {
+  const onboarding = useOnboarding()
+  const { finishOnboardingAction } = useOnboardingActions()
+
+  useEffect(() => {
+    if (onboarding.step == 3) finishOnboardingAction({
         industry: onboarding.industry,
         nameWorkspace: onboarding.nameWorkspace,
         qtyTeam: onboarding.qtyTeam,
         rol: onboarding.rol,
       })
-
-      const timer = setTimeout(() => {
-        onboarding.setStep({ finalizing: false })
-        router.push('/home')
-      }, 3200)
-
-      clearTimeout(timer)
-
-      router.push('/home')
-    } catch (ex) {
-
-    }
-  }
-
-  useEffect(() => {
-    if (onboarding.step == 3) FinishOnboardginAction()
   }, [onboarding.step])
 
   return (
@@ -96,8 +71,6 @@ export const OnboardingScreen = ({ }: OnboardingScreenProps) => {
           <Finalizing />
         </div>
       </>)}
-
-
     </>
   )
 }

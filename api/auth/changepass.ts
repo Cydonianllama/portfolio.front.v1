@@ -7,7 +7,7 @@ interface ChangePasswordRequestDTO {
   password: string;
 }
 
-interface ChangePasswordResponseDTO {
+export interface ChangePasswordResponseDTO {
   list: Array<{ id: string, name: string }>
 }
 

@@ -6,7 +6,7 @@ interface ForgetPasswordRequestDTO {
   email: string
 }
 
-interface ForgetPasswordResponseDTO {
+export interface ForgetPasswordResponseDTO {
   
 }
 

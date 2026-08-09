@@ -25,31 +25,37 @@ export function useAuthActions() {
   }
 
   const signinAction = async (data: { email: string, password: string }) => {
-    const req = await Login(data.email, data.password)
-    if (req?.status) {
+    try {
+      const req = await Login(data.email, data.password)
+      if (req?.status) {
 
-      if (!req.data) {
-        toast.error('Error desconocido (1)')
+        if (!req.data) {
+          toast.error('Error desconocido (1)')
+          clearSession()
+          return;
+        }
+
+        if (!req.data.token) {
+          toast.error(req.message || 'Error desconocido (2)')
+          clearSession()
+          return;
+        }
+
+        toast.success('Login exitoso! ingresando a la app')
+
+        localStorage.setItem('token', req.data.token)
+        Cookies.set("token", req.data.token);
+
+        router.replace("home");
+
+      } else {
+        toast.error(req?.message || 'Error desconocido (3)')
+
         clearSession()
-        return;
       }
-
-      if (!req.data.token) {
-        toast.error(req.message || 'Error desconocido (2)')
-        clearSession()
-        return;
-      }
-
-      toast.success('Login exitoso! ingresando a la app')
-
-      localStorage.setItem('token', req.data.token)
-      Cookies.set("token", req.data.token);
-
-      router.replace("home");
-
-    } else {
-      toast.error(req?.message || 'Error desconocido (3)')
-
+    } catch (error) {
+      console.error('Error iniciando sesión', error)
+      toast.error('Error inesperado al iniciar sesión')
       clearSession()
     }
   }
@@ -81,7 +87,8 @@ export function useAuthActions() {
         router.replace("/verify");
       }
     } catch (error) {
-
+      console.error('Error registrando usuario', error)
+      toast.error('Error inesperado al registrar tu cuenta')
     } finally {
       authStore.setState({ proccesingRegister: false })
     }
@@ -105,6 +112,8 @@ export function useAuthActions() {
 
       toast.success('Enviando información al correo ingresado')
     } catch (ex) {
+      console.error('Error en recuperación de contraseña', ex)
+      toast.error('Error inesperado al enviar el correo')
     } finally {
       loginStore.setState({ processing: false, open: false })
     }
@@ -128,7 +137,8 @@ export function useAuthActions() {
       toast.success('Ingresar con su nueva contraseña')
       router.replace("login");
     } catch (error) {
-
+      console.error('Error cambiando contraseña', error)
+      toast.error('Error inesperado al cambiar la contraseña')
     } finally {
       forgetPasswordStore.setState({ changing: false })
     }
@@ -136,8 +146,6 @@ export function useAuthActions() {
 
   const verifyAccountAction = async (data: { opt: string }) => {
     try {
-      console.log('VerifyAccountAction')
-
       const reqVerify = await VerifyAccount({ opt: data.opt })
 
       if (!reqVerify) {
@@ -150,22 +158,26 @@ export function useAuthActions() {
         return;
       }
 
-      if (reqVerify.data.token) {
-        toast.success('[Cuenta exitosamente verificada]')
-        localStorage.setItem('token', reqVerify.data.token)
-        Cookies.set("token", reqVerify.data.token);
+      if (!reqVerify.data?.token) {
+        toast.error('Error procesando la verificación')
+        return;
+      }
 
-        if (inviteStore.invitationInformation) {
-          // si hay invitacion redirigir en invite
-          router.replace(`/invite?invitationId=${inviteStore.invitationInformation.invitation?.id}`);
-        } else {
-          // si no hay invitación redirigir home
-          router.replace("home");
-        }
+      toast.success('[Cuenta exitosamente verificada]')
+      localStorage.setItem('token', reqVerify.data.token)
+      Cookies.set("token", reqVerify.data.token);
+
+      if (inviteStore.invitationInformation) {
+        // si hay invitacion redirigir en invite
+        router.replace(`/invite?invitationId=${inviteStore.invitationInformation.invitation?.id}`);
+      } else {
+        // si no hay invitación redirigir home
+        router.replace("home");
       }
 
     } catch (ex) {
-
+      console.error('Error verificando cuenta', ex)
+      toast.error('Error inesperado al verificar tu cuenta')
     } finally {
 
     }

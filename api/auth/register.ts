@@ -10,7 +10,7 @@ interface RegisterUserRequestDTO {
   fullname: string;
 }
 
-interface RegisterUserResponseDTO {
+export interface RegisterUserResponseDTO {
   token: string | null
   userData: UserDTO | null
 }
