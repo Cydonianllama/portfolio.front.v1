@@ -1,15 +1,9 @@
 "use client";
 
-// formulario
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  loginSchema,
-  LoginSchema
-} from "@/modules/auth/schemas/login-form.schema";
+import { loginSchema, LoginSchema } from "@/modules/auth/schemas/login-form.schema";
 
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,18 +20,16 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Login } from "@/modules/auth/services/auth.service"
-import { toast } from "sonner";
 import Link from "next/link";
-import { useLogin } from "./store.login";
+import { useLogin } from "../../store/loginStore";
+import { useAuthActions } from "../../actions/useAuthActions";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signinAction } = useAuthActions()
   const loginStore = useLogin()
-
-  const router = useRouter()
 
   const {
     register,
@@ -47,46 +39,13 @@ export function LoginForm({
     resolver: zodResolver(loginSchema)
   });
 
-  const clearSession = () => {
-    localStorage.removeItem('token')
-    Cookies.set("token", '');
-  }
-
   const HandleToSubmitLogin = async (data: LoginSchema) => {
-    const req = await Login(data.emailOrUsername, data.password)
-    if (req?.status) {
-
-      if (!req.data) {
-        toast.error('Error desconocido (1)')
-        clearSession()
-        return;
-      }
-
-      if (!req.data.token) {
-        toast.error(req.message || 'Error desconocido (2)')
-        clearSession()
-        return;
-      }
-
-      toast.success('Login exitoso! ingresando a la app')
-
-      localStorage.setItem('token', req.data.token)
-      Cookies.set("token", req.data.token);
-
-      router.replace("home");
-
-      console.log('by the way')
-
-    } else {
-      toast.error(req?.message || 'Error desconocido (3)')
-
-      clearSession()
-    }
+    signinAction({ email: data.emailOrUsername, password: data.password })
   }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="bg-gray-50">
+      <Card>
         <CardHeader>
           <CardTitle className="text-lg">Ingresa a tu cuenta</CardTitle>
           <CardDescription>

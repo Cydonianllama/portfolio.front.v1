@@ -57,21 +57,10 @@
   --color-destructive-foreground: var(--destructive-foreground);
 }
 
-@theme {
-  --color-ui-er-card: var(--color-gray-700);
-
-  /* landing */
-  --color-brand-primary: var(--color-orange-500);
-  --color-landing-emphasize: var(--color-orange-400);
-  --color-landing: var(--color-gray-100);
-  --color-landing-cta-card: var(--color-orange-500);
-}
-
-
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(40.167% 0.00005 271.152);
-  --card: oklch(1 0 0);
+  --card: oklch(99.107% 0.00011 271.152);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -85,8 +74,8 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(52.209% 0.20146 26.246);
   --border: oklch(91.965% 0.00106 11.735); /* oklch(0.922 0 0) */
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --input: oklch(90.365% 0.0001 271.152);
+  --ring: oklch(70.9% 0.00008 271.152);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -154,6 +143,18 @@
   --invert: var(--color-zinc-700);
   --invert-foreground: var(--color-zinc-50);
 }
+
+
+@theme {
+  --color-ui-er-card: var(--color-gray-700);
+
+  /* landing */
+  --color-brand-primary: var(--color-orange-500);
+  --color-landing-emphasize: var(--color-orange-400);
+  --color-landing: var(--color-gray-100);
+  --color-landing-cta-card: var(--color-orange-500);
+}
+
 
 @layer base {
   * {

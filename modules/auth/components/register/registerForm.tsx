@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, RegisterSchema } from "../../schemas/register-form.schema"
@@ -29,11 +29,10 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { InfoIcon } from "lucide-react"
-import { useAuthCydoStore } from "../../store/store"
+import { useAuthCydoStore } from "../../store/authStore"
 
 // ({ ...props }: React.ComponentProps<typeof Card>)
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type SignupFormProps = {
   handleRegister: (data: RegisterSchema) => void;
 }

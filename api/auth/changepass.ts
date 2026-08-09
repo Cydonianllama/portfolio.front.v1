@@ -1,6 +1,3 @@
-
-// ______________ Service
-
 import { api } from '@/setup/axios'
 import { ResponseApi } from '@/types/api/response';
 import axios from 'axios'

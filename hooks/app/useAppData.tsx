@@ -1,5 +1,5 @@
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
-import { useAuthCydoStore } from "@/modules/auth/store/store"
+import { useAuthCydoStore } from "@/modules/auth/store/authStore"
 
 //
 // Cuando requiera la data compartida desde la aplicación

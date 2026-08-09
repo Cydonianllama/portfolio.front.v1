@@ -9,9 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Spinner } from "@/components/ui/spinner"
-import { FormForgetPassword, RequestForgetPasswordSchema } from "./FormForgetPassword"
-import { useLogin } from "./store.login"
+import { FormForgetPassword } from "./formForgetPassword"
+import { useLogin } from "../../store/loginStore"
+import { RequestForgetPasswordSchema } from "../../schemas/forgetpassSchema"
 
 type DialogForgetPasswordProps = {
   handleForgetPass: (data: RequestForgetPasswordSchema) => void

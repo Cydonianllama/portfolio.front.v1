@@ -1,69 +1,23 @@
 'use client'
 
-import { useAppData } from "@/hooks/app/useAppData";
-import { SignupForm } from "./register-form";
+import { SignupForm } from "./registerForm";
 import { RegisterSchema } from "../../schemas/register-form.schema";
-import { RegisterUser } from "../../services/auth.service";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { useInvite } from "@/modules/invite/store";
-import { useAuthCydoStore } from "../../store/store";
+import { useAuthActions } from "../../actions/useAuthActions";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type RegisterScreenProps = {
-
-}
+type RegisterScreenProps = {}
 
 export const RegisterScreen = ({ }: RegisterScreenProps) => {
-  const inviteStore = useInvite()
-  const appData = useAppData()
-  const router = useRouter()
-  const authStore = useAuthCydoStore()
+  const { registerAction } = useAuthActions()
 
   const HandleRegister = async (data: RegisterSchema) => {
-    console.log('HandleRegister')
-    try {
-      authStore.setState({ proccesingRegister: true })
-      const req = await RegisterUser({
-        email: data.email,
-        password: data.password,
-        fullname: data.fullname
-      })
-
-      if (!req) {
-        toast.error('[Register error 1]')
-        return;
-      }
-
-      if (!req?.status) {
-        toast.error(req.message || '[Register error 2]')
-        return;
-      }
-
-      if (req?.data.token) {
-        toast.success('[Registro exitoso]')
-        localStorage.setItem('token', req.data.token)
-        Cookies.set("token", req.data.token);
-        router.replace("/verify");
-      }
-
-    } catch (error) {
-
-    } finally {
-      authStore.setState({ proccesingRegister: false })
-    }
+    registerAction(data)
   }
 
   return (
-    <>
-      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-        <div className="w-full max-w-sm bg-gray-50">
-          <SignupForm
-            handleRegister={HandleRegister}
-          />
-        </div>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-background">
+      <div className="w-full max-w-sm">
+        <SignupForm handleRegister={HandleRegister} />
       </div>
-    </>
+    </div>
   )
 }

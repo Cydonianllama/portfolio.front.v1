@@ -6,7 +6,7 @@ import { useCallback } from "react"
 import { useAppData } from "../../../hooks/app/useAppData"
 import { UpdateUser } from "@/api/user/user.api"
 import { useWorkspaceSelectionStore } from "@/modules/app/stores/workspaceStore"
-import { useAuthCydoStore } from "@/modules/auth/store/store"
+import { useAuthCydoStore } from "@/modules/auth/store/authStore"
 
 export const useSettingsActions = () => {
   const { user, workspace } = useAppData()

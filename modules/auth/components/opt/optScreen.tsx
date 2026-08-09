@@ -7,7 +7,6 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-
 import {
   Card,
   CardAction,
@@ -19,60 +18,22 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { toast } from "sonner"
-import Cookies from "js-cookie";
 import { Spinner } from "@/components/ui/spinner"
-import { useRouter } from "next/navigation";
-import { sleep } from "@/backoffice/automation/utils/sleep"
 import { useAppData } from "@/hooks/app/useAppData"
-import { VerifyAccount } from "../../services/auth.service"
-import { useInvite } from "@/modules/invite/store";
+import { useAuthActions } from "../../actions/useAuthActions"
 
 export const OPTSection = () => {
-  const inviteStore = useInvite()
   const appData = useAppData()
-  const router = useRouter()
 
   const [verifying, setVerifying] = useState(false)
   const [opt, setopt] = useState('')
 
+  const { verifyAccountAction } = useAuthActions()
+
   const VerifyAccountAction = async () => {
     setVerifying(true)
-    try {
-      console.log('VerifyAccountAction')
-      await sleep(2000);
-
-      const reqVerify = await VerifyAccount({ opt: opt })
-
-      if (!reqVerify) {
-        toast.error('[Error 1]')
-        return;
-      }
-
-      if (!reqVerify.status) {
-        toast.error('[Error 2]')
-        return;
-      }
-
-      if (reqVerify.data.token) {
-        toast.success('[Cuenta exitosamente verificada]')
-        localStorage.setItem('token', reqVerify.data.token)
-        Cookies.set("token", reqVerify.data.token);
-        
-        if (inviteStore.invitationInformation){
-          // si hay invitacion redirigir en invite
-          router.replace(`/invite?invitationId=${inviteStore.invitationInformation.invitation?.id}`);
-        } else {
-          // si no hay invitación redirigir home
-          router.replace("home");
-        }
-      }
-
-    } catch (ex) {
-      setVerifying(false)
-    } finally {
-      setVerifying(false)
-    }
+    await verifyAccountAction({ opt: opt })
+    setVerifying(false)
   }
 
   return <>

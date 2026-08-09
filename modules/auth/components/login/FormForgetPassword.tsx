@@ -3,19 +3,17 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { useState } from "react"
-import { useForm } from "react-hook-form";
+import { DialogFooter } from "@/components/ui/dialog"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-// actionName
-// HandleToProcess
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+import { useLogin } from "../../store/loginStore"
+import { ForgetPasswordSchema, RequestForgetPasswordSchema } from "../../schemas/forgetpassSchema"
 type FormForgetPasswordProps = {
   handleForgetPass: (data: RequestForgetPasswordSchema) => void
 }
 
-export const FormForgetPassword = ({ handleForgetPass }: FormForgetPasswordProps) => {
+export function FormForgetPassword({ handleForgetPass }: FormForgetPasswordProps) {
 
   const loginStore = useLogin()
 
@@ -39,7 +37,6 @@ export const FormForgetPassword = ({ handleForgetPass }: FormForgetPasswordProps
   }
 
   return <>
-
     <FieldGroup>
       <Field>
         <Label>Email</Label>
@@ -54,7 +51,6 @@ export const FormForgetPassword = ({ handleForgetPass }: FormForgetPasswordProps
         )}
       </Field>
     </FieldGroup>
-
     <DialogFooter>
       <Button variant={'outline'} onClick={() => { loginStore.setState({ open: false }) }}>Cancelar</Button>
       <Button disabled={loginStore.processing ? true : false} onClick={handleSubmit(HandleToProcess)} >
@@ -62,16 +58,6 @@ export const FormForgetPassword = ({ handleForgetPass }: FormForgetPasswordProps
         Validar envío de correo
       </Button>
     </DialogFooter>
-
   </>
 }
 
-import { z } from "zod/v3";
-import { useLogin } from "./store.login"
-import { DialogFooter } from "@/components/ui/dialog"
-
-export const ForgetPasswordSchema = z.object({
-  email: z.string().email().trim().min(1, "Debe tener al menos 1 caracteres").max(200)
-});
-
-export type RequestForgetPasswordSchema = z.infer<typeof ForgetPasswordSchema>;

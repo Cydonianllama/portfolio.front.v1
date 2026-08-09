@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WorkspaceDropdown } from '../../modules/app/components/workspacesDropdown';
-import { useAuthCydoStore } from '@/modules/auth/store/store';
+import { useAuthCydoStore } from '@/modules/auth/store/authStore';
 import { DialogSettings } from '@/modules/settings/components/DialogSettings';
 import { useSettingsStore } from '@/modules/settings/store/settingsStore';
 import { Header } from './Header';

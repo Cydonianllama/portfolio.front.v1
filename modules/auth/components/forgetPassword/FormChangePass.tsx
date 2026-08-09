@@ -3,22 +3,17 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
-import { useState } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-// actionName
-// HandleToProcess
+import { useAuthActions } from "../../actions/useAuthActions"
+import { RequestchangePassSchema, changePassSchema } from "../../schemas/changepassSchema"
+import { useForgetPass } from "../../store/forgetPassStore"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type FormChangePassProps = {
-
-}
+type FormChangePassProps = {}
 
 export const FormChangePass = ({ }: FormChangePassProps) => {
+  const { changePasswordAction } = useAuthActions()
   const forgetPasswordStore = useForgetPass()
-  const [proccesing, setProccesing] = useState(false)
-  const router = useRouter();
 
   const {
     register,
@@ -36,27 +31,7 @@ export const FormChangePass = ({ }: FormChangePassProps) => {
   });
 
   const HandleToProcess = async (data: RequestchangePassSchema) => {
-    try {
-      forgetPasswordStore.setState({ changing: true })
-      const reqChange =  await ChangePassword({ password: data.password, validationCode: forgetPasswordStore.code })
-
-      if (!reqChange){
-        toast.error('Error inesperado')
-        return;
-      }
-
-      if (!reqChange.status){
-        toast.error(reqChange.message || '')
-        return;
-      }
-
-      toast.success('Ingresar con su nueva contraseña')
-      router.replace("login");
-    } catch (error) {
-      
-    } finally {
-      forgetPasswordStore.setState({ changing: false })
-    }
+    changePasswordAction({ password: data.password })
   }
 
   return <>
@@ -88,25 +63,11 @@ export const FormChangePass = ({ }: FormChangePassProps) => {
         )}
       </Field>
     </FieldGroup>
-
     <div className="flex justify-end items-center py-2">
       <Button disabled={forgetPasswordStore.changing ? true : false} onClick={handleSubmit(HandleToProcess)} >
         {forgetPasswordStore.changing && <Spinner data-icon="inline-start" />}
         Cambiar contraseña
       </Button>
     </div>
-
   </>
 }
-
-import { z } from "zod/v3";
-import { ChangePassword } from "./service.changepass"
-import { useForgetPass } from "./store"
-import { toast } from "sonner"
-
-export const changePassSchema = z.object({
-  password: z.string().trim().min(1, "Debe tener al menos 1 caracteres").max(200),
-  passwordConfirm: z.string().trim().min(1, "Debe tener al menos 1 caracteres").max(200),
-});
-
-export type RequestchangePassSchema = z.infer<typeof changePassSchema>;

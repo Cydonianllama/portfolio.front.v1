@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, PropsWithChildren } from "react";
 import { ListWorkspacesUserService } from "../services/list-workspaces-user";
 import { useWorkspaceSelectionStore } from "../stores/workspaceStore";
-import { useAuthCydoStore } from "@/modules/auth/store/store";
+import { useAuthCydoStore } from "@/modules/auth/store/authStore";
 import { UserDTO } from "@/api/user/user.dto";
 import { UseWorkspacesAction } from '@/modules/hooks/useWorkspacesActions';
 import { WorkspaceDTO } from '@/api/workspace/workspace.dto';

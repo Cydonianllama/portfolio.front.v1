@@ -10,7 +10,6 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar"
 import { useRouter } from 'next/navigation'
-import { Logout } from '@/modules/auth/services/auth.service';
 
 import {
   DropdownMenu,
@@ -21,10 +20,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useAuthCydoStore } from "@/modules/auth/store/store"
+import { useAuthCydoStore } from "@/modules/auth/store/authStore"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut, Settings, User } from "lucide-react"
 import { useSettingsStore } from "@/modules/settings/store/settingsStore"
+import { Logout } from "@/api/auth/logout"
 
 export const Footer = () => {
   const router = useRouter()
