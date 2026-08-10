@@ -10,6 +10,7 @@ import { DialogUpdateVariable } from "./components/variables/dialogUpdateVariabl
 import { VariableList_, VariableFooterTable } from "./components/variables/tableVariable"
 import { FolderSection } from "./folderScreen"
 import { useVariableStore } from "./store/variableStore"
+import { useEffect } from "react"
 
 //___________ ___________ Main
 
@@ -99,7 +100,3 @@ export const VariableSection = ({ }: VariableProps) => {
     <DialogConfirmDelete />
   </>
 }
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.")
-}
-

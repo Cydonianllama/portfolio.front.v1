@@ -208,8 +208,8 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
             <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div>
             {data.name}
           </ItemTitle>
-          <LuDot />
-          <span className="text-gray-500">x registros</span>
+          {/* <LuDot />
+          <span className="text-gray-500">x registros</span> */}
         </div>
         {/* <ItemDescription>
           A simple item with title and description.

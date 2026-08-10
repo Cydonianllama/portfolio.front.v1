@@ -1,4 +1,4 @@
-import { StepsInitItem } from "../CardStepVariantDefault/steps.init";
+import { StepsInitItem } from "../cardStepVariantDefault/steps.init";
 
 export const stepsUX: StepsInitItem[] = [
   {

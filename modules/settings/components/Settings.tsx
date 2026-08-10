@@ -26,10 +26,13 @@ import { MdOutlinePayment } from "react-icons/md";
 import { TagsSection } from "./TagsSection/TagsSection";
 import { ModulesSection } from "./ModulesSection/modulesSection";
 import { GoDatabase } from "react-icons/go";
-import { BsChatDots } from "react-icons/bs";
+import { BsChatDots, BsMeta } from "react-icons/bs";
 import { settingsInfo, tabsSettings } from "../catalog";
 import { SettingsContentLayout } from "./settingsContentLayout";
 import { WidgetScreen } from "@/modules/widget/components";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { PiTelegramLogoDuotone } from "react-icons/pi";
+import { RiTiktokLine } from "react-icons/ri";
 
 export const Settings = () => {
   return <>
@@ -77,15 +80,39 @@ export const Settings = () => {
             </TabsTrigger>
           </div>
 
+          <div className="flex flex-col gap-2 w-full ">
+            <div className="font-semibold text-sm">Integraciones</div>
+            <TabsTrigger value="whatsapp-settings" className="justify-start gap-2">
+              <FaWhatsapp className="size-4" />
+              Whatsapp
+            </TabsTrigger>
+            <TabsTrigger value="telegram-settings" className="justify-start gap-2">
+              <PiTelegramLogoDuotone className="size-4" />
+              Telegram
+            </TabsTrigger>
+            <TabsTrigger value="meta-settings" className="justify-start gap-2">
+              <BsMeta className="size-4"/>
+              Meta
+            </TabsTrigger>
+            <TabsTrigger value="instragram-settings" className="justify-start gap-2">
+              <FaInstagram className="size-4"/>
+              Instragram
+            </TabsTrigger>
+            <TabsTrigger value="tiktok-settings" className="justify-start gap-2">
+              <RiTiktokLine className="size-4"/>
+              Tiktok
+            </TabsTrigger>
+          </div>
+
           <div className="flex flex-col gap-2 w-full">
-            <div className="font-semibold text-sm">Billing settings</div>
+            <div className="font-semibold text-sm">Ajustes de plan</div>
             <TabsTrigger value="plans" className="justify-start gap-2">
               <FiCodesandbox className="size-4" />
-              Plans
+              Planes
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="justify-start gap-2">
               <MdOutlinePayment className="size-4" />
-              Subscriptions
+              Subscripción
             </TabsTrigger>
           </div>
         </TabsList>

@@ -166,13 +166,13 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
             onClick={() => { router.push(`/automation/${row.original.id}`) }}
             className="flex items-center gap-2 min-w-0 cursor-pointer"
           >
-            <div className="flex items-center gap-1 shrink-0">
+            {/* <div className="flex items-center gap-1 shrink-0">
               {triggerPlatforms.map(platform => (
                 <span key={platform} className="h-6 w-6 rounded-md border bg-mist-50 flex items-center justify-center text-xs text-muted-foreground">
                   {PlatformIcon[platform as ConversationPlatform]}
                 </span>
               ))}
-            </div>
+            </div> */}
             <span className="truncate text-muted-foreground hover:text-foreground text-md font-semibold">{row.original.title}</span>
           </div>
         )

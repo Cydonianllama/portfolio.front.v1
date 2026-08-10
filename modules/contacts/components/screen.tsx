@@ -57,6 +57,8 @@ import { DialogManageConversations } from "./whatchconversations/dialog.manage.c
 import { SectionGrid } from "./section.grid";
 import { MdOutlineGridView, MdOutlineTableRows } from 'react-icons/md';
 import { LayoutScreen } from "@/components/layoutScreen";
+import { AsideContacts } from "./asidecontacts/asideContacts";
+import { ButtonMasiveActions } from "./buttonMasiveActions";
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
@@ -313,7 +315,6 @@ export const ConctatsScreen = () => {
         moduleState.setInfoCreationConvContact({ integrations: req.data.list || [] })
       }
 
-
     } catch (ex) {
 
     } finally {
@@ -328,11 +329,11 @@ export const ConctatsScreen = () => {
   }, [moduleState.infoCreationConvContact.isOpen])
 
   return (<>
-    <LayoutScreen layoutFor="table" domConfig={{ className: 'flex flex-col app-section space-y-4' }}>
+    <LayoutScreen layoutFor="compactmodule" domConfig={{ className: 'flex flex-col app-section space-y-4' }}>
 
       {/* start::header */}
-      <div className="flex justify-between items-center pt-4">
-        <h1 className="text-xl font-semibold text-foreground">Administracion de contactos</h1>
+      <div className="flex justify-between items-center pt-4 px-3">
+        <h1 className="text-xl font-semibold text-foreground">Contactos</h1>
         <div>
           <div className="flex gap-2 items-center">
             <div>
@@ -358,9 +359,10 @@ export const ConctatsScreen = () => {
               {moduleState.viewMode == 'table' ? <MdOutlineGridView /> : <MdOutlineTableRows />}
             </Button>
             <Button onClick={HandleToOpenAddItem}>Agregar contacto</Button>
-            {/* {((moduleState.itemsSelected?.length || 0) > 0) && (<>
-            <span>{moduleState.itemsSelected?.length}</span> elementos seleccionados.
-          </>)} */}
+            {((moduleState.itemsSelected?.length || 0) > 0) && (<>
+              <ButtonMasiveActions />
+              {/* <span>{moduleState.itemsSelected?.length}</span> elementos seleccionados. */}
+            </>)}
           </div>
         </div>
       </div>
@@ -368,33 +370,37 @@ export const ConctatsScreen = () => {
       {/* end::header filter  */}
 
       {/*  */}
-      <div className="">
+      <div className="flex flex-1">
+        <div className="w-60 h-full">
+          <AsideContacts />
+        </div>
+        <div className="flex-1 px-5">
 
-        {/* start::table */}
-        {moduleState.viewMode == 'table' && (<>
-          <SectionTable
-            list={data?.data.list || []}
-            loading={isFetching}
-            hasError={(!data?.status || isError) ? true : false}
-            onChangeSelection={OnChangeSelection}
-            OnClickEmptyCreate={OnClickEmptyCreate}
-            OnClickRetry={OnClickRetry}
-          />
-        </>)}
-        {moduleState.viewMode == 'grid' && (<>
-          <SectionGrid
-            list={data?.data.list || []}
-            loading={isFetching}
-            hasError={(!data?.status || isError) ? true : false}
-            OnClickEmptyCreate={OnClickEmptyCreate}
-            OnClickRetry={OnClickRetry}
-          />
-        </>)}
-        {/* end::table */}
+          {/* start::table */}
+          {moduleState.viewMode == 'table' && (<>
+            <SectionTable
+              list={data?.data.list || []}
+              loading={isFetching}
+              hasError={(!data?.status || isError) ? true : false}
+              onChangeSelection={OnChangeSelection}
+              OnClickEmptyCreate={OnClickEmptyCreate}
+              OnClickRetry={OnClickRetry}
+            />
+          </>)}
+          {moduleState.viewMode == 'grid' && (<>
+            <SectionGrid
+              list={data?.data.list || []}
+              loading={isFetching}
+              hasError={(!data?.status || isError) ? true : false}
+              OnClickEmptyCreate={OnClickEmptyCreate}
+              OnClickRetry={OnClickRetry}
+            />
+          </>)}
+          {/* end::table */}
 
+        </div>
       </div>
       {/*  */}
-
 
       {/* start::footer table */}
       <SectionFooterTable
@@ -404,11 +410,8 @@ export const ConctatsScreen = () => {
       />
       {/* end::footer table */}
 
-
     </LayoutScreen>
     {/* end::header */}
-
-
 
 
     {/* start::Dialogs */}

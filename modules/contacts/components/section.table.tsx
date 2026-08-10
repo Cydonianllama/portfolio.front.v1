@@ -45,20 +45,18 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useContactStore } from '../store/store';
 
 // icons
-import { MdOutlineChat, MdOutlineEdit, MdOutlineMessage } from 'react-icons/md';
-import { FiTrash2 } from 'react-icons/fi';
+import { MdOutlineChat, MdOutlineMessage } from 'react-icons/md';
 import { EmptyStateComponent } from '../shared/Empty';
 import { SpinnerListing } from '../shared/Listing';
 import { ErrorStateComponent } from '../shared/Error';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { ContactDTO } from '@/api/contacts/contacts.dto';
-import { FaCheck, FaRegCopy } from 'react-icons/fa';
-import { ShowcaseId } from '@/components/cydocompos';
 import { RiChatSearchLine } from 'react-icons/ri';
 import { useWatchConversations } from '../store/store.watch.conversations';
 import { IntegrationDesignConfiguration } from '@/configs/integration.design';
 import { ReactElement } from 'react';
+import { FaRegUser } from 'react-icons/fa';
 
 const MAX_VISIBLE_CHATS = 3;
 
@@ -97,7 +95,7 @@ export const ContactChatsBadges = ({ contact }: { contact: ContactDTO }) => {
       {overflow > 0 && (
         <Button
           variant={'outline'}
-          size={'sm'}
+          size={'xs'}
           className="h-6 rounded-md px-2 text-xs"
           onClick={HandleOpenChats}
           title="Ver todos los chats"
@@ -109,40 +107,43 @@ export const ContactChatsBadges = ({ contact }: { contact: ContactDTO }) => {
   )
 }
 
-
-
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={table.getIsAllPageRowsSelected()}
-  //       onCheckedChange={(value) =>
-  //         table.toggleAllPageRowsSelected(!!value)
-  //       }
-  //       aria-label="Seleccionar todos"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) =>
-  //         row.toggleSelected(!!value)
-  //       }
-  //       aria-label="Seleccionar fila"
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
-  // {
-  //   accessorKey: "id",
-  //   header: "Id",
-  //   cell: (data) => {
-  //     return (<ShowcaseId id={data.row.original.id} />)
-  //   }
-  // },
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Seleccionar todos"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) =>
+          row.toggleSelected(!!value)
+        }
+        aria-label="Seleccionar fila"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "avatar",
+    header: "Avatar",
+    cell: (data) => {
+      return (<>
+        <div className='h-12 w-12 rounded-full bg-gray-100 flex font-semibold items-center justify-center overflow-hidden'>
+          <img src={'https://i.pinimg.com/1200x/e4/64/3c/e4643c269468b87324f1c3c120db13cd.jpg'} alt="" />
+          <FaRegUser className='text-gray-300' />
+        </div>
+      </>)
+    }
+  },
   {
     accessorKey: "fullname",
     header: "Nombre"
@@ -155,13 +156,13 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
     accessorKey: "mainEmail",
     header: "Correo electrónico"
   },
-  {
-    id: "chats",
-    header: "Chats",
-    cell: ({ row }) => (
-      <ContactChatsBadges contact={row.original} />
-    )
-  },
+  // {
+  //   id: "chats",
+  //   header: "Chats",
+  //   cell: ({ row }) => (
+  //     <ContactChatsBadges contact={row.original} />
+  //   )
+  // },
   {
     accessorKey: "mainDirection",
     header: "Dirección"
@@ -201,9 +202,9 @@ export const ActionsRow = ({ data }: { data: CellContext<ContactDTO, unknown> })
   const moduleState = useContactStore();
   const watchConversationStore = useWatchConversations()
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 items-center">
       <DropdownMenu>
-        <DropdownMenuTrigger render={<Button size={'icon-sm'} variant="ghost"><HiDotsHorizontal /></Button>}>
+        <DropdownMenuTrigger render={<Button size={'icon-xs'} variant="ghost"><HiDotsHorizontal /></Button>}>
         </DropdownMenuTrigger>
         <DropdownMenuContent className={'w-45'}>
           <DropdownMenuGroup>
@@ -341,7 +342,7 @@ export const SectionTable = (data: SectionTableProps) => {
                 {table.getRowModel().rows.map((row, index) => (
                   <TableRow className=' border-b' key={row.id}>
                     {row.getVisibleCells().map((cell, cellIdx) => (
-                      <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''}  py-1 text-foreground`} key={cellIdx}>
+                      <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''}  py-1 text-foreground h-15`} key={cellIdx}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -360,6 +361,3 @@ export const SectionTable = (data: SectionTableProps) => {
     </>)}
   </>)
 }
-
-
-// *:border-border [&>:not(:last-child)]:border-r 
