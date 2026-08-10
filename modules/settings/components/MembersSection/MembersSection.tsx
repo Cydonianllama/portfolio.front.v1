@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import { MembersSection_ } from "./members_scratch";
+import { MembersSection_ } from "./members";
 
 type SimpleTablev1Props = {
   list: Array<any>
@@ -10,7 +10,5 @@ type SimpleTablev1Props = {
 }
 
 export const MembersSection = ({ list, loading, hasError }: SimpleTablev1Props) => {
-  return (<>
-    <MembersSection_ />
-  </>)
+  return (<MembersSection_ />)
 }

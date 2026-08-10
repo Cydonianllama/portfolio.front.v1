@@ -274,9 +274,9 @@ export const AutomationTable_ = ({ handleDelete, handleEdit, list, isLoading, is
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows.map((row, index) => (
-                <TableRow key={row.id}>
+                <TableRow  key={row.id}>
                   {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} text-muted-foreground py-1`} key={cellIdx}>
+                    <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} text-muted-foreground py-1 min-h-10`} key={cellIdx}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

@@ -56,6 +56,7 @@ import { UseConversacionHookActions } from "../hooks/hook.actions.conversation";
 import { DialogManageConversations } from "./whatchconversations/dialog.manage.conversations";
 import { SectionGrid } from "./section.grid";
 import { MdOutlineGridView, MdOutlineTableRows } from 'react-icons/md';
+import { LayoutScreen } from "@/components/layoutScreen";
 
 export const ConctatsScreen = () => {
   UseAppInitializer({ moduleName: 'contacts' })
@@ -327,7 +328,7 @@ export const ConctatsScreen = () => {
   }, [moduleState.infoCreationConvContact.isOpen])
 
   return (<>
-    <div className="relative w-full h-full flex flex-col app-section space-y-4">
+    <LayoutScreen layoutFor="table" domConfig={{ className: 'flex flex-col app-section space-y-4' }}>
 
       {/* start::header */}
       <div className="flex justify-between items-center pt-4">
@@ -404,7 +405,7 @@ export const ConctatsScreen = () => {
       {/* end::footer table */}
 
 
-    </div>
+    </LayoutScreen>
     {/* end::header */}
 
 

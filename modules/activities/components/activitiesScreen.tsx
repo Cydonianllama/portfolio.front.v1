@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { ActivityEntityType } from "@/api/activity/dto";
 import { useActivities } from "../store/activitiesStore";
 import { useShowAllActivities } from "../hooks/useShowAllActivities";
+import { LayoutScreen } from "@/components/layoutScreen";
 
 const entityFilterOptions = [
   { id: 'all', label: 'Todas' },
@@ -37,35 +38,32 @@ export const ActivitiesScreen = ({ }: ActivitiesScreenProps) => {
   }, [appData.workspace, show])
 
   return (
-    <>
-      <div className="app-section space-y-4">
-        <div className="flex justify-between items-center gap-2">
-          <div>
-            <h1 className="text-xl text-foreground font-semibold">Listado de actividades</h1>
-            <p className="text-sm text-muted-foreground">
-              {activitiesStore.list.length} actividades registradas en este workspace
-            </p>
+    <LayoutScreen layoutFor="list" domConfig={{}}>
+      <div className="flex justify-between items-center gap-2">
+        <div>
+          <h1 className="text-xl text-foreground font-semibold">Listado de actividades</h1>
+          <p className="text-sm text-muted-foreground">
+            {activitiesStore.list.length} actividades registradas en este workspace
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-cente gap-2">
+            <Switch onCheckedChange={() => { setShow(!show) }} checked={show} id="switch-show-all-activity" />
+            <label htmlFor="switch-show-all-activity" className="text-xs text-muted-foreground cursor-pointer select-none">
+              Show all activity
+            </label>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-cente gap-2">
-              <Switch onCheckedChange={() => { setShow(!show)  }} checked={show} id="switch-show-all-activity" />
-              <label htmlFor="switch-show-all-activity" className="text-xs text-muted-foreground cursor-pointer select-none">
-                Show all activity
-              </label>
-            </div>
-            {/* <Filter
+          {/* <Filter
               options={entityFilterOptions}
               onSelect={(filterId, valueId) => {
                 activitiesStore.setEntityFilter(valueId as ActivityEntityType | 'all')
               }}
             /> */}
-          </div>
-        </div>
-        <div>
-          <ListActivitiesComponent />
         </div>
       </div>
-
-    </>
+      <div>
+        <ListActivitiesComponent />
+      </div>
+    </LayoutScreen>
   )
 }

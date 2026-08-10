@@ -250,7 +250,7 @@ export const ActivityItem = ({ data, isLast }: ActivityItemProps) => {
               {item.leftSide.initials}
             </div>
           </>)}
-          <p className="text-sm">
+          <p className="text-xs">
             {item.text.map((el, index) => (<TextComponent key={index} data={el} />))}
           </p>
           <LuDot className="text-muted-foreground" />

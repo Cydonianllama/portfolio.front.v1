@@ -1,16 +1,8 @@
-import { useAppData } from "@/hooks/app/useAppData";
-import { TagSection } from "./scratch_tags";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TagsSectionProps = {
-  
-}
+import { TagSection } from "./screen";
+
+type TagsSectionProps = {}
 
 export const TagsSection = ({  }: TagsSectionProps) => {
-  const appData = useAppData()
 
-  return (
-    <>
-      <TagSection />
-    </>
-  )
+  return (<TagSection />)
 }

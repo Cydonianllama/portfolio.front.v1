@@ -94,7 +94,7 @@ export const ListActivitiesComponent = () => {
             {grouped.map(({ group, items }) => (
               <div key={group}>
                 <div className="sticky top-0 z-10 flex items-center gap-2 py-1 mb-2 bg-background/90 backdrop-blur">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-foreground">
                     {GROUP_LABELS[group]}
                   </span>
                   <span className="inline-flex items-center justify-center rounded-full bg-mist-50 border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
