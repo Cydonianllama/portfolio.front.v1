@@ -37,17 +37,17 @@ export const EntityScreen = ({ }: EntityProps) => {
   }, [appData.workspace?.id])
 
   return <>
-    <div className="p-2">
+    <div className="">
       <div className="flex justify-between gap-2 items-center mb-2">
         <div>
           <span className="text-foreground text-md font-semibold">Listado de bases de datos</span>
         </div>
         <div className="flex gap-2 items-center">
-          <Button disabled={EntityStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
+          <Button disabled={EntityStore.listing ? true : false} variant={'outline'} onClick={() => { InitialList() }}>
           Refresar
         </Button>
         <Button onClick={() => { EntityStore.setCreateState({ openCreate: true }) }}>
-          Crear base de dato
+          Crear base de datos
         </Button>
         </div>
       </div>

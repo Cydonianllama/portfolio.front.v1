@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FiActivity, FiHome } from "react-icons/fi";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { LuUsersRound } from "react-icons/lu";
 import { TiFlowMerge } from "react-icons/ti";
 
@@ -35,5 +36,10 @@ export const SidebarItems: Array<SidebarItemProps> = [
     title: 'Flujos conversacionales',
     goto: '/automation',
     icon: <TiFlowMerge />
+  },
+  {
+    title: 'Widgets',
+    goto: '/widget',
+    icon: <IoChatbubbleEllipsesOutline />
   }
 ]

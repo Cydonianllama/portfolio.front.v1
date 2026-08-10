@@ -1,6 +1,6 @@
 import { toast } from "sonner"
 import { CreateTagRequestDTO, DeleteTagRequestDTO, GetTagsRequestDTO, TagDTO, UpdateTagRequestDTO } from "@/api/tags/tags.dto";
-import { CreateTag, UpdateTag, GetTags, DeleteTag } from "@/api/tags/tags.api";
+import { CreateTag, UpdateTag, GetTags, DeleteTag, ReorderTags } from "@/api/tags/tags.api";
 import { useCallback } from "react";
 import { useTagStore } from "../store/tagStore";
 
@@ -128,10 +128,26 @@ export const useTagActions = ({ }: UseTagActionsProps) => {
     }
   }, [TagStore.list])
 
+  const reorderTagAction = useCallback(async (workspaceId: string, orderedIds: string[]) => {
+    try {
+      const list = [...TagStore.list]
+      const orderedList = orderedIds.map((id, index) => {
+        const found = list.find(el => el.id === id)
+        return found ? { ...found, index } : null
+      }).filter(Boolean) as TagDTO[]
+      TagStore.setListState({ list: orderedList })
+
+      await ReorderTags(workspaceId, orderedIds)
+    } catch (ex) {
+      toast.error('Error reordenando etiquetas')
+    }
+  }, [TagStore.list])
+
   return {
     createTagAction,
     updateTagAction,
     listTagAction,
     deleteTagAction,
+    reorderTagAction,
   }
 }

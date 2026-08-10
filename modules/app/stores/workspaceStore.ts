@@ -21,6 +21,7 @@ interface WorkspaceSelectionState {
   // create workspace
   workspaceCreationState: workspaceCreationState,
   setworkspaceCreationState: (workspaceId: Partial<workspaceCreationState>) => void;
+  reorderWorkspaces: (orderedIds: string[]) => void;
 }
 
 export const useWorkspaceSelectionStore = create<WorkspaceSelectionState>((set) => ({
@@ -52,5 +53,12 @@ export const useWorkspaceSelectionStore = create<WorkspaceSelectionState>((set) 
         ...data
       }
     }
-  })
+  }),
+  reorderWorkspaces: (orderedIds) => set((state) => {
+    const ordered = orderedIds.map((id, index) => {
+      const found = state.workspaces.find(w => w.id === id)
+      return found ? { ...found, sortOrder: index } : null
+    }).filter(Boolean) as WorkspaceDTO[]
+    return { workspaces: ordered }
+  }),
 }));

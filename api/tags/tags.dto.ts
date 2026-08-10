@@ -1,6 +1,8 @@
 export interface TagDTO {
   id: string;
-  name: string
+  name: string;
+  color?: string;
+  index?: number;
 }
 
 // get one
@@ -24,7 +26,8 @@ export interface GetTagsResponseDTO {
 
 // update one
 export interface UpdateTagRequestDTO {
-  name: string;
+  name?: string;
+  color?: string;
   workspaceId: string;
 }
 
@@ -45,6 +48,7 @@ export interface DeleteTagResponseDTO {
 // create one
 export interface CreateTagRequestDTO {
   name: string;
+  color?: string;
   workspaceId: string;
 }
 

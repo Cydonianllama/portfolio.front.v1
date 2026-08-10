@@ -57,3 +57,15 @@ export const DeleteTag = async (data: DeleteTagRequestDTO): Promise<ResponseApi<
     return null
   }
 }
+
+export const ReorderTags = async (workspaceId: string, orderedIds: string[]): Promise<ResponseApi<any> | null> => {
+  try {
+    const req = await api.put(`/api/workspaces/${workspaceId}/tags/reorder`, { orderedIds });
+    return req.data;
+  } catch (ex) {
+    if (axios.isAxiosError(ex)) {
+      return ex.response?.data ?? null;
+    }
+    return null
+  }
+}

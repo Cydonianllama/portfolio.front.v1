@@ -17,6 +17,8 @@ export const useBreadCrumb = ({ module } : UserBreadCrumbProps) => {
       appStore.setBreadcrum([{ text: 'contactos', route: null }])
     } else if (module == 'home') {
       appStore.setBreadcrum([{ text: 'inicio', route: null }])
+    } else if (module == 'widget') {
+      appStore.setBreadcrum([{ text: 'widgets', route: null }])
     }
   }, [module])
 }

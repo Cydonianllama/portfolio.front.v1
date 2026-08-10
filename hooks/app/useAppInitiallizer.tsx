@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { UseScreenChatAction } from "../../modules/chat/actions/useScreenChatActions"
 import { useBreadCrumb } from "@/layouts/appLayout/hooks/useBreadcrumb"
 
-export type StaticModulesApp = 'chat' | 'contacts' | 'home'
+export type StaticModulesApp = 'chat' | 'contacts' | 'home' | 'widget'
 
 type UseAppInitializerPops = {
   moduleName: StaticModulesApp

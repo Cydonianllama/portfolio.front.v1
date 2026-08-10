@@ -9,6 +9,10 @@ interface TagStore {
   currentElementSelected: string | null
   pagination: ResponsePagination | null
 
+  // search
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+
   // create
   openCreate: boolean;
   creating: boolean;
@@ -32,6 +36,9 @@ interface TagStore {
 export const useTagStore = create<TagStore>((set) => ({
   currentElementSelected: null,
   pagination: null,
+  //search
+  searchQuery: '',
+  setSearchQuery: (query) => set((state) => ({ ...state, searchQuery: query })),
   //create
   openCreate: false,
   creating: false,

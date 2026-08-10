@@ -76,7 +76,8 @@ export function ChatAside() {
       onCreate={(data) => {
         conversationFilterActions.CreateConversationFilterAction({
           name: data.name || '',
-          workspaceId: workspaceSelectionStore.selectedWorkspaceId || ''
+          workspaceId: workspaceSelectionStore.selectedWorkspaceId || '',
+          icon: data.icon,
         })
       }}
     />
@@ -85,7 +86,7 @@ export function ChatAside() {
       open={conversationFilterStore.updateDialogOpen}
       setOpen={(open) => conversationFilterStore.setDialogs({ updateDialogOpen: open })}
       onUpdate={(data) => {
-        conversationFilterActions.UdpateConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '', name: data.name || '' })
+        conversationFilterActions.UdpateConversationFilterAction({ id: conversationFilterStore.currentItemInAction?.id || '', name: data.name || '', icon: data.icon })
       }}
       updating={conversationFilterStore.updating}
       data={conversationFilterStore.currentItemInAction || null}

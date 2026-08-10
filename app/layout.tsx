@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans } from "next/font/google";
 import { Toaster } from "sonner";
+import { GoogleAuthWrapper } from "@/components/GoogleAuthWrapper";
 
 import "./globals.css";
 
@@ -36,7 +37,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${notoSans.variable} h-full antialiased`}
     >
       <body className="h-screen">
-        {children}
+        <GoogleAuthWrapper>
+          {children}
+        </GoogleAuthWrapper>
         <Toaster richColors />
       </body>
     </html>

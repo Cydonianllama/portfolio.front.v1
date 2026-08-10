@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -15,8 +15,12 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 // formulario
 import { useForm } from "react-hook-form";
@@ -25,6 +29,8 @@ import {
   creationConversationFilterSchema,
   CreationConversationFilterSchema
 } from "../schemas/createConversationFilter.schema";
+import EmojiPicker from 'emoji-picker-react';
+
 export interface DialogCreateConversationFilterConfig {
   onCreate: (data: CreationConversationFilterSchema) => void
   open: boolean
@@ -33,6 +39,8 @@ export interface DialogCreateConversationFilterConfig {
 }
 
 export const DialogCreateConversationFilter = (config: DialogCreateConversationFilterConfig) => {
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -42,15 +50,19 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
     setValue
   } = useForm<CreationConversationFilterSchema>({
     resolver: zodResolver(creationConversationFilterSchema),
+    defaultValues: {
+      name: '',
+      icon: '',
+    }
   });
 
-  // para ver como los valores cambian
-  // console.log('FORM', watch())
+  const selectedIcon = watch('icon')
 
   useEffect(() => {
     if (!config.open) {
       reset({
-        name: ''
+        name: '',
+        icon: '',
       });
     }
   }, [config.open, reset]);
@@ -71,6 +83,24 @@ export const DialogCreateConversationFilter = (config: DialogCreateConversationF
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <FieldGroup>
+          <Field>
+            <Label>Icono</Label>
+            <Popover open={emojiPickerOpen} onOpenChange={setEmojiPickerOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" type="button" className="w-full justify-start">
+                  {selectedIcon ? <span className="text-lg">{selectedIcon}</span> : 'Seleccionar emoji'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <EmojiPicker
+                  onEmojiClick={(emojiData) => {
+                    setValue('icon', emojiData.emoji)
+                    setEmojiPickerOpen(false)
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </Field>
           <Field>
             <Label>Nombre</Label>
             <Input

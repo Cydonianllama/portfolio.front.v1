@@ -205,7 +205,7 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
 
         <div className="flex items-center gap-1.5">
           <ItemTitle className="font-semibold">
-            {/* <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div> */}
+            <div className={`h-2 w-2 rounded-full ${ColorsSelector.find(el => el.code == data.color)?.classname || 'bg-gray-500'}`}></div>
             {data.name}
           </ItemTitle>
           <LuDot />
@@ -217,7 +217,7 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
       </ItemContent>
       <ItemActions>
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="ghost" size={'icon'}><BiDotsHorizontalRounded /></Button>} />
+          <DropdownMenuTrigger render={<Button variant="ghost" size={'icon-xs'}><BiDotsHorizontalRounded /></Button>} />
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => {
@@ -233,7 +233,7 @@ export const SortableItem = ({ id, data, onClickDelete, onClickEdit }: SortableI
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem variant="destructive" onClick={() => {
+              <DropdownMenuItem  variant="destructive" onClick={() => {
                 HandleClickDelete(id, data)
               }}>
                 <TrashIcon />

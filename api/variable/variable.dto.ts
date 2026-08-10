@@ -31,6 +31,7 @@ export interface GetVariablesResponseDTO {
 // update one
 export interface UpdateVariableRequestDTO {
   name: string;
+  workspaceId: string;
 }
 
 export interface UpdateVariableResponseDTO {
@@ -49,6 +50,7 @@ export interface DeleteVariableResponseDTO {
 // create one
 export interface CreateVariableRequestDTO {
   name: string;
+    workspaceId: string;
 }
   
 export interface CreateVariableResponseDTO {

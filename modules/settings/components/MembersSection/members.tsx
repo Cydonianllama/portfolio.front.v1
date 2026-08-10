@@ -35,14 +35,19 @@ export const MembersSection_ = ({ }: MembersProps) => {
   }, [])
 
   return <>
-    <div className="p-2">
-      <div className="flex justify-end gap-2 items-center mb-2">
-        <Button disabled={MembersStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
-          Refresar
-        </Button>
-        <Button onClick={() => { MembersStore.setCreateState({ openCreate: true }) }}>
-          Agregar miembro
-        </Button>
+    <div className="">
+      <div className="flex justify-between gap-2 items-center mb-2">
+        <div className="text-foreground font-semibold text-md">
+          Listado de Miembros
+        </div>
+        <div className="flex items-center gap-2">
+          <Button disabled={MembersStore.listing ? true : false} variant={'outline'} onClick={() => { InitialList() }}>
+            Refresar
+          </Button>
+          <Button onClick={() => { MembersStore.setCreateState({ openCreate: true }) }}>
+            Agregar miembro
+          </Button>
+        </div>
       </div>
 
       <MembersTable_

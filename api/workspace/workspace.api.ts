@@ -36,3 +36,12 @@ export const DeleteWorkspace = async (data: DeleteWorkspaceDto) : Promise<Respon
   }
 }
 
+export const ReorderWorkspaces = async (userId: string, orderedWorkspaceIds: string[]) : Promise<ResponseApi<any> | null> => {
+  try{
+    const req = await api.put(`/api/users/${userId}/workspaces/reorder`, { orderedWorkspaceIds });
+    return req.data;
+  } catch (err) {
+    return null;
+  }
+}
+

@@ -1,12 +1,14 @@
 export interface ConversationFilterDTO {
   id: string;
-  name: string
+  name: string;
+  icon?: string;
 }
 
 // update
 export interface UpdateConversationFilterRequestDTO {
   id: string;
   name: string;
+  icon?: string;
 }
 
 export interface UpdateConversationFilterResponseDTO {
@@ -45,6 +47,7 @@ export interface DeleteConversationFilterResponseDTO {
 export interface CreateConversationFilterRequestDTO {
   name: string;
   workspaceId: string;
+  icon?: string;
 }
   
 export interface CreateConversationFilterResponseDTO {

@@ -29,6 +29,7 @@ import { GoDatabase } from "react-icons/go";
 import { BsChatDots } from "react-icons/bs";
 import { settingsInfo, tabsSettings } from "../catalog";
 import { SettingsContentLayout } from "./settingsContentLayout";
+import { WidgetScreen } from "@/modules/widget/components";
 
 export const Settings = () => {
   return <>
@@ -37,7 +38,7 @@ export const Settings = () => {
         {/*  */}
         <TabsList variant="line" className="w-48 shrink-0  h-full space-y-2">
           <div className="flex flex-col gap-2 w-full ">
-            <div className="font-semibold">Personal</div>
+            <div className="font-semibold text-sm">Personal</div>
             <TabsTrigger value="profile" className="justify-start gap-2">
               <TiUserOutline className="size-4" />
               Perfil
@@ -45,7 +46,7 @@ export const Settings = () => {
           </div>
 
           <div className="flex flex-col gap-2 w-full ">
-            <div className="font-semibold">Ajustes de Workspace</div>
+            <div className="font-semibold text-sm">Ajustes de Workspace</div>
             <TabsTrigger value="general" className="justify-start gap-2">
               <LuSettings2 className="size-4" />
               General
@@ -77,7 +78,7 @@ export const Settings = () => {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <div className="font-semibold">Billing settings</div>
+            <div className="font-semibold text-sm">Billing settings</div>
             <TabsTrigger value="plans" className="justify-start gap-2">
               <FiCodesandbox className="size-4" />
               Plans
@@ -242,7 +243,7 @@ export const Settings = () => {
             />
             <DescriptionContentSettings />
             <div>
-              widgets content
+              <WidgetScreen />
             </div>
           </SettingsContentLayout>
         </TabsContent>

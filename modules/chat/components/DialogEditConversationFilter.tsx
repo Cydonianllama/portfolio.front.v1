@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // components
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -15,8 +15,12 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 // formulario
 import { useForm } from "react-hook-form";
@@ -26,6 +30,7 @@ import {
   updateConversationFilterSchema
 } from "../schemas/updateConversationFilter.schema";
 import { ConversationFilterDTO } from "@/api/conversationFilter/conversation.filter.dto"
+import EmojiPicker from 'emoji-picker-react';
 
 export interface DialogEditConversationFilterConfig {
   onUpdate: (data: UpdateConversationFilterSchema) => void
@@ -36,6 +41,7 @@ export interface DialogEditConversationFilterConfig {
 }
 
 export const DialogEditConversationFilter = (config: DialogEditConversationFilterConfig) => {
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
   const {
     register,
@@ -46,18 +52,26 @@ export const DialogEditConversationFilter = (config: DialogEditConversationFilte
     setValue,
   } = useForm<UpdateConversationFilterSchema>({
     resolver: zodResolver(updateConversationFilterSchema),
+    defaultValues: {
+      name: '',
+      icon: '',
+    }
   });
+
+  const selectedIcon = watch('icon')
 
   useEffect(() => {
     if (!config.open) {
       reset({
-        name: ''
+        name: '',
+        icon: '',
       });
     }
 
     if (config.data) {
       reset({
-        name: config.data.name || ''
+        name: config.data.name || '',
+        icon: config.data.icon || '',
       })
     }
   }, [config.open, reset, config.data]);
@@ -80,6 +94,24 @@ export const DialogEditConversationFilter = (config: DialogEditConversationFilte
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
+          <Field>
+            <Label>Icono</Label>
+            <Popover open={emojiPickerOpen} onOpenChange={setEmojiPickerOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" type="button" className="w-full justify-start">
+                  {selectedIcon ? <span className="text-lg">{selectedIcon}</span> : 'Seleccionar emoji'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <EmojiPicker
+                  onEmojiClick={(emojiData) => {
+                    setValue('icon', emojiData.emoji)
+                    setEmojiPickerOpen(false)
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </Field>
           <Field>
             <Label>Nombre</Label>
             <Input

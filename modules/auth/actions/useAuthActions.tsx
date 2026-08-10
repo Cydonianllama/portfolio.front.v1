@@ -9,6 +9,7 @@ import { ChangePassword } from "@/api/auth/changepass";
 import { useForgetPass } from "../store/forgetPassStore";
 import { RegisterUser } from "@/api/auth/register";
 import { Login } from "@/api/auth/signin";
+import { googleSignin } from "@/api/auth/google";
 import { useInvite } from "@/modules/invite/store";
 import { VerifyAccount } from "@/api/auth/verify";
 
@@ -183,11 +184,37 @@ export function useAuthActions() {
     }
   }
 
+  const googleLoginAction = async (credential: string) => {
+    try {
+      const req = await googleSignin(credential)
+
+      if (!req) {
+        toast.error('Error de autenticación con Google')
+        return;
+      }
+
+      if (!req.status || !req.data?.token) {
+        toast.error(req.message || 'Error de autenticación con Google')
+        return;
+      }
+
+      toast.success('Login con Google exitoso!')
+      localStorage.setItem('token', req.data.token)
+      Cookies.set("token", req.data.token);
+      router.replace("home");
+
+    } catch (error) {
+      console.error('Error iniciando sesión con Google', error)
+      toast.error('Error inesperado al iniciar sesión con Google')
+    }
+  }
+
   return {
     signinAction,
     registerAction,
     forgetPasswordAction,
     changePasswordAction,
-    verifyAccountAction
+    verifyAccountAction,
+    googleLoginAction,
   }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import { VariableSection } from './variables_scratch';
+import { VariableSection } from './variablesScreen';
 export interface Table1ExampleModel {
   id: string;
   name: string;
@@ -17,7 +17,5 @@ type SimpleTablev1Props = {
 }
 
 export const VariablesSection = ({ list, loading, hasError }: SimpleTablev1Props) => {
-  return (<>
-    <VariableSection />
-  </>)
+  return (<VariableSection />)
 }

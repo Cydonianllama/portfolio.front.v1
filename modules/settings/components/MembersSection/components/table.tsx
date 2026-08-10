@@ -228,7 +228,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
     <div className="flex gap-2">
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Editar", item.id)
           // MembersStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
@@ -240,7 +240,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
 
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Eliminar", item.id)
           // MembersStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })

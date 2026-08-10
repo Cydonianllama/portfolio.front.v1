@@ -19,6 +19,7 @@ import { useEffect } from "react"
 import { useTagActions } from "../actions/useTagActions"
 import { CreationTagSchema, creationTagSchema } from "../schemas/createTagSchema"
 import { useTagStore } from "../store/tagStore"
+import { ColorsSelector } from "./List"
 
 type DialogCreateTagProps = {}
 
@@ -38,7 +39,8 @@ export function DialogCreateTag({ }: DialogCreateTagProps) {
   } = useForm<CreationTagSchema>({
     resolver: zodResolver(creationTagSchema),
     defaultValues: {
-      name: ""
+      name: "",
+      color: "color::default",
     }
   });
 
@@ -46,6 +48,7 @@ export function DialogCreateTag({ }: DialogCreateTagProps) {
     if (!TagStore.openCreate) {
       reset({
         name: '',
+        color: 'color::default',
       });
     }
   }, [TagStore.openCreate, reset]);
@@ -53,6 +56,7 @@ export function DialogCreateTag({ }: DialogCreateTagProps) {
   const HandleToCreate = async (data: CreationTagSchema) => {
     await tagActions.createTagAction({
       name: data.name,
+      color: data.color,
       workspaceId: appData.workspace?.id || ''
     })
   }
@@ -78,6 +82,20 @@ export function DialogCreateTag({ }: DialogCreateTagProps) {
                 {errors.name.message}
               </p>
             )}
+          </Field>
+          <Field>
+            <Label>Color</Label>
+            <div className="flex gap-2 mt-1">
+              {ColorsSelector.map((colorItem) => (
+                <button
+                  key={colorItem.code}
+                  type="button"
+                  onClick={() => setValue("color", colorItem.code)}
+                  className={`h-6 w-6 rounded-full cursor-pointer border-2 ${watch("color") === colorItem.code ? 'border-foreground ring-2 ring-offset-1 ring-gray-300' : 'border-transparent'} ${colorItem.classname}`}
+                  title={colorItem.name}
+                />
+              ))}
+            </div>
           </Field>
         </FieldGroup>
         <DialogFooter>

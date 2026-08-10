@@ -148,7 +148,7 @@ export const FieldTable_ = ({ handleDelete, handleEdit, list, isLoading, isError
               {table.getRowModel().rows.map((row, index) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell, cellIdx) => (
-                    <TableCell className={(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} key={cellIdx}>
+                    <TableCell className={`${(cellIdx == row.getVisibleCells().length - 1) ? 'flex justify-end' : ''} h-10`} key={cellIdx}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -194,7 +194,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
     <div className="flex gap-2">
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Editar", item.id)
           // FieldStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
@@ -206,7 +206,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
 
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Eliminar", item.id)
           // FieldStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })

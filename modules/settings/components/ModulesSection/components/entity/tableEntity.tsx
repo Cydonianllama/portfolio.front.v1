@@ -75,21 +75,30 @@ export const EntityTable_ = ({ handleDelete, handleEdit, list, isLoading, isErro
     //   accessorKey: "id",
     //   header: "Id"
     // },
+    // {
+    //   id: "icon",
+    //   header: "Icono",
+    //   cell: (data) => {
+    //     const icon = catalogEntityIcons.find(el => el.code == data.row.original.codeIcon)
+    //     return (<>
+    //       <div className="flex items-center justify-start text-lg">
+    //         {icon ? icon.Icon : <span className="text-muted-foreground">-</span>}
+    //       </div>
+    //     </>)
+    //   }
+    // },
     {
-      id: "icon",
-      header: "Icono",
+      accessorKey: "name",
+      header: "Nombre",
       cell: (data) => {
         const icon = catalogEntityIcons.find(el => el.code == data.row.original.codeIcon)
         return (<>
-          <div className="flex items-center justify-center text-lg">
+          <div className="flex gap-1 items-center justify-start text-md">
             {icon ? icon.Icon : <span className="text-muted-foreground">-</span>}
+            {data.row.original.name}
           </div>
         </>)
       }
-    },
-    {
-      accessorKey: "name",
-      header: "Nombre"
     },
     // {
     //   id: 'date',
@@ -206,7 +215,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
     <div className="flex gap-2">
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Editar", item.id)
           // EntityStore.setUpdateState({ currentElementSelected: item.id, openUpdate: true })
@@ -218,7 +227,7 @@ const ActionsRow = ({ data, handleDelete, handleEdit }: ActionsRowProps) => {
 
       <Button
         variant="outline"
-        size={'icon'}
+        size={'icon-sm'}
         onClick={() => {
           console.log("Eliminar", item.id)
           // EntityStore.setDeleteState({ currentElementSelected: item.id, openDelete: true })

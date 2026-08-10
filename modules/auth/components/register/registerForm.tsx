@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/alert"
 import { InfoIcon } from "lucide-react"
 import { useAuthCydoStore } from "../../store/authStore"
+import { GoogleLogin } from '@react-oauth/google';
+import { useAuthActions } from "../../actions/useAuthActions";
 
 // ({ ...props }: React.ComponentProps<typeof Card>)
 
@@ -40,6 +42,7 @@ type SignupFormProps = {
 export const SignupForm = ({ handleRegister }: SignupFormProps) => {
   const inviteStore = useInvite()
   const authStore = useAuthCydoStore()
+  const { googleLoginAction } = useAuthActions()
   const {
     register,
     handleSubmit,
@@ -141,9 +144,16 @@ export const SignupForm = ({ handleRegister }: SignupFormProps) => {
                   {authStore.proccesingRegister && <Spinner data-icon="inline-start" />}
                   Crear cuenta
                 </Button>
-                <Button variant="outline" type="button">
-                  Registrate con Google
-                </Button>
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    if (credentialResponse.credential) {
+                      googleLoginAction(credentialResponse.credential)
+                    }
+                  }}
+                  onError={() => {
+                    console.error('Google Register Failed')
+                  }}
+                />
                 <FieldDescription className="px-6 text-center">
                   Ya tienes cuenta? <Link href="/login">Ingresar</Link>
                 </FieldDescription>

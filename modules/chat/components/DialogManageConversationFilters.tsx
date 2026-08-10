@@ -59,7 +59,7 @@ export const DialogManageConversationFilters = (config: DialogManageConversation
             config.conversationsFilter.map((el, index) => <Item key={el.id || index} variant="outline" size="sm" render={<div>
               <ItemContent>
                 <ItemTitle className="flex items-center gap-2">
-                  <FiInbox className="text-gray-400" />
+                  {el.icon ? <span className="text-base">{el.icon}</span> : <FiInbox className="text-gray-400" />}
                   {el.name}
                 </ItemTitle>
               </ItemContent>

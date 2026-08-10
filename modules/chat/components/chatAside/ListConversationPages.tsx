@@ -47,7 +47,7 @@ export const ListConversationPagesSection = ({ handleOpenManageConversationFilte
         />
 
         {listConvesationFilters.length > 0 && (<>
-          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <FilterItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={el.id || index} data={{ qty: 19, title: el.name, id: el.id }} />)}
+          {listConvesationFilters.slice(0, QTY_SHOWING).map((el, index) => <FilterItem onClick={onClickOpenConversationFilter} active={chatStore.filter == el.id ? true : false} key={el.id || index} data={{ qty: 19, title: el.name, id: el.id, icon: el.icon }} />)}
         </>)}
 
         {listConvesationFilters.length == 0 && (<>

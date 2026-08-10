@@ -23,12 +23,13 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link";
 import { useLogin } from "../../store/loginStore";
 import { useAuthActions } from "../../actions/useAuthActions";
+import { GoogleLogin } from '@react-oauth/google';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { signinAction } = useAuthActions()
+  const { signinAction, googleLoginAction } = useAuthActions()
   const loginStore = useLogin()
 
   const {
@@ -89,9 +90,16 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
-                {/* <Button variant="outline" type="button">
-                  Login with Google
-                </Button> */}
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    if (credentialResponse.credential) {
+                      googleLoginAction(credentialResponse.credential)
+                    }
+                  }}
+                  onError={() => {
+                    console.error('Google Login Failed')
+                  }}
+                />
                 <FieldDescription className="text-center">
                   No tienes una cuenta? <Link href="/register">Registrate</Link>
                 </FieldDescription>

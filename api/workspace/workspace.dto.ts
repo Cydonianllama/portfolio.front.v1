@@ -31,4 +31,5 @@ export interface WorkspaceDTO {
   id: string
   name: string
   logoURL: string
+  sortOrder?: number
 }

@@ -19,6 +19,7 @@ import { useEffect } from "react"
 import { useTagActions } from "../actions/useTagActions"
 import { UpdateTagSchema, updateTagSchema } from "../schemas/updateTagSchema"
 import { useTagStore } from "../store/tagStore"
+import { ColorsSelector } from "./List"
 
 type DialogUpdateTagProps = {
 
@@ -41,7 +42,8 @@ export function DialogUpdateTag({ }: DialogUpdateTagProps){
   } = useForm<UpdateTagSchema>({
     resolver: zodResolver(updateTagSchema),
     defaultValues: {
-      name: ""
+      name: "",
+      color: "color::default",
     }
   });
 
@@ -49,12 +51,14 @@ export function DialogUpdateTag({ }: DialogUpdateTagProps){
     if (!TagStore.openUpdate) {
       reset({
         name: '',
+        color: 'color::default',
       });
     }
 
     if (currentOpened) {
       reset({
         name: currentOpened.name,
+        color: currentOpened.color || 'color::default',
       })
     }
 
@@ -65,6 +69,7 @@ export function DialogUpdateTag({ }: DialogUpdateTagProps){
     if (!currentOpened) return;
     await tagActions.updateTagAction(currentOpened.id, {
       name: data.name,
+      color: data.color,
       workspaceId: appData.workspace?.id || ''
     })
   }
@@ -84,6 +89,20 @@ export function DialogUpdateTag({ }: DialogUpdateTagProps){
               placeholder="name"
               {...register("name")}
             />
+          </Field>
+          <Field>
+            <Label>Color</Label>
+            <div className="flex gap-2 mt-1">
+              {ColorsSelector.map((colorItem) => (
+                <button
+                  key={colorItem.code}
+                  type="button"
+                  onClick={() => setValue("color", colorItem.code)}
+                  className={`h-6 w-6 rounded-full cursor-pointer border-2 ${watch("color") === colorItem.code ? 'border-foreground ring-2 ring-offset-1 ring-gray-300' : 'border-transparent'} ${colorItem.classname}`}
+                  title={colorItem.name}
+                />
+              ))}
+            </div>
           </Field>
         </FieldGroup>
         <DialogFooter>

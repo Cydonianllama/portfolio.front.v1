@@ -36,13 +36,13 @@ export const FieldSection = ({ }: FieldProps) => {
   }, [appData.workspace?.id, entityStore.currentElementSelected])
 
   return <>
-    <div className="p-2">
+    <div className="">
       <div className="flex justify-between gap-2 items-center mb-2">
         <div>
           <span className='text-foreground text-md font-semibold'>Listado de campos</span>
         </div>
         <div className='flex gap-2 items-center'>
-          <Button disabled={FieldStore.listing ? true : false} variant={'secondary'} onClick={() => { InitialList() }}>
+          <Button disabled={FieldStore.listing ? true : false} variant={'outline'} onClick={() => { InitialList() }}>
           Refresar
         </Button>
         <Button variant={'outline'} onClick={() => { FieldStore.setCreateState({ openCreate: true }) }}>
