@@ -1,11 +1,4 @@
 'use client'
-/*
-  Tag
-*/
-
-/*
-  Tag
-*/
 
 // #region Components
 //___________ components
@@ -27,18 +20,7 @@ import { Label } from "@/components/ui/label"
 import { Spinner } from "@/components/ui/spinner"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox";
-import { MdOutlineEdit } from 'react-icons/md';
-import { FiTrash2 } from 'react-icons/fi';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { useCallback, useEffect } from "react"
 import { ResponsePagination } from '@/types/api/utils.pagination';
 
 //___________ ___________ Main

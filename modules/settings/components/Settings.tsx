@@ -1,8 +1,4 @@
-/* eslint-disable react/jsx-no-undef */
-import { Badge } from "@/components/ui/badge"
-
-import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+'use client'
 
 import {
   Tabs,
@@ -11,19 +7,11 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { AiOutlineTags } from "react-icons/ai";
-import { BuildingIcon, CheckSquareIcon, FileTextIcon, FolderIcon, UserIcon, UsersIcon, ZapIcon } from 'lucide-react'
 
 import { TiUserOutline } from "react-icons/ti";
-import { RiAccountCircle2Line } from "react-icons/ri";
-import { FaRegBell } from "react-icons/fa";
-import { LuBoxes, LuBriefcaseBusiness, LuSettings2 } from "react-icons/lu";
-import { FaCode } from "react-icons/fa6";
-import { FaPowerOff } from "react-icons/fa";
-import { TiCreditCard } from "react-icons/ti";
+import { LuSettings2 } from "react-icons/lu";
 import { FiCodesandbox } from "react-icons/fi";
-import { ImFilesEmpty } from "react-icons/im";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import { MdOutlineSettingsInputComponent } from "react-icons/md";
 import { ProfileSection } from "./PofileSection/ProfileSection"
 import { GeneralWorkspaceSection } from "./GeneralWorkspaceSection/GeneralWorkspaceSection"
 import { MembersSection } from "./MembersSection/MembersSection"
@@ -38,13 +26,16 @@ import { MdOutlinePayment } from "react-icons/md";
 import { TagsSection } from "./TagsSection/TagsSection";
 import { ModulesSection } from "./ModulesSection/modulesSection";
 import { GoDatabase } from "react-icons/go";
+import { BsChatDots } from "react-icons/bs";
+import { settingsInfo, tabsSettings } from "../catalog";
+import { SettingsContentLayout } from "./settingsContentLayout";
 
 export const Settings = () => {
   return <>
     <div className="flex h-full w-full flex-col gap-6 p-0">
       <Tabs defaultValue="projects" orientation="vertical" className="gap-5 h-full">
+        {/*  */}
         <TabsList variant="line" className="w-48 shrink-0  h-full space-y-2">
-
           <div className="flex flex-col gap-2 w-full ">
             <div className="font-semibold">Personal</div>
             <TabsTrigger value="profile" className="justify-start gap-2">
@@ -79,6 +70,10 @@ export const Settings = () => {
               <GoDatabase className="size-4" />
               Bases de datos
             </TabsTrigger>
+            <TabsTrigger value="widgets" className="justify-start gap-2">
+              <BsChatDots className="size-4" />
+              Widget
+            </TabsTrigger>
           </div>
 
           <div className="flex flex-col gap-2 w-full">
@@ -92,78 +87,176 @@ export const Settings = () => {
               Subscriptions
             </TabsTrigger>
           </div>
-
-          {/* <Separator className="my-2" />
-          <div className="flex flex-col gap-2 w-full px-2">
-            <TabsTrigger value="d1" className="justify-start gap-2">
-              <FaPowerOff className="size-4 text-red-600" />
-              Logout
-            </TabsTrigger>
-          </div> */}
         </TabsList>
+        {/*  */}
+
+        {/*  */}
         <TabsContent className={'h-full flex flex-col'} value="profile">
-          <TabHeaderDialogSettings title="Perfil" />
-          <div className="flex-1">
-            <ProfileSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.profile)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.profile)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div className="flex-1">
+              <ProfileSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent className={'h-full flex flex-col'} value="general">
-          <TabHeaderDialogSettings title="General" />
-          <div className="flex-1">
-            <GeneralWorkspaceSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.general)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.general)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div className="flex-1">
+              <GeneralWorkspaceSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="members">
-          <TabHeaderDialogSettings title="Miembros" />
-          <div>
-            <MembersSection
-              list={[]}
-              loading={false}
-              hasError={false}
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.members)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.members)?.description || ''}
             />
-          </div>
+            <DescriptionContentSettings />
+            <div>
+              <MembersSection
+                list={[]}
+                loading={false}
+                hasError={false}
+              />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="variables">
-          <TabHeaderDialogSettings title="Variables" />
-          <div>
-            <VariablesSection
-              list={[]}
-              loading={false}
-              hasError={false}
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.variables)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.variables)?.description || ''}
             />
-          </div>
+            <DescriptionContentSettings />
+            <div>
+              <VariablesSection
+                list={[]}
+                loading={false}
+                hasError={false}
+              />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="integrations">
-          <TabHeaderDialogSettings title="Integraciones" />
-          <div>
-            <IntegrationSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.integrations)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.integrations)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              <IntegrationSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="plans">
-          <TabHeaderDialogSettings title="Planes" />
-          <div>
-            <PlansSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.plans)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.plans)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              <PlansSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="subscriptions">
-          <TabHeaderDialogSettings title="Subscripciones" />
-          <div>
-            <SubscriptionSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.subscriptions)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.subscriptions)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              <SubscriptionSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="tags">
-          <TabHeaderDialogSettings title="Etiquetas" />
-          <div>
-            <TagsSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.tags)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.tags)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              <TagsSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
         <TabsContent value="modules">
-          <TabHeaderDialogSettings title="Bases de datos" />
-          <div>
-            <ModulesSection />
-          </div>
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.modules)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.modules)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              <ModulesSection />
+            </div>
+          </SettingsContentLayout>
         </TabsContent>
+        {/*  */}
+
+        {/*  */}
+        <TabsContent value="widgets">
+          <SettingsContentLayout>
+            <TabHeaderDialogSettings
+              title={settingsInfo.find(el => el.code == tabsSettings.widgets)?.title || ''}
+              description={settingsInfo.find(el => el.code == tabsSettings.widgets)?.description || ''}
+            />
+            <DescriptionContentSettings />
+            <div>
+              widgets content
+            </div>
+          </SettingsContentLayout>
+        </TabsContent>
+        {/*  */}
       </Tabs>
+    </div>
+  </>
+}
+
+export const DescriptionContentSettings = () => {
+  return <>
+    <div className="text-sm space-y-4 text-muted-foreground">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro assumenda totam reprehenderit incidunt pariatur harum minima, aliquam praesentium repudiandae quisquam.</p>
+      <p>Lorem ipsum dolor sit amet consectetur <strong> adipisicing elit. Eum</strong></p>
     </div>
   </>
 }

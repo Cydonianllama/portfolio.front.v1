@@ -3,10 +3,7 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { useNotification } from "../stores/notificationStore"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type NotificationHookActionsProps = {
-
-}
+type NotificationHookActionsProps = {}
 
 export const UseNotificationHookActions = ({} : NotificationHookActionsProps) => {
 

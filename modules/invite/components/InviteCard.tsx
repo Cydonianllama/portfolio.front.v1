@@ -1,4 +1,3 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import {
   Card,
   CardContent,
@@ -8,13 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { useInvite } from "./store";
-import { CommandInvitation } from "./service.commandinvitation";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner";
+import { useInvite } from "../store";
+import { useInvitationAction } from "../actions/useInvitationActions";
+
 export function SkeletonCard() {
   return (
     <Card className="w-full max-w-xs">
@@ -29,42 +27,16 @@ export function SkeletonCard() {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type InviteCardProps = {
-
-}
+type InviteCardProps = {}
 
 type invitationCommands = 'accept' | 'decline'
 
 export const InviteCard = ({ }: InviteCardProps) => {
-  const router = useRouter()
-  const appData = useAppData()
+  const { commandInvitationAction } = useInvitationAction()
   const invitationStore = useInvite()
 
   const HandleCommandActioned = async (command: invitationCommands) => {
-    try {
-      invitationStore.setInvitation({ processingCommand: true })
-      const req = await CommandInvitation({ action: command, invitationId: invitationStore.invitationInformation?.invitation?.id || '' })
-
-      if (!req) {
-        toast.error('Error 1')
-        return;
-      }
-
-      if (!req?.status) {
-        toast.error(req.message || 'Error 2')
-        return;
-      }
-
-      // success
-      if (command == 'accept') router.replace(`/home?workspaceId=${invitationStore.invitationInformation?.workspaceFromInvitation?.id}`)
-      else if (command == 'decline') router.replace('/home')
-
-    } catch (error) {
-
-    } finally {
-      invitationStore.setInvitation({ processingCommand: false })
-    }
+    commandInvitationAction({ command, invitationId: invitationStore.invitationInformation?.invitation?.id || '' })
   }
 
   return (

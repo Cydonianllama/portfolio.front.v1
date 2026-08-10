@@ -2,15 +2,7 @@
 // compo - api - store
 //
 
-import { create } from "zustand";
-import { api } from '@/setup/axios'
-import { ResponseApi } from '@/types/api/response';
-import { ResponsePagination } from "@/types/api/utils.pagination"
-import { useEffect, useMemo } from "react";
-import { useAppData } from "@/hooks/app/useAppData";
-import { toast } from "sonner";
 import { useActivities } from "../store/activitiesStore";
-import { UseActivitiesHookActions } from "../actions/useActivityActions";
 import { ErrorStateComponent } from "@/components/Error";
 import { SpinnerListing } from "@/components/Listing";
 import { EmptyStateComponent } from "@/components/Empty";
@@ -18,6 +10,7 @@ import { MdOutlineLabel } from "react-icons/md";
 import { ActivityItem } from "./activityItem";
 import { ActivityDTO, ActivityEntityType } from "@/api/activity/dto";
 import { isToday, isYesterday, startOfWeek, endOfWeek } from "date-fns";
+import { useMemo } from "react";
 
 type TimeGroup = 'today' | 'yesterday' | 'thisWeek' | 'lastWeek' | 'earlier'
 

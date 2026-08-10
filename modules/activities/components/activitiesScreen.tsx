@@ -6,7 +6,7 @@ import { UseActivitiesHookActions } from "../actions/useActivityActions";
 import { useEffect } from "react";
 import { ListActivitiesComponent } from "./activitiesList";
 import { Switch } from "@/components/ui/switch";
-import { Filter } from "@/modules/contacts/components/filter";
+// import { Filter } from "@/modules/contacts/components/filter";
 import { ActivityEntityType } from "@/api/activity/dto";
 import { useActivities } from "../store/activitiesStore";
 import { useShowAllActivities } from "../hooks/useShowAllActivities";

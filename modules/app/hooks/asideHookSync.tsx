@@ -1,13 +1,9 @@
 import { eventBus } from "@/utils/eventBus"
-import { useCallback, useEffect } from "react"
-import { toast } from "sonner"
+import { useEffect } from "react"
 import { useAside } from "../stores/asideStore"
 import { entityDTO } from "@/api/dataEngine/entity"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type AsideSyncHookProps = {
-
-}
+type AsideSyncHookProps = {}
 
 export const UseAsideSyncHook = ({} : AsideSyncHookProps) => {
   const asideStore = useAside()

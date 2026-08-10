@@ -1,5 +1,3 @@
-// _____________ store
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { ResponsePagination } from "@/types/api/utils.pagination"
 import { ActivityDTO, ActivityEntityType } from "@/api/activity/dto";

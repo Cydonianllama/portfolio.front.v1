@@ -4,11 +4,10 @@
 import { useSearchParams } from 'next/navigation'
 
 import { useEffect, PropsWithChildren } from "react";
-import { ListWorkspacesUserService } from "../services/list-workspaces-user";
 import { useWorkspaceSelectionStore } from "../stores/workspaceStore";
 import { useAuthCydoStore } from "@/modules/auth/store/authStore";
 import { UserDTO } from "@/api/user/user.dto";
-import { UseWorkspacesAction } from '@/modules/hooks/useWorkspacesActions';
+import { UseWorkspacesAction } from '@/modules/app/actions/useWorkspacesActions';
 import { WorkspaceDTO } from '@/api/workspace/workspace.dto';
 import { GeyWorkspaceSettings } from '@/api/settings/get.workspacesettings';
 import { IUserSettings } from '@/api/user/user.settings';
@@ -31,9 +30,6 @@ export const BootstrapProvider = ({ children, userData, workspaces }: PropsWithC
   const workspaceActions = UseWorkspacesAction()
 
   const OnInitApplication = async () => {
-
-    // fetch('http://localhost:3030/static/test.json')
-
     console.log(`query::workspaceId => ${workspaceId}`)
     console.log('OnInitApplication => ', userData)
 

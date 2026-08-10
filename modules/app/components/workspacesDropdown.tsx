@@ -1,16 +1,10 @@
 "use client"
 
-import { ReactNode, useState } from "react"
-
-import { AnthropicBlack } from "@/components/ui/svgs/anthropicBlack"
-import { AnthropicWhite } from "@/components/ui/svgs/anthropicWhite"
-import { ClaudeAiIcon } from "@/components/ui/svgs/claudeAiIcon"
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronsUpDownIcon, CheckIcon, PlusIcon, SettingsIcon } from "lucide-react"
+import { ChevronsUpDownIcon, CheckIcon, PlusIcon } from "lucide-react"
 
 import {
   SidebarMenu,
@@ -30,78 +24,18 @@ import {
 } from "@/components/ui/sidebar"
 import { useWorkspaceSelectionStore } from "../stores/workspaceStore"
 import { DialogCreateWorkpace } from "./DialogCreateWorkspace"
-import { CreateWorkspaceService } from "../services/create-workspace"
 import { RequestCreateWorkspace } from "../schemas/create-workspace-schema"
-import { UseWorkspacesAction } from "@/modules/hooks/useWorkspacesActions"
-
-interface Workspace {
-  id: string
-  name: string
-  plan: string
-  avatar?: string
-  logo?: ReactNode
-  logoDark?: ReactNode
-}
-
-const workspaces: Workspace[] = [
-  {
-    id: "1",
-    name: "Anthropic",
-    plan: "Enterprise",
-    logo: <AnthropicBlack />,
-    logoDark: <AnthropicWhite />,
-  },
-  {
-    id: "2",
-    name: "Claude",
-    plan: "Pro",
-    logo: <ClaudeAiIcon />,
-  },
-  {
-    id: "3",
-    name: "Alex Wong",
-    plan: "Team",
-    avatar:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=96&h=96&dpr=2&q=80",
-  },
-]
+import { UseWorkspacesAction } from "@/modules/app/actions/useWorkspacesActions"
+import { useAppActions } from "../actions/useAppActions"
 
 export function WorkspaceDropdown() {
+  const { createWorkspaceFromDropdownAction } = useAppActions()
   const workspaceActions = UseWorkspacesAction()
   const appWorkspacesStore = useWorkspaceSelectionStore();
   const activeWorkspace = appWorkspacesStore.workspaces.find((w) => w.id === appWorkspacesStore.selectedWorkspaceId) || { id: '-', logoURL: '', name: '-' }
 
   const CreateWorkspace = async (data: RequestCreateWorkspace) => {
-    try {
-      const reqWorkspace = await CreateWorkspaceService({
-        name: data.name
-      })
-
-      if (!reqWorkspace) {
-        return;
-      }
-
-      if (!reqWorkspace.status) {
-        return;
-      }
-
-      if (!reqWorkspace.data?.workspace) {
-        return;
-      }
-
-      const newWorkspace = reqWorkspace.data.workspace
-
-      appWorkspacesStore.setWorkspaces([{ id: newWorkspace.id, logoURL: newWorkspace.logoURL, name: newWorkspace.name }, ...appWorkspacesStore.workspaces])
-
-      workspaceActions.OpenWorkspace(newWorkspace.id)
-
-    } catch (ex) {
-
-    } finally {
-      appWorkspacesStore.setworkspaceCreationState({
-        open: false
-      })
-    }
+    createWorkspaceFromDropdownAction({ name: data.name })
   }
 
   return (<>

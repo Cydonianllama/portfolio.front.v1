@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { useWorkspaceSelectionStore } from "../app/stores/workspaceStore"
+import { useWorkspaceSelectionStore } from "../stores/workspaceStore"
 
 export const UseWorkspacesAction = () => {
 

@@ -3,10 +3,7 @@ import { useCallback } from "react"
 import { toast } from "sonner"
 import { useActivities } from "../store/activitiesStore"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type ActivitiesHookActionsProps = {
-
-}
+type ActivitiesHookActionsProps = {}
 
 export const UseActivitiesHookActions = ({} : ActivitiesHookActionsProps) => {
 

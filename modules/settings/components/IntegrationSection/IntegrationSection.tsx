@@ -24,7 +24,7 @@ export const IntegrationSection = () => {
   const appData = useAppData()
   const integrationActions = UseIntegrationHookActions({})
 
-  const [integrationsJson, setIntegrationsJson] = useState<Array<{ code: string, title: string }>>([])
+  const [integrationsJson, setIntegrationsJson] = useState<Array<{ code: string, title: string, description: string }>>([])
 
   const GetListIntegrationsFile = async () => {
     console.log('GetListIntegrationsFile')
