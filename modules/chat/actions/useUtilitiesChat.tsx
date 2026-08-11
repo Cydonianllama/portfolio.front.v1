@@ -12,7 +12,7 @@ type UtilitiesChatHookActionsProps = {
 
 }
 
-export const useUtilitiesChatActions = ({} : UtilitiesChatHookActionsProps) => {
+export const useUtilitiesChatActions = ({ }: UtilitiesChatHookActionsProps) => {
 
   const chatUtilities = chatUtilitiesStore()
 
@@ -23,24 +23,24 @@ export const useUtilitiesChatActions = ({} : UtilitiesChatHookActionsProps) => {
         toast.error('Error 1')
         return;
       }
-  
+
       if (!req?.status) {
         toast.error(req.message || 'Error 2')
         return;
       }
-  
+
       // success
       toast.success('Success')
-    
-      if (req.data.list){
+
+      if (req.data.list) {
         chatUtilities.setTags(req.data.list || [])
       }
-      
-  
+
+
     } catch (ex) {
-  
+
     } finally {
-  
+
     }
   }, [])
 
@@ -59,8 +59,18 @@ export const useUtilitiesChatActions = ({} : UtilitiesChatHookActionsProps) => {
       }
 
       if (req.data?.room) {
-        chatUtilities.setRoomTags(req.data.room.tags || [])
-        toast.success('Etiquetas actualizadas')
+        const participant = req.data.room?.participants.length ? req.data.room?.participants[0] || null : null
+
+        if (participant) {
+          chatUtilities.setRoomTags(participant?.tagsCopy?.map((el) => ({
+            id: el.id || '',
+            name: '',
+            color: '',
+            index: 0
+          })) || [])
+          toast.success('Etiquetas actualizadas')
+        }
+
       }
 
     } catch (ex) {

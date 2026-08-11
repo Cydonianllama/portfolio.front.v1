@@ -65,47 +65,47 @@ const PlatformChipIcon = ({ platformId }: { platformId: string }) => {
   return icon || <MdOutlineMessage />;
 }
 
-export const ContactChatsBadges = ({ contact }: { contact: ContactDTO }) => {
-  const watchConversationStore = useWatchConversations();
-  const chats = contact.conversations || [];
+// export const ContactChatsBadges = ({ contact }: { contact: ContactDTO }) => {
+//   const watchConversationStore = useWatchConversations();
+//   const chats = contact.conversations || [];
 
-  const HandleOpenChats = () => {
-    watchConversationStore.setGeneral({ open: true, contactOpened: contact.id })
-  }
+//   const HandleOpenChats = () => {
+//     watchConversationStore.setGeneral({ open: true, contactOpened: contact.id })
+//   }
 
-  if (chats.length == 0) return null;
+//   if (chats.length == 0) return null;
 
-  const visible = chats.slice(0, MAX_VISIBLE_CHATS);
-  const overflow = chats.length - visible.length;
+//   const visible = chats.slice(0, MAX_VISIBLE_CHATS);
+//   const overflow = chats.length - visible.length;
 
-  return (
-    <div className="flex items-center gap-1.5 flex-wrap">
-      {visible.map((chat) => (
-        <span
-          key={chat.id}
-          title={chat.name}
-          className="inline-flex items-center gap-1 rounded-md border bg-mist-50 px-2 py-1 text-xs text-muted-foreground"
-        >
-          <span className="flex items-center justify-center text-xs shrink-0">
-            <PlatformChipIcon platformId={chat.platformId} />
-          </span>
-          <span className="max-w-[120px] truncate">{chat.name}</span>
-        </span>
-      ))}
-      {overflow > 0 && (
-        <Button
-          variant={'outline'}
-          size={'xs'}
-          className="h-6 rounded-md px-2 text-xs"
-          onClick={HandleOpenChats}
-          title="Ver todos los chats"
-        >
-          +{overflow}
-        </Button>
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div className="flex items-center gap-1.5 flex-wrap">
+//       {visible.map((chat) => (
+//         <span
+//           key={chat.id}
+//           title={chat.name}
+//           className="inline-flex items-center gap-1 rounded-md border bg-mist-50 px-2 py-1 text-xs text-muted-foreground"
+//         >
+//           <span className="flex items-center justify-center text-xs shrink-0">
+//             <PlatformChipIcon platformId={chat.platformId} />
+//           </span>
+//           <span className="max-w-[120px] truncate">{chat.name}</span>
+//         </span>
+//       ))}
+//       {overflow > 0 && (
+//         <Button
+//           variant={'outline'}
+//           size={'xs'}
+//           className="h-6 rounded-md px-2 text-xs"
+//           onClick={HandleOpenChats}
+//           title="Ver todos los chats"
+//         >
+//           +{overflow}
+//         </Button>
+//       )}
+//     </div>
+//   )
+// }
 
 // configuracion de columna
 export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
@@ -156,13 +156,6 @@ export const columnsUsersTable: ColumnDef<ContactDTO>[] = [
     accessorKey: "mainEmail",
     header: "Correo electrónico"
   },
-  // {
-  //   id: "chats",
-  //   header: "Chats",
-  //   cell: ({ row }) => (
-  //     <ContactChatsBadges contact={row.original} />
-  //   )
-  // },
   {
     accessorKey: "mainDirection",
     header: "Dirección"

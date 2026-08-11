@@ -100,10 +100,24 @@ export const useChatActions = (): useChatActionsType => {
       })
 
       // cargar variables de la room
-      chatStore.setRoomVariables(req.data.room?.variables || [])
+      const participant = req.data.room?.participants.length ? req.data.room?.participants[0] || null : null
 
-      // cargar etiquetas de la room
-      chatUtilities.setRoomTags(req.data.room?.tags || [])
+      if (participant) {
+        chatStore.setRoomVariables(participant?.variablesCopy?.map((el) => ({
+          codeVariable: el.codeVariable || '',
+          value: el.value || '',
+          addedAt: new Date(),
+          updatedAt: new Date()
+        })) || [])
+
+        // cargar etiquetas de la room
+        chatUtilities.setRoomTags(participant?.tagsCopy?.map((el) => ({
+          id: el.id || '',
+          name: '',
+          color: '',
+          index: 0
+        })) || [])
+      }
 
       // room de un participante
       if (req.data.room?.typeRoom == 'individual') {
@@ -157,9 +171,20 @@ export const useChatActions = (): useChatActionsType => {
       }
 
       if (req.data?.room) {
-        chatStore.setRoomVariables(req.data.room.variables || [])
-        toast.success('Variables actualizadas')
+        // cargar variables de la room
+        const participant = req.data.room?.participants.length ? req.data.room?.participants[0] || null : null
+
+        if (participant) {
+          chatStore.setRoomVariables(participant?.variablesCopy?.map((el) => ({
+            codeVariable: el.codeVariable || '',
+            value: el.value || '',
+            addedAt: new Date(),
+            updatedAt: new Date()
+          })) || [])
+          toast.success('Variables actualizadas')
+        }
       }
+
 
     } catch (error) {
       toast.error('Error inesperado (UpdateRoomVariablesAction)')

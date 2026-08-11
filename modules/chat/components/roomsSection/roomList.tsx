@@ -66,7 +66,7 @@ export const RoomList = memo(({ contacts, HandleOpenChat, handleLoadMoreContacts
             data={{
               id: item.id,
               lastMessage: item.lastMessage || 'No registramos mensajes',
-              name: item.typeRoom == 'individual' ? item.participants[0].contactName : item.name,
+              name: item.typeRoom == 'individual' ? (item.participants[0].contactName || '') : item.name,
               thumb: '',
               time: item.creationDate ? formatChatDate(item.creationDate) : '',
               icon: item.platformId == 'whatsapp' ? <FaWhatsapp className='inline' /> : <RiTelegram2Line className='inline' />

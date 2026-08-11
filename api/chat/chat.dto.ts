@@ -15,21 +15,19 @@ export interface RoomDTO {
   platformId: string;
   participants: Array<{
     contactId: string;
-    contactName: string;
+    contactName?: string | null;
+    contactAvatar?: string | null;
+    variablesCopy?: Array<{
+      codeVariable?: string | null;
+      value?: string | null;
+    }>;
+    tagsCopy?: Array<{
+      id?: string | null;
+    }>;
   }>;
   creationDate: Date;
   lastMessage: string;
   typeRoom: 'individual' | 'group'
-  variables?: Array<{
-    codeVariable: string;
-    value: string;
-    addedAt?: Date;
-    updatedAt?: Date;
-  }>,
-  tags?: Array<{
-    id: string;
-    name: string;
-  }>
 }
 
 
