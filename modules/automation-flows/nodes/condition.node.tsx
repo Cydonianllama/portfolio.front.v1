@@ -1,17 +1,9 @@
-import {
-  NodeProps,
-} from "@xyflow/react";
 import { BaseNode } from "./_base.node";
-import { GeneralConfigurationNode } from "../_configs";
-import { IAutomationNode, NODE_TYPE_CONDITION, nodeTypes } from "@erick/conversationalflow";
 import { RuleSection } from "./condition-node/rulesSection";
-import { useAutomationNode } from "../hooks/useAutomationNode";
 import { isConditionNode } from "../utils/node.guards";
+import { AutomationNodeComponentProps } from "../registry/types";
 
-export function ConditionNode({ data }: NodeProps) {
-  const type = nodeTypes.NODE_TYPE_CONDITION
-
-  const { getNodeConfiguration } = useAutomationNode(String(data.id))
+export function ConditionNode({ data, definition, getNodeConfiguration, isActive }: AutomationNodeComponentProps) {
   const nodeInformation = getNodeConfiguration()
   const isNode = isConditionNode(nodeInformation)
 
@@ -21,11 +13,12 @@ export function ConditionNode({ data }: NodeProps) {
     <>
       <BaseNode
         id={String(data?.id) || ''}
-        color={GeneralConfigurationNode[type].color}
-        Icon={GeneralConfigurationNode[type].icon}
-        title={GeneralConfigurationNode[type].title}
-        description={GeneralConfigurationNode[type].description}
+        color={definition.visual.color}
+        Icon={definition.visual.icon}
+        title={definition.visual.title}
+        description={definition.visual.description}
         config={{ hasSource: false, hasTarget: true }}
+        isActive={isActive}
       >
         <div className="max-w-[220px] pt-2 space-y-2">
           {/* Reglas */}

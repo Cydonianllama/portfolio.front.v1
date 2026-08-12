@@ -1,11 +1,5 @@
-import {
-  NodeProps,
-} from "@xyflow/react";
-import { BaseNode } from "./_base.node";
-import { GeneralConfigurationNode } from "../_configs";
-import { nodeTypes } from "@erick/conversationalflow";
-import { useAutomationNode } from "../hooks/useAutomationNode";
 import { isNoteNode } from "../utils/node.guards";
+import { AutomationNodeComponentProps } from "../registry/types";
 
 const noteColorClass: Record<string, string> = {
   yellow: 'bg-yellow-50 border-yellow-300',
@@ -18,9 +12,7 @@ const noteColorClass: Record<string, string> = {
   sky: 'bg-sky-50 border-sky-300',
 }
 
-export function NoteNode({ data }: NodeProps) {
-  const type = nodeTypes.NODE_TYPE_NOTE
-  const { getNodeConfiguration } = useAutomationNode(String(data?.id) || '')
+export function NoteNode({ getNodeConfiguration }: AutomationNodeComponentProps) {
   const nodeInformation = getNodeConfiguration()
 
   const isNode = isNoteNode(nodeInformation)

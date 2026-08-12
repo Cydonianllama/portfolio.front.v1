@@ -1,9 +1,10 @@
 import { useAppData } from "@/hooks/app/useAppData";
-import { CatalogTrigger, TriggersCatalog } from "../../catalogs/catalogTriggers";
+import { CatalogTrigger, TriggerCatalogTabs } from "../../catalogs/catalogTriggers";
 import { AddTriggerOption } from "./addTriggerOption";
 import { TriggerWordConfigForm } from "./TriggerWordConfigForm";
 import { useTriggerActions } from "../../hooks/useTriggerActions";
 import { automationFlowGenStore } from "../../store/automation.flow.store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AddTriggerOptionsProps = {
   onSelect: (data: CatalogTrigger | null) => void
@@ -12,12 +13,12 @@ type AddTriggerOptionsProps = {
 
 export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOptionsProps) => {
   const appData = useAppData()
-
   const triggerActions = useTriggerActions()
-
   const automationStore = automationFlowGenStore()
 
   const HandleClickTriggerOption = (data: CatalogTrigger) => {
+    if (data.isPlaceholder) return
+
     if (data.hasWordsConfig) {
       onSelect(data)
       return
@@ -57,13 +58,27 @@ export const AddTriggerOptions = ({ onSelect, selectedOption }: AddTriggerOption
           onCancel={() => onSelect(null)}
         />
       ) : (
-        TriggersCatalog.map((el, index) => (
-          <AddTriggerOption
-            key={index}
-            data={el}
-            onClick={HandleClickTriggerOption}
-          />
-        ))
+        <Tabs defaultValue={TriggerCatalogTabs[0]?.id}>
+          <TabsList>
+            {TriggerCatalogTabs.map((tab) => (
+              <TabsTrigger key={tab.id} value={tab.id}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {TriggerCatalogTabs.map((tab) => (
+            <TabsContent key={tab.id} value={tab.id} className="space-y-2">
+              {tab.triggers.map((el, index) => (
+                <AddTriggerOption
+                  key={index}
+                  data={el}
+                  onClick={HandleClickTriggerOption}
+                />
+              ))}
+            </TabsContent>
+          ))}
+        </Tabs>
       )}
     </>
   )

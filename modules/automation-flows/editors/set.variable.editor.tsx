@@ -10,22 +10,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { IconsCatalog } from "@/catalogs/icons.catalogs"
-import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { useVariablesList } from "../hooks/useVariablesList"
 import { isSetVariableNode } from "../utils/node.guards"
+import { EditorRuntimeProps } from "../registry/types"
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-type SetVariableEditorProps = {
-
-}
-
-export const SetVariableEditor = ({ }: SetVariableEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const SetVariableEditor = ({ node }: EditorRuntimeProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
   const { options } = useVariablesList()
 
-  const nodeInformation = GetAutomationNodeInformation()
+  const nodeInformation = node
   const isNode = isSetVariableNode(nodeInformation)
 
   const variables = isNode ? nodeInformation.configuration?.variables || [] : []

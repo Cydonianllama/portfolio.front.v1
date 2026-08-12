@@ -11,13 +11,9 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TriggerDTO } from "@/api/flow/trigger.dto";
+import { EditorRuntimeProps } from "../registry/types";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type TriggerEditorProps = {
-
-}
-
-export const TriggerEditor = ({ }: TriggerEditorProps) => {
+export const TriggerEditor = ({ node }: EditorRuntimeProps) => {
   const automationFlowStore = automationFlowGenStore()
   const triggerActions = useTriggerActions()
 

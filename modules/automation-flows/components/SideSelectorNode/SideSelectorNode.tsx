@@ -1,18 +1,13 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import { SelectorItem } from "./SelectorItem";
-import { ListSelectors } from "./config";
+import { useListSelectors } from "./config";
 import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
 import { automationFlowGenStore } from "../../store/automation.flow.store";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type SideSelectorNodeProps = {
-
-}
+type SideSelectorNodeProps = {}
 
 export const SideSelectorNode = ({ }: SideSelectorNodeProps) => {
-  const appData = useAppData()
-
   const automationFlowStore = automationFlowGenStore()
+  const listSelectors = useListSelectors()
 
   return (
     <>
@@ -24,7 +19,7 @@ export const SideSelectorNode = ({ }: SideSelectorNodeProps) => {
           </Button>
         </div>
         <div className="flex flex-col gap-2 w-full px-4 pt-4">
-          {ListSelectors.map((el, index) => <SelectorItem key={index} data={el} />)}
+          {listSelectors.map((el, index) => <SelectorItem key={index} data={el} />)}
         </div>
       </div>
     </>

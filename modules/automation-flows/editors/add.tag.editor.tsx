@@ -1,22 +1,16 @@
 import { BaseEditor } from "./_base.editor"
 import { Label } from "@/components/ui/label"
-import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { useTagsList } from "../hooks/useTagsList"
 import { MultiSelect } from "../components/MultiSelect"
 import { isAddTagNode } from "../utils/node.guards"
+import { EditorRuntimeProps } from "../registry/types"
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-type AddTagEditorProps = {
-
-}
-
-export const AddTagEditor = ({ }: AddTagEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const AddTagEditor = ({ node }: EditorRuntimeProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
   const { tags } = useTagsList()
 
-  const nodeInformation = GetAutomationNodeInformation()
+  const nodeInformation = node
   const isNode = isAddTagNode(nodeInformation)
 
   const selectedIds = isNode ? nodeInformation.configuration?.toAdd?.map(el => el.tagId) || [] : []

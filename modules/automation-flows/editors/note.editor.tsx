@@ -1,14 +1,9 @@
 import { BaseEditor } from "./_base.editor"
 import { Label } from "@/components/ui/label"
-import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { TextareaAutomation } from "../components/EditorUtilities/Texteditor"
 import { isNoteNode } from "../utils/node.guards"
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-type NoteEditorProps = {
-
-}
+import { EditorRuntimeProps } from "../registry/types"
 
 const noteColors: Array<{ value: string, label: string, classColor: string }> = [
   { value: 'yellow', label: 'Amarillo', classColor: 'bg-yellow-200' },
@@ -21,11 +16,10 @@ const noteColors: Array<{ value: string, label: string, classColor: string }> = 
   { value: 'sky', label: 'Celeste', classColor: 'bg-sky-200' },
 ]
 
-export const NoteEditor = ({ }: NoteEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const NoteEditor = ({ node }: EditorRuntimeProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
 
-  const nodeInformation = GetAutomationNodeInformation()
+  const nodeInformation = node
   const isNode = isNoteNode(nodeInformation)
 
   const content = isNode ? nodeInformation.configuration?.content || '' : ''

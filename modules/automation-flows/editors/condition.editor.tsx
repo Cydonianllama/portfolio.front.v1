@@ -1,15 +1,10 @@
 import { BaseEditor } from "./_base.editor";
 import { RuleSection } from "./condition-editor/rulesSection";
-import { useAutomationEditor } from "../hooks/useAutomationEditor";
 import { isConditionNode } from "../utils/node.guards";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type ConditionEditorProps = {
+import { EditorRuntimeProps } from "../registry/types";
 
-}
-
-export const ConditionEditor = ({ }: ConditionEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
-  const nodeInformation = GetAutomationNodeInformation()
+export const ConditionEditor = ({ node }: EditorRuntimeProps) => {
+  const nodeInformation = node
   const isNode = isConditionNode(nodeInformation)
 
   return (

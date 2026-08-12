@@ -1,22 +1,18 @@
-import { useAppData } from "@/hooks/app/useAppData";
 import { NodeToCreateConfiguration } from "./config";
 import { useConversationalFlowGenActions } from "../../hooks/action.hooks.flow";
 import { automationFlowGenStore } from "../../store/automation.flow.store";
 import { bgColor } from "../../_configs";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type SelectorItemProps = {
   data: NodeToCreateConfiguration
 }
 
 export const SelectorItem = ({ data }: SelectorItemProps) => {
-  const appData = useAppData()
-
   const flowActions = useConversationalFlowGenActions({})
   const flowStore = automationFlowGenStore()
 
 
   const HandleClick = () => {
-    flowActions.CreateNodeAction({ automationId: flowStore.automationId || '', nodeType: data.type })
+    flowActions.CreateNodeAction({ automationId: flowStore.automationId || '', nodeType: data.type as unknown as import("@erick/conversationalflow").NodeTypesType })
   }
 
   

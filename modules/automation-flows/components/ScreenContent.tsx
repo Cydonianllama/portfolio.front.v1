@@ -1,15 +1,11 @@
-
-// import { useAppData } from "@/hooks/app/useAppData";
 import { ButtonEdit } from "./ButtonEdit";
 import { ButtonPublish } from "./ButtonPublish";
-// import { ButtonsViewFlow } from "./ButtonsViewFlow";
-// import { ButtonsMemento } from "./ButtonsMemento";
 import { EditorName } from "./EditorName";
 import FlowScreen from "../engineSimple/FlowShowcase";
-import { edgeTypesConfiguration, nodeTypesConfigurations } from "../_configs";
+import { edgeTypesConfiguration } from "../_configs";
 import { EditorFlow } from "./EditorFlow";
 import { automationFlowGenStore } from "../store/automation.flow.store";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useConversationalFlowGenActions } from "../hooks/action.hooks.flow";
 import { DialogAddTrigger } from "./DialogAddTrigger/DialogAddTrigger";
 import { RequestServiceDialog } from "./DialogRequestService/RequestServiceDialog";
@@ -18,38 +14,43 @@ import { ButtonAddNodes } from "./ButtonAddNodes";
 import { useFlosStateMachineHookActions } from "../hooks/hook.state.machine";
 import { ButtonSave } from "./buttonSave";
 import { ButtonBack } from "./ButtonBack";
+import { useAutomationNodeRegistry } from "../registry/useAutomationNodeRegistry";
+import { withNodeDefinition } from "../registry/wrappers";
+import { useAutomationFlowchartBreadcrumb } from "../appHooks/useAutomationFlowBreadcrumb";
 
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
   automationId: string
 }
 
 export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScreenProps) => {
+
+  useAutomationFlowchartBreadcrumb()
+
   const flowActions = useConversationalFlowGenActions({})
 
   const { showEditButton, disabledSaveButton, showPublishButton, showSaveButton, canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
 
-  // const appData = useAppData()
-
   const automationFlowStore = automationFlowGenStore()
+  const registry = useAutomationNodeRegistry()
 
-  // const OnClickNode = () => {
-  //   automationFlowStore.setStartEdit({ openEdit: true, currentNodeIdEditing: 'a' })
-  // }
+  const nodeTypesConfigurations = useMemo(
+    () => Object.fromEntries(registry.map((definition) => [definition.type, withNodeDefinition(definition, registry)])),
+    [registry],
+  )
 
   useEffect(() => {
     if (automationId) {
       automationFlowStore.setAutomationId({ automationId: automationId })
       flowActions.GetAutomationInformationAction({ automationId: automationId })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [automationId])
 
   useEffect(() => {
     return () => {
-      // console.log('killing states')
       automationFlowStore.clearAllStates()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -61,9 +62,6 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
             <EditorName />
           </div>
           <div className="flex gap-2 items-center">
-            {/* <ButtonsMemento /> */}
-            {/* <ButtonsViewFlow /> */}
-
             {showSaveButton && (
               <ButtonSave
                 disabled={disabledSaveButton}
@@ -82,7 +80,6 @@ export const AutomationFlowScreenContent = ({ automationId }: AutomationFlowScre
         </div>
         <div className="flex-1 w-full relative">
           {(automationFlowStore.openEdit && automationFlowStore.mode == 'editor') && (<EditorFlow />)}
-          {/* <ContentLoading /> */}
           {(!automationFlowStore.listing && automationFlowStore.initialListFinished) && (<>
             <FlowScreen
               edgeTypesConfiguration={edgeTypesConfiguration}

@@ -2,19 +2,13 @@ import { BaseEditor } from "./_base.editor";
 import { Button } from "@/components/ui/button";
 import { IconsCatalog } from "@/catalogs/icons.catalogs";
 import { automationFlowGenStore } from "../store/automation.flow.store";
-import { useAutomationEditor } from "../hooks/useAutomationEditor";
 import { isRequestServiceNode } from "../utils/node.guards";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type MessageEditorProps = {
+import { EditorRuntimeProps } from "../registry/types";
 
-}
-
-export const RequestServiceEditor = ({ }: MessageEditorProps) => {
+export const RequestServiceEditor = ({ node }: EditorRuntimeProps) => {
   const automationFlow = automationFlowGenStore()
 
-  const { GetAutomationNodeInformation } = useAutomationEditor()
-  const nodeInformation = GetAutomationNodeInformation()
-
+  const nodeInformation = node
   const isNode = isRequestServiceNode(nodeInformation)
   const configuration = isNode ? nodeInformation.configuration : undefined
 

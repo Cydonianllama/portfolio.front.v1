@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import {
-  NodeProps,
   Handle,
   Position,
-  NodeResizer,
 } from "@xyflow/react";
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 
-import { Component, ComponentClass, ComponentType, FunctionComponent, PropsWithChildren, ReactElement } from 'react'
-import { bgColor, colorDefaultNode } from "../_configs";
+import { ComponentType, FunctionComponent, PropsWithChildren } from 'react'
+import { bgColor } from "../registry/styles";
+import { colorDefaultNode } from "../registry/types";
 import { GoPlus } from "react-icons/go";
 import { LuTrash2 } from "react-icons/lu";
 import { HiOutlineDotsHorizontal, HiOutlineDuplicate } from "react-icons/hi";
@@ -31,13 +29,15 @@ export type BaseNodeProps = {
     hasSource: boolean,
     hasTarget: boolean
   }
-  showActionsPopover?: boolean
+  showActionsPopover?: boolean,
+  isActive?: boolean
 }
 
-export const BaseNode = ({ id, title, description, color, Icon, children, config, type = 'v1', showActionsPopover = true }: PropsWithChildren<BaseNodeProps>) => {
+export const BaseNode = ({ isActive = false, id, title, description, color, Icon, children, config, type = 'v1', showActionsPopover = true }: PropsWithChildren<BaseNodeProps>) => {
   const { canEditGeneralFlowchart } = useFlosStateMachineHookActions({})
   const flowActions = useConversationalFlowGenActions({})
   const automationStore = automationFlowGenStore()
+
   const Factory: Record<versionTypes, FunctionComponent<PropsWithChildren<BaseNodeProps>>> = {
     v1: BaseNodev1,
     v2: BaseNodev1,
@@ -45,9 +45,9 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
   }
 
   return <>
-    <Factory.v1 id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
+    <Factory.v1 isActive={isActive} id={id} title={title} description={description} color={color} Icon={Icon} type='v1' config={config} >
       {(canEditGeneralFlowchart && showActionsPopover) && (
-        <div style={{ top: -30 }} className="absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block">
+        <div style={{ top: -30 }} className={`absolute  h-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block`}>
           <div className="h-full " >
             <ButtonGroup>
               <Button
@@ -99,14 +99,14 @@ export const BaseNode = ({ id, title, description, color, Icon, children, config
   </>
 }
 
-const BaseNodev1 = ({ id, title, description, color, Icon, children, type = 'v1', config }: PropsWithChildren<BaseNodeProps>) => {
+const BaseNodev1 = ({ id, title, description, color, Icon, children, type = 'v1', config, isActive }: PropsWithChildren<BaseNodeProps>) => {
   return <>
-    <div className='border border-gray-300 rounded-xl bg-white flex flex-col p-2 relative group transition-colors hover:border-gray-400 focus-within:border-blue-500 w-[200px] max-w-[200px]'>
+    <div className={` ${isActive ? 'outline-blue-500 outline-2 -outline-offset-2 hover:outline-blue-600' : ''} border border-gray-300 rounded-xl bg-white flex flex-col p-2 relative group transition-colors hover:border-gray-400 focus-within:border-blue-500 w-[200px] max-w-[200px]`}>
       <div className='flex items-start relative'>
 
         <div className='flex gap-2 justify-between'>
           <span className={`h-10 w-10 rounded-lg flex items-center justify-center ${bgColor[color].classColor}`}>
-            <Icon className='text-white' />
+            <Icon className={bgColor[color].textColor} />
           </span>
           <div className="pr-2 flex flex-col justify-center">
             <h2 className='font-semibold leading-4 text-foreground'>{title}</h2>

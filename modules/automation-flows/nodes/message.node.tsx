@@ -1,15 +1,13 @@
 import {
-  NodeProps,
   Handle,
   Position,
 } from "@xyflow/react";
 import { BaseNode } from "./_base.node";
-import { GeneralConfigurationNode } from "../_configs";
-import { ExpectedResponseType, IAutomationNode, NODE_TYPE_GENERAL_MESSAGE_SIMPLE, nodeTypes } from "@erick/conversationalflow";
+import { ExpectedResponseType } from "@erick/conversationalflow";
 import { SectionGroupWords } from "./message-node/sectionGroupWords";
 import { SectionButtons } from "./message-node/sectionButtonts";
-import { useAutomationNode } from "../hooks/useAutomationNode";
 import { isMessageNode } from "../utils/node.guards";
+import { AutomationNodeComponentProps } from "../registry/types";
 
 const EXPECTED_RESPONSE_LABEL: Record<ExpectedResponseType, string> = {
   none: 'Sin respuesta',
@@ -21,12 +19,8 @@ const EXPECTED_RESPONSE_LABEL: Record<ExpectedResponseType, string> = {
   video: 'Video',
 }
 
-export function MessageNode({ data }: NodeProps) {
-  const type = nodeTypes.NODE_TYPE_GENERAL_MESSAGE_SIMPLE
-
-  const { getNodeConfiguration } = useAutomationNode(String(data.id))
+export function MessageNode({ data, definition, getNodeConfiguration, isActive }: AutomationNodeComponentProps) {
   const nodeInformation = getNodeConfiguration()
-
   const isNode = isMessageNode(nodeInformation)
   
   const message = isNode ? nodeInformation.configuration?.message || '' : ''
@@ -38,11 +32,12 @@ export function MessageNode({ data }: NodeProps) {
     <>
       <BaseNode
         id={String(data?.id) || ''}
-        color={GeneralConfigurationNode[type].color}
-        Icon={GeneralConfigurationNode[type].icon}
-        title={GeneralConfigurationNode[type].title}
-        description={GeneralConfigurationNode[type].description}
+        color={definition.visual.color}
+        Icon={definition.visual.icon}
+        title={definition.visual.title}
+        description={definition.visual.description}
         config={{ hasSource: true, hasTarget: true }}
+        isActive={isActive ? true : false}
       >
         <div className="max-w-[220px] pt-2 space-y-3">
           {/* Mensaje */}

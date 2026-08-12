@@ -8,7 +8,10 @@ type AddTriggerOptionProps = {
 
 export function AddTriggerOption({ data, onClick } : AddTriggerOptionProps){
   return(<>
-    <div onClick={() => { onClick(data) }} className="flex gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg border">
+    <div
+      onClick={() => { onClick(data) }}
+      className={`flex gap-2 p-2 rounded-lg border ${data.isPlaceholder ? 'opacity-60 cursor-default' : 'cursor-pointer hover:bg-gray-50'}`}
+    >
       <div>
         <div className="h-12 w-12 rounded-lg border flex items-center justify-center">{data.Icon}</div>
       </div>

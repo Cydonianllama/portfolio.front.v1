@@ -1,10 +1,10 @@
 'use client'
-  ;
+
 import { ReactFlowProvider } from "@xyflow/react";
 import { WorkflowEditorProvider } from "./provider/WorkflowEditorProvider";
 import { AutomationFlowScreenContent } from "./ScreenContent";
+import { AutomationNodeRegistryProvider } from "../registry/AutomationNodeRegistryProvider";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type AutomationFlowScreenProps = {
   automationId: string
 }
@@ -14,7 +14,9 @@ export const AutomationFlowScreen = ({ automationId }: AutomationFlowScreenProps
     <>
       <ReactFlowProvider>
         <WorkflowEditorProvider>
-          <AutomationFlowScreenContent automationId={automationId} />
+          <AutomationNodeRegistryProvider>
+            <AutomationFlowScreenContent automationId={automationId} />
+          </AutomationNodeRegistryProvider>
         </WorkflowEditorProvider>
       </ReactFlowProvider>
     </>

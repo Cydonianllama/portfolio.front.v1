@@ -5,7 +5,7 @@ import { ContactDTO } from '@/api/contacts/contacts.dto';
 import { EmptyStateComponent } from '../shared/Empty';
 import { SpinnerListing } from '../shared/Listing';
 import { ErrorStateComponent } from '../shared/Error';
-import { ActionsRow, ContactChatsBadges } from './section.table';
+import { ActionsRow } from './section.table';
 import { FaUser } from 'react-icons/fa';
 
 export type SectionGridProps = {
@@ -56,7 +56,7 @@ const RoomCard = ({ contact }: { contact: ContactDTO }) => {
         </div>
       </div>
 
-      <ContactChatsBadges contact={contact} />
+      {/* <ContactChatsBadges contact={contact} /> */}
     </div>
   )
 }

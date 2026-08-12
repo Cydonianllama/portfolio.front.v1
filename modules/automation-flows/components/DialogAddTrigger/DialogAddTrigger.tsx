@@ -33,7 +33,7 @@ export const DialogAddTrigger = ({  } : DialogAddTriggerProps) => {
       automationFlowStore.setTriggerSelector({ openTriggerSelector: open })
       if (!open) setSelectedOption(null)
     }}>
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{selectedOption ? 'Configura el trigger' : 'Selecciona el trigger a crear'}</DialogTitle>
           <DialogDescription></DialogDescription>

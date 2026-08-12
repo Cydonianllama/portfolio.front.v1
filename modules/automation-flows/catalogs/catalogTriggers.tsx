@@ -10,6 +10,7 @@ export type CatalogTrigger = {
   description: string,
   hasWordsConfig: boolean,
   isDefault: boolean,
+  isPlaceholder?: boolean,
   Icon: ReactElement
 }
 
@@ -49,3 +50,52 @@ export const TriggersCatalog: CatalogTrigger[] = TypesWithCatalog.map((type) => 
     Icon: PlatformIcon[metadata.platform],
   }
 })
+
+export type TriggerCatalogTab = {
+  id: string
+  label: string
+  triggers: CatalogTrigger[]
+}
+
+const PlaceholderTriggers: CatalogTrigger[] = [
+  {
+    platform: ConversationPlatform.general,
+    type: TriggerTypes.generalConversationRoom,
+    title: 'Cuando parámetro de contacto cambia',
+    description: 'Trigger de prueba sin lógica',
+    hasWordsConfig: false,
+    isDefault: false,
+    isPlaceholder: true,
+    Icon: PlatformIcon[ConversationPlatform.general],
+  },
+  {
+    platform: ConversationPlatform.general,
+    type: TriggerTypes.generalConversationRoom,
+    title: 'Cuando ...',
+    description: 'Trigger de prueba sin lógica',
+    hasWordsConfig: false,
+    isDefault: false,
+    isPlaceholder: true,
+    Icon: PlatformIcon[ConversationPlatform.general],
+  },
+]
+
+const PlatformTabs: TriggerCatalogTab[] = [
+  { id: 'whatsapp', label: 'WhatsApp', triggers: [] },
+  { id: 'telegram', label: 'Telegram', triggers: [] },
+  { id: 'webchat', label: 'Widget', triggers: [] },
+]
+
+for (const trigger of TriggersCatalog) {
+  const tab = PlatformTabs.find((el) => el.id === ConversationPlatform[trigger.platform])
+  if (tab) tab.triggers.push(trigger)
+}
+
+export const TriggerCatalogTabs: TriggerCatalogTab[] = [
+  ...PlatformTabs.filter((tab) => tab.triggers.length > 0),
+  {
+    id: 'generales',
+    label: 'Generales',
+    triggers: PlaceholderTriggers,
+  },
+]

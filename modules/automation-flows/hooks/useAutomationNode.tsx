@@ -34,5 +34,6 @@ export const useAutomationNode = (id?: string) => {
 
   return {
     getNodeConfiguration,
+    currentNodeIdEditing
   }
 }

@@ -1,15 +1,8 @@
-import {
-  NodeProps,
-} from "@xyflow/react";
 import { BaseNode } from "./_base.node";
-import { GeneralConfigurationNode } from "../_configs";
-import { nodeTypes } from "@erick/conversationalflow";
-import { useAutomationNode } from "../hooks/useAutomationNode";
 import { isCodeNode } from "../utils/node.guards";
+import { AutomationNodeComponentProps } from "../registry/types";
 
-export function CodeNode({ data }: NodeProps) {
-  const type = nodeTypes.NODE_TYPE_CODE
-  const { getNodeConfiguration } = useAutomationNode(String(data?.id) || '')
+export function CodeNode({ data, definition, getNodeConfiguration }: AutomationNodeComponentProps) {
   const nodeInformation = getNodeConfiguration()
 
   const isNode = isCodeNode(nodeInformation)
@@ -21,10 +14,10 @@ export function CodeNode({ data }: NodeProps) {
     <>
       <BaseNode
         id={String(data?.id) || ''}
-        color={GeneralConfigurationNode[type].color}
-        Icon={GeneralConfigurationNode[type].icon}
-        title={GeneralConfigurationNode[type].title}
-        description={GeneralConfigurationNode[type].description}
+        color={definition.visual.color}
+        Icon={definition.visual.icon}
+        title={definition.visual.title}
+        description={definition.visual.description}
         config={{ hasSource: true, hasTarget: true }}
       >
         <div className="pt-2">

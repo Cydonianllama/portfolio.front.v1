@@ -16,28 +16,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useAutomationEditor } from "../hooks/useAutomationEditor"
 import { useActionEditorActions } from "../hooks/useActionEditorActions"
 import { executeCode } from "../utils/codeSandbox"
 import { isCodeNode } from "../utils/node.guards"
 import { useState } from "react"
 import dynamic from "next/dynamic"
+import { EditorRuntimeProps } from "../registry/types"
 
 const MonacoCodeEditor = dynamic(
   () => import("../components/MonacoCodeEditor").then(mod => mod.MonacoCodeEditor),
   { ssr: false }
 )
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-type CodeEditorProps = {
-
-}
-
-export const CodeEditor = ({ }: CodeEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const CodeEditor = ({ node }: EditorRuntimeProps) => {
   const { UpdateActionConfiguration } = useActionEditorActions()
 
-  const nodeInformation = GetAutomationNodeInformation()
+  const nodeInformation = node
   const isNode = isCodeNode(nodeInformation)
 
   const [open, setOpen] = useState(false)

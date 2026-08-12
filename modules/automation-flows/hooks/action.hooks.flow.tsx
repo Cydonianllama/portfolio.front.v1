@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/immutability */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateNodeRequestDTO, CreateNode } from "@/api/flow/create.node"
 import { GetAutomationInformation, GetAutomationInformationRequestDTO } from "@/api/flow/get.information"
 import { PublishAutomationRequestDTO, PublishAutomation } from "@/api/flow/publish.automation"
@@ -12,36 +11,28 @@ import { automationFlowGenStore, modeAutomationFlow } from "../store/automation.
 import { useReactFlow } from "@xyflow/react"
 import { WorkflowEditorContext } from "../components/provider/WorkflowEditorContext"
 import { BuildNodeAndEdges } from "../utils/build"
-import { nodesFlow } from "../engineSimple/types"
 import { v4 as uuidv4 } from "uuid";
 import { nodeTypes } from '@erick/conversationalflow'
 import { useTriggerActions } from "./useTriggerActions"
+import { useAutomationNodeRegistry } from "../registry/useAutomationNodeRegistry"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type useConversationalFlowGenActionsProps = {
-
-}
+type useConversationalFlowGenActionsProps = {}
 
 export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenActionsProps) => {
 
   const triggerActions = useTriggerActions()
+  const registry = useAutomationNodeRegistry()
 
   const context = useContext(WorkflowEditorContext);
 
   const {
     nodes,
-    edges,
     setNodes,
     setEdges,
-    onNodesChange,
-    onEdgesChange,
   } = context || {
     nodes: [],
-    edges: [],
     setNodes: () => { },
     setEdges: () => { },
-    onNodesChange: () => { },
-    onEdgesChange: () => { },
   }
 
   const { setCenter, screenToFlowPosition } = useReactFlow();
@@ -80,26 +71,8 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
         automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
       }
 
-      // add node and center
-      // const center = screenToFlowPosition({
-      //   x: x,
-      //   y: y
-      // });
-
-      // const newNodeFlow: nodesFlow = {
-      //   id: newId,
-      //   type: data.nodeType,
-      //   data: {
-      //     id: newId,
-      //     type: data.nodeType || ''
-      //   },
-      //   position: center
-      // }
-
-      // setNodes([...nodes, newNodeFlow])
-
       if (req.data.node && automationFlowStore.information?.nodeList) {
-        const buildData = BuildNodeAndEdges({ nodes: [...automationFlowStore.information.nodeList, req.data.node] })
+        const buildData = BuildNodeAndEdges({ nodes: [...automationFlowStore.information.nodeList, req.data.node], registry })
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
       }
@@ -109,7 +82,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     } finally {
 
     }
-  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState, nodes, setNodes])
+  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState, nodes, setNodes, registry])
 
   const PublishAutomationAction = useCallback(async (data: PublishAutomationRequestDTO) => {
     try {
@@ -177,8 +150,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
         })
 
         // update flowchart
-        const buildData = BuildNodeAndEdges({ nodes: [...list] })
-        console.log(buildData)
+        const buildData = BuildNodeAndEdges({ nodes: [...list], registry })
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
 
@@ -194,7 +166,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     } finally {
 
     }
-  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState])
+  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState, registry])
 
   const RemoveNodeAction = useCallback(async (data: RemoveNodeRequestDTO) => {
     try {
@@ -220,8 +192,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
         automationFlowStore.setListState({ information: { ...automationFlowStore.information, nodeList: list } })
       
         // update flowchart
-        const buildData = BuildNodeAndEdges({ nodes: [...list] })
-        console.log(buildData)
+        const buildData = BuildNodeAndEdges({ nodes: [...list], registry })
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
       }
@@ -231,7 +202,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     } finally {
 
     }
-  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState])
+  }, [automationFlowStore.information?.nodeList, automationFlowStore.setListState, registry])
 
   const UpdatePositionNodAction = useCallback(async (data: UpdatePositionNodeRequestDTO) => {
     try {
@@ -300,7 +271,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
 
       if (req.data.nodeList) {
         // contruir los nodos del flow
-        const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList })
+        const buildData = BuildNodeAndEdges({ nodes: req.data.nodeList, registry })
         setNodes(buildData.nodes)
         setEdges(buildData.edges)
 
@@ -326,7 +297,7 @@ export const useConversationalFlowGenActions = ({ }: useConversationalFlowGenAct
     } finally {
       automationFlowStore.setListState({ listing: false })
     }
-  }, [])
+  }, [registry])
 
   const SetModeAction = useCallback(async (mode: modeAutomationFlow) => {
     try {

@@ -4,19 +4,13 @@ import { ButtonsSection } from "./message-editor/buttonsSection";
 import { ConectorsBottomSection } from "./message-editor/conectorsBottomSection";
 import { ExpectedResponseSection } from "./message-editor/expectedResponseSection";
 import { GroupWordsSection } from "./message-editor/groupWordsSection";
-import { useAutomationEditor } from "../hooks/useAutomationEditor";
 import { useMessageEditorActions } from "../hooks/useMessageEditorActions";
 import { isMessageNode } from "../utils/node.guards";
+import { EditorRuntimeProps } from "../registry/types";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-type MessageEditorProps = {
-
-}
-
-export const MessageEditor = ({ }: MessageEditorProps) => {
-  const { GetAutomationNodeInformation } = useAutomationEditor()
+export const MessageEditor = ({ node }: EditorRuntimeProps) => {
   const { UpdateMessageConfiguration } = useMessageEditorActions()
-  const nodeInformation = GetAutomationNodeInformation()
+  const nodeInformation = node
 
   const isNode = isMessageNode(nodeInformation)
 

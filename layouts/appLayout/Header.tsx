@@ -41,10 +41,15 @@ export function Header({ pathname }: { pathname: string }) {
             <BreadcrumbItem className="hidden md:block">
               <BreadcrumbLink href="#">App</BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            {appStore.Breadcrum.map((el, index) => <BreadcrumbItem key={index}>
-              <BreadcrumbPage>{el.text}</BreadcrumbPage>
-            </BreadcrumbItem>)}
+
+            {appStore.Breadcrum.map((el, index) => (
+              <>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem key={index}>
+                  <BreadcrumbPage>{el.text}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            ))}
           </BreadcrumbList>
         </Breadcrumb>
       </div>
